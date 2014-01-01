@@ -1,0 +1,7 @@
+CREATE TABLE `cms_calendar_category` (
+                     `event_id` int(11) NOT NULL DEFAULT '0',
+                     `category_id` int(11) NOT NULL DEFAULT '0',
+                     UNIQUE KEY `pkey` (`event_id`,`category_id`),
+                     KEY `event_id` (`event_id`),
+                     KEY `category_id` (`category_id`)
+                   ) ENGINE=InnoDB;

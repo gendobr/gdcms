@@ -1,0 +1,29 @@
+-- для управления категориями обязательно нужны транзакции!!!
+
+CREATE TABLE `cms_category_new` (
+                `category_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                `site_id` bigint(20) NOT NULL DEFAULT '0',
+                `category_code` varchar(50) DEFAULT NULL,
+                `category_title` varchar(1024) NOT NULL DEFAULT 'new category',
+                `category_description` longtext,
+                `category_concept` text,
+                `start` bigint(20) NOT NULL DEFAULT '0',
+                `finish` bigint(20) NOT NULL DEFAULT '0',
+                `is_deleted` tinyint(1) DEFAULT '0',
+                `deep` int(11) NOT NULL DEFAULT '0',
+                `is_part_of` bigint(20) DEFAULT NULL,
+                `see_also` text,
+                `is_visible` tinyint(1) NOT NULL DEFAULT '1',
+                `path` varchar(255) DEFAULT NULL,
+                `date_last_changed` datetime DEFAULT NULL,
+                PRIMARY KEY (`category_id`),
+                KEY `start` (`start`),
+                KEY `finish` (`finish`),
+                KEY `category_code` (`category_code`)
+              ) ENGINE=InnoDB AUTO_INCREMENT=585;
+
+replace cms_category_new
+select * from cms_category;
+
+RENAME TABLE cms_category TO cms_category_old;
+RENAME TABLE cms_category_new TO cms_category;

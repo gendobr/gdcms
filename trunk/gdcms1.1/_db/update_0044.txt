@@ -1,0 +1,4 @@
+ALTER TABLE `cms_news` ADD `news_code` VARCHAR( 1024 ) NULL ,
+ADD `news_meta_info` TEXT NULL ;
+ALTER TABLE `cms_news` ADD `news_extra_1` VARCHAR( 1024 ) NULL ,
+ADD `news_extra_2` VARCHAR( 1024 ) NULL ;

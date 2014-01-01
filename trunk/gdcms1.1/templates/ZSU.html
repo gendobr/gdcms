@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>{$page.title}</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<LINK href="{$site_root_url}/templates/ZSU.files/styles.css" type=text/css rel=stylesheet>
+<!-- Add keywords here-->
+<META content="MSHTML 6.00.2737.800" name=GENERATOR></HEAD>
+
+
+<BODY bgColor=#006ca8 leftMargin=0 topMargin=40 marginwidth="0" marginheight="40">
+
+<TABLE cellSpacing=0 cellPadding=0 width=750 align=center bgColor=#006ca8 border=0>
+  <TBODY>
+  <TR>
+    <TD class=white align=left width=250></TD>
+    <TD align=right width=500>
+    {section name=l_id loop=$lang}
+      <a href="{$lang[l_id].url}" class=white>{$lang[l_id].lang}</a>
+    {/section}&nbsp;&nbsp;
+    </TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+
+<TABLE cellSpacing=0 cellPadding=0 width=750 align=center bgColor=#006ca8 border=0>
+  <TBODY>
+  <TR>
+    <TD width=150 rowSpan=2><!-- 
+    --><IMG height=99
+            src="{$site_root_url}/templates/ZSU.files/building.jpg"
+            width=150 border=0><!-- 
+    --></TD>
+
+    <TD vAlign=top align=left width=600 colSpan=2><!-- 
+    --><IMG height=47 
+           src="{$site_root_url}/templates/ZSU.files/{$text.ZSU_img}" 
+      width=600 border=0><!-- 
+    --></TD>
+  </TR>
+  <TR>
+    <TD vAlign=top align=right width=490 background={$site_root_url}/templates/ZSU.files/rasp.gif><!-- 
+    --><MAP id=MenuMap name=MenuMap>
+          <AREA shape=RECT coords=9,10,41,30 href="http://www.zsu.edu.ua/{$text.language_name}/main/">
+          <AREA shape=RECT coords=66,2,166,19 href="http://sites.zsu.zp.ua/cms/index.php?action=forum/forum&site_id=20&lang={$text.language_name}&interface_lang={$text.language_name}">
+          <AREA shape=RECT coords=167,2,267,19 href="http://www.zsu.edu.ua/{$text.language_name}/main/contacts/">
+          <AREA shape=RECT coords=268,2,368,19 href="http://www.zsu.edu.ua/{$text.language_name}/main/guestbook/">
+          <AREA shape=RECT coords=66,21,166,38 href="http://www.zsu.edu.ua/{$text.language_name}/main/sitemap/">
+          <AREA shape=RECT coords=167,21,267,38 href="http://www.zsu.edu.ua/{$text.language_name}/main/newonsite/">
+          <AREA shape=RECT coords=268,21,368,38 href="http://www.zsu.edu.ua/{$text.language_name}/main/links/">
+          <AREA shape=RECT coords=389,12,421,30 href="mailto:webmaster@zsu.zp.ua?Subject=Главная страница • ЗГУ">
+       </MAP><!-- 
+    --><IMG height=41
+            alt=""
+            src="{$site_root_url}/templates/ZSU.files/{$text.ZSU_menus}"
+            width=432
+            align=center
+            useMap=#MenuMap border=0><!-- 
+    --></TD>
+    <TD align=right width=110 background={$site_root_url}/templates/ZSU.files/rasp.gif><!--
+    --><IMG height=52 
+            alt=""
+            src="{$site_root_url}/templates/ZSU.files/logo.gif"
+            width=81
+            border=0><!-- 
+    --></TD>
+    </TR>
+    </TBODY>
+</TABLE>
+<BR>
+<TABLE cellSpacing=0 cellPadding=0 width=750 align=center bgColor=#006ca8 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top align=left width=224>
+
+
+
+      <TABLE cellSpacing=0 cellPadding=0 width=211 align=left bgColor=white border=0>
+
+      {section name=mid loop=$menu}
+        <TBODY>
+        <TR bgColor=white height=13>
+          <TD align=right width=13 bgColor=#006ca8 colSpan=2 height=13><IMG alt="" src="{$site_root_url}/templates/ZSU.files/topleft.gif" width=13 border=0></TD>
+          <TD vAlign=bottom align=right width=185 bgColor=white height=13><IMG height=2 alt="" src="{$site_root_url}/templates/ZSU.files/1x1white.gif" width=169 border=0></TD>
+          <TD align=left width=13 bgColor=#006ca8 colSpan=2 height=13><IMG alt="" src="{$site_root_url}/templates/ZSU.files/topright.gif" width=13 border=0></TD>
+        </TR>
+
+        <TR>
+          <TD align=right width=2><IMG height=1 alt="" src="{$site_root_url}/templates/ZSU.files/1x1white.gif" width=2 border=0></TD>
+          <TD align=justify bgColor=white colSpan=3>
+          <h6 style="text-align:left;padding-left:10px;">{$menu[mid].html}</h6>
+          <DIV class=s8 align=justify style="padding-left:10px;">
+          {section name=miid loop=$menu[mid].items}
+          <a href="{$menu[mid].items[miid].url}" title="{$menu[mid].items[miid].description}" {$menu[mid].items[miid].attributes}  class="si">{$menu[mid].items[miid].html}</a><br />
+          {/section}
+          </DIV>
+          </TD>
+          <TD width=2><IMG height=2 alt="" src="{$site_root_url}/templates/ZSU.files/1x1white.gif" width=2 border=0></TD>
+        </TR>
+
+        <TR bgColor=white height=13>
+          <TD align=right width=13 bgColor=#006ca8 colSpan=2 height=13><IMG 
+            alt="" src="{$site_root_url}/templates/ZSU.files/botleft.gif" width=13 border=0></TD>
+          <TD vAlign=bottom align=right width=185 bgColor=white height=13><IMG 
+            height=2 alt="" src="{$site_root_url}/templates/ZSU.files/1x1white.gif" width=169 border=0></TD>
+          <TD align=left width=13 bgColor=#006ca8 colSpan=2 height=13><IMG 
+            alt="" src="{$site_root_url}/templates/ZSU.files/botright.gif" width=13 border=0></TD></TR>
+        <TR><TD bgColor=#006ca8 colSpan=5>&nbsp;</TD></TR>
+    {/section}
+    </TBODY>
+    </TABLE>
+    </TD>
+    <TD vAlign=top align=right width=526 rowSpan=2>
+      <TABLE cellSpacing=0 cellPadding=0 width=526 align=right bgColor=white border=0px bordercolor=red>
+        <TBODY>
+        <TR bgColor=white height=15>
+          <TD align=right width=13 bgColor=#006ca8 colSpan=2 height=15><IMG alt="" src="{$site_root_url}/templates/ZSU.files/topleft15.gif" width=13 border=0></TD>
+          <TD vAlign=bottom align=right width=500 bgColor=white height=15><IMG height=2 alt="" src="{$site_root_url}/templates/ZSU.files/1x1white.gif" width=484 border=0></TD>
+          <TD align=left width=13 bgColor=#006ca8 colSpan=2 height=15><IMG alt="" src="{$site_root_url}/templates/ZSU.files/topright15.gif" width=13 border=0></TD>
+        </TR>
+        <TR>
+          <TD align=right width=2><IMG height=1 alt="" src="{$site_root_url}/templates/ZSU.files/1x1white.gif" width=2 border=0></TD>
+          <TD align=justify bgColor=white colSpan=3>
+          <h3>{$page.title}</h3>
+		  {sysmsg}
+          {$page.content} 
+
+          </TD>
+          <TD width=2><IMG height=2 alt="" src="{$site_root_url}/templates/ZSU.files/1x1white.gif" 
+            width=2 border=0></TD></TR>
+        <TR bgColor=white height=13>
+          <TD align=right width=13 bgColor=#006ca8 colSpan=2 height=13><IMG 
+            alt="" src="{$site_root_url}/templates/ZSU.files/botleft.gif" width=13 border=0></TD>
+          <TD vAlign=bottom align=right width=500 bgColor=white height=13><IMG 
+            height=2 alt="" src="{$site_root_url}/templates/ZSU.files/1x1white.gif" width=484 border=0></TD>
+          <TD align=left width=13 bgColor=#006ca8 colSpan=2 height=13><IMG 
+            alt="" src="{$site_root_url}/templates/ZSU.files/botright.gif" width=13 
+      border=0></TD></TR></TBODY></TABLE></TD>
+  <TR>
+    <TD vAlign=bottom align=middle><BR>
+
+{literal}
+<TABLE cellSpacing=0 cellPadding=0 align=center border=0>
+<TBODY>
+<TR>
+<TD>
+
+<!-- BEGIN OF PING CODE -->
+<A HREF="http://www.topping.com.ua/" target="_top">
+<font size="1" color="#006ca8">
+<script>
+//<!--
+id='020802140946';
+img='count3';
+an=navigator.appName; d=document;  w=''; c='';
+script='http://counter.topping.com.ua:80/cgi-bin/pinger.cgi';
+function ping() {
+d.write("<img src=\""+script+"?id="+id+"&img="+img+"&w="+w+"&c="+c+"&ref="+escape(d.referrer)+"\" width=81 height=63 border=0 alt=\"Rated by PING\"></a>");
+}
+//-->
+</script>
+<script language="javascript1.2">
+//<!--
+s=screen;
+w=s.width;
+an!="Netscape"?c=s.colorDepth:c=s.pixelDepth
+//-->
+</script>
+<script>
+//<!--
+ping()
+//-->
+</script>
+<noscript>
+<img src="http://counter.topping.com.ua:80/cgi-bin/ping.cgi?020802140946;count3" width=81 height=63 border=0 alt="Rated by PING">
+</noscript></a>
+</FONT>
+<!-- END OF PING CODE -->
+</TD>
+
+<TD vAlign=bottom>
+
+<!--Rating@Mail.ru COUNTER--><script language="JavaScript"><!--
+d=document;a='';a+=';r='+escape(d.referrer)
+js=10//--></script><script language="JavaScript1.1"><!--
+a+=';j='+navigator.javaEnabled()
+js=11//--></script><script language="JavaScript1.2"><!--
+s=screen;a+=';s='+s.width+'*'+s.height
+a+=';d='+(s.colorDepth?s.colorDepth:s.pixelDepth)
+js=12//--></script><script language="JavaScript1.3"><!--
+js=13//--></script><script language="JavaScript"><!--
+d.write('<a href="http://top.mail.ru/jump?from=308846"'+
+' target=_top><img src="http://top.list.ru/counter'+
+'?id=308846;t=131;js='+js+a+';rand='+Math.random()+
+'" alt="Rating@Mail.ru"'+' border=0 height=40 width=88></a>')
+if(js>11)d.write('<'+'!-- ')//--></script><noscript><a
+target=_top href="http://top.mail.ru/jump?from=308846"><img
+src="http://top.list.ru/counter?js=na;id=308846;t=131"
+border=0 height=40 width=88
+alt="Rating@Mail.ru"></a></noscript><script language="JavaScript"><!--
+if(js>11)d.write('--'+'>')//--></script><!--/COUNTER-->
+
+</TD></TR>
+        <TR>
+          <TD align=left colSpan=2>
+          
+<!-- bigmir)net TOP 100 --><a href=http://www.bigmir.net/?cl=24184 target=_blank><script language="javascript"><!--
+bmQ='<img src=http://c.bigmir.net/?s24184&t10'
+bmD=document
+bmD.cookie="b=b"
+if(bmD.cookie)bmQ+='&c1'
+//--></script><script language="javascript1.2"><!-- 
+bmS=screen;bmQ+='&d'+(bmS.colorDepth?bmS.colorDepth:bmS.pixelDepth)+"&r"+bmS.width;
+//--></script><script language="javascript"><!--
+bmF = bmD.referrer.slice(7);
+((bmI=bmF.indexOf('/'))!=-1)?(bmF=bmF.substring(0,bmI)):(bmI=bmF.length);
+if(bmF!=window.location.href.substring(7,7+bmI))bmQ+='&f'+escape(bmD.referrer);
+bmD.write(bmQ+" border=0 width=140 height=17 alt='bigmir TOP100'>");
+//--></script></a>
+<!-- bigmir)net TOP 100 -->
+<!-- Begin Nedstat Basic code -->
+<!-- Title: Official Web Site of ZSU (2002) -->
+<!-- URL: http://www.zsu.edu.ua -->
+{/literal}<script language="JavaScript" src="{$site_root_url}/templates/ZSU.files/basic.js"></script>{literal}
+<script language="JavaScript">
+<!--
+  nedstatbasic("ABZsXw4do2vv47AN07sqSpgq8fHw", 0);
+// -->
+</script>
+<noscript>
+<a target="_blank" href="http://v1.nedstatbasic.net/stats?ABZsXw4do2vv47AN07sqSpgq8fHw"><img
+src="http://m1.nedstatbasic.net/n?id=ABZsXw4do2vv47AN07sqSpgq8fHw"
+border="0" nosave width="18" height="18"></a>
+</noscript>
+<!-- End Nedstat Basic code -->
+
+
+</TD></TR></TBODY></TABLE>
+
+{/literal}
+
+</TD></TR></TBODY></TABLE><BR>
+<TABLE cellSpacing=0 cellPadding=0 width=750 align=center bgColor=white 
+border=0>
+  <TBODY>
+  <TR>
+    <TD align=right width=13 bgColor=white colSpan=2><IMG height=13 alt="" 
+      src="{$site_root_url}/templates/ZSU.files/topleft.gif" width=13 border=0></TD>
+    <TD align=right width=724 rowSpan=2><A 
+      href="http://www.zsu.edu.ua/rus/main">Запорожский национальный 
+      университет</A>, <A 
+      href="mailto:webmaster@zsu.zp.ua?">Web-лаборатория</A>, <A>© 
+    1996-2004</A></TD>
+    <TD align=left width=13 bgColor=#006ca8 colSpan=2><IMG height=13 alt="" 
+      src="{$site_root_url}/templates/ZSU.files/topright.gif" width=13 border=0></TD></TR>
+  <TR>
+    <TD align=right width=13 bgColor=white colSpan=2><IMG height=13 alt="" 
+      src="{$site_root_url}/templates/ZSU.files/botleft.gif" width=13 border=0></TD>
+    <TD align=left width=13 bgColor=#006ca8 colSpan=2><IMG height=13 alt="" 
+      src="{$site_root_url}/templates/ZSU.files/botright.gif" width=13 border=0></TD></TR></TBODY></TABLE></BODY></HTML>

@@ -1,0 +1,1 @@
+alter table `cms_category` add column `date_lang_update` varchar(128) NULL after `date_last_changed`;

@@ -1,0 +1,80 @@
+body, td
+{
+	FONT-SIZE: 13px;
+  COLOR: #334966;
+  FONT-FAMILY: arial, tahoma, verdana, sans-serif;
+  TEXT-DECORATION: none
+}
+
+.site_head_letter
+{
+  background-color: #2525D5;
+  color:white;
+  font-weight:bold;
+  font-size:200%;
+  padding:1px 1px 1px 1px;
+  border:1px dotted white;
+}
+.university_head_block
+{
+   text-align:center;
+   background-color:#aaaaaa;
+   background-image:url({$site_root_url}/templates/pk.files/bg1.gif);
+   background-position: top center;
+   background-repeat: repeat-y;
+   line-height:240%;
+}
+
+.university_head_block a
+{
+   text-decoration:none;
+}
+
+.site_head_block
+{
+   text-align:center;
+   background-color:#aaaaaa;
+   background-image:url(bg1.gif);
+   background-position: top center;
+   background-repeat: repeat-y;
+   letter-spacing:6px ;
+   padding:2px;
+   font-weight:bolder;
+   color:#2525D5;
+   border-top:1px solid #2525D5;
+   border-bottom:1px solid #2525D5;
+}
+
+.content
+{
+  padding:10px;
+  border-right:3px solid #AAAAAA;
+}
+
+.page_header
+{
+  background-color:#AAAAAA;
+  margin:0;
+  font-size:140%;
+  font-weight:normal;
+  background-image:url(head_bg.jpg);
+  background-repeat: repeat-y;
+  COLOR: #2525d5;
+}
+.page_header h1
+{
+  font-size:110%;
+}
+
+A.menu {
+	FONT-WEIGHT: bold;
+  COLOR: #2525d5;
+  TEXT-DECORATION: none
+}
+A.menu:hover
+{
+	COLOR: #222222;
+}
+A.menu:active {
+	COLOR: red
+}

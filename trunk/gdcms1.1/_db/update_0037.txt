@@ -1,0 +1,1 @@
+alter table `cms_photogalery` add column `description` text NULL after `vis`;

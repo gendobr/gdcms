@@ -1,0 +1,116 @@
+<HTML>
+    <HEAD>
+	<TITLE>{$page.title}</TITLE>
+
+	<LINK REL=stylesheet TYPE=text/css HREF="{$site_root_url}/templates/NIS/styles.css">
+	<LINK REV="made" HREF="mailto:webmaster@zsu.zp.ua">
+
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+	<META NAME=description content="#description">
+	<META NAME=keywords content="#keywords">
+
+    </HEAD>
+
+<body font="#000000" link="#000000" vlink="#000000" marginheight="0" marginwidth="0" LEFTMARGIN=0 TOPMARGIN=0  bgcolor="#02194D">
+
+<table border="0" cellpadding="0" cellspacing="0" bordercolor=red width=95%>
+<tr>
+<td colspan=4>
+<!-- header - begin -->
+    <table cellspacing=0 cellpadding=0 border=0 bordercolor=red width=100%>
+    <tr valign="top" height="142px">
+    <td width=5%><img src="{$site_root_url}/templates/NIS/1.jpg"  width="142" height="142" border="0"></td>
+    <td width=20% background="{$site_root_url}/templates/NIS/rastjazhka.jpg"><img src="{$site_root_url}/templates/NIS/2.jpg"  width="339" height="142" border="0"><br /></td>
+    <td background="{$site_root_url}/templates/NIS/rastjazhka.jpg"><img src="{$site_root_url}/templates/NIS/rastjazhka.jpg"></td>
+    <td background="{$site_root_url}/templates/NIS/rastjazhka.jpg"align=right><img align=right src="{$site_root_url}/templates/NIS/3.jpg"  width="96" height="142" border="0"></td>
+    <td width="55"><img src="{$site_root_url}/templates/NIS/6.jpg" height="142" border="0"></td>
+    </tr>
+    </table>
+<!-- header - end -->
+</td>
+</tr>
+<tr>
+
+<td rowspan=3 background="{$site_root_url}/templates/NIS/4.jpg" width=8px valign=top><br></td>
+
+<td rowspan=3  style='background-image:url({$site_root_url}/templates/NIS/5.jpg); background-repeat:repeat-y;background-color:#0A3371;' valign=top>
+{literal}
+<style type="text/css">
+<!-- 
+.menu_item
+{
+  color:white;
+  font-weight:bold;
+  margin-bottom:7px;
+  display:block;
+}
+a:hover.menu_item
+{
+  color:#A1ADBD;
+}
+-->
+</style>
+{/literal}
+
+<div style='padding:15px;'>
+       {section name=mid loop=$menu}
+           {section name=miid loop=$menu[mid].items}
+             <a href="{$menu[mid].items[miid].url}" class='menu_item' title="{$menu[mid].items[miid].description}" {$menu[mid].items[miid].attributes}>{$menu[mid].items[miid].html}</a>
+           {/section}
+      {/section}
+</div>
+
+
+<br>
+</td>
+
+<td valign="top" style='padding:20px;background-repeat:repeat-y;background-image:url({$site_root_url}/templates/NIS/border01.jpg);' bgcolor="#A1ADBD">
+
+<p align=right><b>
+{section name=l_id loop=$lang}
+        <b><a href="{$lang[l_id].url}" style='color:white;'>{$lang[l_id].lang}</a></b> 
+{/section}
+</b>
+</p>
+<H2 align="center"><b>{$page.title}</b></H2>
+{sysmsg}
+{$page.content}
+
+</td><td width=55px rowspan=1></td>
+</tr>
+
+<tr>
+
+<!-- <td BACKGROUND="{$site_root_url}/templates/NIS/text_bg.jpg" colspan=2 align=right> -->
+<td valign="top" align=right style='padding:0px;background-repeat:repeat-y;background-image:url({$site_root_url}/templates/NIS/border01.jpg);' bgcolor="#A1ADBD">
+    <table border="0" cellpadding="0" cellspacing="0" width=99% bordercolor=yellow>
+    <tr>
+        <td background="{$site_root_url}/templates/NIS/bottom00.jpg"><img src="{$site_root_url}/templates/NIS/bottom00.jpg" height="44"     border="0"><br></td>
+        <td width="159"><img src="{$site_root_url}/templates/NIS/bottom01.jpg" width="159" height="44"     border="0"  ><br></td>
+        <td width="151"><img src="{$site_root_url}/templates/NIS/bottom02.jpg" width="151" height="17"     border="0"  ><br><!-- 
+        --><A HREF="mailto:webmaster@zsu.zp.ua"><img src="{$site_root_url}/templates/NIS/contact_us.gif" ALT="webmaster@zsu.zp.ua" width="151" height="14" border="0"></A><br><!-- 
+        --><img src="{$site_root_url}/templates/NIS/bottom03.jpg" width="151" height="13"     border="0"  ><br><!-- 
+        --></td>
+    </tr>
+    </table>
+</td>
+<td><img src="{$site_root_url}/templates/NIS/bottom04.jpg" height="44"     border="0"><br></td>
+</tr>
+<tr>
+<td valign="top" colspan=1 style='padding:0px;background-repeat:repeat-y;background-image:url({$site_root_url}/templates/NIS/border01.jpg);' bgcolor="#A1ADBD">
+<br>
+<p align=center><font size=1> 
+        <a href="http://www.zsu.zp.ua">Запорiзький Нацiональний Унiверситет</a><br>
+	<a href="mailto:webmaster@zsu.zp.ua">Web-лабораторiя</a><br>
+		<br>2000-2004</font></p>
+<br>
+
+</td>
+<td></td>
+</tr>
+
+</table>
+</body>
+</html>

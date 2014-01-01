@@ -1,0 +1,9 @@
+виставка
+http://127.0.0.1/cms/index.php?action=ec%2Fitem%2Flist_by_tag&lang=ukr&site_id=1&ec_item_tags=%E2%E8%F1%F2%E0%E2%EA%E0&ec_item_state=show&rows=3&start=3
+
+
+подарунок:
+http://127.0.0.1/cms/index.php?action=custom/podarunok&site_id=1&ec_category_id=10
+
+стартова сторінка
+http://127.0.0.1/cms/index.php?action=custom/frontpage&site_id=1

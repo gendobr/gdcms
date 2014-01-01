@@ -1,0 +1,1 @@
+alter table `cms_ec_item` change `ec_item_purchases` `ec_item_purchases` int(11) default '0' NOT NULL, change `ec_item_views` `ec_item_views` int(11) default '0' NOT NULL, change `ec_item_in_cart` `ec_item_in_cart` int(11) default '0' NOT NULL;

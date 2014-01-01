@@ -1,0 +1,115 @@
+
+BODY {	FONT-SIZE: 100%; COLOR: black; FONT-FAMILY: Tahoma,Verdana; BACKGROUND-COLOR: #F9F2E1;}
+
+TD {FONT-SIZE: 90%; COLOR: black; FONT-FAMILY: Tahoma,Verdana}
+
+INPUT {FONT-SIZE: 90%; COLOR: black; FONT-FAMILY: Tahoma,Verdana;}
+
+P {
+  FONT-SIZE: 95%; 
+  COLOR: black; 
+  FONT-FAMILY: Tahoma,Verdana; 
+  MARGIN-TOP: 4pt; MARGIN-BOTTOM: 4pt;
+}
+
+LI{FONT-SIZE: 90%; COLOR: black; FONT-FAMILY: Tahoma,Verdana;TEXT-ALIGN: justify;}
+
+TEXTAREA {FONT-SIZE: 90%; COLOR: black; FONT-FAMILY: Tahoma,Verdana;}
+
+IMG {	MARGIN: 0px;}
+.textblok IMG {	MARGIN: 10px;}
+
+UL {	MARGIN-LEFT: 20px;}
+
+A {
+   BORDER: medium none; 
+   COLOR: #600000; 
+   TEXT-DECORATION: underline
+}
+A:hover {
+   COLOR: #ee0000; 
+   BORDER: medium none; 
+   TEXT-DECORATION: underline
+}
+
+.menu{ background-image: url(supermarker.gif); background-position: top,left; background-repeat: no-repeat; padding-left: 10pt;
+ }
+
+.menu A{
+    FONT-WEIGHT: bold; COLOR: #a04000; 
+    BORDER: medium none; 
+    TEXT-DECORATION: none; 
+    FONT-WEIGHT: bold; 
+    FONT-SIZE:100%;
+}
+.menu a:VISITED {
+    color:#502000;
+    BORDER: medium none; 
+    TEXT-DECORATION: none; 
+    FONT-WEIGHT: bold; 
+}
+
+.menu A:hover {
+    COLOR: #ee0000; 
+    BORDER: medium none; 
+    TEXT-DECORATION: none;
+    FONT-WEIGHT: bold; 
+}
+
+
+TD.a {  BORDER: medium none; BACKGROUND-COLOR: #F9F2E1;}
+.textblok {
+  BORDER: none;
+  BACKGROUND-COLOR: #ffffff;
+}
+TD.b { BORDER:  #600000 1pt solid; BACKGROUND-COLOR: #ffffff;}
+
+.textblok TD {  PADDING: 7px; }
+
+.textblok p { TEXT-ALIGN: justify; font-size:100%;line-height:150%;}
+
+TD.c {   BORDER: medium none;    BACKGROUND-COLOR: #600000;}
+
+TH {
+   BORDER:  #F9F2E1 1pt solid; 
+   FONT-WEIGHT: bold; 
+   FONT-SIZE: 90%; 
+   COLOR: #600000;
+   FONT-FAMILY: Tahoma; 
+   BACKGROUND-COLOR: #F9F2E1; 
+   TEXT-ALIGN: center;
+}
+TD {
+   BORDER:  #F9F2E1 1pt solid; 
+   FONT-SIZE: 90%; 
+   COLOR: #000000; 
+   BACKGROUND-COLOR: #ffffff
+}
+
+
+.white {COLOR: white;}
+.black {COLOR: black;}
+.red {COLOR: red;}
+.s6 {FONT-SIZE: 80%;}
+.s8 {FONT-SIZE: 90%; FONT-FAMILY: Tahoma,Verdana;}
+.s10 {FONT-SIZE: 95%l}
+HR {COLOR: #600000;}
+INPUT.searchtext {FONT-SIZE: 90%; WIDTH: 100px; HEIGHT: 20px; BACKGROUND-COLOR: #eeeeee;}
+INPUT.searchbutton {FONT-SIZE: 90%; WIDTH: 65px; FONT-FAMILY: Tahoma,Verdana; HEIGHT: 20px;}
+.404 {FONT-SIZE: 48pt; COLOR: #cccccc; FONT-STYLE: italic;}
+.gray {	COLOR: #999999;}
+H1 {FONT-WEIGHT: bold; COLOR: #cc8000; FONT-FAMILY: Arial,Tahoma,Verdana;}
+H2 {FONT-WEIGHT: bold; COLOR: #cc8000; FONT-FAMILY: Arial,Tahoma,Verdana;}
+H3 {FONT-WEIGHT: bold; COLOR: #cc8000; FONT-FAMILY: Arial,Tahoma,Verdana;}
+H4 {FONT-WEIGHT: bold; COLOR: #cc8000; FONT-FAMILY: Arial,Tahoma,Verdana;}
+H5 {FONT-WEIGHT: bold; COLOR: #cc8000; FONT-FAMILY: Arial,Tahoma,Verdana;}
+H6 {FONT-WEIGHT: bold; COLOR: #cc8000; FONT-FAMILY: Arial,Tahoma,Verdana;}
+H1 {FONT-SIZE: 120%; TEXT-ALIGN: center;}
+H2 {FONT-SIZE: 115%; TEXT-ALIGN: center;}
+H3 {FONT-SIZE: 110%; TEXT-ALIGN: center;}
+H4 {FONT-SIZE: 105%; TEXT-ALIGN: center;}
+H5 {FONT-SIZE: 100%; TEXT-ALIGN: center;}
+H6 {FONT-SIZE: 90%;  TEXT-ALIGN: right;}
+.indent {PADDING-LEFT: 50px;}
+.bold {	FONT-WEIGHT: bold;}
+.left {	TEXT-ALIGN: left;}

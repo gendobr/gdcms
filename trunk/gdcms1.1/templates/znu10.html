@@ -1,0 +1,388 @@
+{assign var="znu_root_url" value="http://www.znu.edu.ua"}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{$page.title} - {txt lang=$text.language_name variants="eng=ZNU::rus=ЗНУ::ukr=ЗНУ"}</title>
+<!--[if IE]>
+{*<script type="text/javascript" src="http://sites.znu.edu.ua.nyud.net/cms/templates/znu10files/curvycorners.js"></script>*}
+  <script type="text/javascript" src="{$site_root_url}/templates/znu10files/curvycorners.js"></script>
+{literal}
+<script type="text/JavaScript">
+window.onload=initCorners;
+        function initCorners() {
+
+                var setting = {
+                  tl: { radius: 10 },
+                  tr: { radius: 10 },
+                  bl: { radius: 0 },
+                  br: { radius: 0 },
+                  antiAlias: true};
+                curvyCorners(setting, "#header");
+                curvyCorners(setting, ".toptab");
+                setting = {
+                  tl: { radius: 0 },
+                  tr: { radius: 0 },
+                  bl: { radius: 10 },
+                  br: { radius: 10 },
+                  antiAlias: true};
+                curvyCorners(setting, "#content");
+
+                setting = {
+                  tl: { radius: 0 },
+                  tr: { radius: 10 },
+                  bl: { radius: 0 },
+                  br: { radius: 10 },
+                  antiAlias: true};
+                curvyCorners(setting, "#right_column");
+
+                setting = {
+                  tl: { radius: 10 },
+                  tr: { radius: 0 },
+                  bl: { radius: 10 },
+                  br: { radius: 0 },
+                  antiAlias: true};
+                curvyCorners(setting, ".post");
+/*
+                var setting = {
+                  tl: { radius: 10 },
+                  tr: { radius: 0 },
+                  bl: { radius: 10 },
+                  br: { radius: 0 },
+                  antiAlias: true}
+                curvyCorners(setting, ".piat");
+                setting = {
+                   tl: { radius: 0 },
+                   tr: { radius: 10 },
+                   bl: { radius: 0 },
+                   br: { radius: 10 },
+                   antiAlias: true
+                }
+                curvyCorners(setting, ".shest");
+
+                setting = {
+                   tl: { radius: 0 },
+                   tr: { radius: 0 },
+                   bl: { radius: 10 },
+                   br: { radius: 10 },
+                   antiAlias: true
+                }
+                curvyCorners(setting, ".sem");
+
+
+                setting = {
+                   tl: { radius: 0 },
+                   tr: { radius: 0 },
+                   bl: { radius: 15 },
+                   br: { radius: 15 },
+                   antiAlias: true
+                }
+                curvyCorners(setting, ".devi");
+
+*/
+
+        }
+</script>
+<![endif]-->
+{/literal}
+
+
+
+    <meta http-equiv="content-type" content="text/html; charset=windows-1251" />
+    <meta http-equiv="content-language" content="{txt lang=$text.language_name variants="eng=en::rus=ru::ukr=uk"}" />
+    <meta name="robots" content="all,follow" />
+    <meta name="description" content="..." />
+    <meta name="keywords" content="..." />
+    <link rel="index"  href="./"  title="Home" />
+
+  {*<link rel="stylesheet" media="screen,projection" type="text/css" href="http://sites.znu.edu.ua.nyud.net/cms/templates/znu10files/screen.css" />*}
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="{$site_root_url}/templates/znu10files/screen.css" />
+
+  {*<link rel="stylesheet"  media="print"   type="text/css"   href="http://sites.znu.edu.ua.nyud.net/cms/templates/znu10files/print.css" />*}
+    <link rel="stylesheet"  media="print"   type="text/css"   href="{$site_root_url}/templates/znu10files/print.css" />
+  <!--[if IE 6]>
+{*<script src="http://sites.znu.edu.ua.nyud.net/cms/templates/znu10files/DD_belatedPNG_0.0.8a-min.js"></script>*}
+  <script src="{$site_root_url}/templates/znu10files/DD_belatedPNG_0.0.8a-min.js"></script>
+  <script>
+    DD_belatedPNG.fix('.png');
+    DD_belatedPNG.fix('.rightbg');
+    DD_belatedPNG.fix('.leftbg');
+    DD_belatedPNG.fix('.rightbgtop');
+    DD_belatedPNG.fix('.leftbgtop');
+    /* string argument can be any CSS selector */
+    /* .png example is unnecessary */
+    /* change it to what suits you! */
+  </script>
+  <![endif]-->
+</head>
+<body>
+<div id="container">
+  <span class="block">
+   <span id="topnavigation">
+      <!--  language selector - begin -->
+      {foreach from=$lang key=ke item=ln}
+          {if $ln.lang eq $text.language_name}
+            <span class="top {$ln.lang}">{$ln.lang}</span>
+          {else}
+            <a href="{$ln.url}" class="top {$ln.lang}">{$ln.lang}</a>
+          {/if}
+      {/foreach}
+      <!--  language selector - end -->
+      <a href="{$znu_root_url}/cms/index.php?action=category%2Ftree&site_id=73&interface_lang={$text.language_name}" class="top map">{txt lang=$text.language_name variants="eng=Site map::rus=Карта сайта::ukr=Мапа сайту"}</a>
+      <a name="top" href="{$znu_root_url}/{$text.language_name}/ " class="top home">{txt lang=$text.language_name variants="eng=Main page::rus=Главная страница::ukr=Головна сторінка"}</a>
+      <form action="http://sites.znu.edu.ua/search.php"><input type=hidden name=site_id value="25"><input type=hidden name=lang value="{$text.language_name}"><input type=text class="txt" name="keywords"><input type=submit value="{txt lang=$text.language_name variants="eng=Search::rus=Найти::ukr=Знайти"}" class="btn"></form>
+      <br/>{*
+        <img src="http://sites.znu.edu.ua.nyud.net/cms/templates/znu10files/tr.gif" width="740px" height="1px" class="noprint">
+      *}<img src="{$site_root_url}/templates/znu10files/tr.gif" width="740px" height="1px" class="noprint">
+   </span>
+  </span><br/>
+  <span class="block">
+    <span id="header" class="png">
+      <span id="header_l"><a href="{$znu_root_url}/">{*
+        <img src="http://sites.znu.edu.ua.nyud.net/cms/templates/znu10files/emblema9.png" class="png" style="position:relative; top:17px;margin-left:15px;border:none;" border="0px" class="noprint">
+        *}<img src="{$site_root_url}/templates/znu10files/emblema9.png" class="png" style="position:relative; top:17px;margin-left:15px;border:none;" border="0px" class="noprint">{*
+        *}</a>
+      </span><!--
+   --><span id="header_r">
+        <a href="{$znu_root_url}/" class="sitetitle1{$text.language_name} noprint">{*<img src="{$site_root_url}/templates/znu10files/znu_{$text.language_name}.gif" class="ttl" border="0px"  class="noprint"/>*}</a>
+        <a href="{$znu_root_url}/" class="sitetitle2{$text.language_name} noprint">{*<img src="{$site_root_url}/templates/znu10files/znu_{$text.language_name}.gif" class="ttl" border="0px"  class="noprint"/>*}</a>
+        <a href="{$znu_root_url}/" class="sitetitle3{$text.language_name} noprint">{*<img src="{$site_root_url}/templates/znu10files/znu_{$text.language_name}.gif" class="ttl" border="0px"  class="noprint"/>*}</a><br/>
+        <span class="toptab png">
+          <a href="{$znu_root_url}/{$text.language_name}/university" class="toptabhead png">{txt lang=$text.language_name variants="eng=University::rus=Университет::ukr=Університет"}</a>
+          <a href="{$znu_root_url}/{$text.language_name}/university/departments">{txt lang=$text.language_name variants="eng=Faculties::rus=Факультеты::ukr=Факультети"}</a>&nbsp;
+          <a href="{$znu_root_url}/{$text.language_name}/university/filialy">{txt lang=$text.language_name variants="eng=Branches::rus=Филиалы::ukr=Філії"}</a>&nbsp;
+          <a href="{$znu_root_url}/{$text.language_name}/university/rectorat">{txt lang=$text.language_name variants="eng=Top management::rus=Ректорат::ukr=Ректорат"}</a>&nbsp;
+          <a href="{$znu_root_url}/{$text.language_name}/university/koledzhi">{txt lang=$text.language_name variants="eng=Colleges::rus=Колледжи::ukr=Коледжі"}</a>&nbsp;
+          <a href="{$znu_root_url}/contacts/index.php?&lang={$text.language_name}">{txt lang=$text.language_name variants="eng=Address::rus=Контакты::ukr=Контакти"}</a>&nbsp;
+        </span>
+
+        <span class="toptab png">
+          <a href="http://web.znu.edu.ua/pk/" class="toptabhead png" title="{txt lang=$text.language_name variants="eng=Admission committee::rus=Приёмная комиссия::ukr=Приймальна комісія"}">{txt lang=$text.language_name variants="eng=For entrant::rus=Абитуриенту::ukr=Абітурієнту"}</a>
+          <a href="http://www.znu.edu.ua/{$text.language_name}/pk/napryami_pidgotovki/">{txt lang=$text.language_name variants="eng=Specializations::rus=Направления подготовки::ukr=Напрями підготовки"}</a>
+          <a href="http://www.znu.edu.ua/{$text.language_name}/university/osvitni_tsentri/fpo/">{txt lang=$text.language_name variants="eng=Second Higher Education::rus=Второе высшее образование::ukr=Друга вища освіта"}</a>&nbsp;
+          {*
+            <a href="http://www.znu.edu.ua/{$text.language_name}/pk/" class="toptabhead png">{txt lang=$text.language_name variants="eng=For entrant::rus=Абитуриенту::ukr=Абітурієнту"}</a>
+            <a href="http://web.znu.edu.ua/pk/docs/pravila1.pdf">{txt lang=$text.language_name variants="eng=Admission::rus=Правила приема::ukr=Правила прийому"}</a>&nbsp;
+            <a href="http://web.znu.edu.ua/pk/">{txt lang=$text.language_name variants="eng=Admission committee::rus=Приёмная комиссия::ukr=Приймальна комісія"}</a>&nbsp;
+          *}...
+        </span>
+        <span class="toptab png">
+          <a href="{$znu_root_url}/{$text.language_name}/edu" class="toptabhead png">{txt lang=$text.language_name variants="eng=Study::rus=Учёба::ukr=Навчання"}</a>
+          <a href="http://sites.znu.edu.ua/bank/">{txt lang=$text.language_name variants="eng=Teaching materials::rus=Методические материалы::ukr=Методичні матеріали"}</a>
+          <a href="http://www.znu.edu.ua/{$text.language_name}/university/osvitni_tsentri/">{txt lang=$text.language_name variants="eng=Courses and trainings::rus=Курсы и тренинги::ukr=Курси і тренінги"}</a>&nbsp;...
+        </span>
+        <span class="toptab png">
+          <a href="{$znu_root_url}/{$text.language_name}/sci" class="toptabhead png">{txt lang=$text.language_name variants="eng=Science::rus=Наука::ukr=Наука"}</a>
+          <a href="http://web.znu.edu.ua/NIS/584.ukr.html">{txt lang=$text.language_name variants="eng=Conference::rus=Конференции::ukr=Конференції"}</a>&nbsp;
+          <a href="http://web.znu.edu.ua/NIS/588.ukr.html">{txt lang=$text.language_name variants="eng=Publications::rus=Специализированные издания::ukr=Фахові видання"}</a>&nbsp;
+          <a href="http://web.znu.edu.ua/NIS/6.ukr.html">{txt lang=$text.language_name variants="eng=Research Areas::rus=Направления исследований::ukr=Напрямки досліджень"}</a>&nbsp;...
+        </span>
+        <span class="toptab png">
+          <a href="{$znu_root_url}/{$text.language_name}/podiji" class="toptabhead png">{txt lang=$text.language_name variants="eng=Events::rus=События::ukr=Події"}</a>
+          <a href="{$znu_root_url}/{$text.language_name}/podiji/press">{txt lang=$text.language_name variants="eng=Press Center::rus=Пресс-центр::ukr=Прес-центр"}</a>&nbsp;
+          <a href="http://web.znu.edu.ua/gazeta/">{txt lang=$text.language_name variants="eng=Newspaper::rus=Газета::ukr=Газета"}</a>&nbsp; ...
+        </span>
+        <span class="toptab png">
+          <a href="{$znu_root_url}/{$text.language_name}/spilkuvannja" class="toptabhead png">{txt lang=$text.language_name variants="eng=Contacts::rus=Общение::ukr=Спілкування"}</a>
+          <a href="{$znu_root_url}/contacts/index.php?&lang={$text.language_name}">{txt lang=$text.language_name variants="eng=Address book::rus=Телефонный справочник::ukr=Телефонний довідник"}</a>&nbsp;
+          <a href="http://sites.znu.edu.ua/forum.php?site_id=20">{txt lang=$text.language_name variants="eng=Forum::rus=Форум::ukr=Форум"}</a>&nbsp;...
+        </span>
+
+      </span>
+    </span>
+  </span><br/>
+  <span class="block">
+    <div id=Where_you_are>
+      {* <a href='{$znu_root_url}/{$text.language_name}/' title='{txt lang=$text.language_name variants="eng=University::rus=Главная страница::ukr=Головна сторінка"}'>{txt lang=$text.language_name variants="eng=University::rus=Главная страница::ukr=Головна сторінка"}</a></nobr> *}
+      {foreach from=$menu key=kg item=mg}
+        {if $mg.code eq 'breadcrumbs'}
+          <!-- menu group - begin  -->
+          {foreach from=$mg.items key=ki item=mi}
+            {if $mi.url}
+              / <a href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a>
+            {else}
+              / <b>{$mi.html}</b>
+            {/if}
+          {/foreach}
+          <!-- menu group - end -->
+        {/if}
+      {/foreach}
+      / <b>{$page.title}</b>
+    </div>
+  </span><br/>
+  <span class="block">
+    <span id="content"><!--
+   --><span id="left_column"><div id="left_content">
+        <div class="post">
+          <div class="postheader"><h1>
+              {if $page.header}{$page.header}{else}{$page.title}{/if}
+          </h1></div>
+          <div class="postcontent">
+            {sysmsg}
+            {foreach from=$menu key=kg item=mg}
+              {if $mg.code eq 'subitems'}
+              <ul>
+              <!-- menu group - begin  -->
+                {foreach from=$mg.items key=ki item=mi}
+                  {if $mi.url}
+                    <li><a href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a></li>
+                  {else}
+                    <li><b>{$mi.html}</b></li>
+                  {/if}
+                {/foreach}
+                <!-- menu group - end -->
+                </ul><br/>
+                {/if}
+            {/foreach}
+            {$page.content}
+
+          </div>
+        </div>
+       {if $page.next}
+         {foreach from=$page.next item=pg}
+          <div class='post'>
+           <div class='postheader'><h1>{$pg.title}</h1></div>
+           <div class='postcontent'>
+                {$pg.content}
+           </div>
+          </div>
+         {/foreach}
+      {/if}
+      </div></span><!--
+   --><span id="right_column">
+        <div id="right_content">
+         {* <h3 style="margin:5px;">{txt lang=$text.language_name variants="eng=Our University::rus=Наш университет::ukr=Наш університет"}</h3>*}
+         <script type="text/javascript" src="http://www.znu.edu.ua/cms/index.php?action=banner%2Frotator&site_id=73&lang={$text.language_name}"></script>
+         {foreach from=$menu key=kg item=mg}
+            {if $mg.code eq 'right'}
+              <!-- menu group - begin  -->
+              {*<h3>{$mg.html}</h3>*}
+              {foreach from=$mg.items key=ki item=mi}
+                {if $mi.url}
+                  <a class="rightcontentlink" href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a>
+                {else}
+                  <div class=righttext>{$mi.html}</div>
+                {/if}
+              {/foreach}
+              <!-- menu group - end -->
+            {/if}
+         {/foreach}
+        </div>
+        <a id="toplink" href="#top">&nbsp;</a>
+        <br/>
+      </span><!--
+ --></span>
+  </span><br>
+  <span class="block">
+    <div id="footer">
+
+    &copy; 2012 {txt lang=$text.language_name variants="eng=ZNU, Zaporizhzhya National University, Zhukovsky str., 66, Zaporizhzhya, Ukraine, 69600 ::rus=ЗНУ  Запорожский национальний университет, 69600, г.Запорожье, ул. Жуковского, 66 ::ukr=ЗНУ Запорізький національний університет, 69600, м. Запоріжжя, вул. Жуковського, 66"}
+    <br/><br/>
+            {literal}
+            <span style="display:inline-block;">
+            <table cellSpacing=0 cellPadding=0 align=center border=0 class="noprint">
+            <tr>
+            <td align=center style="border:none;" rowspan=2 valign=top>
+
+            <script language="javascript">//<!--
+            mtI="073010103502";mtG="26";mtT="8";mtS='http://073010103502.c.mystat-in.net/?';
+            mtD=document;mtN=navigator.appName;mtR=escape(mtD.referrer);
+            mtW="";mtC="";mtV="0";mtJ="1";
+            //--></script><script language="javascript1.1">//<!--
+            mtV="1";mtJ = (navigator.javaEnabled()?"1":"0");
+            //--></script><script language="javascript1.2">//<!--
+            mtE=screen;mtW=mtE.width;mtN!="Netscape"?mtC=mtE.colorDepth:mtC=mtE.pixelDepth;mtV="2";
+            //--></script><script language="javascript1.3">//<!--
+            mtV="3";
+            //--></script><script language="javascript">//<!--
+            mtUrl="";mtUrl+="\""+mtS+"i"+mtI+"&t"+mtT+"&g"+mtG+"&w"+mtW+"&c"+mtC+"&r"+mtR+"&v"+mtV+"&j"+mtJ+"\"";
+            mtUrl="<a href=http://mytop-in.net/ target=_blank><img src="+mtUrl+"width=81 height=63 border=0 alt=\"Rated by MyTOP\"></a>";
+            mtD.write(mtUrl);
+            //--></script>
+            <noscript>
+            <a href=http://mytop-in.net/ target=_blank><img src=http://073010103502.c.mystat-in.net/?i073010103502&t8&g26&j0 width=81 height=63 border=0 alt="Rated by MyTOP"></a>
+            </noscript>
+
+                </td>
+                <td align=right style="border:none;">
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter17291668 = new Ya.Metrika({id:17291668, enableAll: true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/17291668" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+            <!--Rating@Mail.ru COUNTER--><script language="JavaScript"><!--
+            d=document;a='';a+=';r='+escape(d.referrer)
+            js=10//--></script><script language="JavaScript1.1"><!--
+            a+=';j='+navigator.javaEnabled()
+            js=11//--></script><script language="JavaScript1.2"><!--
+            s=screen;a+=';s='+s.width+'*'+s.height
+            a+=';d='+(s.colorDepth?s.colorDepth:s.pixelDepth)
+            js=12//--></script><script language="JavaScript1.3"><!--
+            js=13//--></script><script language="JavaScript"><!--
+            d.write('<a href="http://top.mail.ru/jump?from=308846"'+
+            ' target=_top><img src="http://top.list.ru/counter'+
+            '?id=308846;t=131;js='+js+a+';rand='+Math.random()+
+            '" alt="Рейтинг@Mail.ru"'+' border=0 height=40 width=88></a>')
+            if(js>11)d.write('<'+'!-- ')//--></script><noscript><a
+            target=_top href="http://top.mail.ru/jump?from=308846"><img
+            src="http://top.list.ru/counter?js=na;id=308846;t=131"
+            border=0 height=40 width=88
+            alt="Рейтинг@Mail.ru"></a></noscript><script language="JavaScript"><!--
+            if(js>11)d.write('--'+'>')//--></script><!--/COUNTER-->
+
+            </td>
+
+            <td align=right valign=top style="border:none;">
+            </td>
+
+            </tr>
+            <tr>
+            <td align=center style="border:none;padding-left:5px;" colspan=2>
+
+            <!-- bigmir)net TOP 100 --><a href=http://www.bigmir.net/?cl=24184 target=_blank><script language="javascript"><!--
+            bmQ='<img src=http://c.bigmir.net/?s24184&t10'
+            bmD=document
+            bmD.cookie="b=b"
+            if(bmD.cookie)bmQ+='&c1'
+            //--></script><script language="javascript1.2"><!--
+            bmS=screen;bmQ+='&d'+(bmS.colorDepth?bmS.colorDepth:bmS.pixelDepth)+"&r"+bmS.width;
+            //--></script><script language="javascript"><!--
+            bmF = bmD.referrer.slice(7);
+            ((bmI=bmF.indexOf('/'))!=-1)?(bmF=bmF.substring(0,bmI)):(bmI=bmF.length);
+            if(bmF!=window.location.href.substring(7,7+bmI))bmQ+='&f'+escape(bmD.referrer);
+            bmD.write(bmQ+" border=0 width=140 height=17 alt='bigmir TOP100'>");
+            //--></script></a>
+            <!-- bigmir)net TOP 100 -->
+            </td>
+            </tr>
+            </table>
+            </span>
+            {/literal}
+   </div>
+  </span>
+</div>
+
+ <br><br><br><br><br>
+</body>
+</html>

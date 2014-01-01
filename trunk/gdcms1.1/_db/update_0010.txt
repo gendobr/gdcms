@@ -1,0 +1,1 @@
+alter table `cms_golos_pynannja` add column `ordering` int NULL after `poll_type`;

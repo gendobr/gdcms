@@ -1,0 +1,2 @@
+alter table `cms_ec_item` add column `ec_item_variants` longtext NULL after `ec_item_in_cart`;
+alter table `cms_ec_item_variant` add column `ec_item_variant_code` varchar(256) NULL after `ec_item_variant_id`;

@@ -1,0 +1,225 @@
+{literal}
+<style type="text/css">
+    .img_container{width:200px;height:150px;overflow:hidden;display:inline-block;background-color:silver;border:2px solid gray;}
+    .cent{text-align:center;}
+    .big{font-size:150%;}
+    table.brd td{border:1px dotted black;padding:3pt;}
+    table.brd td.nobd{border:none;}
+    td.itogo{background-color:yellow; color:black;}
+    table.brd td.b-r{border-right:none;}
+    table.brd td.b-l{border-left:none;}
+</style>
+<script>
+    var checked=[];
+    function ch(row,id)
+    {
+        //alert('=======');
+        elid='ch_'+id+'_'+row;
+        var cb=document.getElementById(elid);
+        if(cb.checked) checked[elid]=1; else delete(checked[elid]);
+        //alert(checked);
+        recalc(id);
+    }
+    function recalc(id)
+    {
+        var regexp=new RegExp("^ch_"+id);
+        sum=0;
+        for(var i in checked)
+        {
+            if(regexp.test(i))
+            {
+               sum+=1;
+            }
+        }
+        var cb=document.getElementById('rating_'+id);
+        cb.innerHTML=sum+'&nbsp;';
+    }
+</script>
+{/literal}
+
+{foreach from=$items item=it}{assign var="some_items_exist" value="1"}{/foreach}
+
+{if $some_items_exist}
+{msg id="ec_comparison_manual"}
+<table class="brd" cellspacing="0">
+<tr><td></td>{foreach from=$items item=it}<td colspan="2" align="center" class="nobd"><a href="{$it.url_remove_item}">{msg id="Remove"}</a></td>{/foreach}</tr>
+<tr><td></td>{foreach from=$items item=it}<th colspan="2"><a href="{$it.ec_item_view_url}" target="_blank">{$it.ec_item_title}</a></th>{/foreach}</tr>
+<tr><td></td>{foreach from=$items item=it}<td colspan="2" class="cent"><a  class="img_container" href="{$it.ec_item_view_url}" target="_blank"><img src="{$site.url}{$it.ec_main_image}" width="200px" border="0px"/></a></td>{/foreach}</tr>
+<tr>
+    <td class="nobd">{msg id="Category"}</td>
+    {foreach from=$items item=it}
+    <td width="1%" class="b-r"><input type="checkbox" id="ch_{$it.ec_item_id}_ec_category_title" onclick="ch('ec_category_title','{$it.ec_item_id}')"></td>
+    <td class="b-l">
+        <a href="{$it.ec_category_view_url}">{get_langstring lang=$text.language_name from=$it.ec_category_title}</a>
+    </td>
+    {/foreach}
+</tr>
+<tr><td class="nobd">{msg id="ec_date_created"}</td>
+    {foreach from=$items item=it}
+    <td class="b-r"><input type="checkbox" id="ch_{$it.ec_item_id}_ec_item_last_change_date" onclick="ch('ec_item_last_change_date','{$it.ec_item_id}')"></td>
+    <td class="b-l">{$it.ec_item_last_change_date}&nbsp;</td>
+    {/foreach}
+</tr>
+<tr><td class="nobd">{msg id="ec_producer_title"}</td>
+    {foreach from=$items item=it}
+    <td class="b-r"><input type="checkbox" id="ch_{$it.ec_item_id}_ec_producer_title" onclick="ch('ec_producer_title','{$it.ec_item_id}')"></td>
+    <td class="b-l">{$it.ec_producer_title}</td>
+    {/foreach}
+</tr>
+<tr><td class="nobd" valign="top">{msg id="ec_item_tags"}</td>
+    {foreach from=$items item=it}
+    <td valign="top" class="b-r">
+        {if $it.ec_item_tags}
+        <input type="checkbox" id="ch_{$it.ec_item_id}_ec_item_tags" onclick="ch('ec_item_tags','{$it.ec_item_id}')">
+        </td>
+        <td class="b-l" valign="top">
+        {$it.ec_item_tags|replace:",":" "}
+        {else}
+        &nbsp;</td>
+        <td class="b-l" valign="top">
+        {/if}&nbsp;
+    </td>
+    {/foreach}
+</tr>
+<tr><td class="nobd">{msg id="ec_item_price"}</td>
+    {foreach from=$items item=it}
+    <td class="b-r">
+        <input type="checkbox" id="ch_{$it.ec_item_id}_ec_item_price" onclick="ch('ec_item_price','{$it.ec_item_id}')">
+        </td>
+        <td class="big b-l">
+        {$it.ec_item_price}&nbsp;{$it.ec_curency_title}
+    </td>
+    {/foreach}
+</tr>
+<tr><td class="nobd">{msg id="ec_item_size"}</td>
+    {foreach from=$items item=it}
+        <td class="b-r">
+            {if $it.ec_item_size[0] gt 0}
+            <input type="checkbox" id="ch_{$it.ec_item_id}_ec_item_size" onclick="ch('ec_item_size','{$it.ec_item_id}')">
+            </td>
+            <td class="b-l">
+            {$it.ec_item_size[0]}
+            {if $it.ec_item_size[1]}x{$it.ec_item_size[1]}{/if}
+            {if $it.ec_item_size[2]}x{$it.ec_item_size[2]}{/if}
+            {$it.ec_item_size[3]}
+            {else}
+            &nbsp;</td>
+            <td class="b-l">
+            {/if}
+            &nbsp;
+        </td>
+    {/foreach}
+</tr>
+<tr><td class="nobd">{msg id="ec_item_material"}</td>
+    {foreach from=$items item=it}
+    <td class="b-r">
+        {if $it.ec_item_material}
+        <input type="checkbox" id="ch_{$it.ec_item_id}_ec_item_material" onclick="ch('ec_item_material','{$it.ec_item_id}')">
+        </td>
+        <td class="b-l">
+        {$it.ec_item_material}
+        {else}
+        &nbsp;</td>
+        <td class="b-l">
+        {/if}
+        &nbsp;
+    </td>
+    {/foreach}
+</tr>
+<tr><td class="nobd">{msg id="ec_item_weight"}</td>
+    {foreach from=$items item=it}
+    <td class="b-r">
+        {if $it.ec_item_weight[0] gt 0}
+        <input type="checkbox" id="ch_{$it.ec_item_id}_ec_item_weight" onclick="ch('ec_item_weight','{$it.ec_item_id}')">
+        </td>
+        <td class="b-l">
+        {$it.ec_item_weight[0]}&nbsp;{$it.ec_item_weight[1]}
+        {else}
+        &nbsp;</td>
+        <td class="b-l">
+        {/if}&nbsp;
+    </td>
+    {/foreach}
+</tr>
+<tr><td class="nobd">{msg id="ec_item_amount"}</td>
+    {foreach from=$items item=it}
+    <td class="b-r">
+        <input type="checkbox" id="ch_{$it.ec_item_id}_ec_item_amount" onclick="ch('ec_item_amount','{$it.ec_item_id}')">
+        </td>
+        <td class="b-l">
+        {if $it.ec_item_amount gt 0}
+        {$it.ec_item_amount}
+        {else}
+        0
+        {/if}
+    </td>
+    {/foreach}
+</tr>
+
+<tr><td class="nobd">{msg id="Variants"}</td>
+    {foreach from=$items item=it}
+    <td valign="top" class="b-r">
+        <input type="checkbox" id="ch_{$it.ec_item_id}_ec_item_variant" onclick="ch('ec_item_variant','{$it.ec_item_id}')"><br/>
+        </td>
+        <td valign="top" class="b-l">
+        {foreach from=$it.ec_item_variant item=var}
+          <div style="padding-left:{$var.ec_item_variant_indent*20}pt"> {$var.ec_item_variant_description}({$var.ec_item_variant_price_correction.code})</div>
+        {/foreach}
+    &nbsp;
+    </td>
+    {/foreach}
+</tr>
+<tr><td class="nobd" valign="top">{msg id="Additional_item_fields"}</td>
+    {foreach from=$items item=it}
+    <td valign="top" colspan="2">
+        {foreach from=$it.ec_category_item_field item=var key=ke}
+          <div>
+              <input type="checkbox" id="ch_{$it.ec_item_id}_ec_category_item_field{$ke}" onclick="ch('ec_category_item_field{$ke}','{$it.ec_item_id}')">
+              {get_langstring lang=$text.language_name from=$var.ec_category_item_field_title}: {$var.ec_category_item_field_value}
+          </div>
+        {/foreach}
+    &nbsp;
+    </td>
+    {/foreach}
+</tr>
+
+
+
+<tr>
+    <td class="nobd" valign="top">{msg id="EC_item_details"}</td>
+    {foreach from=$items item=it}
+    <td valign="top" class="b-r">
+        <input type="checkbox" id="ch_{$it.ec_item_id}_ec_item_abstract" onclick="ch('ec_item_abstract','{$it.ec_item_id}')"><br/>
+        </td>
+        <td valign="top" class="b-l">
+        {if $it.ec_item_abstract}{$it.ec_item_abstract}<br/>{/if}{$it.ec_item_content}
+    </td>
+    {/foreach}
+</tr>
+
+<tr>
+    <td class="itogo" valign="top">{msg id="ec_item_rating"}</td>
+    {foreach from=$items item=it}<td colspan="2" valign="top" class="itogo" id="rating_{$it.ec_item_id}">&nbsp;</td>{/foreach}
+</tr>
+
+
+<tr>
+    <td class="nobd"></td>
+    {foreach from=$items item=it}<td valign="top" class="nobd cent" colspan="2">
+       {if $it.ec_item_sell eq 1}
+        {if $it.ec_item_price gt 0}
+         <form action="{$it.url_order_now}" method="post" style="display:inline;"><input type="submit" value="{msg id="EC_item_add_to_cart_now"}"></form>
+         <form action="{$it.url_buy_now}" method="post" style="display:inline;"><input type="submit" value="{msg id="EC_item_buy_now"}"></form>
+
+        {else}
+         <form action="{$it.url_order_now}" method="post"><input type="submit" value="{msg id="EC_item_order_now"}"></form>
+        {/if}
+       {/if}
+    </td>{/foreach}
+</tr>
+
+</table>
+
+{else}
+{msg id="No_items_to_compare"}
+{/if}

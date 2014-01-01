@@ -1,0 +1,3 @@
+alter table `cms_forum_list` change `name` `name` varchar(255)  default '' NOT NULL;
+alter table `cms_forum_msg` change `name` `name` varchar(255)  default '' NOT NULL;
+alter table `cms_forum_thread` change `subject` `subject` varchar(255)  default '' NOT NULL;

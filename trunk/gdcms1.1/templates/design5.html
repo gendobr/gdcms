@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>{$page.title}</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"><LINK 
+href="{$site_root_url}/templates/design5/styles.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2737.800" name=GENERATOR></HEAD>
+<BODY text=#000000 bgColor=#006699 leftmargin="0" topmargin="0">
+<table align=center cellSpacing=0 cellPadding=0 border=0px bordercolor=lime width=97%>
+<tr>
+<TD class=s8 width=2px bgColor=#211e72><IMG height=83 src="{$site_root_url}/templates/design5/spacer.gif" width=2px align=absmiddle><br></TD>
+<td valign=top>
+  <table width=100% border="0">
+    <TR>
+     <TD vAlign=middle height=100 rowSpan=2 bgcolor="#000066"><center> <IMG height=100 src="{$site_root_url}/templates/design5/logo.gif" width=96></center></TD>
+     <TD vAlign=top align=left bgColor=#006699 height=72 background="{$site_root_url}/templates/design5/top.gif">
+      <IMG height=72 src="{$site_root_url}/templates/design5/spacer.gif" width=12px align=left>
+      
+      <div class=white style="font-size:100%;">{$site.title}</div>
+
+      <b class=white style="font-size:180%;">{$page.title}</b>
+      </TD>
+    </tr>
+    <tr>
+    <TD vAlign=top align=left bgColor=#000066 style="padding-left:20px;">
+      {foreach from=$lang key=ke item=ln}
+        <b><a class=white href="{$ln.url}">{$ln.lang}</a></b> 
+      {/foreach}    
+    </TD>
+    </tr>
+  
+    <TR>
+    <TD vAlign=top width=20% background="{$site_root_url}/templates/design5/m_sp.gif" style="background-position: top right; background-repeat: repeat-y;"><IMG height=24 src="{$site_root_url}/templates/design5/spacer.gif" height=1px><BR>
+      {foreach from=$menu key=kg item=mg}
+           {foreach from=$mg.items key=ki item=mi}
+             <div class=mitem><a href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a></div>
+           {/foreach}
+      {/foreach}
+    </TD>
+    <TD vAlign=top bgColor=#ffffff>
+    <div style="padding:15px;">
+	{sysmsg}
+    {$page.content}
+    </div>
+    </TD>
+    </tr>
+    <TR>
+    <TD vAlign=top colspan=2  align=right>
+    <A class=whites8 
+      href="http://www.zsu.edu.ua/">Запорожский национальный университет</A>, 
+      <A class=whites8 href="mailto:webmaster@zsu.zp.ua">web - лаборатория</A>
+    </TD>
+    </tr>
+  </table>
+
+  
+</td>
+<TD class=s8 width=2px bgColor=#211e72><IMG height=83 src="{$site_root_url}/templates/design5/spacer.gif" width=2px align=absmiddle><br></TD>
+</tr>
+</table>
+
+</BODY>
+</HTML>

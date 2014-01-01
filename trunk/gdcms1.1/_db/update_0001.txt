@@ -1,0 +1,1 @@
+alter table `cms_news` add column `expiration_date` datetime NULL after `tags`;

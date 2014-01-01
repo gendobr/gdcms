@@ -1,0 +1,58 @@
+
+<html>
+   <head>
+     <meta http-equiv="Refresh" content="30;URL=index.php?action=site/spider">
+   </head>
+<body>
+
+<hr color=lime size=2px>
+<pre>
+Array
+(
+    [id] => 4472
+    [site_id] => 25
+    [url] => http://sites.zsu.zp.ua/news_details.php?news_id=900&lang=rus
+    [size] => 13735
+    [title] => Новости : Отдых от туристического клуба
+    [words] => новости отдых туристического клуба главная страница университет наука учеба приёмная комиссия международные связи факультеты филиалы внеучебная деятельность зну контакты карта сайта ссылки гостевая книга обратная связь форум поиск frm document writeln str close return новини перегляд новин 2003 туристический клуб запорожского государственного университета приглашает всех любителей путешествий туризма активного отдыха занятия проводятся каждый вторник спортивном комплексе аудитория №120 студсовет згу елена скок анонсы запорізький національний університет web лабораторія 1996 2005
+    [date_indexed] => 2006-05-01 19:10:05
+    [is_valid] => 5
+)
+</pre>
+
+<hr color=lime size=2px>
+Invalid URL http://sites.zsu.zp.ua// <br/>Invalid URL http://sites.zsu.zp.ua//news.php?site_id=27&lang=rus <br/>Invalid URL mailto:webmaster@zsu.zp.ua <br/>
+<hr color=lime size=2px>
+<pre>
+Array
+(
+    [is_successful] => 1
+    [url] => http://sites.zsu.zp.ua/news_details.php?news_id=900&lang=rus
+    [size] => 13735
+    [title] => Новости : Отдых от туристического клуба
+    [words] => новости отдых туристического клуба главная страница университет наука учеба приёмная комиссия международные связи факультеты филиалы внеучебная деятельность зну контакты карта сайта ссылки гостевая книга обратная связь форум поиск frm document writeln str close return новини перегляд новин 2003 туристический клуб запорожского государственного университета приглашает всех любителей путешествий туризма активного отдыха занятия проводятся каждый вторник спортивном комплексе аудитория №120 студсовет згу елена скок анонсы запорізький національний університет web лабораторія 1996 2005
+    [links] => Array
+        (
+            [0] => http://www.zsu.edu.ua/rus/main/
+            [1] => http://www.zsu.edu.ua/rus/university
+            [2] => http://www.zsu.edu.ua/rus/sci
+            [3] => http://www.zsu.edu.ua/rus/edu
+            [4] => http://www.zsu.edu.ua/rus/pk
+            [5] => http://www.zsu.edu.ua/rus/international
+            [6] => http://www.zsu.edu.ua/rus/departments
+            [7] => http://www.zsu.edu.ua/rus/filialy
+            [8] => http://www.zsu.edu.ua/rus/diff
+            [9] => http://sites.zsu.zp.ua/news.php?start=0&site_id=27&lang=rus
+            [10] => http://www.zsu.edu.ua/rus/main/contacts/
+            [11] => http://www.zsu.edu.ua/rus/main/sitemap/
+            [12] => http://www.zsu.edu.ua/rus/main/links/
+            [13] => http://sites.zsu.zp.ua/news.php?site_id=28&lang=rus
+        )
+
+)
+</pre>
+
+<hr color=lime size=2px>
+
+</body>
+</html>

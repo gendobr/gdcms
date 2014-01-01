@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>{$page.title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+{literal}
+<style type="text/css">
+<!-- 
+.page_title
+{
+   color:#ffffff;
+   margin-bottom:5px;
+   margin-top:5px;
+   font-family:tahoma;
+   font-weight:bold;
+   font-size:20px;
+   letter-spacing:3px;
+   font-stretch: ;
+}
+.language_selector
+{
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+BODY
+{
+  margin:0px;
+}
+
+.page_content
+{
+  font-family:tahoma;
+  font-size:100%;
+  padding:10px;
+  border:solid 2px #e0e0e0;
+}
+
+.menu_group
+{
+  color:black;
+  font-family:tahoma;
+  font-weight:bold;
+  font-size:15px;
+}
+
+.menu_item
+{
+  padding-left:15px;
+  padding-top:3px;
+}
+.menu_item a
+{
+  color:black;
+  font-family:tahoma;
+  font-weight:bold;
+  font-size:11px;
+}
+.menu_item a:hover
+{
+  color:#777777;
+}
+
+-->
+</style>
+{/literal}
+</head>
+<body>
+
+<table cellSpacing=0 cellPadding=0 width=100% border=0px>
+<tr>
+  <td colspan=2>
+  <table cellSpacing=0 cellPadding=0 width=100% bgColor=#7a7979 border=0px>
+    <tr>
+      <td vAlign=bottom width=120 height=55px  style="background-image:url({$site_root_url}/templates/design7/index_01_02.gif);"><img src="{$site_root_url}/templates/design7/tr.gif" align="left" valign=bottom width=120 height=55></td>
+      <td vAlign=middle height=55 background="{$site_root_url}/templates/design7/top_bg.gif"><nobr><h1 class="page_title">{$page.title}</h1></nobr></td>
+      <td vAlign=bottom width=150 height=55  background="{$site_root_url}/templates/design7/top_bg.gif">
+      <div align=right style="font-size:12px; margin-bottom:3px; margin-right:5px;">
+        {foreach from=$lang key=ke item=ln}
+            <a href="{$ln.url}" class=language_selector>{$ln.lang}</a> 
+        {/foreach}
+        </div>
+      </td>
+    </tr>
+  </table>
+  </td>
+</tr>
+<tr>
+  <td valign=top bgcolor=#e0e0e0 width=160px style="padding:10px;">
+  <!-- menu -- begin -->
+    {foreach from=$menu key=kg item=mg}
+    <p>
+        <!-- Group header - begin  -->
+        <span class=menu_group>{$mg.html}</span><br>
+        <!-- Group header - end  -->
+      {foreach from=$mg.items key=ki item=mi}
+      <!-- menu item - begin -->
+        <span class=menu_item><a href="{$mi.url}" title="{$mi.description}" {$mi.attributes}  class="si">{$mi.html}</a></span><br/>
+      <!-- menu item - end -->     
+      {/foreach}
+      <img src="design7/tr.gif" width=150px height="5px">
+    </p>
+    {/foreach}
+  <!-- menu -- end -->
+  </td>
+  <td valign=top class=page_content>
+
+  {$page.content}
+
+
+  </td>
+</tr>
+<tr>
+  <td colspan=2 align=right>
+    <a href="mailto:webmaster@zsu.zp.ua" style="color:#d0d0d0; font-family:tahoma; text-decoration:none; font-size:11px; font-weight:bold;">&copy; Запорізький національний університет</a>
+  </td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,151 @@
+{if $category.parents}
+  {foreach from=$category.parents item=parent}
+    <div style="margin-left:{$parent.deep}0pt"><a href="{$parent.URL}">{$parent.category_title}</a></div>
+  {/foreach}
+{/if}
+<div style="margin-left:{$category.deep}0pt; font-weight:bold;">{$category.category_title}</div>
+
+
+{if $category.children}
+  <div style="margin-left:20px;">
+  {foreach from=$category.children item=child}
+    <div style="margin-left:{$category.deep}0pt"><a href="{$child.URL}">{$child.category_title}</a></div>
+  {/foreach}
+  </div>
+{/if}
+
+<span style="display:inline-block;width:99%;margin-top:10pt;">
+{$category.category_description}
+<div style='text-align:right;'>{*$category.date_last_changed*}{$category.date_lang_update}</div>
+</span>
+
+
+{if $events->items_found gt 0}
+{literal}
+<style type="text/css">
+    span.daty{
+        display:inline-block;
+        float:left;
+        background-color: #e0e0e0;
+        padding:5px;
+        margin-right:10px;
+        margin-top:-5px;
+    }
+    div.event {
+        margin-top:15px;
+    }
+</style>
+{/literal}
+	<div align=left><b>
+	{txt lang=$text.language_name variants="eng=Events::rus=События::ukr=Події"}
+	{$events->start}-{$events->finish}
+	(
+	 {txt lang=$text.language_name variants="eng=events found::rus=всего найдено::ukr=всього знайдено"} : {$events->items_found}
+	)
+	</b></div>
+
+{foreach from=$events->list item=_item}
+	    <div class="event">
+            <span class="daty">
+                <nobr>{if $_item.pochtyzh_text}{$_item.pochtyzh_text},{/if}
+                {if $_item.pochmis_text}{$_item.pochmis_text},{/if}
+                {if $_item.pochday_text}{$_item.pochday_text},{/if}
+                {if $_item.pochrik_text}{$_item.pochrik_text},{/if}</nobr><br/>
+ ... <br/>
+                <nobr>{if $_item.kintyzh_text}{$_item.kintyzh_text},{/if}
+                {if $_item.kinmis_text}{$_item.kinmis_text},{/if}
+                {if $_item.kinday_text}{$_item.kinday_text},{/if}
+                {if $_item.kinrik_text}{$_item.kinrik_text},{/if}</nobr><br/>
+            </span>
+	    <div style='margin-bottom:0;'>
+              {if $_item.kartynka}<img src="$_item.kartynka" align="right">{/if}
+	      {if $_item.adresa}
+	        <a href="{$_item.adresa}">{$_item.nazva}</a>
+	      {else}
+	        <b>{$_item.nazva}</b>
+	      {/if}
+	    </div>
+            {if $_item.description}<div>{$_item.description}</div>{/if}
+            {if $_item.categories}
+            {foreach from=$_item.categories item=_cat}
+              <a href="{$_cat.URL}">{$_cat.category_title}</a>
+            {/foreach}
+            {/if}
+
+            {if $_item.nearest_dates}
+            <div>
+            {txt lang=$text.language_name variants="eng=nearest dates::rus=ближайшие даты::ukr=найближчі дати"}:
+            {foreach from=$_item.nearest_dates item=dat}
+              {$dat|date_format:"%d.%m.%Y"}
+            {/foreach}
+            </div>
+            {/if}
+	    </div>
+	  <div style="clear:left;"></div>
+
+{/foreach}
+{if $events->pages[1]}
+    <br />
+    <div align=left>
+    {$text.Pages} :
+    {foreach from=$events->pages item=link}
+      {if $link.URL|count_characters >2}
+        <a href="{$link.URL}">{$link.innerHTML}</a>
+      {else}
+        {$link.innerHTML}
+      {/if}
+    {/foreach}
+    </div>
+{/if}
+
+{/if}
+
+{* list of attached news *}
+
+{if $news->items_found gt 0}
+
+	<div align=left><b>
+	{txt lang=$text.language_name variants="eng=News::rus=Новости::ukr=Новини"}
+	{$news->start}-{$news->finish}
+	(
+	 {txt lang=$text.language_name variants="eng=news found::rus=всего найдено::ukr=всього знайдено"} : {$news->items_found}
+	)
+	</b></div>
+
+
+	{foreach from=$news->list item=news_item}
+	  <div align=left>
+	    <div>
+	    <h4 style='margin-bottom:0;'>
+	      {if $news_item.content_present eq '1'}
+	        <a href="{$news_item.URL_view_details}">{$news_item.title}</a>
+	      {else}
+	        {$news_item.title}
+	      {/if}
+	    </h4>
+	    <div style='font-size:90%;'>{$news_item.last_change_date|date_format:"%Y-%m-%d %H:%M:%S"} {if $news_item.expiration_date}... {$news_item.expiration_date|date_format:"%Y-%m-%d %H:%M:%S"}{/if}</div>
+	    {$news_item.abstract}
+            {$news_item.tags}
+            {if $news_item.categories}
+                {foreach from=$news_item.categories item=_cat}
+                   <a href="{$_cat.URL}">{$_cat.category_title}</a>
+                {/foreach}
+            {/if}
+	    </div>
+	  </div>
+	  <div style="clear:both;"></div>
+	{/foreach}
+        {if $news->pages[1]}
+	<br />
+	<div align=left>
+	{$text.Pages} :
+	{foreach from=$news->pages item=link}
+	  {if $link.URL|count_characters >2}
+	    <a href="{$link.URL}">{$link.innerHTML}</a>
+	  {else}
+	    {$link.innerHTML}
+	  {/if}
+	{/foreach}
+	</div>
+        {/if}
+{/if}

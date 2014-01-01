@@ -1,0 +1,4 @@
+alter table `cms_ec_item` add column `ec_item_purchases` int NULL after `ec_item_img`;
+alter table `cms_ec_item` add column `ec_item_in_cart` int NULL after `ec_item_img`;
+alter table `cms_ec_item` add column `ec_item_views` int NULL after `ec_item_img`;
+

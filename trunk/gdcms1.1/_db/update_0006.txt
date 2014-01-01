@@ -1,0 +1,2 @@
+alter table `cms_ec_item_category` change `category_id` `ec_category_id` int(11) default '0' NOT NULL;
+alter table `cms_ec_item` add column `ec_item_keywords` text NULL after `ec_item_purchases`;

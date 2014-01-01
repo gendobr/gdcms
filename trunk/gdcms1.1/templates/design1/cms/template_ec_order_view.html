@@ -1,0 +1,219 @@
+
+
+{if $validation_result}
+   {*<div style="background-color:green; color:white; font-weight:bold;padding:4px;">{msg id="ec_order_valid"}</div>*}
+{else}
+   <div style="background-color:red; color:white; font-weight:bold;padding:4px;">{msg id="ec_order_invalid"} {$order.ec_order_id}</div>
+{/if}
+
+<div style="background-color:green; color:white; font-weight:bold;padding:4px;">
+<b>{msg id="ec_order_status"}</b>:
+    {$order.ec_order_status_text},
+    {if $order.ec_order_paid}
+        {msg id="Ec_order_is_paid_successfully"}
+        {$order.ec_order_paid_amount}
+        {msg id=$site.ec_currency} /
+        {$text.EC_payment_total} {$order.total} {msg id=$site.ec_currency}
+    {else}
+        {msg id="Ec_order_is_not_paid"}
+    {/if}
+</div>
+<br/>
+{literal}
+<style type="text/css">
+    .nobd{border:none;}
+    .nobd td{border:none;}
+    .nobd input{width:100%;}
+    .rw{background-color:yellow;}
+    .em{}
+</style>
+<script type="text/javascript">
+    function mover(trid)
+    {
+        ta=document.getElementById(trid);
+        kids = ta.childNodes;
+        for (var i = 0; i < kids.length; i++)
+        {
+            kids[i].className="rw";
+        }
+    }
+    function mout(trid)
+    {
+        ta=document.getElementById(trid);
+        kids = ta.childNodes;
+        for (var i = 0; i < kids.length; i++)
+        {
+            kids[i].className="em";
+        }
+    }
+</script>
+{/literal}
+
+<h3>{msg id="EC_order_creator"}</h3>
+
+<table class="nobd">
+  {if $user.ec_user_name}<tr><td>{msg id="ec_user_name"}:</td><td>{$user.ec_user_name}</td></tr>{/if}
+  <tr><td>{msg id="site_visitor_email"}:</td><td>{$user.site_visitor_email}</td></tr>
+  {if $user.ec_user_telephone}<tr><td>{msg id="ec_user_telephone"}:</td><td>{$user.ec_user_telephone}</td></tr>{/if}
+  {if $user.ec_user_icq}<tr><td>{msg id="ec_user_icq"}:</td><td>{$user.ec_user_icq}</td></tr>{/if}
+
+  {if $user.ec_user_delivery_street_address}<tr><td>{msg id="ec_user_delivery_street_address"}:</td><td>{$user.ec_user_delivery_street_address}</td></tr>{/if}
+  {if $user.ec_user_delivery_city}<tr><td>{msg id="ec_user_delivery_city"}:</td><td>{$user.ec_user_delivery_city}</td></tr>{/if}
+  {if $user.ec_user_delivery_suburb}<tr><td>{msg id="ec_user_delivery_suburb"}:</td><td>{$user.ec_user_delivery_suburb}</td></tr>{/if}
+  {if $user.ec_user_delivery_region}<tr><td>{msg id="ec_user_delivery_region"}:</td><td>{$user.ec_user_delivery_region}</td></tr>{/if}
+
+  {* <!-- дополнительные поля -->
+  {if $order.custom.some_field}<tr><td>Some field:</td><td>{$order.custom.some_field}</td></tr>{/if}
+  *}
+
+</table>
+
+<h3>{msg id="EC_items"}</h3>
+<table border="1px" cellspacing="0" cellpadding="3pt" style="border:none;width:80%;">
+
+<tr>
+    <td style="border:none;"></td>
+    <td style="border:none;"><b>{$text.ec_item_title}</b></td>
+    <td style="border:none;"><b>{$text.ec_item_price}</b></td>
+    <td style="border:none;">&nbsp;</td>
+    <td style="border:none;"><b>{$text.Number_of_items}</b></td>
+    <td colspan="2" style="border:none;">&nbsp;</td>
+</tr>
+<tr><td colspan="7" style="border:none;"></td></tr>
+{foreach from=$order.ec_cart.items item=it key=ke}
+    <tr id="tr0_{$ke}">
+        <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;white-space:nowrap;width:100px;height:100px;overflow:hidden;"><img src="{$site.url}{$it.info.ec_main_image}" width="100px"></td>
+        <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;">
+            {$it.info.ec_item_title}
+            {if $it.info.ec_item_variant[0]}
+            <div style="color:gray;font-size:80%;">
+              {foreach from=$it.info.ec_item_variant item=variant key=k_variant}
+                {$variant.ec_item_variant_description}<br/>
+              {/foreach}
+            </div>
+            {/if}
+        </td>
+        <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;white-space:nowrap;">{$it.info.ec_item_price_corrected} {$it.info.ec_item_currency_title}</td>
+        <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;border-left:none;">&times;</td>
+        <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;border-left:none;">{$it.amount}</td>
+        <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;border-left:none;">=</td>
+        <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;white-space:nowrap;" class="b-l-n">
+         {math equation="ec_item_price * amount"
+               ec_item_price=$it.info.ec_item_price_corrected
+               amount=$it.amount}
+         {$it.info.ec_item_currency_title}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" style="border:none;">
+           <div  id="tr_{$ke}" style="display:none;">
+           {if $it.info.ec_item_tags}<p>{$it.info.ec_item_tags}</p>{/if}
+           {capture assign=ec_item_size}{if $it.info.ec_item_size[0]}{$it.info.ec_item_size[0]}{/if}{if $it.info.ec_item_size[1]}x{$it.info.ec_item_size[1]}{/if}{if $it.info.ec_item_size[2]}x{$it.info.ec_item_size[2]}{/if}{/capture}
+           {if $ec_item_size}<p>{$text.ec_size}: {$ec_item_size} {$it.info.ec_item_size[3]}</p>{/if}
+
+           {if $it.info.ec_item_weight[0]}<p>{$text.ec_weight}: {$it.info.ec_item_weight[0]} {$it.info.ec_item_weight[1]}</p>{/if}
+
+           {if $it.info.ec_item_material}<p>{$text.ec_material}: {$it.info.ec_item_material}</p>{/if}
+
+           {foreach from=$it.info.ec_category_item_field item=extra_field}
+             {if $extra_field.ec_category_item_field_value}<p>{get_langstring  lang=$text.language_name from=$extra_field.ec_category_item_field_title}: {$extra_field.ec_category_item_field_value}</p>{/if}
+           {/foreach}
+
+
+           <p>{$it.info.ec_item_content}</p>
+           <p>{$it.info.ec_item_last_change_date|date_format:"%d.%m.%Y %H:%M:%S"}</p>
+           {foreach name=top from=$it.info.ec_item_img item=curr_img_src}
+		   	  {if $smarty.foreach.top.first}
+                <br/><img src="{$site.url}{$curr_img_src}"><br>
+			  {else}
+                <br/><img src="{$site.url}{$curr_img_src}" width="100%"><br>
+	          {/if}
+           {/foreach}
+           </div>
+        </td>
+    </tr>
+    <tr><td colspan="7" style="border:none;"></td></tr>
+{/foreach}
+
+<tr>
+    <td colspan="6" align="left" valign="top" style="border:none;background-color:#e0e0e0;">{$text.EC_cart_total}:</td>
+    <td style="border:none;white-space:nowrap;background-color:#eaeaea;">
+        {$order.ec_cart.total} {msg id=$site.ec_currency}
+    </td>
+</tr>
+
+
+<tr>
+    <td style="border:none;" colspan="7">&nbsp;
+      <h3>{msg id="EC_delivery"}</h3>
+      {$delivery_info}
+    </td>
+</tr>
+
+<tr>
+    <td colspan="6" align="left" valign="top" style="border:none;background-color:#e0e0e0;">{$text.EC_cart_total}:</td>
+    <td style="border:none;white-space:nowrap;background-color:#eaeaea;">
+        {$order.ec_cart.delivery_cost} {msg id=$site.ec_currency}
+    </td>
+</tr>
+
+
+<tr><td colspan="7" align="right" valign="top" style="border:none;">&nbsp;</td></tr>
+
+<tr>
+    <td colspan="6" align="left" valign="top" style="border:none;background-color:#e0e0e0;">{$text.EC_payment_total}:</td>
+    <td style="border:none;white-space:nowrap;background-color:#eaeaea;">
+        {$order.total} {msg id=$site.ec_currency}
+    </td>
+</tr>
+
+<tr>
+    <td style="border:none;padding:0px;" colspan="7">
+        {literal}
+        <style type="text/css">
+          /*.payment_form{}*/
+          .pf{display:inline-block;padding:3pt;background-color:white;color:black;font-weight:bold;}
+        </style>
+        {/literal}
+        {if $paynowform}
+        <span class="pf">
+            {msg id="Pay_now"} {$order.total} {msg id=$site.ec_currency}
+            {$paynowform->get_pay_now_form()}
+        </span>
+        <span class="pf">
+            {msg id="Pay_now_partially"} (
+            {math equation="total * part" total=$order.total part=0.1} {msg id=$site.ec_currency})
+            {$paynowform->get_pay_now_form(0.1)} 
+        </span>
+        {/if}
+    </td>
+</tr>
+</table>
+
+<h2>{msg id="EC_Order_History"}</h2>
+{literal}
+<style type="text/css">
+    div.history_item{padding:5pt;border:1px dotted yellow;margin-bottom:10px;}
+    div.history_item h3{margin:0px;}
+    div.history_item div.details{color:gray;}
+</style>
+{/literal}
+{foreach from=$order_history->list item=hs}
+<div class="history_item">
+    <h3>{$hs.ec_order_history_title}</h3>
+    <a href="mailto:{$hs.site_visitor_email}{$hs.email}">{$hs.site_visitor_email}{$hs.email}</a> {$hs.ec_order_history_date|date_format:"%d.%m.%Y %H:%M:%S"}
+    <div class="details">
+    {$hs.ec_order_history_details}
+    </div>
+</div>
+{/foreach}
+
+<div class="history_item">
+<h3>{msg id="Ec_order_new_comment"}</h3>
+<form action="{$order_history->form.action}" method="post">
+{$order_history->form.hidden_elements}
+<textarea name="{$order_history->form.textarea_name}" style="width:100%;height:150pt;"></textarea><br/>
+<input type="submit" value="{msg id="Send"}">
+</form>
+</div>
+

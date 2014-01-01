@@ -1,0 +1,33 @@
+.glry{
+   display:inline-block;
+   width:99%;
+   height:220px;
+   overflow:scroll;
+   border:1px dotted gray;
+   white-space:nowrap;
+   vertical-align:middle;
+}
+.glry img{
+   border:none;
+}
+
+.bigimg{
+  position:absolute;
+  left:0px;
+  top:0px;
+  display:block;
+  background-image:url(overlay.png);
+  width:100%;
+  text-align:center;
+  padding:30px;
+}
+
+.bigimg img{
+  background-image:url(wait.gif);
+  background-position:top center;
+  background-repeat:no-repeat;
+  background-color:white;
+  border:2px solid red;
+  min-width:100px;
+  min-height:100px;
+}

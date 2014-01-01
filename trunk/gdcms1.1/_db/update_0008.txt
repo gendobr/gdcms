@@ -1,0 +1,1 @@
+alter table `cms_ec_order` add column `ec_order_shipping` varchar(20) NULL after `ec_order_paid`;

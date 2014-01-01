@@ -1,0 +1,108 @@
+BODY {
+	FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+TD {
+	FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+INPUT {
+	FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+P {
+	FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+LI {
+	FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+TEXTAREA {
+	FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+P {
+	TEXT-ALIGN: justify
+}
+LI {
+	TEXT-ALIGN: justify
+}
+A {
+	COLOR: navy; TEXT-DECORATION: none
+}
+A:hover {
+	TEXT-DECORATION: underline
+}
+.white {
+	COLOR: white
+}
+.black {
+	COLOR: black
+}
+.red {
+	COLOR: red
+}
+.s6 {
+	FONT-SIZE: 6pt
+}
+.s8 {
+	FONT-SIZE: 8pt; FONT-FAMILY: Verdana
+}
+.s10 {
+	FONT-SIZE: 10pt
+}
+HR {
+	COLOR: #006ca8
+}
+INPUT.searchtext {
+	FONT-SIZE: 8pt; WIDTH: 100px; HEIGHT: 20px; BACKGROUND-COLOR: #eeeeee
+}
+INPUT.searchbutton {
+	FONT-SIZE: 8pt; WIDTH: 65px; FONT-FAMILY: Verdana,Tahoma; HEIGHT: 20px
+}
+.404 {
+	FONT-SIZE: 48pt; COLOR: #cccccc; FONT-STYLE: italic
+}
+.gray {
+	COLOR: #999999
+}
+H1 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H2 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H3 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H4 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H5 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H6 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H1 {
+	FONT-SIZE: 20pt
+}
+H2 {
+	FONT-SIZE: 18pt
+}
+H3 {
+	FONT-SIZE: 16pt
+}
+H4 {
+	FONT-SIZE: 14pt
+}
+H5 {
+	FONT-SIZE: 12pt
+}
+H6 {
+	FONT-SIZE: 10pt
+}
+.indent {
+	PADDING-LEFT: 50px
+}
+.bold {
+	FONT-WEIGHT: bold
+}
+.left {
+	TEXT-ALIGN: left
+}

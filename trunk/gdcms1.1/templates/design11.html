@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <title>{$page.title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+{literal}
+<script language="JavaScript">
+<!--
+
+if (document.images)
+{
+  // {/literal}
+  menu_on = new Image();
+  menu_on.src = "{$site_root_url}/templates/design11/menu_bg_on.jpg";
+  menu_off = new Image();
+  menu_off.src = "{$site_root_url}/templates/design11/menu_bg.jpg";
+  // {literal}
+}
+
+function show(menu_item_id)
+{
+  //alert('show'+menu_item_id);
+  var mnu=document.getElementById('mnu'+menu_item_id);
+  if(mnu)
+  {
+    // {/literal}
+    mnu.style.backgroundImage="url({$site_root_url}/templates/design11/menu_bg_on.jpg)"; 
+    // {literal}
+  }
+}
+
+function hide(menu_item_id)
+{
+  var mnu=document.getElementById('mnu'+menu_item_id);
+  if(mnu)
+  {
+    // {/literal}
+    mnu.style.backgroundImage="url({$site_root_url}/templates/design11/menu_bg.jpg)";
+    // {literal}
+  }
+}
+
+// -->
+</script>
+
+
+
+<style type="text/css">
+<!-- 
+.page_header
+{
+  font-size:24px;
+  font-weight:bold;
+  padding-right:20px;
+}
+p {text-align : justify;}
+td {  font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; }
+a {  font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; color: #555599; text-decoration: none}
+div.q {margin-left=5pt;  margin-right=20pt;}
+.menu_item a{color:#000055;}
+-->
+</style>
+
+{/literal}
+</head>
+
+<body bgcolor="#6F7A9E" text="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" link="#99CCFF" vlink="#9999FF">
+<table width="100%" border="0" bordercolor=red cellspacing="0" cellpadding="0">
+  <tr>
+	<td background="{$site_root_url}/templates/design11/top_minus1.jpg" width="30%"><img src="{$site_root_url}/templates/design11/top_minus1.jpg" height="92" align=absmiddle></td><td background="{$site_root_url}/templates/design11/topbg.jpg" width="44"><img src="{$site_root_url}/templates/design11/top_kinec.jpg" height="92" width="44"></td><td background="{$site_root_url}/templates/design11/topbg.jpg" width="70%"><span class=page_header>{$site.title}</span></nobr></td> 
+	</tr>
+	<tr>
+	<td background="{$site_root_url}/templates/design11/smugy.jpg" width="30%" height="25"  valign=top><img src="{$site_root_url}/templates/design11/null.gif"  height="25"></td><td background="{$site_root_url}/templates/design11/kolomenu_1.jpg"><img src="{$site_root_url}/templates/design11/null.gif"></td><td width="65%"  rowspan="3" valign="top"><div class="q">
+      <h1>{$page.title}</h1>
+	  {sysmsg}
+      {$page.content}
+</div></td> 
+	</tr>
+		<tr><td background="{$site_root_url}/templates/design11/lilov.jpg" width="30%"  height="5"  valign=top><img src="{$site_root_url}/templates/design11/null.gif" height="5"></td><td background="{$site_root_url}/templates/design11/kolomenu_2.jpg"><img src="{$site_root_url}/templates/design11/null.gif"></td>
+	</tr>
+	<tr>
+	<td   bgcolor=#6F7A9E  class=menu_item background="{$site_root_url}/templates/design11/lilov.jpg" width="30%" valign="top">
+	<div style="background-image: url({$site_root_url}/templates/design11/menu_verh2.jpg); background-position: top right; background-repeat:  no-repeat;" align="center"><div style="background-image: url({$site_root_url}/templates/design11/menu_verh1.jpg); background-position: top left; background-repeat:  no-repeat;"><img src="{$site_root_url}/templates/design11/null.gif" height=60></div></div>
+	<div style="background-image: url({$site_root_url}/templates/design11/menu_bik2.jpg); background-position: top right; background-repeat: repeat-y;" align="center"><div style="background-image: url({$site_root_url}/templates/design11/menu_bik1.jpg); background-position: top left; background-repeat:repeat-y;"><div style="margin-left=10pt; margin-right=10pt;">
+{foreach from=$lang key=ke item=ln}
+<a href="{$ln.url}">{$ln.lang}</a>
+{/foreach}
+</div></div></div>
+
+{foreach from=$menu key=kg item=mg}
+{foreach from=$mg.items key=ki item=mi}
+	<div style="background-image: url({$site_root_url}/templates/design11/b2.jpg); background-position: top right; background-repeat:  no-repeat;" align="center"><div style="background-image: url({$site_root_url}/templates/design11/b1.jpg); background-position: top left; background-repeat:  no-repeat;"><img src="{$site_root_url}/templates/design11/null.gif" height=8></div></div>
+	<div style="background-image: url({$site_root_url}/templates/design11/menu_bik2.jpg); background-position: top right; background-repeat: repeat-y;" align="center"><div style="background-image: url({$site_root_url}/templates/design11/menu_bik1.jpg); background-position: top left; background-repeat: repeat-y;"><div style="margin-left=10pt; margin-right=10pt;"><a href="{$mi.url}">{$mi.html}</a></div></div></div>
+{/foreach}
+{/foreach}
+<div style="background-image: url({$site_root_url}/templates/design11/menu_nyz2.jpg); background-position: top right; background-repeat:  no-repeat;" align="center"><div style="background-image: url({$site_root_url}/templates/design11/menu_nyz1.jpg); background-position: top left; background-repeat:  no-repeat;"><img src="{$site_root_url}/templates/design11/null.gif" height=60></div></div>
+</td><td background="{$site_root_url}/templates/design11/kolomenu_2.jpg"><img src="{$site_root_url}/templates/design11/null.gif" height="92" width="44" align=absmiddle></td>
+	</tr>
+
+	</table>
+
+</body>
+</html>

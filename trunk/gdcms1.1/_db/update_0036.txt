@@ -1,0 +1,10 @@
+CREATE TABLE `cms_fragment` (
+                `fragment_id` bigint(20) NOT NULL AUTO_INCREMENT,
+                `fragment_lang` varchar(3) DEFAULT NULL,
+                `site_id` bigint(20) NOT NULL,
+                `fragment_place` varchar(128) DEFAULT NULL,
+                `fragment_html` text,
+                `fragment_label` varchar(128) DEFAULT NULL,
+                `fragment_is_visible` tinyint(1) NOT NULL DEFAULT '1',
+                PRIMARY KEY (`fragment_id`)
+              ) ENGINE=MyISAM AUTO_INCREMENT=4;

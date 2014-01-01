@@ -1,0 +1,54 @@
+A {
+	COLOR: #0022dd; TEXT-DECORATION: none
+}
+A:hover {
+	TEXT-DECORATION: underline
+}
+.sign {
+	FONT-SIZE: 7pt
+}
+.blue {
+	COLOR: darkblue
+}
+TD.gray {
+	BACKGROUND-COLOR: #c6cfd6
+}
+TD.white {
+	BACKGROUND-COLOR: white
+}
+TD.red {
+	BACKGROUND-COLOR: #ef514a
+}
+.red {
+	COLOR: #de231a
+}
+TD {
+	FONT-SIZE: 10pt; FONT-FAMILY: Verdana
+}
+.s12 {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt
+}
+.s8 {
+	FONT-SIZE: 8pt
+}
+.udc {
+	FONT-WEIGHT: bold; FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Tahoma
+}
+TD.title {
+	FONT-WEIGHT: bold; FONT-SIZE: 9pt; COLOR: #0000dd
+}
+TD.authors {
+	FONT-WEIGHT: bold; FONT-SIZE: 9pt; COLOR: #ff0000
+}
+.download {
+	FONT-WEIGHT: normal; FONT-SIZE: 8pt; COLOR: blue
+}
+.news {
+	FONT-SIZE: 10pt; COLOR: blue; FONT-FAMILY: Verdana
+}
+.blueheader {
+	FONT-WEIGHT: bold; COLOR: #0019a9; TEXT-ALIGN: center
+}
+.indent {
+	PADDING-LEFT: 50px
+}

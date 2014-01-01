@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>{$page.title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<link rel="stylesheet" href="{$site_root_url}/templates/design3/style.css" type="text/css">
+</head>
+<body  bgcolor="#619CFF" leftmargin=0 topmargin=0 marginwidth=0 marginheight=0 bottommargin="0" rightmargin="0">
+
+<!-- HEAD -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+        <td background="{$site_root_url}/templates/design3/bg1-2.gif" valign=middle rowspan=2><img src="{$site_root_url}/templates/design3/spacer.gif" width=300px height=1px><br/><div style="font-size:26px;color:white;font-style:italic;font-family:Helvetica;font-stretch:extra-condensed;padding-left:20px;">{$site.title}   &nbsp;</div></td>
+        <td align="right"  valign=bottom background="{$site_root_url}/templates/design3/bg1.gif"><img src="{$site_root_url}/templates/design3/pic1.gif" width="266" height="40"></td>
+   </tr>
+   <tr>
+     <td align="right" valign=top background="{$site_root_url}/templates/design3/bg2.gif"><img src="{$site_root_url}/templates/design3/pic2.gif" width="266" height="70"></td>
+   </tr>
+</table>
+<!-- /HEAD -->
+
+
+<table width="100%" height=100% border="0" bordercolor=red cellspacing="0" cellpadding="0">
+    <tr bgcolor=white>
+       <td width="188px" align="center" valign="top">
+       <!-- left menu - begin -->
+       <table width="188" border="0" cellspacing="0" cellpadding="0"  background="">
+         <tr>
+           <td width="188" valign="top" background="{$site_root_url}/templates/design3/bg5.gif"><img src="{$site_root_url}/templates/design3/r_top.gif" width="188" height="25"><br>
+            <table width="188" border="0" bordercolor=red cellspacing="0" cellpadding="0">
+
+
+{foreach from=$menu key=kg item=mg}
+<!-- menu group - begin  -->
+<!-- Group header - begin  -->
+<tr>
+<td background="{$site_root_url}/templates/design3/back2_1.gif">
+  <table width="100%" border="0" bordercolor=red cellspacing="0" cellpadding="0" background="">
+    <tr>
+      <td><img src="{$site_root_url}/templates/design3/spacer.gif" width="22" height="1"></td>
+      <td width="100%" align="center" valign="middle" class="form" style="padding:7px;"><strong>{$mg.html}</strong></td>
+      <td><img src="{$site_root_url}/templates/design3/spacer.gif" width="18" height="33"></td>
+    </tr>
+  </table>
+  <img src="{$site_root_url}/templates/design3/back2_2.gif" width=188px height=2px border=0>
+</td>
+</tr>
+<!-- Group header - end  -->
+{foreach from=$mg.items key=ki item=mi}
+<!-- menu item - begin -->
+<tr>
+ <td>
+  <table width="188" border="0" bordercolor=green cellspacing="0" cellpadding="0" background="">
+   <tr>
+     <td background="{$site_root_url}/templates/design3/bg_l1.gif"><img src="{$site_root_url}/templates/design3/spacer.gif" width="21" height="1"><br></td>
+     <td width="149" valign="top" nowrap bgcolor="#BFC7D4">
+      <img src="{$site_root_url}/templates/design3/m6.gif" width="11" height="13"><a href="{$mi.url}" title="{$mi.description}" {$mi.attributes}  class="si">{$mi.html}</a><br>
+      <img src="{$site_root_url}/templates/design3/line2.gif" width="149" height="13"><br>
+     </td>
+     <td background="{$site_root_url}/templates/design3/bg_l2.gif"><img src="{$site_root_url}/templates/design3/spacer.gif" width="18" height="1"><br></td>
+   </tr>
+  </table>
+ </td>
+</tr>
+<!-- menu item - end -->     
+{/foreach}
+<!-- finish group - begin --> 
+<tr><td><img src="{$site_root_url}/templates/design3/back4.gif" width="188" height="27"></td></tr>
+<!-- finish group - end -->
+{/foreach}
+
+</table>
+<!-- finish menu -- begin -->
+</td></tr></table><!-- left menu - end -->
+</td>
+
+
+<td valign=top width=100%>
+<!-- top menu - begin --> 
+<table width="100%"  border="0" bordercolor=green cellspacing="0" cellpadding="0"> 
+<tr>
+ <td width="100%" background="{$site_root_url}/templates/design3/bgr.gif"><img src="{$site_root_url}/templates/design3/rll.gif" width="12" height="53"></td>
+ <td><img src="{$site_root_url}/templates/design3/rl.gif" width="37" height="53"></td>
+ 
+{foreach from=$lang  key=ke item=lg}
+   <td align="center" valign="top" background="{$site_root_url}/templates/design3/but_2.jpg">
+    <img src="{$site_root_url}/templates/design3/top_0.gif" height="14">
+    <br>
+    <img src="{$site_root_url}/templates/design3/spacer.gif" width="1" height="8">
+    <br><nobr><img src="{$site_root_url}/templates/design3/spacer.gif" width="10" height="8" align=absmiddle>
+    <a href="{$lg.url}"  class="bold">{$lg.lang}</a>
+    <img src="{$site_root_url}/templates/design3/spacer.gif" width="10" height="8" align=absmiddle></nobr></td>
+{/foreach}
+ <td align="right"><img src="{$site_root_url}/templates/design3/rr.gif" width="81" height="53"></td>
+</tr>
+</table>
+<!-- top menu - end -->
+
+<table width="100%" border="0" bordercolor=yellow cellspacing="0" cellpadding="0">
+<tr>
+  <td valign="middle" background="{$site_root_url}/templates/design3/bg9_1.gif"><img src="{$site_root_url}/templates/design3/r6.gif" width="22" height="30"></td>
+  <td valign="middle" style="background-image:url({$site_root_url}/templates/design3/bg12.gif);background-position:center left; background-repeat:no-repeat;" class="thick">{$page.title}<img src="{$site_root_url}/templates/design3/spacer.gif" width="25" height="30" align=absmiddle></td>
+  <td valign="top" background="{$site_root_url}/templates/design3/bg11.gif"><img src="{$site_root_url}/templates/design3/r8.gif" width="26" height="30"></td>
+</tr>
+
+<tr>
+  <td valign="top" background="{$site_root_url}/templates/design3/bg9.gif"><img src="{$site_root_url}/templates/design3/spacer.gif" width="22" height="30"></td>
+  <td width="100%" valign="top" bgcolor="#D9EDB8" class="green">
+  <br><br>
+  {$page.content} 
+  <br><br>
+  </td>
+  <td valign="top" background="{$site_root_url}/templates/design3/bg11.gif"><img src="{$site_root_url}/templates/design3/r8.gif" width="26" height="30"></td>
+</tr>
+</table>
+<table width="100%" border="0" bordercolor=blue cellspacing="0" cellpadding="0">
+ <tr>
+  <td><img src="{$site_root_url}/templates/design3/r7.gif" width="22" height="22"></td>
+  <td width="100%" background="{$site_root_url}/templates/design3/bg10.gif">&nbsp;</td>
+  <td><img src="{$site_root_url}/templates/design3/r9.gif" width="19" height="22"></td>
+ </tr>
+</table>
+</td>
+</tr>
+</table>
+<!--BOTTOM -->
+<table width="100%" border="0" bordercolor=green cellspacing="0" cellpadding="0">
+<tr>
+  <td background="{$site_root_url}/templates/design3/bg_bot1.gif"><img src="{$site_root_url}/templates/design3/spacer.gif" width="1" height="18"></td>
+  <td background="{$site_root_url}/templates/design3/bg_bot1.gif">&nbsp;</td>
+</tr>
+<tr>
+  <td background="{$site_root_url}/templates/design3/bg_bot2.gif"><img src="{$site_root_url}/templates/design3/spacer.gif" width="15" height="45"></td>
+  <td align="left" valign="middle" background="{$site_root_url}/templates/design3/bg_bot2.gif">&copy; ZNU</td>
+</tr>
+<tr>
+  <td bgcolor="#619CFF"><img src="{$site_root_url}/templates/design3/spacer.gif" width="1" height="88"></td>
+  <td bgcolor="#619CFF">&nbsp;</td>
+</tr>
+</table>
+<!-- /BOTTOM -->
+</body>
+</html>

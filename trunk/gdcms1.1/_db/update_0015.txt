@@ -1,0 +1,1 @@
+alter table `cms_menu_group` add column `ordering` int NULL after `code`;

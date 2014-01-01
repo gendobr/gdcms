@@ -1,0 +1,5 @@
+CREATE TABLE `cms_calendar_cache` (
+                      `uid` int(11) DEFAULT NULL,
+                      `days` varchar(128) DEFAULT NULL,
+                      `updated` datetime DEFAULT NULL
+                    ) ENGINE=MyISAM;

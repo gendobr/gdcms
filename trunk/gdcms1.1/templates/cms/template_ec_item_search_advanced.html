@@ -1,0 +1,39 @@
+
+<script type="text/javascript">
+    var addflds;
+    var URL='{$smarty.const.site_URL}?action=ec/item/search_advanced_caregory_fields&category_id=';
+    {literal}
+    function load_category_fields(category_id){
+        //alert(category_id);
+        addflds=ajax_load(URL+category_id,'', function (){
+            if (addflds.readyState == 4) {
+                         var response = addflds.responseText;
+                         var block=document.getElementById("addflds");
+                         block.innerHTML = response;
+                   }
+        });
+    }
+    {/literal}
+</script>
+{literal}
+<style type="text/css">
+    .txt{width:200pt;}
+    .filled{background-color: yellow;color:black;}
+
+    span.lbl{display:inline-block; width:120pt;}
+</style>
+{/literal}
+<form action="{$form.action}" class="srch">
+{$form.hidden_form_fields}
+<span class="lbl">{msg id="ec_item_title"}:</span><input class="txt {if $form.ec_item_title}filled{/if}" type="text" name="ec_item_title" value="{$form.ec_item_title}"><br>
+<span class="lbl">{msg id="EC_item_details"}:</span><input  class="txt {if $form.ec_item_content}filled{/if}" type="text" name="ec_item_content" value="{$form.ec_item_content}"><br>
+<span class="lbl">{msg id="ec_item_tags"}:</span><input  class="txt {if $form.ec_item_tags}filled{/if}" type="text" name="ec_item_tags" value="{$form.ec_item_tags}"><br>
+<span class="lbl">{msg id="EC_producer"}:</span><select  class="txt {if $form.ec_producer_id_set}filled{/if}" name="ec_producer_id"><option value="">&nbsp;</option>{$form.ec_producer_id}</select><br>
+<span class="lbl">{msg id="ec_item_price"}:</span><input  class="{if $form.ec_item_price_min}filled{/if}" type="text" name="ec_item_price_min" size="4" value="{$form.ec_item_price_min}"> ... <input   class="{if $form.ec_item_price_max}filled{/if}" type="text" name="ec_item_price_max" size="3" value="{$form.ec_item_price_max}"><br>
+<span class="lbl">{msg id="Category"}:</span><select  class="txt {if $form.ec_category_id_set}filled{/if}" name="ec_category_id" onchange="load_category_fields(this.value)"><option value="">&nbsp;</option>{$form.ec_category_id}</select><br>
+<div id="addflds">
+{$form.extrafld}
+</div>
+
+<span class="lbl">&nbsp;</span><input type="submit" value="{msg id="Search"}">
+</form>

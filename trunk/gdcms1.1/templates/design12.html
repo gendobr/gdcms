@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>{$page.title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+{literal}
+<style type="text/css">
+<!--
+td
+{
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  color:#000000;
+}
+-->
+</style>
+{/literal}
+</head>
+
+<body bgcolor="#B8BAE3" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td width="9%" rowspan="2" valign="top"
+	style="background-image:url({$site_root_url}/templates/design12/leftbg.jpg); background-position:top right; text-align:right;"><img src="{$site_root_url}/templates/design12/left.jpg" width="94" height="340"></td>
+    <td width="81%" valign="top" background="{$site_root_url}/templates/design12/topbg.jpg"><img src="{$site_root_url}/templates/design12/top.jpg" width="507" height="49"></td>
+    <td width="10%" rowspan="2" valign="top" background="{$site_root_url}/templates/design12/rightbg.jpg"><img src="{$site_root_url}/templates/design12/corner.jpg" width="98" height="49"><br>
+    <table width=98px border=0px cellspacing=0 cellpadding=4px>
+    <tr>
+       <td style="border:1px solid white;background-color:#DFA0B5;">
+       {foreach from=$lang key=ke item=ln}
+         <a href="{$ln.url}" style="color:black; text-decoration:none;">{$ln.lang}</a> 
+       {/foreach}
+       </td>
+    </tr>
+         {foreach from=$menu key=kg item=mg}
+         {foreach from=$mg.items key=ki item=mi}
+         {if $mi.url|count_characters gt 1}
+         <tr><td style="border:1px solid white;background-color:#DFA0B5;"><a href="{$mi.url}" style="color:black; text-decoration:none;"   title="{$mi.description}" {$mi.attributes}>{$mi.html}</a></td></tr>
+         {else}
+         <tr><td style="border:1px solid white;background-color:#DFA0B5;">{$mi.html}</td></tr>
+         {/if}
+         {/foreach}
+         {/foreach}
+    </table>
+  </tr>
+  <tr>
+    <td width="81%" valign="top" height="580" style="padding:10px;">
+<h1>{$page.title}</h1>
+{sysmsg}
+{$page.content}
+
+    </td>
+  </tr>
+</table>
+</body>
+</html>

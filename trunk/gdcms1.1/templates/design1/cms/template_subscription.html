@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{$news.title} - {$site.title}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+    </head>
+    <body>
+        <h2>{$site.title}</h2>
+        <h3>{$news.title}</h3>
+        <div>
+            <a href="{$view_news_details_link}">{$view_news_details_link}</a>
+        </div>
+        <div>
+            {$news.last_change_date|date_format:"%d.%m.%Y %H:%M:%S"}
+        </div>
+        <div>
+            {$news.abstract}
+        </div>
+        <div>
+            {$news.content}
+        </div>
+        <div>
+            {$text.Dear} {$subscriber.news_subscriber_name}
+        </div>
+        <div>
+            {$text.You_have_received_this_email_because_you_have_subscribed_to_news_of_site}
+            &laquo;{$site.title}&raquo;
+        </div>
+        <div>
+            {$text.To_unsubscribe_click_the_link_below}<br/>
+            {$unsubscribe_link}
+        </div>
+    </body>
+</html>

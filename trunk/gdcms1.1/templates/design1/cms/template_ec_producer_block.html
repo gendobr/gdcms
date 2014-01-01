@@ -1,0 +1,96 @@
+{literal}
+<style type="text/css">
+
+   h4{margin-bottom:0pt;margin-top:10pt;}
+
+
+  .floats{
+            /*  омпенсируем отступы между float-блоками, чтобы они занимали все доступное пространство */
+               margin: -3em 0 0 -2em;
+
+            /* Ёти правила дл€ IE */
+               position: relative;
+               display: inline-block;
+               clear: both;
+    }
+  .floats:after{
+      content: '';
+      display: block;
+      clear: both;
+   }
+  .floats .left{
+      position: relative;
+      float: left;
+
+      /* ”бираем удвоение отступов в IE */
+      display: inline;
+
+      /* ѕр€чем все, что вдруг вылезло за наши ограничени€ */
+      overflow: hidden;
+
+      /* ќтсупы между float-блоками */
+      margin: 3em 0 0 2em;
+
+      /* «адаем минимальную ширину по картинке и тексту */
+      width: 14em;
+      min-width: 200px;
+   }
+  .floats .left .r{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+   }
+  .floats .left .min{
+      /* «адаем минимальную высоту по картинке */
+      margin: 0 0 200px 0;
+
+      /* «адаем минимальную высоту по тексту */
+      height: 4em;
+
+      /* ƒублируем значение минимальной ширины по картинке дл€ IE */
+      width: 200px;
+   }
+
+   div.r{display:block; height:250px; overflow:hidden;text-align:center;}
+   /*div.ir a{display:block; height:170px; overflow:hidden;background-color:#ffffff;text-align:center;}*/
+
+
+
+   div.sml{font-size:80%;}
+</style>
+{/literal}
+
+
+
+
+<div class="floats">
+
+{foreach from=$producers item=item}
+<div class="left">
+   <div class="r">
+   <h4>
+       <a href="{$url_prefix_producer_details}{$item.ec_producer_id}">{$item.ec_producer_title}</a>
+   </h4>
+   {if $item.ec_producer_img}<a href="{$url_prefix_producer_details}{$item.ec_producer_id}"><img src="{$site.url}{$item.ec_producer_img}" width="200pt"></a><br>{/if}
+   </div>
+<div class="min"></div>
+</div>
+{/foreach}
+
+</div>
+
+{*
+{if $pages[1]}
+<p>
+{$text.Pages}:
+{foreach from=$pages item=pg}
+    {if $pg.URL}
+        <a href="{$pg.URL}">{$pg.innerHTML}</a>
+    {else}
+        <b>{$pg.innerHTML}</b>
+    {/if}
+{/foreach}
+</p>
+{/if}
+*}
