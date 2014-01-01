@@ -1,0 +1,11 @@
+CREATE TABLE `cms_news_subscriber` (
+                       `news_subscriber_id` bigint(20) NOT NULL AUTO_INCREMENT,
+                       `news_subscriber_name` varchar(255) DEFAULT NULL,
+                       `news_subscriber_email` varchar(255) DEFAULT NULL,
+                       `news_subscriber_code` varchar(255) DEFAULT NULL,
+                       `news_subscriber_is_valid` tinyint(1) NOT NULL DEFAULT '0',
+                       `news_subscriber_date` datetime DEFAULT NULL,
+                       `site_id` int(11) NOT NULL,
+                       PRIMARY KEY (`news_subscriber_id`),
+                       KEY `NewIndex1` (`news_subscriber_code`)
+                     ) ENGINE=MyISAM;

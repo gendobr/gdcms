@@ -1,0 +1,1 @@
+alter table `cms_photogalery_rozdil` add column `weight` int DEFAULT '0' NOT NULL after `rozdil2`;

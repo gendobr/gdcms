@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>{$page.title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+{literal}
+<style type="text/css">
+<!-- 
+.page_title
+{
+   color:#aa0011;
+   margin-bottom:5px;
+   margin-top:5px;
+   margin-right:25px;
+   font-family:tahoma;
+   font-weight:bold;
+   font-size:35px;
+   text-align:right;
+}
+.language_selector
+{
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+BODY
+{
+  margin:0px;
+  background-color:#000000;
+	SCROLLBAR-FACE-COLOR: #000000;
+  SCROLLBAR-HIGHLIGHT-COLOR: #b0c4de;
+  SCROLLBAR-SHADOW-COLOR: #f0ffff;
+  SCROLLBAR-3DLIGHT-COLOR: #9da8c7;
+  SCROLLBAR-ARROW-COLOR: white;
+  SCROLLBAR-TRACK-COLOR: #3b3b3b;
+  SCROLLBAR-DARKSHADOW-COLOR: #191970
+}
+
+.page_content
+{
+  font-family:tahoma;
+  font-size:11px;
+  padding:10px;
+  border-left:2px dashed #e0e0e0;
+  border-right:2px dashed #e0e0e0;
+  background-color:#b6bfc5;
+}
+
+.menu_group
+{
+  color:white;
+  font-family:tahoma;
+  font-weight:bold;
+  font-size:15px;
+}
+
+.menu_item
+{
+  padding-left:15px;
+  padding-top:3px;
+}
+.menu_item a
+{
+  color:white;
+  font-family:tahoma;
+  font-weight:bold;
+  font-size:11px;
+}
+.menu_item a:hover
+{
+  color:#e0e0e0;
+}
+
+-->
+</style>
+{/literal}
+</head>
+<body>
+<table cellSpacing=0 cellPadding=0 width=100% border=0px>
+  <tr>
+    <td vAlign=middle width=620px height=100px  bgColor=#419BE2 background="{$site_root_url}/templates/design8/top_bg.gif" align=left><h1 class="page_title">{$page.title}</h1></td>
+    <td vAlign=bottom width=160px height=100px align=right>
+    <div align=left style="font-size:12px; margin-bottom:3px; margin-left:25px;">
+      {section name=l_id loop=$lang}
+          <a href="{$lang[l_id].url}" class=language_selector>{$lang[l_id].lang}</a> 
+      {/section}
+      </div>
+    </td>
+  </tr>
+
+<tr>
+  <td valign=top class=page_content>
+  <div>
+  {sysmsg}
+  {$page.content}
+  </div>
+  </td>
+  <td valign=top width=160px style="padding:10px;">
+  <!-- menu -- begin -->
+    {section name=mid loop=$menu}
+    <p>
+      <div class=menu_group>{$menu[mid].html}</div>
+      {section name=miid loop=$menu[mid].items}
+      <!-- menu item - begin -->
+        <nobr><span class=menu_item><a href="{$menu[mid].items[miid].url}" title="{$menu[mid].items[miid].description}" {$menu[mid].items[miid].attributes}  class="si">{$menu[mid].items[miid].html}</a></span></nobr><br/>
+      <!-- menu item - end -->     
+      {/section}
+    </p>
+    {/section}
+  <!-- menu -- end -->
+  </td>
+
+</tr>
+<tr>
+  <td colspan=1 align=right background="{$site_root_url}/templates/design8/footer_bg.gif">
+    <a href="mailto:webmaster@zsu.zp.ua" style="color:#202020; font-family:tahoma; text-decoration:none; font-size:11px; font-weight:bold; padding-right:10px;">&copy; Zaporizhzhya State University</a>
+  </td>
+  <td></td>
+</tr>
+</table>
+</body>
+</html>

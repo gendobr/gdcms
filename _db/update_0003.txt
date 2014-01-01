@@ -1,0 +1,4 @@
+alter table `cms_session` add column `user_login` varchar(255) NULL after `expires`;
+alter table `cms_session` add index `NewIndex1` (`user_login`);
+alter table `cms_site` add column `salt` varchar(32) NULL;
+CREATE TABLE `cms_oid` (`cs` varchar(255) NOT NULL,`expires` bigint, PRIMARY KEY  (`cs`));

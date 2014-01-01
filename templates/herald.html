@@ -1,0 +1,183 @@
+<!-- {php}
+// custom messages for languages 
+   $herald_text=Array('ukr'=>Array(),'rus'=>Array(),'eng'=>Array());
+
+  $herald_text['ukr']['Site_title']="Ãîëîâíà ñòîð³íêà";
+  $herald_text['rus']['Site_title']="Ãîëîâíà ñòîð³íêà";
+  $herald_text['eng']['Site_title']="ZNU Herald";
+
+
+  $herald_text['ukr']['Ministry_of_education']="ÌIÍIÑÒÅÐÑÒÂÎ ÎÑÂIÒÈ";
+  $herald_text['rus']['Ministry_of_education']="ÌÈÍÈÑÒÅÐÑÒÂÎ ÎÁÐÀÇÎÂÀÍÈß";
+  $herald_text['eng']['Ministry_of_education']="The MINISTRY of EDUCATION";
+  
+  $herald_text['ukr']['And_SCIENCE_of_UKRAINE']="I ÍÀÓÊÈ ÓÊÐÀ¯ÍÈ";
+  $herald_text['rus']['And_SCIENCE_of_UKRAINE']="È ÍÀÓÊÈ ÓÊÐÀÈÍÛ";
+  $herald_text['eng']['And_SCIENCE_of_UKRAINE']="And SCIENCE of UKRAINE";
+  
+  
+$this->_tpl_vars['herald_text']=$herald_text[$this->_tpl_vars['text']['language_name']];
+{/php}
+ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>{$herald_text.Site_title} : {$page.title}</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1251"><LINK 
+href="{$site_root_url}/templates/herald.files/herald.css" type=text/css rel=stylesheet>
+<SCRIPT src="{$site_root_url}/templates/herald.files/herald.js">
+</SCRIPT>
+
+<META content="MSHTML 6.00.2745.2800" name=GENERATOR></HEAD>
+<BODY text=#000000 bgColor=#ffffff leftMargin=0 topMargin=0 width="100" marginheight="0" marginwidth="0">
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <tr>
+  <td width=5% class=gray><img src="{$site_root_url}/templates/herald.files/tr.gif" height=1px width=263px></td>
+  <td width=5% class=gray align=right style="background-image:url({$site_root_url}/templates/herald.files/ver1.gif); background-position:top right; background-repeat:repeat-y;"><img src="{$site_root_url}/templates/herald.files/tr.gif" height=1px width=87px></td>
+  <td width=90%></td>
+  </tr>
+
+  <TR>
+    <TD class=gray align=right height=50 colspan=2><b>{$herald_text.Ministry_of_education}</b>&nbsp;<IMG height=50 
+      src="{$site_root_url}/templates/herald.files/ver1.gif" width=12 border=0 align=absmiddle><!-- 
+ --></TD>
+    <TD class=white noWrap align=left width=300><B>&nbsp;<SPAN 
+      style="FONT-SIZE: 8pt">{$herald_text.And_SCIENCE_of_UKRAINE}</SPAN></B></TD>
+    </TR>
+  <TR>
+    <TD class=gray valign=top rowspan=2 colspan=2 align=right style="background-image:url({$site_root_url}/templates/herald.files/hor2.gif); background-position:bottom left; background-repeat:repeat-x;">
+      {* ------------------------ language selector - begin ----------------------- *}
+      {foreach from=$lang key=ke item=ln}
+         {if $text.language_name eq $ke}
+           <a href="{$ln.url}">{$ln.lang}</a>&nbsp;
+         {else}
+           <a href="{$ln.url}">{$ln.lang}</a>&nbsp;
+         {/if}
+      {/foreach}
+      {* ------------------------ language selector - end ------------------------- *}
+      <IMG height=135 src="{$site_root_url}/templates/herald.files/logo.jpg" width=100 align=MIDDLE{*ABSBOTTOM*}><!-- 
+ --></TD>
+    <TD class=gray style="background-image:url({$site_root_url}/templates/herald.files/hor1.gif); background-repeat:repeat-x;" height=30px valign=top>
+      <DIV style="LEFT: 80px; POSITION: relative"><IMG height=30 
+      src="{$site_root_url}/templates/herald.files/title{$text.language_name}.jpg" width=196></DIV></TD>
+  </TR>
+
+  <tr><td class=gray align=center><DIV class=s12><DIV class=red><h3>{$page.title}</h3></DIV></DIV></td></tr>
+  <TR>
+    <TD vAlign=top style="background-image:url({$site_root_url}/templates/herald.files/ver2.gif);background-position:top right; background-repeat:repeat-y;padding-left:20px; padding-right:20px;">
+    <br />
+      <P class=s12>
+      {foreach from=$menu  key=ke item=menu_group}
+        <b>{$menu_group.html}</b><br />
+        {foreach from=$menu_group.items item=menu_item}
+          <div style='padding-left:30pxl'><a href="{$menu_item.url}" title="{$menu_item.description}" {$menu_item.attributes}>{$menu_item.html}</a></div>
+        {/foreach}
+      {/foreach}
+      </TD>
+    <TD class=gray vAlign=top width="100%" colspan=2>
+      <DIV style="WIDTH: 99%; padding:15px;">
+{*
+    {literal}
+    <script type="text/javascript">
+    <!-- 
+      function print_page_content(block_id)
+      {
+        var content_block = document.getElementById(block_id);
+        if(!content_block) return;
+        if(!content_block.innerHTML) return;
+        frm=window.open("about:blank","print_content","scrollbars=1,resizable=1,menubar=1,status=1");
+        frm.document.open();
+        frm.document.writeln(document.location.href + '<hr>');
+        var str = content_block.innerHTML;
+        str = str.replace(/<script/, '<!-- script');
+        str = str.replace(/script>/, 'script -->');
+        frm.document.writeln(str);
+        frm.document.close();
+        return;
+      }
+    // -->
+    </script>
+    {/literal}
+    <div align=right><a href="#" onclick="print_page_content('page_content'); return false;" title="{$text.Printer_friendly_version}"><img src={$site_root_url}/templates/ZNU_5/print.gif  alt="{$text.Printer_friendly_version}" width=16 height=14 border=0></a></div>
+*}
+    <span class="textblok" id="page_content">
+<!-- âì³ñò öåíòðàëüíîãî áëîêó -->
+    {sysmsg}
+    {$page.content} 
+<!-- çàê³í÷èâñÿ âì³ñò öåíòðàëüíîãî áëîêó -->
+    </span>
+  </TD></TR>
+
+  <TR>
+    <TD vAlign=top width=250 style="background-image:url({$site_root_url}/templates/herald.files/ver2.gif);background-position:top right; background-repeat:repeat-y;">&nbsp;</td>
+    <TD vAlign=bottom align=center class=gray colspan=2>
+    <br />
+    <br />
+{literal}
+      <A class=sign href="http://www.zsu.edu.ua/?lang=eng">Zaporozhye National 
+      University<A> <BR><A class=sign 
+      href="mailto:webmaster@zsu.zp.ua">Web-laboratory</A><BR>
+      <P>
+      <CENTER><!-- SpyLOG f:1211 -->
+      <SCRIPT language=javascript><!--
+Mu="u971.60.spylog.com";Md=document;Mnv=navigator;Mp=0;
+Md.cookie="b=b";Mc=0;if(Md.cookie)Mc=1;Mrn=Math.random();
+Mn=(Mnv.appName.substring(0,2)=="Mi")?0:1;Mt=(new Date()).getTimezoneOffset();
+Mz="p="+Mp+"&rn="+Mrn+"&c="+Mc+"&t="+Mt;
+if(self!=top){Mfr=1;}else{Mfr=0;}Msl="1.0";
+//--></SCRIPT>
+
+      <SCRIPT language=javascript1.1><!--
+Mpl="";Msl="1.1";Mj = (Mnv.javaEnabled()?"Y":"N");Mz+='&j='+Mj;
+//--></SCRIPT>
+
+      <SCRIPT language=javascript1.2><!-- 
+Msl="1.2";Ms=screen;Mpx=(Mn==0)?Ms.colorDepth:Ms.pixelDepth;
+Mz+="&wh="+Ms.width+'x'+Ms.height+"&px="+Mpx;
+//--></SCRIPT>
+
+      <SCRIPT language=javascript1.3><!--
+Msl="1.3";//--></SCRIPT>
+
+      <SCRIPT language=javascript><!--
+My="";My+="<a href='http://"+Mu+"/cnt?cid=97160&f=3&p="+Mp+"&rn="+Mrn+"' target='_blank'>";
+My+="<img src='http://"+Mu+"/cnt?cid=97160&"+Mz+"&sl="+Msl+"&r1="+escape(Md.referrer)+"&r="+escape(parent.document.referrer)+"&fr="+Mfr+"&pg="+escape(window.location.href);
+My+="' border=0 width=88 height=31 alt='SpyLOG'>";
+My+="</a>";Md.write(My);//--></SCRIPT>
+      <NOSCRIPT><A 
+      href="http://u971.60.spylog.com/cnt?cid=97160&amp;f=3&amp;p=0" 
+      target=_blank><IMG height=31 alt=SpyLOG src="{$site_root_url}/templates/herald.files/zsu.edu.htm" 
+      width=88 border=0> </A></NOSCRIPT><!-- SpyLOG --><!-- BEGIN OF PING CODE --><A 
+      href="http://www.topping.com.ua/" target=_top><FONT color=white size=1>
+      <SCRIPT>
+//<!--
+id='092401155207';
+img='count11';
+an=navigator.appName; d=document;  w=''; c='';
+script='http://counter.topping.com.ua:80/cgi-bin/pinger.cgi';
+function ping() {
+d.write("<img src=\""+script+"?id="+id+"&img="+img+"&w="+w+"&c="+c+"&ref="+escape(d.referrer)+"\" width=88 height=31 border=0 alt=\"Rated by PING\"></a>");
+}
+//-->
+</SCRIPT>
+
+      <SCRIPT language=javascript1.2>
+//<!--
+s=screen;
+w=s.width;
+an!="Netscape"?c=s.colorDepth:c=s.pixelDepth
+//-->
+</SCRIPT>
+
+      <SCRIPT>
+//<!--
+ping()
+//-->
+</SCRIPT>
+      <NOSCRIPT><IMG height=31 alt="Rated by PING" 
+      src="{$site_root_url}/templates/herald.files/banerok.htm" width=88 border=0></A>; </NOSCRIPT></FONT><!-- END OF PING CODE -->
+      
+{/literal}
+
+</TD></TR></TBODY>
+</TABLE>
+</BODY></HTML>

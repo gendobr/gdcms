@@ -1,0 +1,31 @@
+
+
+
+
+
+
+
+
+
+=================================================================================
+
+
+в db_record_editor_2::draw_form() усовершенствовал сбор скрытых элементов формы:
+
+
+# ----------------- draw hidden elements - begin -------------------------------
+  $tor['hidden_elements']=$this->hidden_fields('^'.$this->form_name_prefix)
+    ."<input type=hidden name=\"{$this->form_name_prefix}is_submitted\" value=\"yes\">";
+  foreach($this->field as $fld)
+  {
+    if(isset($fld->options['hidden']) && $fld->options['hidden']=='yes')
+    {
+      $tor['hidden_elements'].="<input type=hidden name=\"{$fld->form_element_name}\" value=\"{$fld->form_element_value}\">";
+    }
+  }
+# ----------------- draw hidden elements - end ---------------------------------
+=================================================================================
+
+
+
+

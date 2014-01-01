@@ -1,0 +1,1 @@
+alter table `cms_photogalery_rozdil` add column `description` text NULL after `weight`;

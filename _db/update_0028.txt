@@ -1,0 +1,1 @@
+alter table `cms_calendar` add column `description` text NULL COMMENT 'Текстова інформація про подію' after `vis`;

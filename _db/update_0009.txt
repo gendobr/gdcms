@@ -1,0 +1,10 @@
+CREATE TABLE `cms_ec_delivery` (
+                   `ec_delivery_id` bigint(20) NOT NULL auto_increment,
+                   `site_id` int(11) default NULL,
+                   `ec_delivery_title` tinytext,
+                   `ec_delivery_ordering` int(11) default NULL,
+                   `ec_delivery_indent` int(11) default NULL,
+                   `ec_delivery_cost` varchar(255) default NULL,
+                   `ec_delivery_condition` varchar(255) default NULL,
+                   PRIMARY KEY  (`ec_delivery_id`)
+                 ) ENGINE=InnoDB;

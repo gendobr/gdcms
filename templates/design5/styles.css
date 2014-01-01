@@ -1,0 +1,146 @@
+BODY {
+	FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+TD {
+	FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+INPUT {
+	FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+P {
+	FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+LI {
+	FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+A {
+	FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+TEXTAREA {
+	FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Verdana,Tahoma
+}
+P {
+	TEXT-ALIGN: justify
+}
+LI {
+	TEXT-ALIGN: justify
+}
+A {
+	COLOR: navy; TEXT-DECORATION: none
+}
+A:hover {
+	TEXT-DECORATION: underline
+}
+.white {
+	COLOR: white
+}
+.whites8 {
+	FONT-SIZE: 8pt; COLOR: white; FONT-FAMILY: Verdana
+}
+.black {
+	COLOR: black
+}
+.red {
+	COLOR: red
+}
+.s3 {
+	FONT-SIZE: 3pt
+}
+.s6 {
+	FONT-SIZE: 6pt
+}
+.s8 {
+	FONT-SIZE: 8pt; FONT-FAMILY: Verdana
+}
+.s10 {
+	FONT-SIZE: 8pt
+}
+HR {
+	COLOR: #006ca8
+}
+INPUT.searchtext {
+	FONT-SIZE: 8pt; WIDTH: 100px; HEIGHT: 20px; BACKGROUND-COLOR: #eeeeee
+}
+INPUT.searchbutton {
+	FONT-SIZE: 8pt; WIDTH: 60px; FONT-FAMILY: Verdana,Tahoma; HEIGHT: 20px
+}
+.404 {
+	FONT-SIZE: 48pt; COLOR: #cccccc; FONT-STYLE: italic
+}
+.gray {
+	COLOR: #999999
+}
+H1 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H2 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H3 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H4 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H5 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H6 {
+	FONT-WEIGHT: bold; COLOR: #003ca8; FONT-FAMILY: Arial; TEXT-ALIGN: center
+}
+H1 {
+	FONT-SIZE: 20pt
+}
+H2 {
+	FONT-SIZE: 18pt
+}
+H3 {
+	FONT-SIZE: 16pt
+}
+H4 {
+	FONT-SIZE: 14pt
+}
+H5 {
+	FONT-SIZE: 12pt
+}
+H6 {
+	FONT-SIZE: 10pt
+}
+.indent {
+	PADDING-LEFT: 50px
+}
+.bold {
+	FONT-WEIGHT: bold
+}
+.left {
+	TEXT-ALIGN: left
+}
+.button {
+	BORDER-RIGHT: #211e72 3px solid; BORDER-TOP: #211e72 3px solid; FONT-SIZE: 12px; BORDER-LEFT: #211e72 3px solid; WIDTH: 26px; COLOR: #000000; BORDER-BOTTOM: #211e72 3px solid; HEIGHT: 25px; BACKGROUND-COLOR: #dddddd
+}
+.COOLINPUT {
+	BORDER-RIGHT: #211e72 3px solid; BORDER-TOP: #211e72 3px solid; BORDER-LEFT: #211e72 3px solid; COLOR: #000000; BORDER-BOTTOM: #211e72 3px solid; HEIGHT: 25px; BACKGROUND-COLOR: #ffffff
+}
+
+.mitem
+{
+  border-top:solid 3px #006699;
+  padding-top:4px;
+
+  border-bottom:solid 3px #006699;
+  padding-bottom:7px;
+  color:white;
+  font-weight:bold;
+  FONT-FAMILY: Verdana;
+  font-size:12px;
+}
+
+.mitem a
+{
+  color:white;
+}
+.mitem a:hover
+{
+  color:#B9E7FF;
+}
+

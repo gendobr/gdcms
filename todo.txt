@@ -1,0 +1,10 @@
+
+CREATE TABLE `cms_site_visitor` (                                 
+                    `site_visitor_id` bigint(11) unsigned NOT NULL auto_increment,  
+                    `site_visitor_password` varchar(32) NOT NULL default '',        
+                    `site_visitor_login` varchar(30) default NULL,                  
+                    `site_visitor_email` varchar(100) NOT NULL default '',          
+                    `site_visitor_home_page_url` varchar(255) default NULL,         
+                    PRIMARY KEY  (`site_visitor_id`),                               
+                    UNIQUE KEY `name_nick` (`site_visitor_login`)                   
+                  ) ENGINE=MyISAM DEFAULT        

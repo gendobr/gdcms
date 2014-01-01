@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+  <TITLE>{$page.title}</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+{literal}
+<style type="text/css">
+<!-- 
+.page_title
+{
+  padding-left:20px;
+  font-size:150%;
+  color:#91473B;
+  font-weight:bold;
+  font-family:Tahoma;
+}
+
+.menu_group
+{
+  font-family:Tahoma;
+  font-size:13px;
+  color:#91473B;
+  font-weight:bold;
+  {/literal}
+  background-image:url({$site_root_url}/templates/design4/top_bg.gif);
+  {literal}
+  padding:3px 3px 3px 10px;
+  border:solid thin white;
+  text-align:left;
+}
+a.menu_item
+{
+  font-family:Tahoma;
+  color:#91473B;
+  font-size:11px;
+  font-weight:bold;
+  text-align:left;
+  padding:2px 2px 3px 0px;
+  text-decoration:none;
+}
+
+a.menu_item:hover
+{
+  color:#5C2E26;
+}
+
+.content
+{
+  font-family:Tahoma;
+  color:#000000;
+  font-size:11px;
+  padding:13px;
+  text-align:left;
+}
+td.z {border: solid 1pt; color: #000000;   border-color: #ffffff; background: #D6D7A5; }
+td.r {border: solid 1pt; color: #000000;  border-color: #ffffff; background: #D68E7B;
+}
+
+-->
+</style>
+{/literal}
+</HEAD>
+<BODY text=#000000 link=#660000 bgColor=#ffffff leftMargin=0 topMargin=0 marginheight="0" marginwidth="0">
+<TABLE cellSpacing=0 cellPadding=0 width=100% border=0>
+ <TR bgcolor=#cccc00>
+   <TD colspan=2 class="z"><IMG height=90 alt="portland florist" src="{$site_root_url}/templates/design4/top.gif" 
+       name=oldtownflorist align=absmiddle width="184"><span class=page_title>{$page.title}</span><BR>
+   </TD>
+ </TR>
+ <TR bgcolor=#cccc00>
+    <TD colspan=2 valign=top  class="r" align=right><img src="{$site_root_url}/templates/design4/null.gif" height=24px align=absmiddle>
+    {foreach from=$lang key=ke item=ln}<a href="{$ln.url}" style="color:white;font-weight:bold; text-decoration:none;">{$ln.lang}</a>&nbsp;{/foreach}</TD>
+ </TR>
+ <TR>
+    <TD vAlign=top width=30% class="z">
+    {foreach from=$menu key=kg item=mg}
+<table style="width: 100%; height: 100%;" border=0 cellpadding="0" cellspacing="0">
+<tr><td class="z" colspan="3" height="25"><div style="margin:5pt;"><a class=menu_item href="#">{$mg.html}</a></div></td><td rowspan=2 class="r" valign="top"><img src="{$site_root_url}/templates/design4/null.gif" width="15"></td></tr>
+ <tr  height="100%"><td class="r"><img src="{$site_root_url}/templates/design4/null.gif"  height="300" width="10"></td><td class="z"  valign="top"><div style="margin:5pt;">
+     {foreach from=$mg.items key=ki item=mi}
+<a class=menu_item href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a></br>
+      {/foreach}</div></td><td class="r"><img src="{$site_root_url}/templates/design4/null.gif"  width="10"></td></tr>
+<tr><td colspan="4" class="z"><img src="{$site_root_url}/templates/design4/null.gif" height=0></td></tr>
+		</table>
+    {/foreach}
+    
+    </TD>
+    <TD vAlign=top width=80% class=content style="border: solid 1pt; color: #000000;  text-indent : 5pt; border-color: #ffffff; background: #D6D7A5;">
+        <div style="margin:0; text-align: 10; background: #FFFFFF;"><br>
+		<div style="margin:25; text-align: 10; background: #FFFFFF;">
+		{sysmsg}
+    {$page.content}
+    </div></div>
+    </TD>
+   </TR>
+<TR><TD colspan=2 align=right class="r" width=100%  height=22px><font size=-1 color=white>&copy; Zaporozhye National University</font><IMG height=22px src="{$site_root_url}/templates/design4/spacer.gif" width=4px align=absmiddle></TD></TR>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <META content="text/html; charset=windows-1251" http-equiv="Content-Type">
+        {literal}
+        <style type="text/css">
+            span.floats{
+                display:inline-block;
+                width:99%;
+                text-align:left;
+                vertical-align:top;
+            }
+            span.img_tn{
+                display:inline-block;
+                width:160px;
+                height:180px;
+                overflow:hidden;
+                border:1px dotted silver;
+                padding:3pt;
+                margin:3pt;
+                color:black;
+                vertical-align:top;
+                text-align:center;
+            }
+            span.img_tn a{display:block;}
+        </style>
+        {/literal}
+    </head>
+    <body>
+
+        <br>
+        <span class="floats">
+            {foreach from=$images item=img}
+            <span class="img_tn">
+                <a href="{$img.url_details}">
+                    <img src="{$img.url_thumbnail}" height="150" alt="" border="0"/>
+                </a>
+                {$img.pidpys}
+            </span>
+            {/foreach}
+
+        </span>
+    </body>
+</html>

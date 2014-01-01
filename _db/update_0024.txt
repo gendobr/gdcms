@@ -1,0 +1,1 @@
+alter table `cms_news` add column `weight` int(0) NOT NULL after `expiration_date`;

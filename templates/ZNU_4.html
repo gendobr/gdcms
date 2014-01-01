@@ -1,0 +1,266 @@
+{assign var="ZNU_root_url" value="http://www.zsu.edu.ua"}
+{php}
+// custom messages for languages 
+   $znu5_text=Array('ukr'=>Array(),'rus'=>Array(),'eng'=>Array());
+
+// ukrainian
+  $znu5_text['ukr']['Main_Page']="Головна стор_нка";
+  $znu5_text['ukr']['University']="Ун_верситет";
+  $znu5_text['ukr']['Science_and_study']="Наука й осв_та";
+  $znu5_text['ukr']['Entrance_Commitee']="Приймальна ком_с_я";
+  $znu5_text['ukr']['International']="М_жнародн_ зв'язки";
+  $znu5_text['ukr']['Departments']="Факультети";
+  $znu5_text['ukr']['Branches']="Ф_л_ї";
+  $znu5_text['ukr']['Out_of_lectures']="Позанавчальна д_яльн_сть";
+  
+  $znu5_text['ukr']['News']="Новини ЗНУ";
+  $znu5_text['ukr']['Forum']="Форум";
+  $znu5_text['ukr']['Contacts']="Контакти";
+  $znu5_text['ukr']['Guestbook']="Гостьова книга";
+  $znu5_text['ukr']['Sitemap']="Мапа сайту";
+  $znu5_text['ukr']['Search']="Пошук";
+  $znu5_text['ukr']['Links']="Посилання";
+  $znu5_text['ukr']['Feedback']="Зворотн_й зв'язок";
+  $znu5_text['ukr']['Anonsy']="Анонси";
+
+// russian
+  $znu5_text['rus']['Main_Page']="Главная страница";
+  $znu5_text['rus']['University']="Университет";
+  $znu5_text['rus']['Science_and_study']="Наука и учёба";
+  $znu5_text['rus']['Entrance_Commitee']="Приёмная комиссия";
+  $znu5_text['rus']['International']="Международные связи";
+  $znu5_text['rus']['Departments']="Факультеты";
+  $znu5_text['rus']['Branches']="Филиалы";
+  $znu5_text['rus']['Out_of_lectures']="Внеучебная деятельность";
+  
+  $znu5_text['rus']['News']="Новости ЗНУ";
+  $znu5_text['rus']['Forum']="Форум";
+  $znu5_text['rus']['Contacts']="Контакты";
+  $znu5_text['rus']['Guestbook']="Гостевая книга";
+  $znu5_text['rus']['Sitemap']="Карта сайта";
+  $znu5_text['rus']['Search']="Поиск";
+  $znu5_text['rus']['Links']="Ссылки";
+  $znu5_text['rus']['Feedback']="Обратная связь";
+  $znu5_text['rus']['Anonsy']="Анонсы";
+
+// english
+  $znu5_text['eng']['Main_Page']="Main Page";
+  $znu5_text['eng']['University']="University";
+  $znu5_text['eng']['Science_and_study']="Science & Studying";
+  $znu5_text['eng']['Entrance_Commitee']="Entrance Committee";
+  $znu5_text['eng']['International']="International activity";
+  $znu5_text['eng']['Departments']="Departments";
+  $znu5_text['eng']['Branches']="Branches";
+  $znu5_text['eng']['Out_of_lectures']="Out-of-lectures";
+  
+  $znu5_text['eng']['News']="ZNU News";
+  $znu5_text['eng']['Forum']="Forum";
+  $znu5_text['eng']['Contacts']="Contacts";
+  $znu5_text['eng']['Guestbook']="Guestbook";
+  $znu5_text['eng']['Sitemap']="Site map";
+  $znu5_text['eng']['Search']="Search";
+  $znu5_text['eng']['Links']="Links";
+  $znu5_text['eng']['Feedback']="Feedback";
+  $znu5_text['eng']['Anonsy']="Announcements";
+
+$this->_tpl_vars['znu5_text']=$znu5_text[$this->_tpl_vars['text']['language_name']];
+{/php}
+
+<html>
+<head>
+<title>{$page.title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<link rel="stylesheet" href="{$site_root_url}/templates/ZNU_5/styles.css" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td  class=a>
+<!-- початок маленької крайової таблиц_ -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%" height="10">
+<tr><td class="a" style="background-image: url({$site_root_url}/templates/ZNU_5/verh_line.gif);"><img src="{$site_root_url}/templates/ZNU_5/verh_line.gif"></td></tr></table>
+<!-- к_нець маленької крайової таблиц_ -->
+
+
+<!-- початок верхнього блоку -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="a" style="background-image: url({$site_root_url}/templates/ZNU_5/center_line.gif);" width="10%"><img src="{$site_root_url}/templates/ZNU_5/logo.{$text.language_name}{*ukr*}.gif" width="274" height="221"></td><td class="a" style="background-image: url({$site_root_url}/templates/ZNU_5/center_line.gif);" valign="top" align="right">
+
+<!-- початок блоку мов -->
+{* ------------------------ language selector - begin ----------------------- *}
+{foreach from=$lang key=ke item=ln}
+   {if $text.language_name eq $ke}
+     <a href="{$ln.url}" title="{$ln.title}"><img src="{$site_root_url}/templates/ZNU_5/fl_{$ln.lang}_a.gif" border="0" width=23px height=15px></a>&nbsp;
+   {else}
+     <a href="{$ln.url}" title="{$ln.title}"><img src="{$site_root_url}/templates/ZNU_5/fl_{$ln.lang}_n.gif" border="0" width=23px height=15px></a>&nbsp;
+   {/if}
+{/foreach}
+{* ------------------------ language selector - end ------------------------- *}
+<!-- к_нець блоку мов -->
+
+</td><td class="a" style="background-image: url({$site_root_url}/templates/ZNU_5/center_line.gif);" valign="top" align="right" width="10%"><img src="{$site_root_url}/templates/ZNU_5/image.gif" width="276" height="219"></td></tr>
+</table>
+<!-- к_нець верхнього блоку -->
+
+<!-- початок основного текстового блоку -->
+<table border="0" cellpadding="0" cellspacing="0" width=100%>
+<!-- початок л_вого блоку -->
+<tr><td class="a" width="5%" valign="top">
+      <table border="0" cellpadding="5" cellspacing="5">
+      <!-- початок 1 елементу л_вого блоку -->
+      <tr>
+      <td class="b" width="100%"  style="background-image: url({$site_root_url}/templates/ZNU_5/rozdil.gif); background-position: top,left; background-repeat: no-repeat; background-color: #ffffff; border-top:none;{* border-top-color: #D1DFE0;*}">
+      <br>
+      <div  class=menu><nobr><a href="{$ZNU_root_url}/{$text.language_name}/main/">{$znu5_text.Main_Page}</a></nobr></div>
+      <div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/university">{$znu5_text.University}</a></div>
+      <div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/science">{$znu5_text.Science_and_study}</a></div>
+      <div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/pk">{$znu5_text.Entrance_Commitee}</a></div>
+      <div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/international">{$znu5_text.International}</a></div>
+      <div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/departments">{$znu5_text.Departments}</a></div>
+      <div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/filialy">{$znu5_text.Branches}</a></div>
+      <div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/diff">{$znu5_text.Out_of_lectures}</a></div>
+      </td>
+      </tr>
+      <!-- к_нець 1 елементу л_вого блоку -->
+      
+      <!-- початок 2 елементу л_вого блоку -->
+      <tr><td class="b" width="100%"><!-- 
+       --><div  class=menu><a href="http://sites.zsu.zp.ua/news.php?start=10&site_id=27&lang={$text.language_name}">{$znu5_text.News}</a></div><!-- 
+       --><div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/main/contacts/">{$znu5_text.Contacts}</a></div><!-- 
+       --><div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/main/sitemap/">{$znu5_text.Sitemap}</a></div><!-- 
+       --><div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/main/links/">{$znu5_text.Links}</a></div><!-- 
+       --><div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/main/guestbook/">{$znu5_text.Guestbook}</a></div><!-- 
+       --><div  class=menu><a href="{$site_root_url}/contacts/index.php?action=guest/msg&contact_id=97">{$znu5_text.Feedback}</a></div><!-- 
+       --><div  class=menu><a href="http://sites.zsu.zp.ua/forum.php?site_id=20&lang={$text.language_name}&interface_lang={$text.language_name}">{$znu5_text.Forum}</a></div><!-- 
+       --><div  class=menu><a href="{$ZNU_root_url}/{$text.language_name}/main/search">{$znu5_text.Search}</a></div><!-- 
+       --></td></tr>
+      <!-- к_нець 2 елементу л_вого блоку -->
+      
+
+      <!-- початок елементу "п_дрозд_ли" л_вого блоку -->
+      {foreach from=$menu  key=ke item=menu_group}
+            <tr>
+            <td class="b" width="100%">
+            <b>{$menu_group.html}</b><br />
+            {foreach from=$menu_group.items item=menu_item}
+              <div  class=menu><a href="{$menu_item.url}" title="{$menu_item.description}" {$menu_item.attributes}>{$menu_item.html}</a></div>
+            {/foreach}
+            </td></tr>
+      {/foreach}
+      <!-- к_нець елементу "п_дрозд_ли" л_вого блоку -->
+      {*
+      <!-- початок елементу "пошук" л_вого блоку -->
+      <tr>
+      <td class="b" width="100%"><!-- 
+       --><form method="post" action=index.php><!-- 
+       --><input type=hidden name=dest value="main@search"><!-- 
+       --><input type=hidden name=lang value="{$text.language_name}"><!-- 
+       --><input size="10" type="text" name="what" class="searchtext"><!-- 
+       --><br><input type="submit" value="{$text.search_label}!" class="searchbutton"><!-- 
+       --></form>
+      </td></tr>
+      <!-- к_нець елементу "пошук" л_вого блоку -->
+      *}
+      </table>
+</td>
+<!-- к_нець л_вого блоку -->
+<!-- початок центрального блоку -->
+<td class="a" valign="top">
+
+<table border="0" cellpadding="15" cellspacing="5" width=100%>
+<tr>
+<td class="b">
+    {literal}
+    <script type="text/javascript">
+    <!-- 
+      function print_page_content(block_id)
+      {
+        var content_block = document.getElementById(block_id);
+        if(!content_block) return;
+        if(!content_block.innerHTML) return;
+        frm=window.open("about:blank","print_content","scrollbars=1,resizable=1,menubar=1,status=1");
+        frm.document.open();
+        frm.document.writeln(document.location.href + '<hr>');
+        var str = content_block.innerHTML;
+        str = str.replace(/<script/, '<!-- script');
+        str = str.replace(/script>/, 'script -->');
+    
+        frm.document.writeln(str);
+    
+        frm.document.close();
+        return;
+      }
+    // -->
+    </script>
+    {/literal}
+    <div align=right><a href="#" onclick="print_page_content('page_content'); return false;" title="{$text.Printer_friendly_version}"><img src={$site_root_url}/templates/ZNU_5/print.gif  alt="{$text.Printer_friendly_version}" width=16 height=14 border=0></a></div>
+    <span class="textblok" id="page_content">
+<!-- вм_ст центрального блоку -->
+    <h3>{$page.title}</h3>
+	{sysmsg}
+    {$page.content} 
+<!-- зак_нчився вм_ст центрального блоку -->
+    </span>
+</td>
+</tr>
+</table>
+
+</td>
+<!-- к_нець центрального блоку -->
+<!-- початок правого блоку -->
+<td class="a" width="15%" valign="top">
+<table border="0" cellpadding="5" cellspacing="5">
+
+
+<!-- початок 1 елементу правого блоку -->
+<tr>
+<td class="b" width="100%"  style="background-image: url({$site_root_url}/templates/ZNU_5/rozdil.gif); background-position: top,left; background-repeat: no-repeat; background-color: #ffffff; border-top:none;{*border-top-color: #D1DFE0;*}">
+<br />
+<b>{$znu5_text.Anonsy} : </b>
+<br>
+<script type="text/javascript" src="http://sites.zsu.zp.ua/cms/index.php?action=news/js&site_id=28&lang={$text.language_name}&rows=3&date=asc"></script>
+</td></tr>
+<!-- к_нець 1 елементу правого блоку -->
+
+
+<!-- початок 2 елементу правого блоку -->
+<tr>
+<td class="b" width="100%">
+<script type="text/javascript" src="http://sites.zsu.zp.ua/cms/index.php?action=news/js&site_id=26&lang={$text.language_name}&rows=1"></script>
+</td></tr>
+<!-- к_нець 2 елементу правого блоку -->
+{* 
+<!-- початок 3 елементу правого блоку -->
+<tr>
+<td class="b" width="100%">dfdfgd dfgdf fgfghfdh
+</td></tr>
+<!-- к_нець 3 елементу правого блоку -->
+*}
+</table>
+</td>
+</tr>
+<!-- к_нець правого блоку -->
+</table>
+<!-- к_нець основного текстового блоку -->
+<!-- початок нижнього блоку -->
+<table border="0" cellpadding="10" cellspacing="5" width="100%">
+<tr><td class="a" valign="top">
+
+<table border="0" cellpadding="10" cellspacing="5" width="100%">
+<tr>
+<td class="b" align=center>
+<a href="{$ZNU_root_url}/contacts/index.php?action=guest/msg&contact_id=97">Запор_зький нац_ональний ун_верситет, Web-лаборатор_я, c 1996-2005</a>
+  <!-- counters - begin -->
+  {php}include local_root.'/templates/ZNU_4/counters.html';{/php}
+  <!-- counters - end -->
+</td>
+</tr>
+</table>
+</td></tr></table>
+<!-- к_нець нижнього блоку -->
+<!-- початок маленької крайової таблиц_ -->
+<TABLE height=10 cellSpacing=0 cellPadding=0 width="100%" border=0>
+<tr><td class="a" style="background-image: url({$site_root_url}/templates/ZNU_4/verh_line2.gif);"><img src="{$site_root_url}/templates/ZNU_4/verh_line2.gif"></td></tr>
+</table>
+<!-- к_нець маленької крайової таблиц_ -->
+</td></tr></table>
+</body>
+</html>

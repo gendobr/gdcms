@@ -1,0 +1,2 @@
+alter table `cms_news` change `title` `title` varchar(512) NOT NULL;
+alter table `cms_page` change `title` `title` varchar(512) default '' NOT NULL;

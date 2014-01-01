@@ -1,0 +1,18 @@
+.left_border, .left_border img{display:none;}
+.right_border, .right_border img{display:none;}
+.top_site_menu{display:none;}
+.site_header{display:none;}
+
+#top_menu_tabs{display:none;}
+
+#search_form{display:none;}
+#site_header_marquee,marquee{display:none;}
+#rulers{display:none;}
+#Where_you_are{display:none;}
+.mainframe{width:100%;background:none;}
+body{background:none;}
+.right_column{display:none;}
+.footer_right{display:none;}
+.footer_left{display:none;}
+table,tr,td{border:none;}
+

@@ -1,0 +1,37 @@
+{capture name=npt assign="newpagetitle"}{txt lang=$text.language_name variants="eng=News::rus=Новости::ukr=Новини"}{/capture}
+{save path="page.title" value=$newpagetitle}
+
+<div>
+{txt lang=$text.language_name variants="eng=News::rus=Новости::ukr=Новини"}
+{$start}-{$finish}
+(
+   {txt lang=$text.language_name variants="eng=news found::rus=всего найдено::ukr=всього знайдено"}
+ : {$items_found}
+)
+</div>
+
+{if $items_found gt 0}
+  {foreach from=$items item=item}
+  <div>
+  <h4><a href="{$item.rsssourceitem_url}">{$item.rsssourceitem_title}</a></h4>
+  <div style='font-size:90%;'>{$item.rsssourceitem_datetime|date_format:"%Y-%m-%d %H:%M:%S"}</div>
+    {$item.rsssourceitem_abstract}
+  </div>
+  {/foreach}
+
+{if $paging[1]}
+<br><br><br>
+<div align=left>
+{$text.Pages} :
+{foreach from=$paging item=link}
+  {if $link.URL|count_characters >2}
+    <a href="{$link.URL}">{$link.innerHTML}</a>
+  {else}
+    {$link.innerHTML}
+  {/if}
+{/foreach}
+</div>
+{/if}
+{else}
+   {txt lang=$text.language_name variants="eng=News not found::rus=Новости не найдены::ukr=Новини не знайдені"}
+{/if}

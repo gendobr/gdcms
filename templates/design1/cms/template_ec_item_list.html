@@ -1,0 +1,101 @@
+{literal}
+<style type="text/css">
+   span.itemlist{display:inline-block; width:99%;}
+   span.oneitem{display:inline-block; width:220px; height:250px;overflow:hidden;text-align:left;padding:5px;}
+   div.lnk{height:200px; overflow:hidden;}
+   div.sml{font-size:80%;}
+   span.oneitem h3{margin-bottom:0pt;margin-top:10pt;font-size:15pt;text-align:center;}
+   span.oneitem img{border:none;}
+   div.r1{display:block; height:200px; overflow:hidden;text-align:center;}
+   div.flt_l{width:30%;float:left;display:block;padding-left:3pt; font-size:10pt;}
+   div.flt_r{width:67%;float:right;display:block;text-align:right; font-size:10pt;}
+
+   form.btn{margin:0px;}
+
+   div.tip{width:auto;background-color:gray;padding:4px;position:absolute;margin-top:-1pt;overflow:clip;}
+   span.fo{display:inline-block;font-size:8pt;}
+   span.fo input{font-size:8pt;}
+   span.fo div.tip{display:none;}
+   span.fo:hover div.tip{display:block;}
+</style>
+<script src="scripts/ec/item/compare_add.js"></script>
+<script src="scripts/lib/ajax.js"></script>
+{/literal}
+
+{if $ec_items_found gt 0}
+
+
+<p>{$ec_items_search_summary}</p>
+{* Displaying items {$start} - {$finish} from {$ec_items_found} *}
+
+<p>
+<a href="{$orderby.ec_item_price_asc}">{msg id="Order_by_price_cheapest_on_top"}</a>
+<a href="{$orderby.ec_item_price_desc}">{msg id="Order_by_price_expensive_on_top"}</a>
+<a href="{$orderby.ec_item_last_change_date_asc}">{msg id="Order_by_date_new_on_top"}</a>
+<a href="{$orderby.ec_item_last_change_date_desc}">{msg id="Order_by_date_old_on_top"}</a>
+<a href="{$orderby.ec_item_purchases_desc}">{msg id="Order_by_item_purchases_on_top"}</a>
+
+
+</p>
+<br><br>
+
+<span class="itemlist">
+{foreach from=$ec_items item=item}
+<span class="oneitem">
+   <div class="lnk">
+   <div style="font-weight:bold;text-align:center;">
+      {*<!--  {if $item.ec_item_mark neq ''}<div style="text-align:center;position:relative;top:0px;left:40pt;width:100pt;border:2pt dotted silver;">{$item.ec_item_mark}</div>{/if} -->*}
+       <a href="{$item.url_details}">{$item.ec_item_title}</a>
+   </div>
+   {if $item.ec_main_image}<div class="r1"><a href="{$item.url_details}"><img src="{$site.url}{$item.ec_main_image}"></a></div>{/if}
+   </div>
+   <div class="sml">
+       <div class="flt_l">{if $item.ec_item_sell eq 1}{$item.ec_item_price}{$item.ec_curency_title}{/if}</div>
+       <div class="flt_r">{if $item.ec_item_amount gt 0}{msg id="ec_item_amount"}:{$item.ec_item_amount}{else}{msg id="ec_item_ordering"}{/if}</div>
+   </div><nobr>
+    {capture assign=ec_item_variant_tip}
+            {if $item.ec_item_variant_default}
+                <div class="tip">
+                {foreach from=$item.ec_item_variant_default item=variant name=va}
+                   {if not $smarty.foreach.va.first}, {/if}
+                   {$variant.ec_item_variant_description|strip_tags}
+                {/foreach}
+                <br/><a href="{$item.url_details}">выбрать другие варианты</a>
+                </div>
+            {/if}
+    {/capture}
+   {if $item.ec_item_sell eq 1}
+    {if $item.ec_item_price gt 0}
+      <span class="fo"><form class="btn" action="{$item.url_order_now}" method="post"><input type="submit"  value="{$text.EC_item_add_to_cart_now}">{$ec_item_variant_tip}</form></span>
+      <span class="fo"><form class="btn" action="{$item.url_buy_now}" method="post"><input type="submit" value="{$text.EC_item_buy_now}">{$ec_item_variant_tip}</form></span>
+    {else}
+      <span class="fo"><form class="btn" action="{$item.url_order_now}" method="post"><input type="submit" value="{$text.EC_item_add_to_cart_now}">{$ec_item_variant_tip}</form></span>
+      <span class="fo"><form class="btn" action="{$item.url_buy_now}" method="post"><input type="submit" value="{$text.EC_item_order_now}">{$ec_item_variant_tip}</form></span>
+    {/if}
+   {/if}
+   {if $item.ec_compare_add_javascript neq ''}<span class="fo"><form class="btn"  id="compare_add_{$item.ec_item_id}" action="{$item.ec_compare_add_url}" target="if"  onsubmit="{$item.ec_compare_add_javascript}"><input type="submit" value="{msg id="EC_items_add_to_comparison"}"></form></span>{/if}
+   </nobr>
+
+
+</span>
+{/foreach}
+
+  
+<iframe name="if" style="display:none;width:1px;height:1px; border:none;"></iframe>
+</span>
+
+{if $pages[1]}
+    <p>
+        {$text.Pages}:
+        {foreach from=$pages item=pg}
+            {if $pg.URL}
+                <a href="{$pg.URL}">{$pg.innerHTML}</a>
+            {else}
+                <b>{$pg.innerHTML}</b>
+            {/if}
+        {/foreach}
+    </p>
+{/if}
+{else}
+<big><b>{msg id="EC_items_not_found"}</b></big>
+{/if}

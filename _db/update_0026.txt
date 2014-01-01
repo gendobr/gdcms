@@ -1,0 +1,1 @@
+alter table `cms_site_search` change `url` `url` varchar(1024) NULL ;

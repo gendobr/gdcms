@@ -1,0 +1,42 @@
+-- phpMyAdmin SQL Dump
+-- version 2.10.3
+-- http://www.phpmyadmin.net
+--
+-- Хост: localhost
+-- Время создания: Мар 04 2011 г., 11:30
+-- Версия сервера: 5.0.41
+-- Версия PHP: 5.2.8
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- База данных: `kalendar`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `cms_calendar`
+--
+
+CREATE TABLE IF NOT EXISTS `cms_calendar` (
+  `id` int(11) NOT NULL auto_increment COMMENT 'номер запису',
+  `site_id` int(11) NOT NULL COMMENT 'номер сайта користувача',
+  `nazva` varchar(1024) NOT NULL COMMENT 'назва події',
+  `pochrik` int(11) NOT NULL COMMENT 'рік початку події',
+  `pochmis` int(11) NOT NULL COMMENT 'місяць  початку події',
+  `pochtyzh` int(11) NOT NULL COMMENT 'день тижня  початку події',
+  `pochday` int(11) NOT NULL COMMENT 'день  початку події',
+  `pochgod` int(11) NOT NULL COMMENT 'година  початку події',
+  `pochhv` int(11) NOT NULL COMMENT 'хвилина  початку події',
+  `kinrik` int(11) NOT NULL COMMENT 'рік кінця події',
+  `kinmis` int(11) NOT NULL COMMENT 'місяць кінця події',
+  `kintyzh` int(11) NOT NULL COMMENT 'день тижня  кінця події',
+  `kinday` int(11) NOT NULL COMMENT 'день  кінця події',
+  `kingod` int(11) NOT NULL COMMENT 'година кінця події',
+  `kinhv` int(11) NOT NULL COMMENT 'хвилина  кінця події',
+  `adresa` varchar(1024) NOT NULL COMMENT 'адреса сторінки з описом події',
+  `kartynka` varchar(1024) NOT NULL COMMENT 'адреса іконки події',
+  `vis` int(11) NOT NULL COMMENT 'видима подія чи ні',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  AUTO_INCREMENT=11 ;

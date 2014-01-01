@@ -1,0 +1,2 @@
+alter table `cms_forum_list` add column `moderators` text NULL after `about`;
+alter table `cms_news` add column `creation_date` datetime NULL after `weight`;

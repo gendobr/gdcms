@@ -1,0 +1,10 @@
+CREATE TABLE `cms_photogalery_rozdil` (
+                          `id` int(11) NOT NULL AUTO_INCREMENT,
+                          `photos` text,
+                          `photos_m` text,
+                          `rozdil` varchar(1024) DEFAULT NULL,
+                          `site_id` int(11) DEFAULT NULL,
+                          `image_id` int(11) DEFAULT NULL,
+                          `rozdil2` varchar(64) DEFAULT NULL,
+                          PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=16;

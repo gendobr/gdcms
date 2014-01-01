@@ -1,0 +1,76 @@
+{if $paging[1]}
+    {msg id="Pages"} :
+    {foreach from=$paging item="pg"}
+        {if $pg.URL|count_characters}
+          <a href="{$pg.URL}">{$pg.HTML}</a>
+        {else}
+          <b>{$pg.HTML}</b>
+        {/if}
+    {/foreach}
+{/if}
+
+{if $guestbook_messages[0]}
+    {foreach from=$guestbook_messages item="row"}
+        <p/>
+        <div>
+        <b>
+        {if $row.email|count_characters}
+          <a href='mailto:{$row.email}'>{$row.name|wordwrap:60:"\n":true}</a>
+        {else}
+          {$row.name|wordwrap:60:"\n":true}
+        {/if}
+        <div> <i>{$row.data|date_format:"%d.%m.%Y %H:%M"}</i></div>
+
+        {if $row.adress|count_characters}
+          <div><a href='{$row.adress}'  target="_blank">{$row.adress|wordwrap:60:"\n":true}</a></div>
+        {/if}
+
+        {if  $row.tema|count_characters}
+          <div>{$row.tema|wordwrap:60:"\n":true}</div>
+        {/if}
+        </b>
+        <div>{$row.text|wordwrap:60:" ":true}</div>
+        </div>
+    {/foreach}
+
+
+    {if $paging[1]}
+        <p/>
+        {msg id="Pages"} :
+        {foreach from=$paging item="pg"}
+            {if $pg.URL|count_characters}
+              <a href="{$pg.URL}">{$pg.HTML}</a>
+            {else}
+              <b>{$pg.HTML}</b>
+            {/if}
+        {/foreach}
+    {/if}
+{/if}
+
+
+
+<h4>{msg id="Create_message"}</h4>
+<form action="{$form_action}" method=post style="margin:0px; padding:0px;">
+
+<div>{msg id="Name"}:</div>
+<INPUT type=text class=text NAME=name SIZE=15 style='width:99%;'>
+
+<div>E-mail:</div>
+<INPUT type=text class=text NAME=email SIZE=15 style='width:99%;'>
+
+
+<div>WWW:</div>
+<INPUT type=text NAME=adress class=text value='' SIZE=25 style='width:99%;'>
+
+<div>{msg id="Subject"}</div>
+<INPUT type=text class=text NAME=tema  value='' SIZE=25 style='width:99%;'>
+
+<div>{msg id="Message"}</div>
+<textarea  class=text NAME=text rows=4 cols=40 style='width:99%;'></TEXTAREA>
+
+<b>{msg id="Retype_the_number"}</b> <img src={$codeimage} border=1px align="absmiddle"> <input type=text name=postedcode value=''>
+
+<div><input type=submit value='{msg id="Send"}' class=button></div>
+
+</form>
+

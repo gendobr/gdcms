@@ -1,0 +1,90 @@
+BODY {
+	FONT-SIZE: 12pt; COLOR: #000000; FONT-FAMILY: Arial, Helvetica
+}
+B {
+	FONT-FAMILY: Arial,Helvetica
+}
+STRONG {
+	FONT-FAMILY: Arial,Helvetica
+}
+se {
+	FONT-FAMILY: Arial,Helvetica
+}
+H1 {
+	COLOR: #02194e; FONT-FAMILY: Arial,Helvetica
+}
+H2 {
+	COLOR: #02194e; FONT-FAMILY: Arial,Helvetica
+}
+H3 {
+	COLOR: #02194e; FONT-FAMILY: Arial,Helvetica
+}
+H4 {
+	COLOR: #02194e; FONT-FAMILY: Arial,Helvetica
+}
+H5 {
+	COLOR: #02194e; FONT-FAMILY: Arial,Helvetica
+}
+H6 {
+	COLOR: #02194e; FONT-FAMILY: Arial,Helvetica
+}
+A {
+	FONT-WEIGHT: bold; COLOR: #042ea0; FONT-FAMILY: Arial,Helvetica; TEXT-DECORATION: none
+}
+A:hover {
+	FONT-WEIGHT: bold; COLOR: #043ed0; FONT-FAMILY: Arial,Helvetica; TEXT-DECORATION: underline
+}
+A.design {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #042ea0; FONT-FAMILY: Arial,Helvetica; TEXT-DECORATION: none
+}
+.fixed {
+	FONT-SIZE: 12px; FONT-FAMILY: Arial,Helvetica
+}
+.fixedlink {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; FONT-FAMILY: Arial,Helvetica
+}
+TD.heading {
+	FONT-WEIGHT: bold; COLOR: #ffffff; FONT-FAMILY: Arial,Helvetica; BACKGROUND-COLOR: #02194e
+}
+TD.content {
+	COLOR: #000000; FONT-FAMILY: Arial,Helvetica; BACKGROUND-COLOR: #bdc5d1
+}
+TD.value1 {
+	COLOR: #000000; FONT-FAMILY: Arial,Helvetica; BACKGROUND-COLOR: #bdc5d1
+}
+TD.value2 {
+	COLOR: #000000; FONT-FAMILY: Arial,Helvetica; BACKGROUND-COLOR: #afb8c7
+}
+TD.form {
+	FONT-FAMILY: Arial,Helvetica
+}
+TD.empty {
+	BACKGROUND-IMAGE: none
+}
+P {
+	FONT-SIZE: 12pt; COLOR: #000000; FONT-FAMILY: Arial, Helvetica
+}
+LI {
+	COLOR: #000000; FONT-FAMILY: Arial,Helvetica
+}
+UL {
+	COLOR: #000000; FONT-FAMILY: Arial,Helvetica
+}
+OL {
+	COLOR: #000000; FONT-FAMILY: Arial,Helvetica
+}
+INPUT.buttons {
+	FONT-WEIGHT: bold; COLOR: #ffffff; FONT-FAMILY: Arial,Helvetica; BACKGROUND-COLOR: #02194e
+}
+INPUT.text {
+	COLOR: #000000; BACKGROUND-COLOR: #bdc5d1
+}
+SELECT {
+	COLOR: #000000; BACKGROUND-COLOR: #bdc5d1
+}
+TEXTAREA {
+	COLOR: #000000; BACKGROUND-COLOR: #bdc5d1
+}
+FONT.error {
+	COLOR: red; text-weight: bold
+}

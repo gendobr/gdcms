@@ -1,0 +1,1 @@
+alter table `cms_ec_item` add column `cached_info` text NULL after `ec_item_keywords`, add column `cache_datetime` datetime NULL after `cached_info`;

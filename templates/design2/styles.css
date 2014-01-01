@@ -1,0 +1,159 @@
+body{
+   font-family:Tahoma, Verdana, Arial;
+   background-color:#b4b4b4;
+}
+
+div.shade_0{
+   background-image:url(right-middle.gif);
+   background-position:top right;
+   background-repeat:repeat-y;
+   padding:0;
+}
+div.shade_00{
+   background-image:url(right-top.gif);
+   background-position:top right;
+   background-repeat:no-repeat;
+   padding-right:6px;
+   padding-top:0;
+   padding-left:0;
+   padding-bottom:0;
+}
+div.shade_bottom_0{
+   background-image:url(bottom-bg-0.gif);
+   background-position:top right;
+   background-repeat:repeat-x;
+   padding:0;
+   height:6px;
+}
+div.shade_bottom_00{
+   background-image:url(bottom-bg-00.gif);
+   background-position:top left;
+   background-repeat:no-repeat;
+   padding:0;
+   height:6px;
+}
+div.shade_bottom_000{
+   background-image:url(bottom-bg-000.gif);
+   background-position:top right;
+   background-repeat:no-repeat;
+   padding:0;
+   height:6px;
+}
+
+
+
+
+
+
+div.header_1{
+   background-image:url(h2_bg.jpg);
+   background-position:top left;
+   height:169px;
+   border:10px solid white;
+   padding:0;
+   BACKGROUND-COLOR: #86623e;
+}
+
+div.header_2{
+   background-image:url(h1_bg.jpg);
+   background-repeat:no-repeat;
+   background-position:top right;
+   height:159px;
+   padding-top:0px;
+   padding-left:20px;
+   border:1px solid white;
+}
+
+
+h1.header_3{
+   color:white;
+   font-size:20pt;
+   margin-bottom:10px;
+   margin-top:20px;
+}
+
+
+div.langlink{
+   float:right;
+   padding-right:20px;
+}
+
+div.langlink a{
+   color:white;
+   font-size:70%;
+}
+
+a.toplink      {   color:white; font-size:90%;}
+a.toplink:hover{   color:red; }
+
+
+div.colontitul{
+ color:black;
+ font-size:70%;
+}
+
+
+
+
+
+
+
+
+
+
+
+.menu_block{
+  position:absolute;
+  text-align:left;
+  border:4px solid white;
+  padding:10px;
+  background-color:silver;
+  font-size:90%;
+}
+
+.menu_item, .menu_item A{
+  background-color:#b4b4b4;
+  color:black;
+}
+.menu_item A:hover{
+  color:red;
+}
+
+
+
+
+
+
+
+
+
+
+div.page_content{
+	PADDING-RIGHT: 20px;
+  PADDING-LEFT: 20px;
+  FONT-SIZE: 100%;
+  PADDING-BOTTOM: 20px;
+  PADDING-TOP: 20px;
+  FONT-FAMILY: Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A{	COLOR: blue;}
+A:hover {	COLOR: red}
+
+.sign {
+	FONT-WEIGHT: bold; TEXT-ALIGN: right
+}

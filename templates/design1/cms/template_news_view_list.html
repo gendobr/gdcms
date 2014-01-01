@@ -1,0 +1,77 @@
+{capture name=npt assign="newpagetitle"}{txt lang=$text.language_name variants="eng=News::rus=Новости::ukr=Новини"}{/capture}
+{save path="page.title" value=$newpagetitle}
+<link title="{$newpagetitle}" type="application/rss+xml" rel="alternate" href="{$rss_url}"/>
+{literal}
+<style>
+.tag_selected, .tag{white-space:nowrap;}
+.tag_selected {font-weight:bold;}
+.tag{font-weight:normal;}
+img.img_tag_selected, img.img_tag{margin:0px;}
+</style>
+{/literal}
+
+
+<div style="width:180pt; float:left;">{$news_keywords_selector}</div>
+<div style="width:180pt; float:left;">{$news_date_selector}</div>
+{*<div style="width:180pt; float:left;">{$news_category_selector}</div>*}
+
+<div style="width:180pt; float:left;">
+      {foreach from=$news_category->parents item=row }
+           <div style="padding-left:{$row.padding}px;">
+               <a href="{$row.URL}" title="{$row.category_title}" >{$row.title_short}</a><br>
+           </div>
+      {/foreach}
+      <div style="padding-left:{$news_category->info.padding}px;">
+          <b><div title="{$news_category->info.category_title}">{$news_category->info.title_short}</div></b>
+          <div style='font-size:80%;'>{$news_category->info.category_description}</div>
+      </div>
+      {foreach from=$news_category->children item=row}
+          <div style="padding-left:{$row.padding}px;padding-bottom:3px;padding-top:2px; border:none;">
+              <a href="{$row.URL}" title="{$row.category_title}" >{*$row.category_code*} {$row.title_short} {$row.has_subcategories}</a><br>
+          </div>
+      {/foreach}
+</div>
+<div style="width:180pt; float:left;">{$news_tags}</div>
+<div style='clear:both;'></div>
+<br />
+
+<div align=left><b>
+{txt lang=$text.language_name variants="eng=News::rus=Новости::ukr=Новини"}
+{$start}-{$finish}
+(
+ {txt lang=$text.language_name variants="eng=news found::rus=всего найдено::ukr=всього знайдено"}
+ : {$news_found}
+)
+</b></div>
+
+
+{if $news_found gt 0}
+{foreach from=$news item=news_item}
+  <div align=left>
+    <div>
+    <h4 style='margin-bottom:0;'>
+      {if $news_item.content_present eq '1'}
+        <a href="{$news_item.URL_view_details}">{$news_item.title}</a>
+      {else}
+        {$news_item.title}
+      {/if}
+    </h4>
+    <div style='font-size:90%;'>{$news_item.last_change_date|date_format:"%Y-%m-%d %H:%M:%S"} {if $news_item.expiration_date}... {$news_item.expiration_date|date_format:"%Y-%m-%d %H:%M:%S"}{/if}</div>
+    {$news_item.abstract}
+    </div>
+  </div>
+  <div style="clear:both;"></div>
+{/foreach}
+<br />
+<div align=left>
+{$text.Pages} :
+{foreach from=$paging_links item=link}
+  {if $link.URL|count_characters >2}
+    <a href="{$link.URL}">{$link.innerHTML}</a>
+  {else}
+    {$link.innerHTML}
+  {/if}
+{/foreach}
+</div>
+{* <a href="{$all_news_url}">{$local_text.More_news} &raquo; </a> *}
+{/if}

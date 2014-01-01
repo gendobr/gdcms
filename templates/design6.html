@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>{$page.title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+{literal}
+<style type="text/css">
+<!-- 
+.page_title
+{
+   color:#eeeeff;
+   margin-bottom:5px;
+   font-family:tahoma;
+   font-style:italic;
+   font-weight:bold;
+   font-size:30px;
+}
+
+h1, h2,h3,h4,h5,h6{  color:#6666cc; font-family:tahoma;}
+
+a.language_selector
+{
+  font-weight:bold;
+  color:#0066ff;
+  font-size:12px;
+  font-family:tahoma;
+}
+
+a.menu
+{
+  text-decoration:none;
+  padding-left:5px;
+  padding-top:5px;
+  padding-bottom:5px;
+  font-family:tahoma;
+  color:white;
+  font-size:13px;
+  font-weight:bold;
+} 
+
+
+.menu_block
+{
+  position:absolute;
+  border:solid 1px blue;
+  
+}
+
+.menu_item
+{
+   height:22px;
+   font-size:11px;
+   font-weight:bold;
+   font-family:tahoma;
+   background-color:#66ccff;
+   padding-left:10px;
+   padding-right:10px;
+   text-decoration:none;
+} 
+
+a.menu_item:hover{ color:white;}
+
+
+BODY
+{
+	SCROLLBAR-FACE-COLOR:#e3eeff;
+  SCROLLBAR-HIGHLIGHT-COLOR:#fafafa;
+  CURSOR:default;
+  SCROLLBAR-SHADOW-COLOR:#7fa9ff;
+  SCROLLBAR-3DLIGHT-COLOR:white;
+  SCROLLBAR-ARROW-COLOR:#7fa9ff;
+  SCROLLBAR-TRACK-COLOR:#fafafa;
+  SCROLLBAR-DARKSHADOW-COLOR:#fafafa;
+  br:#7fa9ff;
+  margin:0px;
+}
+
+.page_content
+{
+  font-family:tahoma;
+  font-size:11px;
+  padding:10px;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+var prev_menu;
+var href;
+function ch(cid)
+{
+    var lay=document.getElementById(cid);
+    if (lay.style.display=="none")
+    {
+       if(prev_menu) prev_menu.style.display="none";
+       lay.style.display="block";
+       prev_menu=lay;
+    }
+    else
+    {
+       lay.style.display="none";
+       prev_menu=null;
+    }
+    href=true;
+    return false;
+}
+
+function hide_menu()
+{
+  if(prev_menu && !href) prev_menu.style.display="none";
+  href=false;
+}
+// -->
+</script>
+{/literal}
+</head>
+<body onclick="hide_menu()">
+
+<table cellSpacing=0 cellPadding=0 width=100% bgColor=#3d70d6 border=0px>
+
+<tr  background="{$site_root_url}/templates/design6/logo-01.jpg">
+<td vAlign=middle  height=80px style="padding-left:50px;">
+<nobr><h1 class="page_title">{$page.title}</h1></nobr>
+</td>
+</tr>
+<tr bgcolor="white">
+<td >
+<div align=right style="font-size:12px; margin-bottom:3px; margin-right:5px;">
+  {foreach from=$lang key=ke item=ln}
+      <a href="{$ln.url}" class=language_selector>{$ln.lang}</a> 
+  {/foreach}
+  </div>
+</td>
+</tr>
+<!-- 
+</table>
+<table cellSpacing=0 cellPadding=0 width=100% bgColor=#3d70d6 border=0px>
+ -->
+  <tr  background="{$site_root_url}/templates/design6/menu-group-bg.gif" >
+  <td >
+    <table>
+    <tr>
+      {foreach from=$menu key=kg item=mg}
+      <!-- menu group - begin  -->
+      <td height=22px>
+          <a href="#" class=menu onclick="ch('menu_{$mg.id}');">{$mg.html}</a><br>
+          <div id="menu_{$mg.id}" class=menu_block style="display:none;">
+           <table border=0px bordercolor=red cellspacing=0 cellpadding=0>
+           {foreach from=$mg.items key=ki item=mi}
+              <tr>
+                <td height=22px valign="middle"  class=menu_item id="menu_item_{$mi.id}">
+                    <nobr><a href="{$mi.url}"  class=menu_item title="{$mi.description}" {$mi.attributes}>{$mi.html}</a></nobr>
+                </td>
+              </tr>
+           {/foreach}
+           </table>
+          </div>
+      </td>
+      <!-- menu group - end -->
+      {/foreach}
+    </tr>
+    </table>
+  </td>
+  </tr>
+<!-- 
+</table>
+
+<table cellSpacing=0 cellPadding=0 width=775 bgColor=white border=0px>
+ -->
+  <tr>
+    <td class=page_content  bgcolor="#ffffff">
+      <!-- page content - begin  -->
+	  {sysmsg}
+      {$page.content}
+      <!-- page content - end -->
+    </td>
+  </tr>
+  <tr background="{$site_root_url}/templates/design6/footer-bg.gif">
+    <td height=52px   align=right>
+    &copy; 
+    <a href="mailto:webmaster@zsu.zp.ua" style="color:#99ccff; font-family:tahoma; text-decoration:none; font-size:11px; font-weight:bold;">Zaporizhzhya State University</a>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+alter table `cms_category` change `category_title` `category_title` varchar(1024) default 'new category' NOT NULL;

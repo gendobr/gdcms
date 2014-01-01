@@ -1,0 +1,24 @@
+<div align=right>
+{txt lang=$text.language_name variants="eng=News::rus=Новости::ukr=Новини"}
+{$start}-{$finish}
+(
+{txt lang=$text.language_name variants="eng=news found::rus=всего найдено::ukr=всього знайдено"}
+ {$news_found}
+)
+</div><br />
+
+{foreach from=$news item=news_item}
+<div style="clear:both">
+  {if $news_item.content_present eq '1'}
+  <b><a href="{$news_item.URL_view_details}">{$news_item.title}</a></b>
+  {else}
+  <b>{$news_item.title}</b>
+  {/if}
+  <br />
+   {*$news_item.abstract*}
+   {$news_item.abstract|strip_tags}
+   <div align=right style='font-size:80%;'>{$news_item.last_change_date|date_format:"%d.%m.%Y %H:%M"}</div>
+</div><br />
+{/foreach}
+
+

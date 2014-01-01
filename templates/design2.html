@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+  <TITLE>{$page.title}</TITLE>
+  <META http-equiv=Content-Type content="text/html; charset=windows-1251">
+  <META content=document name=resource-type>
+  <META content=GLOBAL name=distribution>
+  <META content=G.A.Dobrovolsky name=copyright>
+  <META content="Gennadiy A.Dobrovolsky" name=author>
+  <META http-equiv=Reply-To content=gen_dobr@hotmail.com>
+  <META http-equiv=content-type: content="text/html; charset=windows-1251">
+
+  <link rel="stylesheet" type="text/css" href="{$site_root_url}/templates/design2/styles.css" />
+  {literal}
+  <style>
+  a.mnu{
+    display:inline-block;
+	margin-right:1%;
+	color:white;
+	height:20px;
+  }
+  a.mnu:hover{color:yellow;}
+  </style>
+  {/literal}
+</HEAD>
+<BODY text=black vLink=black aLink=black link=black  background="">
+   <div align=right style='float:right; margin-right:30px;width:200x;' class=langlink>
+   {foreach from=$lang key=ke item=ln}
+      <a href="{$ln.url}" style='color:blue;'>{$ln.lang}</a>
+   {/foreach}
+   </div>
+
+<div class=colontitul style='font-size:120%;font-weight:bold' align=center>{$site.title}</div>
+
+<div class=shade_0><div class=shade_00><div class=header_1><div class=header_2>
+
+
+   <H1 class=header_3>{$page.title}</H1>
+
+      {foreach from=$menu key=kg item=mg}
+        <!-- menu group - begin  -->
+        <!-- a href="#" class=toplink onclick="ch('menu_{$mg.id}');">{$mg.html}...</a -->
+        <div id="menu_{$mg.id}" style='margin-right:300px;'>
+           {foreach from=$mg.items key=ki item=mi}
+                <a href="{$mi.url}" title="{$mi.description}" {$mi.attributes}  class=mnu>{$mi.html}</a>
+           {/foreach}
+        </div>
+        <!-- menu group - end  -->
+      {/foreach}
+
+</div></div></div></div><!--
+ --><div class=shade_bottom_0><div class=shade_bottom_00><div class=shade_bottom_000><img src=tr.gif width=1px height=6px></div></div></div>
+
+<br />
+
+<div class=shade_0><div class=shade_00><div class=page_content>
+{sysmsg}
+{$page.content}
+<div style='clear:both;'></div>
+</div></div></div><!--
+ --><div class=shade_bottom_0><div class=shade_bottom_00><div class=shade_bottom_000><img src=tr.gif width=1px height=6px></div></div></div>
+
+<br />
+
+
+
+
+<div style='font-size:80%;text-align:right;'>&copy; <A href="mailto:gen_dobr@hotmail.com">Gennadiy Dobrovolsky</A></div>
+
+</BODY></HTML>

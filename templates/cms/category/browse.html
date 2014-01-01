@@ -1,0 +1,26 @@
+<table border=0px width=100% cellpadding=0 cellspacing=3px>
+{foreach from=$parents item=row}
+<tr>
+<td style="padding-left:{$row.padding}px;" valign=top>
+    <a href="{$row.URL}" title="{$row.category_title}" >{$row.title_short}</a><br>
+</td>
+</tr>
+{/foreach}
+
+
+<tr>
+<td style="padding-left:{$category.padding}px;" valign=top>
+    <b><div title="{$category.category_title}">{$category.title_short}</div></b>
+    <div style='font-size:80%;'>{$category.category_description}</div>
+</td>
+</tr>
+
+{foreach from=$children item=row}
+<tr>
+<td style="padding-left:{$row.padding}px;padding-bottom:3px;padding-top:2px;" valign=top>
+    <a href="{$row.URL}" title="{$row.category_title} -- {$row.description}" >{$row.category_code} {$row.title_short} {$row.has_subcategories}</a><br>
+</td>
+</tr>
+{/foreach}
+</table>
+

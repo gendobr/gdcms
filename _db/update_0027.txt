@@ -1,0 +1,1 @@
+alter table `cms_site` change `dir` `dir` varchar(64) NOT NULL;

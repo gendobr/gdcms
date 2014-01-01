@@ -1,0 +1,5 @@
+alter table `cms_golos_vidpovidi_details` change `session_id` `session_id` varchar(255);
+alter table `cms_golos_vidpovidi_details` add column `client_ip` varchar(100) NULL after `session_id`;
+alter table `cms_golos_vidpovidi_details` add column `client_sign` varchar(100);
+alter table `cms_golos_vidpovidi_details` add column `client_is_valid` float NULL after `site_id`;
+alter table `cms_golos_vidpovidi_details` add column `client_sign2` varchar(100) NULL after `client_sign`;

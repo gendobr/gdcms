@@ -1,0 +1,32 @@
+/* font sizes */
+*{ Font-Family : Tahoma; Font-Size : 12pt;line-height:150%;}
+
+TD{Color : Black;}
+A {text-decoration : underline;}
+A:visited {text-decoration : underline;}
+A:hover {text-decoration: none;}
+a:active {text-decoration: none;}
+A.bold {Color : #686868;font-weight: bold;text-decoration : none;text-transform: uppercase;}
+A.bold:visited {Color : #686868;	 font-weight: bold;	text-decoration : none;	text-transform: uppercase;}
+A.bold:hover {	Color : #CE4907; font-weight: bold;	text-decoration : none;	text-transform: uppercase;}
+a.bold:active {	Color : #CE4907; font-weight: bold;	text-decoration : none;	text-transform: uppercase;}
+A.si {	font-size:90%; Color : #4A4A4A;	text-decoration: none;}
+A.si:visited {	Color : #4A4A4A;	text-decoration: none;}
+A.si:hover {Color : #4A4A4A;	text-decoration : underline;}
+a.si:active {Color : #4A4A4A;	text-decoration : underline;}
+TD.thick {	font-size: 200%; font-weight:bold; color: #5080D2;}
+.form {	font-size: 100%;	color: #4A555C;}
+TD.green {	font-weight: normal;	color: #426135;}
+TD.green_str {	color: #426135;}
+.yellow {	font-weight: bold;	color: #CE4907;}
+.yellow_strong {	color: #CE4907;}
+.salat {	color: #06CE5A;}
+.cap {	font-size: 120%;	font-weight: bold;	color: #CE4907;}
+.button{background-image:url(button_b.gif); height:20px; Color : #444444; font-weight:bold; padding-left:5px;padding-right:5px; padding-top:0px; padding-bottom:0px; BORDER: 1px solid #666666; margin-left:2px; margin-right:2px; margin-top:10px; margin-bottom:0;}
+select.fr1, INPUT.fr1 {	FONT-FAMILY: Verdana, Arial, Helvetica, Sans-serif;	height:20px;  BACKGROUND-COLOR: #ffffff;	 BORDER-RIGHT: 1px solid #333366;	  BORDER-TOP:1px solid #333366;	  BORDER-LEFT: 1px solid #333366;	   BORDER-BOTTOM: 1px solid #333366; color: #333366;}
+
+h1{font-size: 180%;}
+h2{font-size: 160%;}
+h3{font-size: 140%;}
+h4{font-size: 120%;}
+h5{font-size: 100%;}

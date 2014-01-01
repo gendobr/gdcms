@@ -1,0 +1,138 @@
+{literal}
+<style>
+span.ec_order_id,
+span.ec_date_created,
+span.ec_order_total,
+span.ec_order_status_text,
+span.ec_order_paid,
+span.ec_order_link,
+table.contc
+{
+  display:-moz-inline-stack;
+  display:inline-block;
+  zoom:1;
+  *display:inline;
+  overflow:hidden;
+}
+
+span.ec_order_id{padding-left:3pt;width:50px;}
+span.ec_date_created{width:120px;}
+span.ec_order_total{width:100px;}
+span.ec_order_status_text{width:80px;}
+span.ec_order_paid{width:180px;}
+span.ec_order_link{width:120px;}
+div.customer_info{border:1px dotted gray;padding:3pt;}
+</style>
+{/literal}
+
+<form action="index.php">
+    {$hidden_fields}
+    <table>
+    <tr>
+        <td>{msg id="ec_order_id"}</td><td><input type="text" name="filter[ec_order_id]" value="{$filter.ec_order_id}"></td>
+        <td>&nbsp;&nbsp;{msg id="ec_date_created"}</td><td><input type="text" name="filter[ec_date_created]" value="{$filter.ec_date_created}"></td>
+    </tr>
+    <tr>
+        <td>{msg id="ec_order_status"}</td><td><select name="filter[ec_order_status]">{$filter.ec_order_status_options}</select></td>
+        <td>&nbsp;&nbsp;{msg id="ec_order_paid"}</td><td><select name="filter[ec_order_paid]">{$filter.ec_order_paid_options}</select></td>
+    </tr>
+    <tr>
+        <td>{msg id="ec_order_total_from"}</td><td><input type="text" name="filter[ec_order_total_from]" value="{$filter.ec_order_total_from}"></td>
+        <td>&nbsp;&nbsp;{msg id="ec_order_total_to"}</td><td><input type="text" name="filter[ec_order_total_to]" value="{$filter.ec_order_total_to}"></td>
+    </tr>
+    <tr><td colspan="4">&nbsp;</td></tr>
+    <tr>
+        <td>{msg id="ec_user_name"}</td><td><input type="text" name="filter[ec_user_name]" value="{$filter.ec_user_name}"></td>
+        <td>&nbsp;&nbsp;{msg id="ec_user_delivery_region"}</td><td><input type="text" name="filter[ec_user_delivery_region]" value="{$filter.ec_user_delivery_region}"></td>
+    </tr>
+    <tr>
+        <td>{msg id="site_visitor_email"}</td><td><input type="text" name="filter[site_visitor_email]" value="{$filter.site_visitor_email}"></td>
+        <td>&nbsp;&nbsp;{msg id="ec_user_delivery_city"}</td><td><input type="text" name="filter[ec_user_delivery_city]" value="{$filter.ec_user_delivery_city}"></td>
+    </tr>
+    <tr>
+        <td>{msg id="ec_user_icq"}</td><td><input type="text" name="filter[ec_user_icq]" value="{$filter.ec_user_icq}"></td>
+        <td>&nbsp;&nbsp;{msg id="ec_user_delivery_street_address"}</td><td><input type="text" name="filter[ec_user_delivery_street_address]" value="{$filter.ec_user_delivery_street_address}"></td>
+    </tr>
+    <tr>
+        <td>{msg id="ec_user_telephone"}</td><td><input type="text" name="filter[ec_user_telephone]" value="{$filter.ec_user_telephone}"></td>
+        <td>&nbsp;&nbsp;{msg id="ec_user_delivery_suburb"}</td><td><input type="text" name="filter[ec_user_delivery_suburb]" value="{$filter.ec_user_delivery_suburb}"></td>
+    </tr>
+    <tr>
+        <td>{msg id="site_visitor_id"}</td><td><input type="text" name="filter[site_visitor_id]" value="{$filter.site_visitor_id}"></td>
+        <td></td><td></td>
+    </tr>
+    <tr><td align="right" colspan="4"><input type="submit" value='{msg id="Search"}'></td></tr>
+    </table>
+</form>
+<div align=left><b>
+{msg id="EC_orders"}
+{capture name=npt assign="searchsummary"}{msg id="search_summary"}{/capture}
+{$searchsummary|replace:'[from]':$start|replace:'[to]':$finish|replace:'[total]':$n_records}
+
+</b></div>
+<br/>
+{if $n_records gt 0}
+
+{if $pages[1]}
+<div align=left>
+   {$text.Pages} :
+   {foreach from=$pages item=link}
+     {if $link.URL eq '#'}
+         {$link.innerHTML}
+     {else}
+         <a href="{$link.URL}">{$link.innerHTML}</a>
+     {/if}
+   {/foreach}
+</div><br/>
+{/if}
+
+{foreach from=$orders item=list_item}
+   
+   <div>
+      <span class="ec_order_id">#{$list_item.ec_order_id}</span>
+      <span class="ec_date_created">{$list_item.ec_date_created|date_format:"%d.%m.%Y %H:%M"}</span>
+      <span class="ec_order_total"><b>{$list_item.ec_order_total} {$list_item.ec_order_currency_code}</b></span>
+      <span class="ec_order_status_text">{$list_item.ec_order_status_text}</span>
+      <span class="ec_order_paid">{if $list_item.ec_order_paid}{msg id="Ec_order_is_paid_successfully"}{else}{msg id="Ec_order_is_not_paid"}{/if}</span>
+      <span  class="ec_order_link"><a href="{$list_item.url_view_details}" target="_blank">{msg id="EC_order_details"}</a></span>
+      <br>
+      <div class="customer_info">
+        <table class="contc">
+          {if $list_item.ec_user_name}<tr><td>{msg id="ec_user_name"}:</td><td>{$list_item.ec_user_name}</td></tr>{/if}
+          <tr><td>{msg id="site_visitor_email"}:</td><td>{$list_item.site_visitor_email}</td></tr>
+          {if $list_item.ec_user_telephone}<tr><td>{msg id="ec_user_telephone"}:</td><td>{$list_item.ec_user_telephone}</td></tr>{/if}
+          {if $list_item.ec_user_icq}<tr><td>{msg id="ec_user_icq"}:</td><td>{$list_item.ec_user_icq}</td></tr>{/if}
+        </table>
+          &nbsp;&nbsp;
+        <table class="contc">
+          {if $list_item.ec_user_delivery_street_address}<tr><td>{msg id="ec_user_delivery_street_address"}:</td><td>{$list_item.ec_user_delivery_street_address}</td></tr>{/if}
+          {if $list_item.ec_user_delivery_city}<tr><td>{msg id="ec_user_delivery_city"}:</td><td>{$list_item.ec_user_delivery_city}</td></tr>{/if}
+          {if $list_item.ec_user_delivery_suburb}<tr><td>{msg id="ec_user_delivery_suburb"}:</td><td>{$list_item.ec_user_delivery_suburb}</td></tr>{/if}
+          {if $list_item.ec_user_delivery_region}<tr><td>{msg id="ec_user_delivery_region"}:</td><td>{$list_item.ec_user_delivery_region}</td></tr>{/if}
+        </table>
+      </div>
+
+   </div><br/><br/>
+{/foreach}
+
+{if $pages[1]}
+<div align=left>
+   {$text.Pages} :
+   {foreach from=$pages item=link}
+     {if $link.URL eq '#'}
+         {$link.innerHTML}
+     {else}
+         <a href="{$link.URL}">{$link.innerHTML}</a>
+     {/if}
+   {/foreach}
+</div>
+{/if}
+
+
+{/if}
+<br/>
+
+
+
+
+

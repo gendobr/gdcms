@@ -1,0 +1,9 @@
+{*
+  Блок для вставки списка категорий товаров в страницу
+*}
+{foreach from=$caterory_list item="cat"}
+<div style="padding-left:{math equation="deep * 20" deep=$cat.deep}pt;">
+  <a href="{$cat.URL}">{$cat.ec_category_title}</a>
+</div>
+{/foreach}
+

@@ -1,0 +1,121 @@
+<HTML>
+<HEAD>
+<TITLE>{$page.title}</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+
+{literal}
+<style type="text/css">
+<!-- 
+a{color:blue;}
+
+a.menu_item{color:#FFFFFF;font-weight:bold;font-size:13px; font-family:Arial, Helvetica, sans-serif; text-decoration:none;}
+a.menu_item:hover{text-decoration:underline;}
+
+.menu_header{color:#ffffff;font-weight:bold;font-size:120%;}
+-->
+</style>
+{/literal}
+</HEAD>
+<BODY BGCOLOR=#FFFFFF leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0" link="#FFFFFF" vlink="#FFFF00" alink="#FFFF00">
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+
+
+  <TR> 
+    <TD width="15%"> <IMG SRC="{$site_root_url}/templates/design13/spacer.gif" WIDTH=175 HEIGHT=1></TD>
+    <TD width="59%"> <IMG SRC="{$site_root_url}/templates/design13/spacer.gif" WIDTH=550 HEIGHT=1></TD>
+    <TD width="26%"> <IMG SRC="{$site_root_url}/templates/design13/spacer.gif" WIDTH=15 HEIGHT=1></TD>
+  </TR>
+
+
+
+  <TR> 
+    <TD COLSPAN=3> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" height="97">
+        <tr> 
+          <td width="178px" valign="top" background="{$site_root_url}/templates/design13/top_holder.gif"><img src="{$site_root_url}/templates/design13/top_bar.gif" width="178" height="97"></td>
+          <td valign="middle" background="{$site_root_url}/templates/design13/top_holder.gif"><font face="Arial, Helvetica, sans-serif" size="6" color="#FFFFFF">{$site.title}</font></td>
+        </tr>
+      </table>
+    </TD>
+  </TR>
+
+
+
+  <TR> 
+    <TD width="15%" valign="top" height="227"> 
+      <table width="175" border="0" bordercolor=white bgcolor="#660000"  cellspacing="0" cellpadding="2px">
+        <tr>
+           <td>
+           {foreach from=$lang key=ke item=ln}
+             <a href="{$ln.url}" class=menu_item>{$ln.title}</a> 
+           {/foreach}
+           </td>
+        </tr>
+             {foreach from=$menu key=kg item=mg}
+             <tr><td><div class=menu_header>{$mg.html}</div></td></tr>
+             {foreach from=$mg.items key=ki item=mi}
+             <tr><td style="padding-left:10px;"><a href="{$mi.url}" class=menu_item title="{$mi.description}" {$mi.attributes}>{$mi.html}</a></td></tr>
+             {/foreach}
+             {/foreach}
+      </table>
+      <IMG SRC="{$site_root_url}/templates/design13/blue2.gif" WIDTH=175 HEIGHT=216>
+    </TD>
+    <TD COLSPAN=2 ROWSPAN=2 valign="top">
+
+      <table width="100%" border="0" cellspacing="3" cellpadding="3">
+        <tr>
+          <td valign="top" style="padding:10px;"> 
+            <!-- news begin --> 
+            {literal}
+            <style type="text/css">
+            <!-- 
+            .news_item
+            {
+              border:1px solid brown;
+              padding:4px;
+              margin:4px;
+            }
+            -->
+            </style>
+            
+            {/literal}
+            <table width=200px align=right border=0 cellpadding=0 cellspacing=0>
+            <tr><td>
+            <script type="text/javascript" src="{$site_root_url}/index.php?action=news/js&site_id={$page.site_id}&lang={$page.lang}"></script>
+            </td></tr>
+            </table>
+            <!-- news end --> 
+            
+            <p><font face="Arial, Helvetica, sans-serif" color="#006699"><font size="4" color="#000000">{$page.title}</font></font></p>
+            <p><font face="Arial, Helvetica, sans-serif">
+            {sysmsg}
+            {$page.content}
+            
+            </font></p>
+          </td>
+        </tr>
+      </table>
+      
+    </TD>
+  </TR>
+
+  <TR> 
+    <TD width="15%" height="19"></TD>
+  </TR>
+  <TR> 
+    <TD width="15%" height="19"></TD>
+    <td colspan=2 align=center>
+        <br />
+        |
+             {section name=mid loop=$menu}
+             {section name=miid loop=$menu[mid].items}
+             <a href="{$menu[mid].items[miid].url}" style="color:#000000;font-weight:normal;font-size:13px; font-family:Arial, Helvetica, sans-serif; text-decoration:none;"   title="{$menu[mid].items[miid].description}" {$menu[mid].items[miid].attributes}>{$menu[mid].items[miid].html}</a> |
+             {/section}
+             {/section}
+    </td>
+  </TR>
+</TABLE>
+
+
+</BODY>
+</HTML>

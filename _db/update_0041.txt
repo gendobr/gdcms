@@ -1,0 +1,29 @@
+CREATE TABLE `cms_rsssourceitem` (
+                     `rsssourceitem_id` bigint(20) NOT NULL AUTO_INCREMENT,
+                     `site_id` bigint(20) DEFAULT NULL,
+                     `rsssource_id` bigint(20) DEFAULT NULL,
+                     `rsssourceitem_lang` varchar(3) DEFAULT NULL,
+                     `rsssourceitem_datetime` datetime DEFAULT NULL,
+                     `rsssourceitem_is_visiblle` tinyint(1) NOT NULL DEFAULT '1',
+                     `rsssourceitem_title` varchar(512) DEFAULT NULL,
+                     `rsssourceitem_abstract` text,
+                     `rsssourceitem_url` varchar(4096) DEFAULT NULL,
+                     `rsssourceitem_src` text,
+                     PRIMARY KEY (`rsssourceitem_id`)
+                   ) ENGINE=MyISAM;
+
+CREATE TABLE `cms_rsssource` (
+                 `rsssource_id` bigint(20) NOT NULL AUTO_INCREMENT,
+                 `site_id` bigint(20) DEFAULT NULL,
+                 `rsssource_title` varchar(64) DEFAULT NULL,
+                 `rsssource_lang` varchar(3) DEFAULT NULL,
+                 `rsssource_url` varchar(4096) DEFAULT NULL,
+                 `rsssource_last_updated` datetime DEFAULT NULL,
+                 `rsssource_is_visible` tinyint(1) NOT NULL DEFAULT '1',
+                 `rsssource_is_premoderated` tinyint(1) NOT NULL DEFAULT '1',
+                 `rsssource_tag` varchar(128) DEFAULT NULL,
+                 PRIMARY KEY (`rsssource_id`)
+               ) ENGINE=MyISAM;
+
+
+alter table `cms_site` add column `is_rssaggegator_enabled` tinyint(1) DEFAULT '0' NOT NULL after `is_calendar_enabled`,change `is_calendar_enabled` `is_calendar_enabled` tinyint(1) default '0' NOT NULL;

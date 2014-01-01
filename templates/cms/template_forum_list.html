@@ -1,0 +1,17 @@
+<!--
+List of forums
+-->
+<table width=95% cellspacing=5 border=0px>
+          <tr><td width=60%><b>{msg id="forum_title"}</b></td>
+          <td width=10%><b>{msg id="forum_n_threads"}</b></td>
+          <td width=10%><b>{msg id="forum_n_messages"}</b></td>
+          <td width=20%><b>{msg id="forum_last_message_date"}</b></td>
+{foreach from=$forums item=row}
+  <tr>
+   <td><a href="{$row.URL_open_forum}">{$row.name}</a></td>
+  <td>{$row.n_visible_threads}</td>
+  <td>{$row.n_messages}</td>
+  <td>{$row.last_message_data|date_format:"%d.%m.%Y %H:%M:%S"}</td>
+  </tr>
+{/foreach}
+</table>

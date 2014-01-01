@@ -1,0 +1,93 @@
+{literal}
+<style>
+    table.nobd td{border:none;}
+    table.nobd input{width:auto;}
+</style>
+{/literal}
+<h2>{msg id="Shopping_Cart"}</h2>
+
+{if count($ec_cart.items) gt 0}
+
+
+{$message}
+<form method="post">
+{$hidden_form_elements}
+<table border="1px" cellspacing="0" style="border:none;" cellpadding="3px" width="95%" class="nobd">
+
+{foreach from=$ec_cart.items item=it key=ke}
+<tr>
+    <td valign="top" style="width:100px;height:100px;"><div style="width:100px;height:100px;overflow:hidden;"><img src="{$site.url}{$it.info.ec_main_image}"/></div></td>
+    <td valign="top">
+        {$it.info.ec_item_title}
+        {if $it.info.ec_item_variant[0]}
+        <div style="color:gray;font-size:80%;">
+          {foreach from=$it.info.ec_item_variant item=variant key=k_variant}
+            {$variant.ec_item_variant_description}<br/>
+          {/foreach}
+        </div>
+        {/if}
+    </td>
+    <td valign="top">
+        <input type="text" name="cart[{$ke}]" value="{$it.amount}" size="3"> &times;
+        {if $it.info.ec_item_variant[0]}
+           {$it.info.ec_item_price_corrected}&nbsp;{$it.info.ec_item_currency_title}
+           {if $it.info.ec_item_price_corrected neq $it.info.ec_item_price}
+             <div style="color:gray;font-size:80%;">
+             (<!--
+           -->{$it.info.ec_item_price}&nbsp;{$it.info.ec_item_currency_title}<!--
+          {foreach from=$it.info.ec_item_variant item=variant key=k_variant}
+           -->{$variant.ec_item_variant_price_correction.code}<!--
+           -->{if  $variant.ec_item_variant_price_correction.operation eq '+'
+                or $variant.ec_item_variant_price_correction.operation eq '-'}<!--
+           -->{$it.info.ec_item_currency_title}<!--
+           -->{/if}<!--
+           {/foreach}
+           -->)<!--
+           --></div>
+           {/if}
+        {else}
+           {$it.info.ec_item_price}&nbsp;{$it.info.ec_item_currency_title}
+        {/if}
+    </td>
+    <td valign="top"><a href="{$url_prefix_delete}{$ke}">{$text.Remove_from_cart}</a></td>
+
+
+</tr>
+{/foreach}
+<tr><td></td>
+    <td colspan="1" align="left" valign="top">{msg id="EC_cart_total"}:</td>
+    <td colspan="1" valign="top">
+        {$total} {msg id=$site.ec_currency}
+    </td>
+    <td valign="top"></td>
+</tr>
+<tr><td colspan="5">&nbsp;</td></tr>
+
+
+<tr>
+    <td valign="top"></td>
+    <td valign="top">
+        {msg id="EC_delivery"}:
+    </td>
+    <td valign="top" colspan="2">
+        {$delivery_form}
+    </td>
+</tr>
+
+<tr><td colspan="5">&nbsp;</td></tr>
+<tr><td></td>
+    <td colspan="1" align="left" valign="top">{msg id="EC_payment_total"}:</td>
+    <td colspan="1" valign="top">
+        {$sum_to_pay} {msg id=$site.ec_currency}
+    </td>
+    <td valign="top"></td>
+</tr>
+</table>
+<br/>
+
+<input type="submit" value="{msg id="EC_cart_recalculate"}" style="font-size:150%;" name="ec/cart/recalculate">
+<input type="submit" value="{$text.ec_place_order}" style="font-size:150%;" name="ec/order/new">
+<input type="submit" value="{msg id="ec_continue_shopping"}" style="font-size:150%;" name="ec/return">
+</form>
+
+{/if}

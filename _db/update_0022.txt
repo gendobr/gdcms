@@ -1,0 +1,1 @@
+alter table `cms_site` add column `is_calendar_enabled` tinyint(1) DEFAULT '0' NOT NULL after `salt`;

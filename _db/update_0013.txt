@@ -1,0 +1,9 @@
+CREATE TABLE `cms_golos_vidpovidi_details` (
+                               `id` bigint(20) unsigned NOT NULL auto_increment,
+                               `poll_id` bigint(20) default NULL,
+                               `answer_id` bigint(20) default NULL,
+                               `session_id` varchar(32) default NULL,
+                               `answer_date` datetime default NULL,
+                               `site_id` bigint(20) default NULL,
+                               PRIMARY KEY  (`id`)
+) ENGINE=InnoDB;

@@ -1,0 +1,1 @@
+alter table `cms_ec_item` add column `ec_item_ordering` int DEFAULT '0' NOT NULL after `ec_item_variants`;

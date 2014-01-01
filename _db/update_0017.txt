@@ -1,0 +1,1 @@
+alter table `cms_ec_order` add column `ec_order_custom_data` text NULL after `ec_order_paid_amount`;

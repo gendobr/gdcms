@@ -1,0 +1,5 @@
+alter table `cms_ec_order` change `ec_order_paid` `ec_order_paid` tinyint(1) default '0' NOT NULL;
+alter table `cms_ec_order` add column `ec_order_details` text NULL after `ec_order_shipping`;
+alter table `cms_ec_order` drop column `ec_order_shipping`;
+alter table `cms_ec_order` add column `ec_order_paid_amount` double NULL after `ec_order_details`;
+alter table `cms_ec_order` change `ec_order_paid_amount` `ec_order_paid_amount` double default '0' NOT NULL;

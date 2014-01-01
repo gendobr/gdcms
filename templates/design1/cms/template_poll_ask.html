@@ -1,0 +1,20 @@
+{$enhances_security_scripts}
+<form id="{$poll_ask_form_id}" action=index.php method="post">
+    {$hidden_fields}
+    {foreach from=$polls item=poll}
+        <h3>{$poll.title}</h3>
+        {if $poll.vidpovidi}
+           {if $poll.poll_type eq 'checkbox'}
+              {foreach from=$poll.vidpovidi item=val key=key}
+                <div><label><input type=checkbox name=poll[{$poll.id}][{$key}] value={$key}>{$val}</label></div>
+              {/foreach}
+           {else}
+              {foreach from=$poll.vidpovidi item=val key=key}
+                <div><label><input type=radio name=poll[{$poll.id}][0] value={$key}>{$val}</label></div>
+              {/foreach}
+           {/if}
+        {/if}
+    {/foreach}
+    <br>
+    <input type=submit>
+</form>

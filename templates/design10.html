@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>{$page.title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</head>
+{literal}
+<style type="text/css">
+<!-- 
+a.menu
+{
+  text-decoration:underline;
+  padding:5px;
+  border: none 2px white;
+} 
+a.menu:hover
+{
+  text-decoration:none;
+  padding:5px;
+  border: none 2px gray; 
+} 
+
+.menu_block
+{
+  position:absolute;
+  border:solid 1px blue;
+}
+
+.menu_item
+{
+{/literal}
+   height:31px;
+   font-size:12px;
+   font-weight:bold;
+   font-family:arial;
+   background-image:url({$site_root_url}/templates/design10/bg_menu.jpg);
+   padding-left:10px;
+   padding-right:10px;
+   text-decoration:none;
+   text-align:left;
+{literal}
+} 
+
+
+-->
+</style>
+<script type="text/javascript">
+<!--
+var prev_menu;
+var href;
+function ch(cid)
+{
+    var lay=document.getElementById(cid);
+    if (lay.style.display=="none")
+    {
+       if(prev_menu) prev_menu.style.display="none";
+       lay.style.display="block";
+       prev_menu=lay;
+    }
+    else
+    {
+       lay.style.display="none";
+       prev_menu=null;
+    }
+    href=true;
+    return false;
+}
+
+function hide_menu()
+{
+  if(prev_menu && !href) prev_menu.style.display="none";
+  href=false;
+}
+// -->
+</script>
+
+{/literal}
+
+<body bgcolor=#ffffff onclick="hide_menu();" leftmargin="0" topmargin="0">
+ 
+<div align=right style="font-size:12px; font-family:arial;">
+{foreach from=$lang key=ke item=ln}
+    <a href="{$ln.url}">{$ln.lang}</a> 
+{/foreach}
+</div>
+
+<table width=100% border=0px bordercolor=red cellspacing=0 cellpadding=0>
+  <tr>
+    <td height=44px valign="middle" style="height:44px; font-size:14px; text-align:center; font-weight:bold; font-family:arial; background-image:url({$site_root_url}/templates/design10/bg1.jpg);">
+    {$site.title} 
+    </td>
+  </tr>
+  <tr>
+    <td height=111px valign="middle" style="height:111px; font-size:40px; text-align:center; font-weight:bold; font-family:arial; background-image:url({$site_root_url}/templates/design10/bg2.jpg);">
+    {$page.title} 
+    </td>
+  </tr>
+  <!-- menu - begin -->
+  <tr>
+    <td height=46px valign="middle" style="height:46px; font-size:14px; text-align:center; font-weight:bold; font-family:arial; background-image:url({$site_root_url}/templates/design10/bg1.jpg);">
+    <table align=center border=0 bordercolor=green>
+    <tr>
+      {foreach from=$menu key=kg item=mg}
+      <!-- menu group - begin  -->
+      <td>
+          <a href="#" class=menu onclick="ch('menu_{$mg.id}');">{$mg.html}</a><br>
+          <div id="menu_{$mg.id}" class=menu_block style="display:none;">
+           <table border=0px bordercolor=red cellspacing=0 cellpadding=0>
+           {foreach from=$mg.items key=ki item=mi}
+              <tr>
+                <td height=31px valign="middle" class=menu_item>
+                <nobr><a href="{$mg.url}" title="{$mg.description}" {$mg.attributes}  >{$mg.html}</a></nobr>
+                </td>
+              </tr>
+           {/foreach}
+           </table>
+          </div>
+      </td>
+      <!-- menu group - end -->
+      {/foreach}
+
+    </tr>
+    </table>
+
+
+
+    </td>
+  </tr>
+  <!-- menu - end -->
+  <tr>
+    <td valign="top" style="font-size:12px; font-family:arial; padding:20px;">
+	{sysmsg}
+    {$page.content}
+    </td>
+  </tr>
+
+  <tr>
+    <td height=46px valign="middle" style="height:46px; font-size:12px; text-align:center; font-family:arial; background-image:url({$site_root_url}/templates/design10/bg1.jpg);">
+    &copy; <a href=mailto:webmaster@zsu.zp.ua>Zaporizhzhya State University</a> 
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

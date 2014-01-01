@@ -1,0 +1,1 @@
+alter table `cms_ec_category_item_field` add column `ec_category_item_field_type` varchar(32) NULL after `ec_category_item_field_ordering`;

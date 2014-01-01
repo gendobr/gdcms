@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>{$page.title} - {$site.title}</title>
+<link rel="stylesheet" type="text/css" href="{$site.url}/imgs/style.css" />
+</head>
+<body>
+
+
+
+{*
+  Добавить статические фрагменты, для которых указано место "top"
+  {fragment place="top" lang=$text.language_name site_id=$site.id}
+*}
+
+<div align=right style="font-size:12px; font-family:arial;">
+<!-- language selector - begin -->
+{foreach from=$lang  key=ke item=lg}
+    <a href="{$lg.url}">{$lg.lang}</a>
+{/foreach}
+<!-- language selector - end   -->
+</div>
+
+{* ============================ top menu - begin ======================== *}
+{assign var="delim" value=""}
+{foreach from=$menu item=mg}
+   {if $mg.code eq 'top'}
+   {foreach from=$mg.items item=topmenu}
+     {$delim}
+     {if $topmenu.disabled eq '0'}
+     <a href="{$topmenu.url}" title="{$topmenu.description}" {$topmenu.attributes}>{$topmenu.html}</a>
+     {else}
+     <b style='color:white;'>{$topmenu.html}</b>
+     {/if}
+     {assign var="delim" value="&nbsp;|&nbsp;"}
+   {/foreach}
+   {/if}
+{/foreach}
+{* ============================ top menu - end ========================== *}
+
+<div id=mainblock>
+<div id=breadcrumbs>
+  <a href={$site.url}>{$site.title}</a> &gt;
+  <b>{$page.title}</b>
+</div>
+
+<div id=leftcolumn>
+<div id=menu>
+<div align=left><a class=nb href=# style='margin:0px;padding:0px;'><img src={$site.url}/imgs/logo0000.jpg border=0></a></div>
+{foreach from=$menu key=kg item=mg}
+<!-- menu group - begin  -->
+   <h3>
+	  {if $mg.url}
+	     <a href="{$mg.url}">{$mg.html}</a>
+		{else}
+	     {$mg.html}
+		{/if}
+	 </h3>
+
+   {foreach from=$mg.items key=ki item=mi}
+      {if $mi.url}
+          <a href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a>
+      {else}
+          {$mi.html}
+      {/if}
+   {/foreach}
+<!-- menu group - end -->
+{/foreach}
+
+<br />
+
+</div>
+<img src={$site.url}/imgs/w_basketball.jpg style='margin-left:10pt;'>
+<br/>
+
+</div>
+
+<div><img src={$site.url}/imgs/tr.gif height=10pt></div>
+<div id=bannerblocktop><img src={$site.url}/imgs/tr.gif height=5pt></div>
+<div id=bannerblock>
+<img src={$site.url}/imgs/tr.gif width=200px height=50px>
+</div>
+<div id=bannerblockbottom><img src={$site.url}/imgs/tr.gif height=5pt></div>
+<div id=content>
+
+
+<div class="corner-lt"><div class="corner-rt"><div class="corner-lb"><div class="corner-rb">
+  <div id=news1254685034 style='width:100%;'> </div>
+  <iframe style='width:1px;height:1px;border:none;' src='http://127.0.0.1/cms/index.php?action=news/block&site_id=53&lang=rus&rows=10&template=template_news_view_block.html&date=desc&element=news1254685034&category_id=0'></iframe>
+  <br>
+
+<link rel="stylesheet" type="text/css" href="{$site.url}template_gallery_view_block.css" />
+
+<script type="text/javascript" src="{$site.url}gallery_view.js"></script>
+<div id=d1254687624>&nbsp;</div>
+<iframe style='width:1px;height:1px;border:none;' src='http://127.0.0.1/cms/index.php?action=gallery/html&site_id=53&lang=ukr&cat=2009-01&element=d1254687624'></iframe>
+
+
+</div></div></div></div>
+
+
+<div class="corner-lt"><div class="corner-rt"><div class="corner-lb"><div class="corner-rb">
+
+
+
+
+
+<!-- img width="458" height="103" alt="Pic 2" src="imgs/pic_2.jpg"/ -->
+
+
+
+<h1 class=block_title>{$page.title}</h1>
+
+{* Это системные сообщения (ошибки, подтверждения и т.д.) *}
+{sysmsg}
+
+{$page.content}
+
+<div class=page_change_date>{$page.last_change_date|date_format:"%d.%m.%Y %H:%M"}</div>
+
+</div></div></div></div>
+
+
+
+
+
+
+
+
+
+<div style='clear:both;'><br /></div>
+</div>
+<div class=bottom1><div class=bottom2><div class=bottom3>
+&copy; Баскетбольный клуб КПУ
+</div></div></div>
+</div>
+</body>
+</html>

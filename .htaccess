@@ -1,0 +1,16 @@
+DirectoryIndex index.php
+#ErrorDocument 404 /404.php 
+
+RewriteEngine on
+
+RewriteRule   guestbook\.php /cms/index.php?action=gb/guestbook&%{QUERY_STRING}
+RewriteRule   search\.php    /cms/index.php?action=site/search&%{QUERY_STRING}
+RewriteRule   news\.php      /cms/index.php?action=news/view&%{QUERY_STRING}
+RewriteRule   news_details\.php      /cms/index.php?action=news/view_details&%{QUERY_STRING}
+RewriteRule   gallery\.php    /cms/index.php?action=gallery/photogallery&%{QUERY_STRING}
+RewriteRule   image\.php    /cms/index.php?action=gallery/photo&%{QUERY_STRING}
+RewriteRule   forum\.php    /cms/index.php?action=forum/forum&%{QUERY_STRING}
+RewriteRule   thread\.php    /cms/index.php?action=forum/thread&%{QUERY_STRING}
+RewriteRule   msglist\.php    /cms/index.php?action=forum/msglist&%{QUERY_STRING}
+
+

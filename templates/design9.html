@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{$site.title} - {$page.title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+{literal}
+
+<style type="text/css">
+<!--
+.header{
+  font-size: 20px;
+  color: #000000;
+  font-weight:bold;
+  padding-top:20px;
+}
+
+td{
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #000000
+}
+
+a.language_selector{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:12px;
+  font-weight:bold;
+  color:#15120F;
+  text-decoration:none;
+}
+
+
+
+div.menubcolumn h3{
+  padding-left:20px;
+  font-size:17pt;
+  font-weight:normal;
+
+}
+div.menu_item,
+a.menu_item{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:12pt;
+  padding-left:20px;
+  padding-top:2pt;
+  padding-bottom:2pt;
+  padding-right:2pt;
+  font-weight:bold;
+  color:#15120F;
+  text-decoration:none;
+  display:block;
+}
+a.menu_item:hover{
+  background-color:#15120F;
+  color:#C3B7A7;
+}
+.menu_group
+{
+   font-size:120%;
+   padding-top:10px;
+   font-weight:bold;
+   color:#15120F;
+}
+h1,h2,h3,h4{line-height:150%;}
+-->
+</style>
+{/literal}
+</head>
+<body bgcolor="#FFFFFF" text="BLACK" style="margin:1px;" marginheight="1">
+        <table width="100%" border="0" bordercolor=red cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+          <tr valign="top">
+            <td colspan="2" height="74px" style="border-right:solid 1px black;" background="{$site_root_url}/templates/design9/top_bg.jpg"><nobr><img src="{$site_root_url}/templates/design9/top.jpg"  height="74" align=left>{*<div style='font-size:12px;margin-top:7px;'>{$site.title}</div>*}<div class=header>{$site.title}{*$page.title*}</div></nobr></td>
+          </tr>
+          <tr><td colspan="2" height="6px" style="border-right:solid 1px black;" background={$site_root_url}/templates/design9/hr.gif><img src={$site_root_url}/templates/design9/tr.gif height=6px border=0><br></td></tr>
+          <tr>
+            <td width="30%" bgcolor="#C3B7A7" valign=top style="border-bottom:solid 1px black;border-left:solid 1px black;">
+
+              {if $lang[1]}
+              <p>&nbsp;</p>
+              <div style="padding-left:20px;">&nbsp;
+              {section name=l_id loop=$lang}
+              <a href="{$lang[l_id].url}" class=language_selector>{$lang[l_id].lang}</a>
+              {/section}
+              </div>
+              {/if}
+			  <div class=menubcolumn>
+ 			  {foreach from=$menu item=mg}
+			  <h3>{$mg.html}</h3>
+			  {foreach from=$mg.items item=mi}
+			    {if $mi.url|count_characters gt 1}
+                    <a href="{$mi.url}" title="{$mi.description}" {$mi.attributes} class=menu_item>{$mi.html}</a>
+				{else}
+                    <div title="{$mi.description}" {$mi.attributes} class=menu_item>{$mi.html}</div>
+				{/if}
+			  {/foreach}
+			  {/foreach}
+              </div>
+              <p>&nbsp;</p>
+              <img src="{$site_root_url}/templates/design9/tr.gif" width=160px height=2px>
+            </td>
+            <td valign="top" style="padding:15pt;border-right:solid 1px black;border-bottom:solid 1px black;font-size:100%;line-height:150%;">
+            <h1>{$page.title}</h1>
+            {$page.content}
+            </td>
+          </tr>
+        </table>
+
+</div>
+<div style="text-align:left; padding:5px;">
+<a href="http://www.znu.edu.ua/">Zaporizhzhya National University</a>
+</div>
+</body></html>
+

@@ -1,0 +1,1 @@
+ORDER #{$ec_order_id} {$order.total}{$site.ec_currency}; CLIENT:{$user.ec_user_name};{$user.site_visitor_email};{if $user.ec_user_telephone} tel:{$user.ec_user_telephone};{/if}{if $user.ec_user_icq}ICQ {$user.ec_user_icq};{/if}::{$new_comment|truncate:30}
