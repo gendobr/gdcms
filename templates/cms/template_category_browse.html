@@ -37,10 +37,10 @@
 </style>
 {/literal}
 	<div align=left><b>
-	{txt lang=$text.language_name variants="eng=Events::rus=Ñîáûòèÿ::ukr=Ïîä³¿"}
+	{txt lang=$text.language_name variants="eng=Events::rus=Ğ¡Ğ¾Ğ±Ñ‹Ñ‚Ğ¸Ñ::ukr=ĞŸĞ¾Ğ´Ñ–Ñ—"}
 	{$events->start}-{$events->finish}
 	(
-	 {txt lang=$text.language_name variants="eng=events found::rus=âñåãî íàéäåíî::ukr=âñüîãî çíàéäåíî"} : {$events->items_found}
+	 {txt lang=$text.language_name variants="eng=events found::rus=Ğ²ÑĞµĞ³Ğ¾ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ¾::ukr=Ğ²ÑÑŒĞ¾Ğ³Ğ¾ Ğ·Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ¾"} : {$events->items_found}
 	)
 	</b></div>
 
@@ -74,7 +74,7 @@
 
             {if $_item.nearest_dates}
             <div>
-            {txt lang=$text.language_name variants="eng=nearest dates::rus=áëèæàéøèå äàòû::ukr=íàéáëèæ÷³ äàòè"}:
+            {txt lang=$text.language_name variants="eng=nearest dates::rus=Ğ±Ğ»Ğ¸Ğ¶Ğ°Ğ¹ÑˆĞ¸Ğµ Ğ´Ğ°Ñ‚Ñ‹::ukr=Ğ½Ğ°Ğ¹Ğ±Ğ»Ğ¸Ğ¶Ñ‡Ñ– Ğ´Ğ°Ñ‚Ğ¸"}:
             {foreach from=$_item.nearest_dates item=dat}
               {$dat|date_format:"%d.%m.%Y"}
             {/foreach}
@@ -105,10 +105,10 @@
 {if $news->items_found gt 0}
 
 	<div align=left><b>
-	{txt lang=$text.language_name variants="eng=News::rus=Íîâîñòè::ukr=Íîâèíè"}
+	{txt lang=$text.language_name variants="eng=News::rus=ĞĞ¾Ğ²Ğ¾ÑÑ‚Ğ¸::ukr=ĞĞ¾Ğ²Ğ¸Ğ½Ğ¸"}
 	{$news->start}-{$news->finish}
 	(
-	 {txt lang=$text.language_name variants="eng=news found::rus=âñåãî íàéäåíî::ukr=âñüîãî çíàéäåíî"} : {$news->items_found}
+	 {txt lang=$text.language_name variants="eng=news found::rus=Ğ²ÑĞµĞ³Ğ¾ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ¾::ukr=Ğ²ÑÑŒĞ¾Ğ³Ğ¾ Ğ·Ğ½Ğ°Ğ¹Ğ´ĞµĞ½Ğ¾"} : {$news->items_found}
 	)
 	</b></div>
 
