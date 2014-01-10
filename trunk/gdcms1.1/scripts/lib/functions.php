@@ -206,12 +206,15 @@ function load_msg($language='') {
     }
 
     $text=parse_ini_file($file_path);
+    ksort($text);
     if(site_charset!='UTF-8'){
         $cnt=array_keys($text);
         foreach($cnt as $key){
             $text[$key]=  iconv('UTF-8', site_charset, $text[$key]);
         }
     }
+    // prn(count($text));
+    //prn(join('<br>',array_keys($text)));exit();
     // prn($text); exit('########');
     //------------------- load from file - end ------------------------------
     return $text;
