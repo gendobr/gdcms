@@ -60,15 +60,15 @@
         [url_details] => /yulia-portfolio/cms/index.php?action=gallery/photogallery&rozdilizformy=01%20%C1%F0%E5%ED%E4%E8%ED%E3%26TM&site_id=69&lang=rus&start=0
         [url_thumbnail] => /yulia-portfolio/static/gallery/2013/04/69-2013-04-15-10-39-09-m-10528541.jpg
         [url_image] => /yulia-portfolio/static/gallery/2013/04/69-2013-04-15-10-39-09-10528541.jpg
-        [name] => 01 Áðåíäèíã&TM
+        [name] => 01 Ð‘Ñ€ÐµÐ½Ð´Ð¸Ð½Ð³&TM
     *}
     {$category->info.description}
 </div>
 {if $category->items_found}
 <div class='paging_links'>
-    {txt lang=$text.language_name variants="eng=Total::rus=Âñåãî::ukr=Âñüîãî"}: {$category->items_found}
+    {txt lang=$text.language_name variants="eng=Total::rus=Ð’ÑÐµÐ³Ð¾::ukr=Ð’ÑÑŒÐ¾Ð³Ð¾"}: {$category->items_found}
     {if $category->paging_links[1]}
-       {txt lang=$text.language_name variants="eng=Pages::rus=Ñòðàíèöû::ukr=Ñòîð³íêè"}:
+       {txt lang=$text.language_name variants="eng=Pages::rus=Ð¡Ñ‚Ñ€Ð°Ð½Ð¸Ñ†Ñ‹::ukr=Ð¡Ñ‚Ð¾Ñ€Ñ–Ð½ÐºÐ¸"}:
         {foreach from=$category->paging_links item="pg"}
           {if $pg.URL}<a href="{$pg.URL}">{$pg.innerHTML}</a>{else}<b>{$pg.innerHTML}</b>{/if}
         {/foreach}
@@ -82,7 +82,7 @@
     <input type="hidden" name="site_id" value="{$site.id}">
     <input type="hidden" name="lang" value="{$text.language_name}">
     <input type="text" name="keywords" value="{$keywords}">
-    <input type="submit" value="{txt lang=$text.language_name variants="eng=Find::rus=Íàéòè::ukr=Çíàéòè"}">
+    <input type="submit" value="{txt lang=$text.language_name variants="eng=Find::rus=ÐÐ°Ð¹Ñ‚Ð¸::ukr=Ð—Ð½Ð°Ð¹Ñ‚Ð¸"}">
 </form>
 </span>
     <div class="categories"><!--
@@ -139,9 +139,9 @@
 
     {if $images->items_found > 0}
     <div>
-    {$images->items_found} {txt lang=$text.language_name variants="eng=images::rus=ðèñóíêîâ::ukr=çîáðàæåíü"}.
+    {$images->items_found} {txt lang=$text.language_name variants="eng=images::rus=Ñ€Ð¸ÑÑƒÐ½ÐºÐ¾Ð²::ukr=Ð·Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½ÑŒ"}.
     {if $images->paging_links[1]}
-      {txt lang=$text.language_name variants="eng=Pages::rus=Ñòðàíèöû::ukr=Ñòîð³íêè"}:
+      {txt lang=$text.language_name variants="eng=Pages::rus=Ð¡Ñ‚Ñ€Ð°Ð½Ð¸Ñ†Ñ‹::ukr=Ð¡Ñ‚Ð¾Ñ€Ñ–Ð½ÐºÐ¸"}:
         {foreach from=$images->paging_links item="pg"}
           {if $pg.URL}<a href="{$pg.URL}">{$pg.innerHTML}</a>{else}<b>{$pg.innerHTML}</b>{/if}
         {/foreach}

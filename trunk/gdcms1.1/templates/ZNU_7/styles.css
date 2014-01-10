@@ -96,7 +96,7 @@ TD {
 HR {COLOR: #600000;}
 INPUT.searchtext {FONT-SIZE: 90%; WIDTH: 100px; HEIGHT: 20px; BACKGROUND-COLOR: #eeeeee;}
 INPUT.searchbutton {FONT-SIZE: 90%; WIDTH: 65px; FONT-FAMILY: Tahoma,Verdana; HEIGHT: 20px;}
-.404 {FONT-SIZE: 48pt; COLOR: #cccccc; FONT-STYLE: italic;}
+.error404 {FONT-SIZE: 48pt; COLOR: #cccccc; FONT-STYLE: italic;}
 .gray {	COLOR: #999999;}
 H1 {FONT-WEIGHT: bold; COLOR: #cc8000; FONT-FAMILY: Arial,Tahoma,Verdana;}
 H2 {FONT-WEIGHT: bold; COLOR: #cc8000; FONT-FAMILY: Arial,Tahoma,Verdana;}

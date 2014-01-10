@@ -55,7 +55,7 @@ INPUT.searchtext {
 INPUT.searchbutton {
 	FONT-SIZE: 8pt; WIDTH: 65px; FONT-FAMILY: Verdana,Tahoma; HEIGHT: 20px
 }
-.404 {
+.error404 {
 	FONT-SIZE: 48pt; COLOR: #cccccc; FONT-STYLE: italic
 }
 .gray {

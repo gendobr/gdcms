@@ -101,7 +101,7 @@
 
             {if $ev.nearest_dates}
             <div>
-            {txt lang=$text.language_name variants="eng=nearest dates::rus=ближайшие даты::ukr=найближчі дати"}:
+            {txt lang=$text.language_name variants="eng=nearest dates::rus=Р±Р»РёР¶Р°Р№С€РёРµ РґР°С‚С‹::ukr=РЅР°Р№Р±Р»РёР¶С‡С– РґР°С‚Рё"}:
             {foreach from=$ev.nearest_dates item=dat}
               {$dat|date_format:"%d.%m.%Y"}
             {/foreach}
