@@ -45,7 +45,7 @@ $(window).load(function () {
    <!--  -->
 </span>
 <span style="display:inline-block;vertical-align:top;">
-<?=$input_vars['current_user_name']?>  @ <? echo($_SERVER['HTTP_HOST'] .'('.$_SERVER['SERVER_ADDR'].')'); ?>
+<?=$input_vars['current_user_name']?>  @ <?=($_SERVER['HTTP_HOST'] .'('.$_SERVER['SERVER_ADDR'].')')?>
 <h1 style="margin-top:5pt;"><?=$input_vars['page_header']?></h1>
 </span>
 <!--  -->
@@ -53,7 +53,7 @@ $(window).load(function () {
 
 <div style="float:left;">
 <span style="display:inline-block;vertical-align:top;background-color:#D1DFE0;width:200pt;">
-    <?
+    <?php
        if(is_array($input_vars['page_menu']))
        foreach($input_vars['page_menu'] as $menu_group)
        {
@@ -65,9 +65,9 @@ $(window).load(function () {
           <?php
                foreach($menu_group['items'] as $menu_item){
                  if(strlen($menu_item['URL'])>0){
-                    ?><a class="m_item" href="<?=$menu_item['URL']?>" title="<?=strip_tags($menu_item['innerHTML'])?>" <?=$menu_item['attributes']?>>&otimes; <?=$menu_item['innerHTML']?></a><?
+                    ?><a class="m_item" href="<?=$menu_item['URL']?>" title="<?=strip_tags($menu_item['innerHTML'])?>" <?=$menu_item['attributes']?>>&otimes; <?=$menu_item['innerHTML']?></a><?php
                  }else{
-                    ?><div class=mit style=' text-align:left;' <?=$menu_item['attributes']?>><?=$menu_item['innerHTML']?></div><?
+                    ?><div class=mit style=' text-align:left;' <?=$menu_item['attributes']?>><?=$menu_item['innerHTML']?></div><?php
                  }
                }
                ?>
@@ -75,7 +75,7 @@ $(window).load(function () {
           </div>
           </div>
           <div>&nbsp;</div>
-         <?
+         <?php
       }
       ?>
 </span>
