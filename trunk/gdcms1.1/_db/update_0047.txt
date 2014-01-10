@@ -1,0 +1,829 @@
+/*
+SQLyog Enterprise - MySQL GUI v7.13 
+MySQL - 5.1.72-2 : Database - cms
+*********************************************************************
+*/
+
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+/*Table structure for table `cms_calendar` */
+CREATE TABLE `cms_calendar` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'номер запису',
+  `site_id` int(11) NOT NULL COMMENT 'номер сайта користувача',
+  `nazva` varchar(1024) COLLATE utf8_bin NOT NULL COMMENT 'назва події',
+  `pochrik` int(11) NOT NULL COMMENT 'рік початку події',
+  `pochmis` int(11) NOT NULL COMMENT 'місяць  початку події',
+  `pochtyzh` int(11) NOT NULL COMMENT 'день тижня  початку події',
+  `pochday` int(11) NOT NULL COMMENT 'день  початку події',
+  `pochgod` int(11) NOT NULL COMMENT 'година  початку події',
+  `pochhv` int(11) NOT NULL COMMENT 'хвилина  початку події',
+  `kinrik` int(11) NOT NULL COMMENT 'рік кінця події',
+  `kinmis` int(11) NOT NULL COMMENT 'місяць кінця події',
+  `kintyzh` int(11) NOT NULL COMMENT 'день тижня  кінця події',
+  `kinday` int(11) NOT NULL COMMENT 'день  кінця події',
+  `kingod` int(11) NOT NULL COMMENT 'година кінця події',
+  `kinhv` int(11) NOT NULL COMMENT 'хвилина  кінця події',
+  `adresa` varchar(1024) COLLATE utf8_bin NOT NULL COMMENT 'адреса сторінки з описом події',
+  `kartynka` varchar(1024) COLLATE utf8_bin NOT NULL COMMENT 'адреса іконки події',
+  `vis` int(11) NOT NULL COMMENT 'видима подія чи ні',
+  `description` text COLLATE utf8_bin COMMENT 'Текстова інформація про подію',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+
+
+/*Table structure for table `cms_calendar_cache` */
+
+CREATE TABLE `cms_calendar_cache` (
+  `uid` bigint(11) DEFAULT NULL,
+  `days` varchar(128) DEFAULT NULL,
+  `updated` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_calendar_category` */
+
+CREATE TABLE `cms_calendar_category` (
+  `event_id` int(11) NOT NULL DEFAULT '0',
+  `category_id` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `pkey` (`event_id`,`category_id`),
+  KEY `event_id` (`event_id`),
+  KEY `category_id` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_category` */
+
+CREATE TABLE `cms_category` (
+  `category_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) NOT NULL DEFAULT '0',
+  `category_code` varchar(50) DEFAULT NULL,
+  `category_title` varchar(1024) NOT NULL DEFAULT 'new category',
+  `category_description` longtext,
+  `category_concept` text,
+  `start` bigint(20) NOT NULL DEFAULT '0',
+  `finish` bigint(20) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) DEFAULT '0',
+  `deep` int(11) NOT NULL DEFAULT '0',
+  `is_part_of` bigint(20) DEFAULT NULL,
+  `see_also` text,
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  `path` varchar(255) DEFAULT NULL,
+  `date_last_changed` datetime DEFAULT NULL,
+  `date_lang_update` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`category_id`),
+  KEY `start` (`start`),
+  KEY `finish` (`finish`),
+  KEY `category_code` (`category_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=902 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_cart` */
+
+CREATE TABLE `cms_ec_cart` (
+  `ec_cart_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ec_item_uid` varchar(50) DEFAULT NULL,
+  `ec_item_id` int(11) DEFAULT NULL,
+  `ec_item_lang` varchar(5) DEFAULT NULL,
+  `ec_item_title` varchar(255) DEFAULT NULL,
+  `ec_item_price` float DEFAULT NULL,
+  `ec_item_currency` varchar(5) DEFAULT NULL,
+  `ec_item_size` varchar(255) DEFAULT NULL,
+  `ec_item_weight` varchar(255) DEFAULT NULL,
+  `ec_cart_amount` int(11) DEFAULT NULL,
+  `ec_cart_item` text,
+  `ec_order_id` int(11) DEFAULT NULL,
+  `site_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ec_cart_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_category` */
+
+CREATE TABLE `cms_ec_category` (
+  `ec_category_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) NOT NULL DEFAULT '0',
+  `ec_category_code` varchar(50) DEFAULT NULL,
+  `ec_category_title` varchar(255) NOT NULL DEFAULT 'new category',
+  `ec_category_description` text,
+  `ec_category_concept` text,
+  `start` bigint(20) NOT NULL DEFAULT '0',
+  `finish` bigint(20) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) DEFAULT '0',
+  `deep` int(11) NOT NULL DEFAULT '0',
+  `is_part_of` bigint(20) DEFAULT NULL,
+  `see_also` text,
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  `ec_item_onnullamount` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ec_category_id`),
+  KEY `start` (`start`),
+  KEY `finish` (`finish`),
+  KEY `category_code` (`ec_category_code`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_category_item_field` */
+
+CREATE TABLE `cms_ec_category_item_field` (
+  `ec_category_item_field_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) DEFAULT NULL,
+  `ec_category_id` bigint(20) DEFAULT NULL,
+  `ec_category_item_field_title` text,
+  `ec_category_item_field_options` text,
+  `ec_category_item_field_ordering` int(11) DEFAULT NULL,
+  `ec_category_item_field_type` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ec_category_item_field_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_category_item_field_value` */
+
+CREATE TABLE `cms_ec_category_item_field_value` (
+  `ec_item_id` int(11) DEFAULT NULL,
+  `ec_item_lang` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
+  `ec_category_item_field_id` int(11) DEFAULT NULL,
+  `ec_category_item_field_value` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  UNIQUE KEY `NewIndex1` (`ec_item_id`,`ec_item_lang`,`ec_category_item_field_id`),
+  KEY `NewIndex2` (`ec_item_id`),
+  KEY `NewIndex3` (`ec_category_item_field_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_currency` */
+
+CREATE TABLE `cms_ec_currency` (
+  `ec_currency_code` varchar(5) NOT NULL,
+  `ec_curency_title` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`ec_currency_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_delivery` */
+
+CREATE TABLE `cms_ec_delivery` (
+  `ec_delivery_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` int(11) DEFAULT NULL,
+  `ec_delivery_title` tinytext,
+  `ec_delivery_ordering` int(11) DEFAULT NULL,
+  `ec_delivery_indent` int(11) DEFAULT NULL,
+  `ec_delivery_cost` varchar(255) DEFAULT NULL,
+  `ec_delivery_condition` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ec_delivery_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_item` */
+
+CREATE TABLE `cms_ec_item` (
+  `ec_item_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ec_item_lang` char(3) NOT NULL DEFAULT 'ukr',
+  `site_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `ec_item_title` varchar(255) NOT NULL DEFAULT '',
+  `ec_item_content` longtext,
+  `ec_item_cense_level` tinyint(4) NOT NULL DEFAULT '0',
+  `ec_item_last_change_date` datetime DEFAULT NULL,
+  `ec_item_abstract` text,
+  `ec_item_tags` text,
+  `ec_item_price` float NOT NULL DEFAULT '0',
+  `ec_item_currency` varchar(3) NOT NULL DEFAULT 'UAH',
+  `ec_item_amount` int(11) NOT NULL DEFAULT '0',
+  `ec_producer_id` int(11) NOT NULL DEFAULT '0',
+  `ec_category_id` int(11) NOT NULL DEFAULT '0',
+  `ec_item_onnullamount` varchar(255) DEFAULT NULL,
+  `ec_item_mark` varchar(80) DEFAULT NULL,
+  `ec_item_uid` varchar(50) DEFAULT NULL,
+  `ec_item_size` varchar(255) DEFAULT NULL,
+  `ec_item_material` varchar(255) DEFAULT NULL,
+  `ec_item_weight` varchar(25) DEFAULT NULL,
+  `ec_item_img` text,
+  `ec_item_purchases` int(11) NOT NULL DEFAULT '0',
+  `ec_item_keywords` text,
+  `cached_info` text,
+  `cache_datetime` datetime DEFAULT NULL,
+  `ec_item_views` int(11) NOT NULL DEFAULT '0',
+  `ec_item_in_cart` int(11) NOT NULL DEFAULT '0',
+  `ec_item_variants` longtext,
+  `ec_item_ordering` int(11) NOT NULL DEFAULT '0',
+  `ec_item_code` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ec_item_id`,`ec_item_lang`),
+  KEY `site_id` (`site_id`),
+  KEY `NewIndex1` (`ec_item_uid`),
+  KEY `NewIndex2` (`ec_producer_id`),
+  KEY `NewIndex3` (`ec_category_id`),
+  KEY `NewIndex4` (`ec_item_last_change_date`),
+  FULLTEXT KEY `title` (`ec_item_title`,`ec_item_content`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_item_category` */
+
+CREATE TABLE `cms_ec_item_category` (
+  `ec_item_id` int(11) NOT NULL DEFAULT '0',
+  `ec_category_id` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `pkey` (`ec_item_id`,`ec_category_id`),
+  KEY `ec_item_id` (`ec_item_id`),
+  KEY `category_id` (`ec_category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_item_comment` */
+
+CREATE TABLE `cms_ec_item_comment` (
+  `ec_item_comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ec_item_comment_sender_name` varchar(100) DEFAULT NULL,
+  `ec_item_comment_body` text,
+  `site_id` int(11) DEFAULT NULL,
+  `ec_item_id` int(11) DEFAULT NULL,
+  `ec_item_lang` varchar(5) DEFAULT NULL,
+  `ec_item_comment_datetime` datetime DEFAULT NULL,
+  PRIMARY KEY (`ec_item_comment_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_item_tags` */
+
+CREATE TABLE `cms_ec_item_tags` (
+  `ec_item_id` int(11) NOT NULL DEFAULT '0',
+  `ec_item_tag` varchar(255) NOT NULL DEFAULT '',
+  `site_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ec_item_id`,`ec_item_tag`),
+  KEY `NewIndex1` (`ec_item_id`),
+  KEY `NewIndex2` (`ec_item_tag`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_item_variant` */
+
+CREATE TABLE `cms_ec_item_variant` (
+  `ec_item_variant_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ec_item_variant_code` varchar(256) DEFAULT NULL,
+  `ec_item_id` int(11) DEFAULT NULL,
+  `ec_item_lang` varchar(10) DEFAULT NULL,
+  `ec_item_variant_description` text,
+  `ec_item_variant_price_correction` varchar(50) DEFAULT NULL,
+  `ec_item_variant_indent` int(11) NOT NULL DEFAULT '0',
+  `ec_item_variant_ordering` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ec_item_variant_id`),
+  KEY `NewIndex1` (`ec_item_id`),
+  KEY `NewIndex2` (`ec_item_lang`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_order` */
+
+CREATE TABLE `cms_ec_order` (
+  `ec_order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ec_date_created` datetime DEFAULT NULL,
+  `site_id` int(11) DEFAULT NULL,
+  `ec_order_status` varchar(32) DEFAULT NULL,
+  `ec_order_total` double DEFAULT NULL,
+  `ec_user_id` int(11) DEFAULT NULL,
+  `ec_order_hash` varchar(128) DEFAULT NULL,
+  `ec_order_paid` tinyint(1) NOT NULL DEFAULT '0',
+  `ec_order_details` text,
+  `ec_order_paid_amount` double NOT NULL DEFAULT '0',
+  `ec_order_custom_data` text,
+  PRIMARY KEY (`ec_order_id`),
+  KEY `NewIndex1` (`ec_date_created`),
+  KEY `NewIndex2` (`ec_user_id`),
+  KEY `NewIndex3` (`site_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_order_history` */
+
+CREATE TABLE `cms_ec_order_history` (
+  `ec_order_history_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ec_order_history_title` varchar(255) DEFAULT NULL,
+  `ec_order_history_details` text,
+  `ec_order_history_date` datetime DEFAULT NULL,
+  `ec_order_history_action` varchar(64) DEFAULT NULL,
+  `ec_order_id` bigint(20) DEFAULT NULL,
+  `site_visitor_id` bigint(20) DEFAULT NULL,
+  `site_id` bigint(20) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ec_order_history_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_producer` */
+
+CREATE TABLE `cms_ec_producer` (
+  `ec_producer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ec_producer_title` varchar(255) DEFAULT NULL,
+  `ec_producer_abstract` text,
+  `ec_producer_description` text,
+  `site_id` int(11) DEFAULT NULL,
+  `ec_producer_img` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ec_producer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_producer_comment` */
+
+CREATE TABLE `cms_ec_producer_comment` (
+  `ec_producer_comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ec_producer_comment_sender_name` varchar(100) DEFAULT NULL,
+  `ec_producer_comment_body` text,
+  `site_id` int(11) DEFAULT NULL,
+  `ec_producer_id` int(11) DEFAULT NULL,
+  `ec_producer_comment_datetime` datetime DEFAULT NULL,
+  PRIMARY KEY (`ec_producer_comment_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ec_user` */
+
+CREATE TABLE `cms_ec_user` (
+  `ec_user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ec_user_name` varchar(100) DEFAULT NULL,
+  `ec_user_telephone` varchar(100) DEFAULT NULL,
+  `ec_user_icq` varchar(100) DEFAULT NULL,
+  `ec_user_delivery_city` varchar(255) DEFAULT NULL,
+  `ec_user_delivery_region` varchar(255) DEFAULT NULL,
+  `ec_user_delivery_street_address` varchar(255) DEFAULT NULL,
+  `ec_user_delivery_suburb` varchar(255) DEFAULT NULL,
+  `ec_user_uid` varchar(32) DEFAULT NULL,
+  `site_visitor_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ec_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_forum_list` */
+
+CREATE TABLE `cms_forum_list` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` int(10) unsigned DEFAULT NULL,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `is_premoderated` tinyint(1) NOT NULL DEFAULT '0',
+  `about` text,
+  `moderators` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_forum_msg` */
+
+CREATE TABLE `cms_forum_msg` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `site_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `forum_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `thread_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `email` varchar(40) NOT NULL DEFAULT '',
+  `www` varchar(255) NOT NULL DEFAULT '',
+  `subject` varchar(255) NOT NULL DEFAULT '',
+  `msg` text NOT NULL,
+  `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `is_first_msg` tinyint(1) NOT NULL DEFAULT '0',
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `site_id` (`site_id`),
+  KEY `f` (`forum_id`),
+  KEY `t` (`thread_id`),
+  FULLTEXT KEY `name` (`name`,`email`,`www`,`subject`,`msg`)
+) ENGINE=MyISAM AUTO_INCREMENT=2635 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_forum_thread` */
+
+CREATE TABLE `cms_forum_thread` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `forum_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `subject` varchar(255) NOT NULL DEFAULT '',
+  `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `site_id` (`site_id`,`forum_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=617 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_fragment` */
+
+CREATE TABLE `cms_fragment` (
+  `fragment_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `fragment_lang` varchar(3) DEFAULT NULL,
+  `site_id` bigint(20) NOT NULL,
+  `fragment_place` varchar(128) DEFAULT NULL,
+  `fragment_html` text,
+  `fragment_label` varchar(128) DEFAULT NULL,
+  `fragment_is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`fragment_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_gb` */
+
+CREATE TABLE `cms_gb` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(35) NOT NULL DEFAULT '',
+  `email` varchar(40) NOT NULL DEFAULT '',
+  `adress` text NOT NULL,
+  `tema` varchar(80) NOT NULL DEFAULT '',
+  `text` text NOT NULL,
+  `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `site` int(11) DEFAULT NULL,
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `data` (`data`)
+) ENGINE=MyISAM AUTO_INCREMENT=59734 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_golos_pynannja` */
+
+CREATE TABLE `cms_golos_pynannja` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '0',
+  `title` text NOT NULL,
+  `n_respondents` int(11) NOT NULL DEFAULT '0',
+  `poll_type` varchar(10) NOT NULL DEFAULT 'radio',
+  `ordering` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `site_id` (`site_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_golos_vidpovidi` */
+
+CREATE TABLE `cms_golos_vidpovidi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pynannja_id` int(2) NOT NULL DEFAULT '0',
+  `site_id` bigint(20) NOT NULL DEFAULT '0',
+  `html` varchar(250) NOT NULL DEFAULT '',
+  `golosiv` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `site_id` (`site_id`),
+  KEY `pynannja_id` (`pynannja_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_golos_vidpovidi_details` */
+
+CREATE TABLE `cms_golos_vidpovidi_details` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `poll_id` bigint(20) DEFAULT NULL,
+  `answer_id` bigint(20) DEFAULT NULL,
+  `session_id` varchar(255) DEFAULT NULL,
+  `client_ip` varchar(100) DEFAULT NULL,
+  `answer_date` datetime DEFAULT NULL,
+  `site_id` bigint(20) DEFAULT NULL,
+  `client_is_valid` float DEFAULT NULL,
+  `client_sign` varchar(100) DEFAULT NULL,
+  `client_sign2` varchar(100) DEFAULT NULL,
+  `poll_uid` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11529 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_languages` */
+
+CREATE TABLE `cms_languages` (
+  `id` char(3) NOT NULL DEFAULT '',
+  `name` varchar(255) DEFAULT NULL,
+  `is_visible` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_listener` */
+
+CREATE TABLE `cms_listener` (
+  `listener_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `listener_event` varchar(255) DEFAULT NULL,
+  `site_id` bigint(20) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `listener_sendto` varchar(255) DEFAULT NULL,
+  `listener_action` varchar(255) DEFAULT NULL,
+  `listener_template` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`listener_id`),
+  KEY `NewIndex1` (`listener_event`),
+  KEY `NewIndex2` (`site_id`),
+  KEY `NewIndex3` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_menu_group` */
+
+CREATE TABLE `cms_menu_group` (
+  `id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `site_id` bigint(20) NOT NULL DEFAULT '0',
+  `page_id` bigint(20) NOT NULL DEFAULT '0',
+  `lang` char(3) NOT NULL DEFAULT 'ukr',
+  `html` text NOT NULL,
+  `url` text,
+  `icon` text,
+  `code` varchar(50) DEFAULT NULL,
+  `ordering` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`,`lang`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_menu_item` */
+
+CREATE TABLE `cms_menu_item` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `menu_group_id` bigint(20) NOT NULL DEFAULT '0',
+  `lang` char(3) NOT NULL DEFAULT 'ukr',
+  `html` text NOT NULL,
+  `url` text,
+  `description` text,
+  `attributes` text,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=526 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_ml` */
+
+CREATE TABLE `cms_ml` (
+  `i` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `a` varchar(255) DEFAULT NULL,
+  `d` datetime DEFAULT NULL,
+  `u` varchar(255) DEFAULT NULL,
+  `s` text,
+  PRIMARY KEY (`i`)
+) ENGINE=MyISAM AUTO_INCREMENT=18716 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_news` */
+
+CREATE TABLE `cms_news` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `lang` char(3) NOT NULL DEFAULT 'ukr',
+  `site_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(512) NOT NULL,
+  `content` longtext,
+  `cense_level` tinyint(2) NOT NULL DEFAULT '0',
+  `last_change_date` datetime DEFAULT NULL,
+  `abstract` text,
+  `category_id` bigint(20) NOT NULL DEFAULT '0',
+  `tags` text,
+  `expiration_date` datetime DEFAULT NULL,
+  `weight` int(11) NOT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `news_code` varchar(1024) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `news_meta_info` text CHARACTER SET utf8 COLLATE utf8_bin,
+  `news_extra_1` varchar(1024) DEFAULT NULL,
+  `news_extra_2` varchar(1024) DEFAULT NULL,
+  PRIMARY KEY (`id`,`lang`),
+  KEY `site_id` (`site_id`),
+  FULLTEXT KEY `title` (`title`,`content`)
+) ENGINE=MyISAM AUTO_INCREMENT=9012 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_news_category` */
+
+CREATE TABLE `cms_news_category` (
+  `news_id` int(11) NOT NULL DEFAULT '0',
+  `category_id` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `pkey` (`news_id`,`category_id`),
+  KEY `news_id` (`news_id`),
+  KEY `category_id` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_news_comment` */
+
+CREATE TABLE `cms_news_comment` (
+  `news_comment_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `news_id` bigint(20) DEFAULT NULL,
+  `news_lang` varchar(3) DEFAULT NULL,
+  `site_id` bigint(20) DEFAULT NULL,
+  `news_comment_datetime` datetime DEFAULT NULL,
+  `news_comment_content` text,
+  `news_comment_is_visible` tinyint(4) NOT NULL DEFAULT '1',
+  `news_comment_sender` varchar(60) DEFAULT NULL,
+  `news_comment_parent_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`news_comment_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_news_subscriber` */
+
+CREATE TABLE `cms_news_subscriber` (
+  `news_subscriber_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `news_subscriber_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `news_subscriber_email` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `news_subscriber_code` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `news_subscriber_is_valid` tinyint(1) NOT NULL DEFAULT '0',
+  `news_subscriber_date` datetime DEFAULT NULL,
+  `site_id` int(11) NOT NULL,
+  PRIMARY KEY (`news_subscriber_id`),
+  KEY `NewIndex1` (`news_subscriber_code`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+/*Table structure for table `cms_news_tags` */
+
+CREATE TABLE `cms_news_tags` (
+  `news_id` bigint(20) DEFAULT NULL,
+  `lang` varchar(10) DEFAULT NULL,
+  `tag` varchar(100) DEFAULT NULL,
+  UNIQUE KEY `p_k` (`news_id`,`lang`,`tag`),
+  KEY `news_id` (`news_id`),
+  KEY `lang` (`lang`),
+  KEY `tag` (`tag`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_notification_queue` */
+
+CREATE TABLE `cms_notification_queue` (
+  `notification_queue_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `notification_queue_to` varchar(255) DEFAULT NULL,
+  `notification_queue_subject` varchar(255) DEFAULT NULL,
+  `notification_queue_body` text,
+  `notification_queue_attempts` int(11) NOT NULL DEFAULT '0',
+  `notification_queue_function` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`notification_queue_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=176 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_oid` */
+
+CREATE TABLE `cms_oid` (
+  `cs` varchar(255) NOT NULL,
+  `expires` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`cs`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Table structure for table `cms_page` */
+
+CREATE TABLE `cms_page` (
+  `id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `lang` char(3) NOT NULL DEFAULT 'ukr',
+  `site_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(512) NOT NULL DEFAULT '',
+  `content` longtext,
+  `cense_level` tinyint(2) NOT NULL DEFAULT '0',
+  `last_change_date` datetime DEFAULT NULL,
+  `is_under_construction` tinyint(1) NOT NULL DEFAULT '1',
+  `is_home_page` tinyint(1) NOT NULL DEFAULT '0',
+  `map_position` int(11) NOT NULL DEFAULT '0',
+  `map_indent` int(11) NOT NULL DEFAULT '0',
+  `abstract` text,
+  `path` varchar(255) DEFAULT NULL,
+  `category_id` bigint(20) NOT NULL DEFAULT '0',
+  `to_export` tinyint(4) NOT NULL DEFAULT '0',
+  `delete_file` text,
+  `page_file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `page_meta_tags` text,
+  PRIMARY KEY (`id`,`lang`),
+  KEY `site_id` (`site_id`),
+  FULLTEXT KEY `title` (`title`,`content`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_page_menu_group` */
+
+CREATE TABLE `cms_page_menu_group` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) NOT NULL DEFAULT '0',
+  `page_id` bigint(20) NOT NULL DEFAULT '0',
+  `menu_group_id` bigint(20) NOT NULL DEFAULT '0',
+  `lang` char(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_photogalery` */
+
+CREATE TABLE `cms_photogalery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `photos` text,
+  `photos_m` text,
+  `rozdil` text,
+  `rozdil2` text,
+  `pidpys` text,
+  `autor` text,
+  `rik` varchar(4) DEFAULT NULL,
+  `site` text,
+  `vis` char(2) DEFAULT NULL,
+  `description` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2144 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_photogalery_rozdil` */
+
+CREATE TABLE `cms_photogalery_rozdil` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `photos` text,
+  `photos_m` text,
+  `rozdil` varchar(1024) DEFAULT NULL,
+  `site_id` int(11) DEFAULT NULL,
+  `image_id` int(11) DEFAULT NULL,
+  `rozdil2` varchar(64) DEFAULT NULL,
+  `weight` int(11) NOT NULL DEFAULT '0',
+  `description` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_rsssource` */
+
+CREATE TABLE `cms_rsssource` (
+  `rsssource_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) DEFAULT NULL,
+  `rsssource_title` varchar(64) DEFAULT NULL,
+  `rsssource_lang` varchar(3) DEFAULT NULL,
+  `rsssource_url` varchar(4096) DEFAULT NULL,
+  `rsssource_last_updated` datetime DEFAULT NULL,
+  `rsssource_is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  `rsssource_is_premoderated` tinyint(1) NOT NULL DEFAULT '1',
+  `rsssource_tag` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`rsssource_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_rsssourceitem` */
+
+CREATE TABLE `cms_rsssourceitem` (
+  `rsssourceitem_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) DEFAULT NULL,
+  `rsssource_id` bigint(20) DEFAULT NULL,
+  `rsssourceitem_lang` varchar(3) DEFAULT NULL,
+  `rsssourceitem_datetime` datetime DEFAULT NULL,
+  `rsssourceitem_is_visiblle` tinyint(1) NOT NULL DEFAULT '1',
+  `rsssourceitem_title` varchar(512) DEFAULT NULL,
+  `rsssourceitem_abstract` text,
+  `rsssourceitem_url` varchar(4096) DEFAULT NULL,
+  `rsssourceitem_src` text,
+  `rsssourceitem_guid` varchar(4096) DEFAULT NULL,
+  `rsssourceitem_hash` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`rsssourceitem_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_session` */
+
+CREATE TABLE `cms_session` (
+  `id` varchar(50) NOT NULL DEFAULT '',
+  `sess_data` text,
+  `expires` bigint(20) DEFAULT NULL,
+  `user_login` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `NewIndex1` (`user_login`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_site` */
+
+CREATE TABLE `cms_site` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `dir` varchar(20) NOT NULL DEFAULT '',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `cense_level` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `template` varchar(50) DEFAULT 'main',
+  `is_gb_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `is_search_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `is_news_line_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `is_site_map_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `is_forum_enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `is_poll_enabled` tinyint(1) NOT NULL,
+  `search_validate_url` text,
+  `search_exclude_url` text,
+  `is_gallery_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `is_ec_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `ec_currency` varchar(10) NOT NULL DEFAULT 'UAH',
+  `salt` varchar(32) DEFAULT NULL,
+  `is_calendar_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `is_rssaggegator_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_site_search` */
+
+CREATE TABLE `cms_site_search` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) NOT NULL DEFAULT '0',
+  `url` varchar(255) DEFAULT NULL,
+  `size` int(11) DEFAULT NULL,
+  `title` text,
+  `words` text,
+  `date_indexed` datetime DEFAULT NULL,
+  `is_valid` tinyint(4) NOT NULL DEFAULT '1',
+  `checksum` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `date_indexed` (`date_indexed`),
+  KEY `site_id` (`site_id`),
+  KEY `url` (`url`),
+  KEY `checksum` (`checksum`)
+) ENGINE=MyISAM AUTO_INCREMENT=22345 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_site_user` */
+
+CREATE TABLE `cms_site_user` (
+  `site_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `level` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  UNIQUE KEY `site_id` (`site_id`,`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_site_visitor` */
+
+CREATE TABLE `cms_site_visitor` (
+  `site_visitor_id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `site_visitor_password` varchar(32) NOT NULL DEFAULT '',
+  `site_visitor_login` varchar(30) DEFAULT NULL,
+  `site_visitor_email` varchar(100) NOT NULL DEFAULT '',
+  `site_visitor_home_page_url` varchar(255) DEFAULT NULL,
+  `site_visitor_code` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`site_visitor_id`),
+  UNIQUE KEY `name_nick` (`site_visitor_login`),
+  KEY `NewIndex1` (`site_visitor_email`)
+) ENGINE=MyISAM AUTO_INCREMENT=139 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_site_visitor_education` */
+
+CREATE TABLE `cms_site_visitor_education` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) NOT NULL DEFAULT '0',
+  `site_visitor_id` bigint(20) NOT NULL DEFAULT '0',
+  `edu_year` int(4) NOT NULL DEFAULT '0',
+  `faculty` varchar(100) DEFAULT NULL,
+  `speciality` text NOT NULL,
+  `place` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cms_user` */
+
+CREATE TABLE `cms_user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_login` varchar(255) NOT NULL DEFAULT '',
+  `user_password` varchar(32) NOT NULL DEFAULT '',
+  `full_name` varchar(255) DEFAULT NULL,
+  `telephone` varchar(128) DEFAULT NULL,
+  `email` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=155 DEFAULT CHARSET=utf8;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+
+alter table `cms_site` change `dir` `dir` varchar(127) character set utf8 collate utf8_general_ci default '' NOT NULL;
