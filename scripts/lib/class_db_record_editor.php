@@ -1,4 +1,4 @@
-<?
+<?php
 // ---------------------------- class Report -- begin --------------------------
 /*
 
@@ -6,8 +6,7 @@ Class Report generates report structure
 
 
 */
-class db_record_editor
-{
+class db_record_editor {
 
    var $field=Array(); // filelds
                        // $field[*]=Array('field'=>...,
@@ -107,7 +106,7 @@ class db_record_editor
                   //if(get_magic_quotes_gpc()) $posted_data=stripslashes($posted_data);
 
                   $tor['options']['maxlength']=isset($tor['options']['maxlength'])?$this->checkInt($tor['options']['maxlength']):0;
-                  if(strlen($posted_data)>$tor['options']['maxlength'] && $tor['options']['maxlength']>0)
+                  if(strlen($posted_data)>2*$tor['options']['maxlength'] && $tor['options']['maxlength']>0)
                   {
                      $this->all_is_ok=false;
                      $this->messages.="<font color=red><b>ERROR : Length of {$_label} is greater than {$tor['options']['maxlength']}</b></font><br/>";
