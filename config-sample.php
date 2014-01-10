@@ -1,5 +1,4 @@
 <?php
-
 /*
   Site configuration
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com
@@ -9,25 +8,21 @@ define('debug', false);
 
 define('site_title', 'CMS');
 
-define('site_charset', 'WINDOWS-1251');
+define('site_charset', 'UTF-8');
+//define('site_charset', 'windows-1251');
 
 //------------------------ URLs - begin ----------------------------------------
-//define('site_root_URL','http://127.0.0.1/cms');    // home
-//define('site_root_URL','http://sites.zsu.zp.ua/cms'); // ZSU
-//define('site_root_URL','http://web.zsu.zp.ua/~dobro/cms'); // ZSU
-//define('site_root_URL','http://genius/cms'); // ZSU
 define('site_root_URL', "http" . (isset($_SERVER['HTTPS']) ? 's' : '') . "://{$_SERVER['HTTP_HOST']}/cms"); // ZSU
 define('site_public_URL', "http://{$_SERVER['HTTP_HOST']}/cms"); // ZSU
 
 define('site_URL', site_root_URL . '/index.php');
-//define('sites_root_URL','http://sites.zsu.zp.ua');
 define('sites_root_URL', 'http://gen.znu.edu.ua/_sites');
 //------------------------ URLs - end ------------------------------------------
+
 //----------------------- directories -- begin ---------------------------------
 // root directory of the site
-//define('local_root','C:/Inetpub/wwwroot/cms');
 define('local_root', '/home/dobro/wwwroot/cms');
-//define('local_root','/home/www/webs/sites.zsu.zp.ua/cms');
+
 // where script are located
 define('script_root', local_root . '/scripts');
 
@@ -35,18 +30,17 @@ define('script_root', local_root . '/scripts');
 define('template_root', local_root . '/templates');
 
 // where sites are located
-//define('sites_root','/home/www/webs/sites.zsu.zp.ua');
 define('sites_root', '/home/dobro/wwwroot/_sites');
 
 // where template are cached
 define('template_cache_root', local_root . '/template_cache');
 //----------------------- directories -- end -----------------------------------
 //----------------------- database parameters -- begin -------------------------
-define('db_name', "cms");
+define('db_name', "cms_utf8");
 define('db_user', "user");
 define('db_pass', "user");
 define('db_host', "localhost");
-define('db_encoding', "cp1251");
+define('db_encoding', "utf8");
 //----------------------- database parameters -- end ---------------------------
 // ---------------------------- mailer options -- begin ------------------------
 /*
