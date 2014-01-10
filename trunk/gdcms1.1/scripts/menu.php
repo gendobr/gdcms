@@ -41,7 +41,7 @@ if (!is_logged()) {
     );
     $input_vars['page_menu']['main']['items']['forgot_password'] = Array(
         'URL' => "index.php?action=forgot_password"
-        , 'innerHTML' => $text['Password_reminder']
+        , 'innerHTML' => text('Password_reminder')
         , 'attributes' => ''
     );
 }
