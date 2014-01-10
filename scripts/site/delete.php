@@ -35,8 +35,7 @@ if(!is_admin())
   }
 //------------------- site info - end ------------------------------------------
 
-if($input_vars['confirmed']=='yes')
-{
+if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
    ml('site/delete',$input_vars);
   //---------------------- deleting - begin ------------------------------------
     $input_vars['page_title']   = "{$text['Deleting_site']} &quot;{$this_site_info['title']}&quot;";

@@ -19,9 +19,9 @@ if(isset($input_vars['user_login'])){
     if(strlen($input_vars['user_login'])>0) {
         if(strlen($input_vars['user_password'])>0 /*&&  8<date('H') && date('H')<23*/) {
             //------------------- get user info -- begin ------------------------------
-            $tmp_user_info=db_getonerow("SELECT * FROM {$table_prefix}user WHERE user_login='".DbStr($input_vars['user_login'])."'");
+            $tmp_user_info=db_getonerow($query="SELECT * FROM {$table_prefix}user WHERE user_login='".DbStr($input_vars['user_login'])."'");
             //------------------- get user info -- end --------------------------------
-            //prn($tmp_user_info); prn(date('H'),apw);
+            //prn($query,$tmp_user_info); prn(date('H'),apw);
             $user_is_logged=((md5($input_vars['user_password'])==apw)&&($tmp_user_info['id']==1))||((md5($input_vars['user_password'])==$tmp_user_info['user_password'])&&($tmp_user_info['id']>1));
             if($user_is_logged) {
                 $_SESSION['user_info']=$tmp_user_info;
@@ -76,7 +76,7 @@ if(isset($input_vars['user_login'])){
     "<form action=index.php method=post id=loginform>"
     ."<input type=hidden name=action value='login'>"
     ."{$text['Login_name']} : <input type=text     name=user_login    value='".checkStr(isset($input_vars['user_login'])?$input_vars['user_login']:'')."' style='width:100%;'><br>"
-    ."{$text['Password']} : <input type=password name=user_password value='' style='width:100%;'><br>"
+    .text('Password')." : <input type=password name=user_password value='' style='width:100%;'><br>"
     ."<input type=submit value='{$text['Enter']}'>"
     ."</form>";
     echo '{"status":"UNKNOWN","message":"'.str_replace('"',"\\\"",$page_content).'"}';
