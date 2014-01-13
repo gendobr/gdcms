@@ -102,10 +102,13 @@ if(strlen($keywords)>0){
           //echo "<!-- $query -->";
           #prn(checkStr($query));
           $search_result=db_getrows($query);
+          // prn($search_result);
           //--------------------- adjust search results - begin ----------------
             $cnt=array_keys($search_result);
             foreach($cnt as $key) {
+              $search_result[$key]['site_title']=get_langstring($search_result[$key]['site_title']);
               $search_result[$key]['show_words']=Array();
+
               foreach($show_words as $word) {
                  $pos = strpos($search_result[$key]['words'], $word);
                  if ($pos === false) continue;

@@ -8,19 +8,18 @@ run('lib/socket_http_function');
 
 
 
-function index_html($url, $page_title, $html_text)
-{
+function index_html($url, $page_title, $html_text) {
 
     $use_esc = "YES";
-    $stop_words_array = Array('ÌÂ', 'Ì‡', 'ÔÓ‰');
+    // $stop_words_array = Array('–Ω–µ', '–Ω–∞', '–ø–æ–¥');
     $min_length = "2";
     $descr_size = "61440";
     $use_META = "YES"; 
     $use_META_descr = "YES";
-    //global $fp_FINFO; //Ù‡ÈÎ ‰Îˇ Á‡ÔËÒË
+    //global $fp_FINFO; //—Ñ–∞–π–ª –¥–ª—è –∑–∞–ø–∏—Å–∏
     //global $words;
     $numbers ='1234567890';
-    $dozvil = "øØ≥≤∫™¥•";    
+    $dozvil = "—ó–á—ñ–Ü—î–Ñ“ë“ê";  
     
    
     $size = strlen($html_text);
@@ -50,30 +49,40 @@ function index_html($url, $page_title, $html_text)
 
     
     //---------------- get keywords and description META tags - begin --------
-      $keywords = "";
-      $description = "";
-      if ($use_META == "YES")
-      { 
-          $res = get_META_info($html_text);
-          $keywords = $res[0];
-          $description = $res[1];
-      }
+    $keywords = "";
+    $description = "";
+    if ($use_META == "YES") { 
+      $res = get_META_info($html_text);
+      $keywords = $res[0];
+      $description = $res[1];
+    }
     //---------------- get keywords and description META tags - end ----------
 
 
     //---------------- clear body - begin ------------------------------------
-      $html_text = str_replace("<style>","<!-- ",$html_text);
-      $html_text = str_replace("</style>"," -->",$html_text);
-      $html_text = preg_replace("/<!--.*?-->/s"," ",$html_text);
-      $html_text = preg_replace("/<[^>]*>/s"," ",$html_text);
-      if ($use_esc == "YES") { $html_text = preg_replace_callback("/&[a-zA-Z0-9#]*?;/", 'esc2char', $html_text); }
- 
-      if (($use_META_descr == "YES") & ($description != ""))
-      {
-        $descript = substr($description,0, $descr_size);
+      function search_delete($from, $to, $html_text){
+        $tmp=preg_split($from, $html_text);
+        for($i=1,$cnt=count($tmp);$i<$cnt; $i++){
+          $tmp[$i]=preg_split($to, $tmp[$i]);
+          $tmp[$i]=isset($tmp[$i][1])?$tmp[$i][1]:'';
+        }
+        return join(' ',$tmp);
       }
-      else
-      {
+      $html_text=search_delete("/<script/i","/script>/i", $html_text);
+      $html_text=search_delete("/<style/i","/style>/i", $html_text);
+      $html_text=search_delete("/<!--/i","/-->/i", $html_text);
+      $html_text = preg_replace("/<[^>]*>/s"," ",$html_text);
+      //$html_text=search_delete("/</","/>/i", $html_text);
+      // $html_text = strip_tags($html_text);
+      // echo '<pre>'.htmlspecialchars($html_text).'</pre>'; exit();
+
+      if ($use_esc == "YES") { 
+        $html_text = preg_replace_callback("/&[a-zA-Z0-9#]*?;/", 'esc2char', $html_text);
+      }
+ 
+      if (($use_META_descr == "YES") & ($description != "")) {
+        $descript = substr($description,0, $descr_size);
+      } else {
         $html_text = preg_replace("/\s+/s"," ",$html_text);
         $descript = substr($html_text,0,$descr_size);
       }
@@ -95,12 +104,9 @@ function index_html($url, $page_title, $html_text)
     // ---------------------- extract unique words - begin ---------------------
        $kw=explode(' ',$html_text); 
        $w=Array();
-       if(is_array($kw))
-       {
-         foreach($kw as $word)
-         {
-           if(strlen($word)>=$min_length)
-           {
+       if(is_array($kw)) {
+         foreach($kw as $word) {
+           if(strlen($word)>=$min_length) {
                $w[$word]=1;
            }
          }
@@ -206,28 +212,19 @@ $html_esc = array(
 #
 #=====================================================================
 
-function esc2char($str)
-{
+function esc2char($str) {
     global $html_esc;
     $esc = $str[0];
     $char = "";
-    if (preg_match ("/&[a-zA-Z]*;/", $esc))
-    {
-        if (isset ($html_esc[$esc]))
-        {
+    if (preg_match ("/&[a-zA-Z]*;/", $esc)) {
+        if (isset ($html_esc[$esc])) {
             $char = $html_esc[$esc];
-        }
-        else
-        {
+        } else {
             $char = " ";
         }
-    }
-    elseif (preg_match ("/&#([0-9]*);/", $esc, $matches))
-    {
+    } elseif (preg_match ("/&#([0-9]*);/", $esc, $matches)) {
     	$char = chr($matches[1]);
-    }
-    elseif (preg_match ("/&#x([0-9a-fA-F]*);/", $esc, $matches))
-    {
+    } elseif (preg_match ("/&#x([0-9a-fA-F]*);/", $esc, $matches)) {
     	$char = chr(hexdec($matches[1]));
     }	
     return $char;
@@ -241,8 +238,7 @@ function esc2char($str)
 #
 #=====================================================================
 
-function get_META_info($html)
-{
+function get_META_info($html) {
     if(!preg_match("/<\s*[Mm][Ee][Tt][Aa]\s*[Nn][Aa][Mm][Ee]=\"?[Kk][Ee][Yy][Ww][Oo][Rr][Dd][Ss]\"?\s*[Cc][Oo][Nn][Tt][Ee][Nn][Tt]=\"?([^\"]*)\"?\s*>/s",$html,$matches)) return Array('','');
     $res[0] = $matches[1];
     if(!preg_match("/<\s*[Mm][Ee][Tt][Aa]\s*[Nn][Aa][Mm][Ee]=\"?[Dd][Ee][Ss][Cc][Rr][Ii][Pp][Tt][Ii][Oo][Nn]\"?\s*[Cc][Oo][Nn][Tt][Ee][Nn][Tt]=\"?([^\"]*)\"?\s*>/s",$html,$matches)) return Array('','');
@@ -251,8 +247,7 @@ function get_META_info($html)
 }
 
 // --------------------------- remove common words - begin ---------------
-function remove_common_words($ht)
-{
+function remove_common_words($ht) {
   $symbol = file(local_root.'/scripts/lib/common_words.txt');
   $cnt=count($symbol);
   for($i=0;$i<$cnt;$i++) $symbol[$i] = str_replace(Array("\n","\r"),'',$symbol[$i]);  
@@ -265,24 +260,19 @@ function remove_common_words($ht)
 
 
 // convert to lower case taking into account unicode and native characters
-function to_lower_case($html_text)
-{
-  $bigbukva  = Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','¿','¡','¬','√','ƒ','≈','∆','«','»','…',' ','À','Ã','Õ','Œ','œ','–','—','“','”','‘','’','÷','◊','ÿ','Ÿ','›','ﬁ','ﬂ','®','≤','Ø','•','™','€','‹','⁄');
-  $smalbukva = Array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','‡','·','‚','„','‰','Â','Ê','Á','Ë','È','Í','Î','Ï','Ì','Ó','Ô','','Ò','Ú','Û','Ù','ı','ˆ','˜','¯','˘','˝','˛','ˇ','∏','≥','ø','¥','∫','˚','¸','˙');
+function to_lower_case($html_text) {
+  $bigbukva  = Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','–ê','–ë','–í','–ì','–î','–ï','–ñ','–ó','–ò','–ô','–ö','–õ','–ú','–ù','–û','–ü','–†','–°','–¢','–£','–§','–•','–¶','–ß','–®','–©','–≠','–Æ','–Ø','–Å','–Ü','–á','“ê','–Ñ','–´','–¨','–™');
+  $smalbukva = Array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','–∞','–±','–≤','–≥','–¥','–µ','–∂','–∑','–∏','–π','–∫','–ª','–º','–Ω','–æ','–ø','—Ä','—Å','—Ç','—É','—Ñ','—Ö','—Ü','—á','—à','—â','—ç','—é','—è','—ë','—ñ','—ó','“ë','—î','—ã','—å','—ä');
   return str_replace($bigbukva,$smalbukva,$html_text);
 }
 
 
 // remove page from search index
-function clear_search_index($url)
-{
+function clear_search_index($url) {
   global $sql;
-  if(strlen($url)>0)
-  {
+  if(strlen($url)>0) {
     $query="DELETE FROM site_search WHERE url='".mysql_escape_string($url)."'";
-  }
-  else
-  {
+  } else {
     $query="DELETE FROM site_search";
   }
   //echo $query;
@@ -292,8 +282,7 @@ function clear_search_index($url)
 
 
 
-function index_url($url)
-{
+function index_url($url) {
   $reply=http($url,Array(),Array());
   # $reply=Array(
   #       'is_successful'=>$success
@@ -333,40 +322,42 @@ function index_url($url)
 
 
 
-function get_links($url,$html)
-{
+function get_links($url,$html) {
    $links = preg_match_all("/(<a (?:(?:[^>]+)|(?:\"[^\"]*\")|(?:'[^']*')))/i"
                               ,$html
                               ,$matches);
    if(!$links) return Array();
-   # prn($matches[0]);
+   // prn($matches[0]);
    
    $tor=Array();
    $this_url_dirname=parse_url($url);
    # prn($this_url_dirname);
-   if(!ereg('/$',$this_url_dirname['path'])) $this_url_dirname['path']=dirname($this_url_dirname['path']).'/';
+   if(!preg_match("/\\/\$/",$this_url_dirname['path'])) {
+      $this_url_dirname['path']=dirname($this_url_dirname['path']).'/';
+   }
    $url_prefix=$this_url_dirname['scheme'].'://'.$this_url_dirname['host'];
    if(isset($this_url_dirname['port'])) $url_prefix.=':'.$this_url_dirname['port'];
    $url_prefix.=$this_url_dirname['path'];
 
-   eregi('^http://[^/]+',$url,$host_root_url);
+   preg_match("/^http:\\/\\/[^\\/]+/i",$url,$host_root_url);
+   // prn($host_root_url); exit();
    $host_root_url=$host_root_url[0];
 
    foreach($matches[0] as $mt)
    {
       #prn(checkStr($mt));
       $link='';
-      if(eregi("href=\"([^\"]*)\"" ,$mt,$regs))
+      if(preg_match("/href=\"([^\"]*)\"/i" ,$mt,$regs))
       {
       # prn($regs);
         $link=$regs[1];
       }
-      elseif(eregi("href='([^']*)'",$mt,$regs))
+      elseif(preg_match("/href='([^']*)'/",$mt,$regs))
       {
       # prn($regs);
         $link=$regs[1];
       }
-      elseif(eregi("href=([^ >]*)",$mt,$regs))
+      elseif(preg_match("/href=([^ >]*)/",$mt,$regs))
       {
       # prn($regs);
         $link=$regs[1];
@@ -375,18 +366,27 @@ function get_links($url,$html)
       if(strlen($link)>0)
       {
          # ------------------- relative link - begin ---------------------------
-         if(!eregi('^(ftp|mailto|https?):',$link))
+         if(!preg_match('/^(ftp|mailto|https?):/',$link))
          {
-           if(ereg('^/',$link)) $link=$host_root_url.'/'.$link; else $link=$url_prefix.$link;
+            if(preg_match("/^\\//",$link)) {
+              $link=$host_root_url.'/'.$link; 
+            }else {
+              $link=$url_prefix.$link;
+            }
 
-           while(ereg('/[^/]+/\.\./',$link)) $link = ereg_replace('/[^/]+/\.\./','/',$link);
-           while(ereg('/\./',$link)) $link = ereg_replace('/\./','/',$link);
+            //while(ereg('/[^/]+/\.\./',$link)) {
+            while(preg_match("/\\/[^\\/]+\\/\\.\\.\\//",$link)) {
+              $link = ereg_replace('/[^/]+/\.\./','/',$link);
+            }
+            while(preg_match("/\\/\\.\\//",$link)){
+              $link = ereg_replace('/\./','/',$link);
+            } 
          }
          # ------------------- relative link - end -----------------------------
          #prn('before $link='.$link);
-         $link=ereg_replace('#.*$','',$link);
-         $link=ereg_replace('/+','/',$link);
-         $link=ereg_replace('^http:/','http://',$link);
+         $link=preg_replace("/#.*\$/",'',$link);
+         $link=preg_replace("/\\/+/",'/',$link);
+         $link=preg_replace("/^http:\\//",'http://',$link);
          #prn('after $link='.$link);
          $tor[]=$link;
       }
@@ -400,8 +400,7 @@ function get_links($url,$html)
 # $url is string, URL
 # $site_info is one database record
 #
-  function is_searchable($url, $site_info)
-  {
+  function is_searchable($url, $site_info) {
     $tor=false;
     if(!is_valid_url($url)) 
     {
