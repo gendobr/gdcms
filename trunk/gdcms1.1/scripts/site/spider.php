@@ -13,6 +13,7 @@ echo "
 <html>
    <head>
      <meta http-equiv=\"Refresh\" content=\"30;URL=index.php?action=site/spider\">
+     <META content=\"text/html; charset=".site_charset."\" http-equiv=\"Content-Type\">
    </head>
 <body>
 <a href=index.php?action=site/spider>next</a><br>
@@ -42,7 +43,7 @@ echo "
           ORDER BY date_indexed ASC LIMIT 0,100";
   $this_url_info=db_getrows($query);
   $max=count($this_url_info);
-  $this_url_info=$this_url_info[rand(0, $max)];
+  $this_url_info=$this_url_info[rand(0, $max-1)];
 
   prn($this_url_info); ob_flush();
   if(!$this_url_info){ echo 'nothing to index'; return ''; }

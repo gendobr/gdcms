@@ -56,6 +56,49 @@ if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
     
     //-------------------- clear database - begin ------------------------------
 
+
+      $sqls=Array(
+        "DELETE FROM {$table_prefix}calendar WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}calendar_cache;",
+        "DELETE FROM {$table_prefix}forum_list WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}forum_msg WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}forum_thread WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}fragment WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}gb WHERE site={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}golos_pynannja WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}golos_vidpovidi WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}golos_vidpovidi_details WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}listener WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}news_comment WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}news_subscriber WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}page_menu_group WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}photogalery WHERE site={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}photogalery_rozdil WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}rsssource WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}rsssourceitem WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}site_search WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}news_category WHERE news_id in(select id from cms_news where site_id={$this_site_info['id']});",
+        "DELETE FROM {$table_prefix}news_tags WHERE news_id in(select id from cms_news where site_id={$this_site_info['id']});",
+        "DELETE FROM {$table_prefix}news WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM {$table_prefix}page WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM {$table_prefix}category WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM {$table_prefix}ec_cart WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM {$table_prefix}ec_category_item_field_value WHERE ec_category_item_field_id in ( select ec_category_item_field_id from {$table_prefix}ec_category_item_field where site_id={$this_site_info['id']} )",
+        "DELETE FROM {$table_prefix}ec_category_item_field WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM {$table_prefix}ec_category WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM {$table_prefix}ec_item_category WHERE ec_item_id in ( select ec_item_id from {$table_prefix}ec_item where site_id={$this_site_info['id']} )",
+        "DELETE FROM {$table_prefix}ec_item_variant WHERE ec_item_id in ( select ec_item_id from {$table_prefix}ec_item where site_id={$this_site_info['id']} )",
+        "DELETE FROM {$table_prefix}ec_item_comment WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM {$table_prefix}ec_item_tags WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM {$table_prefix}ec_item WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM {$table_prefix}site_user WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM {$table_prefix}site WHERE id={$this_site_info['id']}"
+        );
+      foreach($sqls as $q){
+        db_execute($q);
+      }
+
+
       //------------------ delete menu - begin ---------------------------------
          $query="SELECT id,id FROM {$table_prefix}menu_group WHERE site_id={$this_site_info['id']}";
          $menu_groups=join(',',GetAssociatedArray(db_execute($query)));
@@ -72,101 +115,6 @@ if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
            db_execute($query);
          }
       //------------------ delete menu - end -----------------------------------
-
-      //------------------ delete pages - begin --------------------------------
-        $query="DELETE FROM {$table_prefix}page WHERE site_id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete pages - end ----------------------------------
-
-      //------------------ delete category - begin -----------------------------
-        $query="DELETE FROM {$table_prefix}category WHERE site_id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete category - end -------------------------------
-
-      //------------------ delete ec_cart - begin ------------------------------
-        $query="DELETE FROM {$table_prefix}ec_cart WHERE site_id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete ec_cart - end --------------------------------
-
-      //------------------ delete ec_category_item_field_value - begin ---------
-        $query="DELETE FROM {$table_prefix}ec_category_item_field_value
-                WHERE ec_category_item_field_id in (
-                  select ec_category_item_field_id
-                  from {$table_prefix}ec_category_item_field
-                  where site_id={$this_site_info['id']}
-                )";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete ec_category_item_field_value - end -----------
-
-      //------------------ delete ec_category_item_field - begin ---------------
-        $query="DELETE FROM {$table_prefix}ec_category_item_field WHERE site_id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete ec_category_item_field - end -----------------
-
-      //------------------ delete ec_category - begin --------------------------
-        $query="DELETE FROM {$table_prefix}ec_category WHERE site_id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete ec_category - end ----------------------------
-
-
-
-      //------------------ delete ec_item_category - begin ---------------------
-        $query="DELETE FROM {$table_prefix}ec_item_category
-                WHERE ec_item_id in (
-                  select ec_item_id
-                  from {$table_prefix}ec_item
-                  where site_id={$this_site_info['id']}
-                )";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete ec_item_category - end -----------------------
-
-      //------------------ delete ec_item_variant - begin ----------------------
-        $query="DELETE FROM {$table_prefix}ec_item_variant
-                WHERE ec_item_id in (
-                  select ec_item_id
-                  from {$table_prefix}ec_item
-                  where site_id={$this_site_info['id']}
-                )";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete ec_item_variant - end ------------------------
-
-      //------------------ delete ec_item_comment - begin ----------------------
-        $query="DELETE FROM {$table_prefix}ec_item_comment WHERE site_id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete ec_item_comment - end ------------------------
-
-      //------------------ delete ec_item_tags - begin -------------------------
-        $query="DELETE FROM {$table_prefix}ec_item_tags WHERE site_id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete ec_item_tags - end ---------------------------
-
-      //------------------ delete ec_item - begin ------------------------------
-        $query="DELETE FROM {$table_prefix}ec_item WHERE site_id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete ec_item - end --------------------------------
-
-      //------------------ delete permissions - begin --------------------------
-        $query="DELETE FROM {$table_prefix}site_user WHERE site_id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete permissions - end ----------------------------
-
-      //------------------ delete site - begin ---------------------------------
-        $query="DELETE FROM {$table_prefix}site WHERE id={$this_site_info['id']}";
-        //prn($query);
-        db_execute($query);
-      //------------------ delete site - end -----------------------------------
 
     //-------------------- clear database - end --------------------------------
   //---------------------- deleting - end --------------------------------------
