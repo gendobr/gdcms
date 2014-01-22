@@ -68,6 +68,7 @@ function index_html($url, $page_title, $html_text) {
         }
         return join(' ',$tmp);
       }
+      $html_text=search_delete("/<noscript/i","/noscript>/i", $html_text);
       $html_text=search_delete("/<script/i","/script>/i", $html_text);
       $html_text=search_delete("/<style/i","/style>/i", $html_text);
       $html_text=search_delete("/<!--/i","/-->/i", $html_text);

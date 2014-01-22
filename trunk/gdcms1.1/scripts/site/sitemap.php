@@ -19,9 +19,16 @@ if (checkInt($this_site_info['id']) <= 0) {
 
 
 function format_sitemap_url($loc, $lastmod=false, $changefreq='weekly', $priority=0.5){
-    if(!$lastmod){
-        $lastmod=date('Y-m-d');
+    if($lastmod){
+        if (!(($timestamp = strtotime($lastmod)) === -1)) {
+            $lastmod=date(DATE_W3C, $timestamp);
+        } else {
+            $lastmod=date(DATE_W3C);
+        }        
+    }else{
+        $lastmod=date(DATE_W3C);
     }
+
     return "
     <url>
         <loc>{$loc}</loc>
@@ -41,9 +48,11 @@ $query="SELECT id, page_file_name, last_change_date, path
         AND cense_level>={$this_site_info['cense_level']}
         AND is_under_construction=0";
 $rows=  db_getrows($query);
+
 foreach ($rows as $pg){
     // prn(preg_replace("/\\/+\$/",'',$this_site_info['url']),preg_replace("/^\\/+/", "", $pg['path']."/".$pg['page_file_name']));
     $loc= preg_replace("/\\/+\$/",'',$this_site_info['url']). '/'.preg_replace("/^\\/+/", "", $pg['path']."/".$pg['page_file_name']);
+    // prn($pg);
     $lastmod=$pg['last_change_date'];
     echo format_sitemap_url($loc,$lastmod);
 }
