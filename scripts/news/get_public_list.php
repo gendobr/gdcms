@@ -4,7 +4,7 @@
 $rows = rows_per_page;
 if (isset($input_vars['rows']))
     $rows = (int) $input_vars['rows'];
-if ($rows <= 0 or $rows > 100)
+if ($rows <= 0 or $rows > 10000)
     $rows = rows_per_page;
 # -------------------- number of news in the block - end -----------------------
 # -------------------- if abstracts should be shown - begin --------------------
