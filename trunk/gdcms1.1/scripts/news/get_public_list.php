@@ -377,7 +377,7 @@ if (isset($_REQUEST['date']) && $_REQUEST['date'] == 'asc')
     $date_order = 'DESC';
 
 $now = date('Y-m-d H:i:s', time());
-$query = "SELECT SQL_CALC_FOUND_ROWS
+$query = "SELECT DISTINCT SQL_CALC_FOUND_ROWS
                    ne.id
                   ,ne.lang
                   ,ne.site_id
