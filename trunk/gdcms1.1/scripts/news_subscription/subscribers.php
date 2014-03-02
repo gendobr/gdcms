@@ -33,12 +33,34 @@ if (get_level($site_id) == 0) {
 // =============================================================================
 
 
+if(isset($input_vars['add_email'])
+        && strlen(trim($input_vars['add_email']))>0
+        && is_valid_email(trim($input_vars['add_email']))){
+            // insert new subscriber
+            $query="INSERT INTO {$table_prefix}news_subscriber(
+                    news_subscriber_name,
+                    news_subscriber_email,
+                    news_subscriber_code,
+                    news_subscriber_is_valid,
+                    news_subscriber_date,
+                    site_id
+                    ) VALUES (
+                    '".  DbStr(trim($input_vars['add_name']))."',
+                    '".  DbStr(trim($input_vars['add_email']))."',
+                    '',
+                    1,
+                    NOW(),
+                    $site_id
+                )";
+            db_execute($query);
+}
+
 run("lib/class_report");
 run("lib/class_report_extended");
 $re = new report_generator;
 $re->db = $db;
 $re->distinct = false;
-
+$re->exclude="^add_";
 
 $re->from = "{$table_prefix}news_subscriber AS news_subscriber";
 
@@ -191,7 +213,19 @@ function delete_subscriber(id){
    });
 }
 </script>
-".$re->draw_default_list($response);
+".$re->draw_default_list($response)
+."<br>
+    <h3>".text('Add_user')."</h3>
+    <form action=\"index.php\" method=\"post\">
+    <input type=\"hidden\" name=\"action\" value=\"news_subscription/subscribers\">
+    <input type=\"hidden\" name=\"site_id\" value=\"{$site_id}\">
+    ".text('News_subscriber_name').":
+    <input type=\"text\" name=\"add_name\" value=\"\">&nbsp;&nbsp;
+    ".text('News_subscriber_email').":
+    <input type=\"text\" name=\"add_email\" value=\"\">&nbsp;&nbsp;
+    <input type=\"submit\" value=\"".text('Add_user')."\">
+    </form>
+   ";
 
 //--------------------------- context menu -- begin ----------------------------
 
