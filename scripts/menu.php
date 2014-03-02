@@ -101,6 +101,9 @@ if (is_admin()) {
         , 'attributes' => ''
     );
 
+
+}
+if (is_logged()) {
     $input_vars['page_menu']['admin']['items']['site/spider'] = Array(
         'URL' => "index.php?action=site/spider"
         , 'innerHTML' => $text['Run_spider']
@@ -120,7 +123,6 @@ if (is_admin()) {
         , 'attributes' => ' target=_blank '
     );
 }
-
 
 $input_vars['page_menu']['main']['items']['manual'] = Array(
     'URL' => "http://sites.znu.edu.ua/about/"
