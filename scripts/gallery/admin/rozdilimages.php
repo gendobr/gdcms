@@ -82,7 +82,10 @@ run('gallery/category_model');
 gallery_synchronize_categories($this_site_info['id']);
 
 $vyvid = "
-<p><a href=\"{$this_page_url}&op_create=1\">".text('Add_new_category')."</a> ".text('You_can_delete_only_empty_categories')."</p><br/>
+<p><a href=\"{$this_page_url}&op_create=1\">".text('Add_new_category')."</a> ".text('You_can_delete_only_empty_categories')."
+<form action=\"index.php\" method=\"post\">".  preg_hidden_form_elements("/namefilter/")."<input type=\"text\" name=\"namefilter\" value=\"".  htmlspecialchars(isset($input_vars['namefilter'])?$input_vars['namefilter']:'')."\">
+<input type=\"submit\" value=\"".text('Search')."\">    </form>
+</p><br/>
 ";
 
 //$photogalery_rozdil_list = db_getrows(
@@ -94,16 +97,36 @@ $start=isset($input_vars['start'])?( (int)$input_vars['start'] ):0;
 if($start<=0){
     $start=0;
 }
+
+$filter='';
+
+if(isset($input_vars['namefilter'])){
+    $namefilter=trim($input_vars['namefilter']);
+    if(strlen($namefilter)>0){
+        $filter=" AND LOCATE('".  DbStr($namefilter)."',pr.rozdil)>0 ";
+    }
+}
+
 $photogalery_rozdil_list = db_getrows(
         "SELECT SQL_CALC_FOUND_ROWS pr.*, count(p.id) as n_images
          FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
               LEFT JOIN {$GLOBALS['table_prefix']}photogalery p
               ON (pr.rozdil=p.rozdil OR LOCATE(concat(pr.rozdil,'/'),p.rozdil))
          WHERE pr.site_id = {$this_site_info['id']}
+             $filter
          GROUP BY pr.id
          ORDER BY pr.rozdil ASC
          LIMIT $start,".rows_per_page);
 //prn($photogalery_rozdil_list);
+//prn("SELECT SQL_CALC_FOUND_ROWS pr.*, count(p.id) as n_images
+//         FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
+//              LEFT JOIN {$GLOBALS['table_prefix']}photogalery p
+//              ON (pr.rozdil=p.rozdil OR LOCATE(concat(pr.rozdil,'/'),p.rozdil))
+//         WHERE pr.site_id = {$this_site_info['id']}
+//             $filter
+//         GROUP BY pr.id
+//         ORDER BY pr.rozdil ASC
+//         LIMIT $start,".rows_per_page);
 
 // get total number of categories
 $query = "SELECT FOUND_ROWS() AS n_records;";
@@ -146,7 +169,7 @@ foreach ($photogalery_rozdil_list as $photogalery_rozdil) {
         $img = '';
     }
     $img_selector = "
-        ".text('Main_image')."<br/>
+        <!-- ".text('Main_image')."<br/> -->
         <span id='imgSelector_" . $photogalery_rozdil['id'] . "'
                            data=\"" . rawurlencode($photogalery_rozdil['rozdil']) . "\"
                            class='imgSelector'
@@ -154,7 +177,7 @@ foreach ($photogalery_rozdil_list as $photogalery_rozdil) {
                            text('Change_image')."</span></span>";
     $vyvid.="
         <span style='width:90%;display:inline-block;'>{$img_selector}
-            ".text('Title').":<br>
+            <!-- ".text('Title').":<br> -->
         <span class=edittitle id=rozdiltitle_{$photogalery_rozdil['id']}>{$photogalery_rozdil['rozdil']}</span>
         ( {$photogalery_rozdil['n_images']} ".text('items')." )
             " .
@@ -219,15 +242,17 @@ $vyvid.="
      display:inline-block;
      width:400px;
      border:1px inset silver;
-     min-height:20px;
+     height:80px;
+     overflow:hidden;
+     
    }
    .edit textarea{
      min-height:100px;
    }
    .edittitle{
-     height:30px;
+     min-height:30px;
      display:inline-block;
-     width:200px;
+     width:400px;
      margin-right:40px;
      border:1px inset silver;
    }

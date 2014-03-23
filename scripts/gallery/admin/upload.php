@@ -130,13 +130,22 @@ $vyvid = "
          <script type=\"text/javascript\">
          <!--
            function select_rozdil(txt,r) {  var rozdil=document.getElementById(r); rozdil.value=txt; }
+           function select_rozdil_(elem,r) {
+              var rozdil=document.getElementById(r);
+              rozdil.value=elem.innerHTML;
+           }
          // -->
          </script>
          <div style=\"font-size: 90%; height: 100pt; overflow:scroll; color:gray;\">
              ";
-                function clear_str($str) {$tot = str_replace('"', ' ', $str);$tot = str_replace('\'', ' ', $str); return $tot;}
+                function clear_str($str) {
+                    $tot = str_replace('"', ' ', $str);
+                    $tot = str_replace('\'', ' ', $str);
+                    return $tot;
+                }
                 foreach ($list_rozdil as $roww) {
-                    $vyvid .= "<b> - <a href=# onclick=\"select_rozdil('" . clear_str($roww['rozdil']) . "','rozdil');return false;\">{$roww['rozdil']}</a></b><br>";
+                    //$vyvid .= "<b> - <a href=# onclick=\"select_rozdil('" . clear_str($roww['rozdil']) . "','rozdil');return false;\">{$roww['rozdil']}</a></b><br>";
+                    $vyvid .= "<b> - <a href=# onclick=\"select_rozdil_(this,'rozdil');return false;\">{$roww['rozdil']}</a></b><br>";
                 }
                 $vyvid .="
          </div>
