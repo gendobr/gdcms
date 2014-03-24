@@ -246,6 +246,7 @@ function show_gallery_links(datasource){
 function draw_gallery_links(json){
     var html='';
     if(json.files){
+        window.gallery_links=json;
         html='';
         for(var i in json.files){
             var f=json.files[i];
@@ -253,11 +254,12 @@ function draw_gallery_links(json){
                 f.prefix='';
             }
             // html+="<div><nobr><img src='img/icon_file.png'>"+f.prefix+"<a href='javascript:void(0);' onclick='insert_link(\""+s(f.name)+"\",\""+f.url+"\")'>"+f.name+"</a></nobr></div>"
-            var b1=f.htmlblock;
-            var b2=b1.replace(/'/g,'&#39;');
-            var b3=b2.replace(/"/g,'&quot;');
-            console.log(b3);
-            html+="<div><nobr><img src='img/icon_file.png'>"+f.prefix+"<a href='javascript:void(0);' onclick='insert_html(\""+b3+"\")'>"+f.name+"</a></nobr></div>"
+            //var b1=f.htmlblock;
+            //var b2=b1.replace(/'/g,'&#39;');
+            //var b3=b2.replace(/"/g,'&quot;');
+            // console.log(b3);
+            //html+="<div><nobr><img src='img/icon_file.png'>"+f.prefix+"<a href='javascript:void(0);' onclick='insert_html(\""+b3+"\")'>"+f.name+"</a></nobr></div>"
+            html+="<div><nobr><img src='img/icon_file.png'>"+f.prefix+"<a href='javascript:void(0);' onclick='insert_html(window.gallery_links.files["+i+"].htmlblock)'>"+f.name+"</a></nobr></div>";
         }
     }
 

@@ -211,6 +211,7 @@ $vyvid.="
          type      : 'textarea',
          cancel    : 'Cancel',
          submit    : 'OK',
+         //onblur    : submit,
          data: function(value, settings) {
            /* convert value before editing */
            var retval = value.replace(/&amp;/gi, '&');
@@ -219,7 +220,8 @@ $vyvid.="
      });
      $('.edittitle').editable('index.php?action=gallery/admin/set_category_title',{
          submit    : 'OK',
-         style   : 'display:inline-block;width:300px;',
+         style     : 'display:inline-block;width:300px;',
+         onblur    : submit,
          data: function(value, settings) {
            /* convert value before editing */
            var retval = value.replace(/&amp;/gi, '&');
