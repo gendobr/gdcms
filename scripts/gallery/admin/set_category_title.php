@@ -15,7 +15,8 @@ $category_title = trim(iconv('UTF-8',site_charset,$input_vars['value']));
 $category_info = db_getonerow("SELECT * FROM {$table_prefix}photogalery_rozdil  WHERE id=$rozdil_id");
 if (!$category_info) {
   //echo htmlspecialchars(iconv('cp1251','UTF-8',$category_title));
-    echo htmlspecialchars(iconv(site_charset,'UTF-8',$category_title));
+  //echo htmlspecialchars(iconv(site_charset,'UTF-8',$category_title));
+    echo htmlspecialchars($category_title);
 
     exit();
 }
@@ -25,7 +26,8 @@ run('site/menu');
 $this_site_info = get_site_info($site_id);
 if($this_site_info['id']!=$site_id){
     //echo htmlspecialchars(iconv('cp1251','UTF-8',$category_title));
-    echo htmlspecialchars(iconv(site_charset,'UTF-8',$category_title));
+    //echo htmlspecialchars(iconv(site_charset,'UTF-8',$category_title));
+    echo htmlspecialchars($category_title);
     exit();
 }
 
@@ -90,10 +92,11 @@ foreach($photogalery_rozdil_list as $rozdil){
 }
 // ------------- update image categories - end ---------------------------------
 
-echo "
-<script language='text/javascript'>
-  window.location.reload();
-</script>
-";
+//echo "
+//<script language='text/javascript'>
+//  window.location.reload();
+//</script>
+//";
 // echo htmlspecialchars(iconv('cp1251','UTF-8',$category_title));
+echo htmlspecialchars($category_title);
 ?>

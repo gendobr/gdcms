@@ -37,6 +37,7 @@ if (get_level($site_id) == 0) {
 $encoded_category_description  = DbStr($category_description);
 db_execute("UPDATE {$table_prefix}photogalery_rozdil SET description='$encoded_category_description' WHERE id=$rozdil_id AND site_id=$site_id");
 //echo htmlspecialchars(iconv('cp1251'    ,'UTF-8',$category_description));
-  echo htmlspecialchars(iconv(site_charset,'UTF-8',$category_description));
+//echo htmlspecialchars(iconv(site_charset,'UTF-8',$category_description));
+echo htmlspecialchars($category_description);
 
 ?>

@@ -209,9 +209,10 @@ $vyvid.="
       });
      $('.edit').editable('index.php?action=gallery/admin/set_category_description',{
          type      : 'textarea',
-         cancel    : 'Cancel',
-         submit    : 'OK',
-         //onblur    : submit,
+         //cancel    : 'Cancel',
+         //submit    : 'OK',
+         onblur    : 'submit',
+         style     : 'height:80px;margin-top:0px;',
          data: function(value, settings) {
            /* convert value before editing */
            var retval = value.replace(/&amp;/gi, '&');
@@ -219,9 +220,9 @@ $vyvid.="
          }
      });
      $('.edittitle').editable('index.php?action=gallery/admin/set_category_title',{
-         submit    : 'OK',
+         //submit    : 'OK',
          style     : 'display:inline-block;width:300px;',
-         onblur    : submit,
+         onblur    : 'submit',
          data: function(value, settings) {
            /* convert value before editing */
            var retval = value.replace(/&amp;/gi, '&');
@@ -244,9 +245,8 @@ $vyvid.="
      display:inline-block;
      width:400px;
      border:1px inset silver;
-     height:80px;
+     height:100px;
      overflow:hidden;
-     
    }
    .edit textarea{
      min-height:100px;
