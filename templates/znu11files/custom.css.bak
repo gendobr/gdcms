@@ -1,0 +1,377 @@
+@media screen and (max-width : 400px){
+ 	span#topnavigation{
+		width:320px;
+		
+			}
+	.osnova{
+		width:320px;
+		
+		text-align:left;
+	}
+	span#header{
+				width:310px;
+		padding: 5px 5px 0 5px;
+		
+	}
+	h1.logo_text{
+font-size:18pt;
+}
+		li.toptab{
+   width:144px;
+   margin:5px 1px 0px 0px;
+   padding:5px 3px 0px 3px;
+   height:30px;
+	}
+	.submenu{display:none;}
+ 	.menu2{
+		width:100%;
+		
+	}
+	.content{
+		width:320px;
+		
+	}
+	#Where_you_are{
+		width:290px;
+		
+	}
+	.leftcolumn{
+		width:320px;
+		
+	}
+	.textblock{
+		width:310px;
+		
+	}
+
+	.rightcolumn{
+		width:320px;
+		
+	}
+.rightcolumn img{
+		width:25%;
+	}
+	.slideshow{display:none;}
+	span#footer{
+		width:320px;
+		
+	}
+
+
+
+}
+
+
+
+
+
+
+@media screen and (min-width : 401px) and (max-width : 600px){
+  	span#topnavigation{
+		width:400px;
+		
+	}
+	.osnova{
+		width:400px;
+		
+	}
+	span#header{
+				width:390px;
+		padding: 5px 5px 0 5px;
+		
+	}
+	h1.logo_text{
+font-size:20pt;}
+		li.toptab{
+   width:186px;
+   margin:5px 1px 0px 0px;
+   padding:5px 3px 0px 3px;
+   height:30px;
+	}
+	.submenu{display:none;}
+ 	.menu2{
+		width:100%;
+		
+	}
+	.content{
+		width:400px;
+		
+	}
+	#Where_you_are{
+		width:370px;
+		
+	}
+	.leftcolumn{
+		width:40px;
+		
+	}
+	.textblock{
+		width:370px;
+		
+	}
+
+	.rightcolumn{
+		width:400px;
+		
+	}
+		.rightcolumn img{
+		width:25%;
+	}
+	.slideshow{display:none;}
+	span#footer{
+		width:400px;
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+@media screen and (min-width : 601px) and (max-width : 800px){
+   	span#topnavigation{
+		width:600px;
+		
+	}
+	.osnova{
+		width:600px;
+		
+	}
+	span#header{
+		width:590px;
+		padding: 5px 5px 0 5px;
+		
+	}
+	h1.logo_text{
+font-size:24pt;}
+		li.toptab{
+   margin:5px 1px 0px 0px;
+   padding:5px 1px 0px 1px;
+   height:90px;
+	}
+	.submenu{width:138px;}
+ 	.menu2{
+		width:100%;
+		
+	}
+	.content{
+		width:600px;
+		
+	}
+	#Where_you_are{
+		width:570px;
+		
+	}
+	.leftcolumn{
+		width:380px;
+		
+	}
+	.textblock{
+		width:370px;
+		
+	}
+
+	.rightcolumn{
+		width:200px;
+		
+	}
+	span#footer{
+		width:600px;
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width : 801px) and (max-width : 1023px){
+  	span#topnavigation{
+		width:800px;
+		
+	}
+	.osnova{
+		width:800px;
+		
+	}
+	span#header{
+		width:780px;
+		padding: 10px 10px 0 10px;
+		
+	}
+	h1.logo_text{
+font-size:28pt;}
+	li.toptab{
+   
+   margin:5px 1px 0px 0px;
+   padding:5px 1px 0px 1px;
+   height:110px;
+	}
+	.submenu{width:86px;}
+ 	.menu2{
+		width:100%;
+		
+	}
+	.content{
+		width:800px;
+		
+	}
+	#Where_you_are{
+		width:770px;
+		
+	}
+	.leftcolumn{
+		width:580px;
+		
+	}
+	.textblock{
+		width:570px;
+		
+	}
+
+	.rightcolumn{
+		width:200px;
+		
+	}
+	span#footer{
+		width:800px;
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width : 1024px) and (max-width : 1124px){
+  	span#topnavigation{
+		width:1000px;
+		
+	}
+	.osnova{
+		width:1000px;
+		
+	}
+	span#header{
+		width:980px;
+		padding: 10px 10px 0 10px;
+	}
+ 	.menu2{
+		width:100%;
+		
+	}
+	h1.logo_text{
+font-size:28pt;}
+	li.toptab{
+   
+   margin:5px 1px 0px 0px;
+   padding:5px 3px 0px 3px;
+   height:84px;
+	}
+	.submenu{width:117px;}
+	.content{
+		width:1000px;
+		
+	}
+	#Where_you_are{
+		width:970px;
+		
+	}
+	.leftcolumn{
+		width:700px;
+		
+	}
+	.textblock{
+		width:690px;
+		
+	}
+
+	.rightcolumn{
+		width:280px;
+		
+	}
+	span#footer{
+		width:1000px;
+		
+	}
+}
+
+
+
+
+
+
+
+@media screen and (min-width : 1124px){
+  	span#topnavigation{
+		width:1100px;
+		
+	}
+	.osnova{
+		width:1100px;
+		
+	}
+	span#header{
+		width:1080px;
+		padding: 10px 10px 0 10px;
+	}
+ 	.menu2{
+		width:100%;
+		
+	}
+	h1.logo_text{
+font-size:28pt;}
+	li.toptab{
+   
+   margin:5px 1px 0px 0px;
+   padding:5px 3px 0px 3px;
+   height:84px;
+	}
+	.submenu{width:117px;}
+	.content{
+		width:1100px;
+		
+	}
+	#Where_you_are{
+		width:1070px;
+		
+	}
+	.leftcolumn{
+		width:800px;
+		
+	}
+	.textblock{
+		width:790px;
+		
+	}
+
+	.rightcolumn{
+		width:280px;
+		
+	}
+	span#footer{
+		width:1000px;
+		
+	}
+}

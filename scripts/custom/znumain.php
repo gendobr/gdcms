@@ -119,7 +119,7 @@ $page['next']=Array();
 
 // holiday
   if ($lang == 'ukr') {
-    $reply = trim(get_cached_page('http://sites.znu.edu.ua/holiday/index.php?action=events/block&rows_per_page=5&plus=' . rawurlencode(isset($_REQUEST['plus']) ? $_REQUEST['plus'] : '')));
+    $reply = trim(get_cached_page('http://sites.znu.edu.ua/holiday/index.php?action=events/block&rows_per_page=100&plus=' . rawurlencode(isset($_REQUEST['plus']) ? $_REQUEST['plus'] : '')));
     if (strlen($reply) > 0) {
         $page['next'][] = Array(
             'title' => "<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/holiday/index.php?action=main>Святковий календар</a>"
