@@ -474,7 +474,7 @@ function is_admin() {
 
 //----------- is_logged() - begin ----------------------------------------------
 function is_logged() {
-    return $_SESSION['user_info']['is_logged']==1;
+    return isset($_SESSION['user_info']) && isset($_SESSION['user_info']['is_logged']) && $_SESSION['user_info']['is_logged']==1;
 }
 //----------- is_logged() - end ------------------------------------------------
 
