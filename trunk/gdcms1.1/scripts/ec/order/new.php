@@ -384,7 +384,7 @@ if(strlen($order_form_msg)==0) {
                  '{$ec_order_total}', {$ec_user_id}, 0,
                  '".DbStr(serialize($_SESSION['ec_cart']))."',
                  '".DbStr(serialize($_SESSION['user_data_fields']))."')";
-    //prn($query);alter table `cms_ec_order` add column `ec_order_custom_data` text NULL after `ec_order_paid_amount`;
+    //prn($query);alter table `{$GLOBALS['table_prefix']}ec_order` add column `ec_order_custom_data` text NULL after `ec_order_paid_amount`;
     db_execute($query);
 
     $query="SELECT LAST_INSERT_ID() AS ec_order_id";

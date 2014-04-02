@@ -383,7 +383,7 @@ if ($form_data_posted) {
             # ------------- list of site managers - begin ----------------------
             $tmp = db_getrows(
                     "select u.id, u.full_name, u.user_login, u.email, su.level
-                      from cms_user AS u, cms_site_user AS su
+                      from {$GLOBALS['table_prefix']}user AS u, {$GLOBALS['table_prefix']}site_user AS su
                       where u.id = su.user_id AND su.site_id = {$this_site_info['id']}
                       order by level desc");
             $this_site_info['managers'] = Array();

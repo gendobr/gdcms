@@ -618,7 +618,7 @@ function ml($a,$s) {
     $_d=date('Y-m-d H:i:s');
     $_u=DbStr($_SESSION['user_info']['user_login']);
     $_s=DbStr(serialize($s));
-    db_execute("insert into cms_ml(a,d,u,s) VALUES('$_a','$_d','$_u','$_s')");
+    db_execute("insert into {$GLOBALS['table_prefix']}ml(a,d,u,s) VALUES('$_a','$_d','$_u','$_s')");
 }
 
 

@@ -111,7 +111,7 @@ if ($is_logged) {
     } else {
         $ret.="&user={$user_info['user_login']}&cs=" . rawurlencode($cs);
     }
-    db_execute("REPLACE cms_oid(cs,expires) VALUES('$cs',UNIX_TIMESTAMP()+60)");
+    db_execute("REPLACE {$GLOBALS['table_prefix']}oid(cs,expires) VALUES('$cs',UNIX_TIMESTAMP()+60)");
     if (isset($_REQUEST['debug'])) {
         echo "<a href=\"$ret&debug=yes\">$ret</a>";
     } else {

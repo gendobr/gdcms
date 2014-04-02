@@ -91,7 +91,7 @@ if(count($file_data)>0) {
     // prn($file_data);
     // -------------------------- parse rows - end -----------------------------
 
-    // ---------------- get structure of the cms_ec_item table - begin ---------
+    // ---------------- get structure of the ec_item table - begin ---------
     $field_names=get_importable_fields($site_id);
     //prn($field_names);
     $field_name_options=Array();
@@ -100,7 +100,7 @@ if(count($file_data)>0) {
     }
     asort($field_name_options);
     //prn($field_name_options);
-    // ---------------- get structure of the cms_ec_item table - end -----------
+    // ---------------- get structure of the ec_item table - end -----------
 
     // draw import table
     $page_content.=draw_file_as_table($site_id,$file_data, $field_name_options);
@@ -160,7 +160,7 @@ if(isset($input_vars['row'])) {
     // prn('Importing ....');
 
 
-    // -------------- get structure of the cms_ec_item table - begin -----------
+    // -------------- get structure of the {$GLOBALS['table_prefix']}ec_item table - begin -----------
     $field_names=get_importable_fields($site_id);
     $field_name_options=Array();
     foreach($field_names as $fn) {
@@ -168,7 +168,7 @@ if(isset($input_vars['row'])) {
     }
     asort($field_name_options);
     //prn($field_name_options);
-    // -------------- get structure of the cms_ec_item table - end -------------
+    // -------------- get structure of the {$GLOBALS['table_prefix']}ec_item table - end -------------
 
     // ------------------------- get imporable columns - begin -----------------
     $columns=Array();
