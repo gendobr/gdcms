@@ -12,8 +12,8 @@ MySQL - 5.1.72-2 : Database - cms
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-/*Table structure for table `cms_calendar` */
-CREATE TABLE `cms_calendar` (
+/*Table structure for table `cms8_calendar` */
+CREATE TABLE `cms8_calendar` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'номер запису',
   `site_id` int(11) NOT NULL COMMENT 'номер сайта користувача',
   `nazva` varchar(1024) COLLATE utf8_bin NOT NULL COMMENT 'назва події',
@@ -37,17 +37,17 @@ CREATE TABLE `cms_calendar` (
 ) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 
-/*Table structure for table `cms_calendar_cache` */
+/*Table structure for table `cms8_calendar_cache` */
 
-CREATE TABLE `cms_calendar_cache` (
+CREATE TABLE `cms8_calendar_cache` (
   `uid` bigint(11) DEFAULT NULL,
   `days` varchar(128) DEFAULT NULL,
   `updated` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_calendar_category` */
+/*Table structure for table `cms8_calendar_category` */
 
-CREATE TABLE `cms_calendar_category` (
+CREATE TABLE `cms8_calendar_category` (
   `event_id` int(11) NOT NULL DEFAULT '0',
   `category_id` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `pkey` (`event_id`,`category_id`),
@@ -55,9 +55,9 @@ CREATE TABLE `cms_calendar_category` (
   KEY `category_id` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_category` */
+/*Table structure for table `cms8_category` */
 
-CREATE TABLE `cms_category` (
+CREATE TABLE `cms8_category` (
   `category_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) NOT NULL DEFAULT '0',
   `category_code` varchar(50) DEFAULT NULL,
@@ -80,9 +80,9 @@ CREATE TABLE `cms_category` (
   KEY `category_code` (`category_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=902 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_cart` */
+/*Table structure for table `cms8_ec_cart` */
 
-CREATE TABLE `cms_ec_cart` (
+CREATE TABLE `cms8_ec_cart` (
   `ec_cart_id` int(11) NOT NULL AUTO_INCREMENT,
   `ec_item_uid` varchar(50) DEFAULT NULL,
   `ec_item_id` int(11) DEFAULT NULL,
@@ -99,9 +99,9 @@ CREATE TABLE `cms_ec_cart` (
   PRIMARY KEY (`ec_cart_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_category` */
+/*Table structure for table `cms8_ec_category` */
 
-CREATE TABLE `cms_ec_category` (
+CREATE TABLE `cms8_ec_category` (
   `ec_category_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) NOT NULL DEFAULT '0',
   `ec_category_code` varchar(50) DEFAULT NULL,
@@ -122,9 +122,9 @@ CREATE TABLE `cms_ec_category` (
   KEY `category_code` (`ec_category_code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_category_item_field` */
+/*Table structure for table `cms8_ec_category_item_field` */
 
-CREATE TABLE `cms_ec_category_item_field` (
+CREATE TABLE `cms8_ec_category_item_field` (
   `ec_category_item_field_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) DEFAULT NULL,
   `ec_category_id` bigint(20) DEFAULT NULL,
@@ -135,9 +135,9 @@ CREATE TABLE `cms_ec_category_item_field` (
   PRIMARY KEY (`ec_category_item_field_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_category_item_field_value` */
+/*Table structure for table `cms8_ec_category_item_field_value` */
 
-CREATE TABLE `cms_ec_category_item_field_value` (
+CREATE TABLE `cms8_ec_category_item_field_value` (
   `ec_item_id` int(11) DEFAULT NULL,
   `ec_item_lang` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
   `ec_category_item_field_id` int(11) DEFAULT NULL,
@@ -147,17 +147,17 @@ CREATE TABLE `cms_ec_category_item_field_value` (
   KEY `NewIndex3` (`ec_category_item_field_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_currency` */
+/*Table structure for table `cms8_ec_currency` */
 
-CREATE TABLE `cms_ec_currency` (
+CREATE TABLE `cms8_ec_currency` (
   `ec_currency_code` varchar(5) NOT NULL,
   `ec_curency_title` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`ec_currency_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_delivery` */
+/*Table structure for table `cms8_ec_delivery` */
 
-CREATE TABLE `cms_ec_delivery` (
+CREATE TABLE `cms8_ec_delivery` (
   `ec_delivery_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` int(11) DEFAULT NULL,
   `ec_delivery_title` tinytext,
@@ -168,9 +168,9 @@ CREATE TABLE `cms_ec_delivery` (
   PRIMARY KEY (`ec_delivery_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_item` */
+/*Table structure for table `cms8_ec_item` */
 
-CREATE TABLE `cms_ec_item` (
+CREATE TABLE `cms8_ec_item` (
   `ec_item_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ec_item_lang` char(3) NOT NULL DEFAULT 'ukr',
   `site_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -210,9 +210,9 @@ CREATE TABLE `cms_ec_item` (
   FULLTEXT KEY `title` (`ec_item_title`,`ec_item_content`)
 ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_item_category` */
+/*Table structure for table `cms8_ec_item_category` */
 
-CREATE TABLE `cms_ec_item_category` (
+CREATE TABLE `cms8_ec_item_category` (
   `ec_item_id` int(11) NOT NULL DEFAULT '0',
   `ec_category_id` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `pkey` (`ec_item_id`,`ec_category_id`),
@@ -220,9 +220,9 @@ CREATE TABLE `cms_ec_item_category` (
   KEY `category_id` (`ec_category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_item_comment` */
+/*Table structure for table `cms8_ec_item_comment` */
 
-CREATE TABLE `cms_ec_item_comment` (
+CREATE TABLE `cms8_ec_item_comment` (
   `ec_item_comment_id` int(11) NOT NULL AUTO_INCREMENT,
   `ec_item_comment_sender_name` varchar(100) DEFAULT NULL,
   `ec_item_comment_body` text,
@@ -233,9 +233,9 @@ CREATE TABLE `cms_ec_item_comment` (
   PRIMARY KEY (`ec_item_comment_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_item_tags` */
+/*Table structure for table `cms8_ec_item_tags` */
 
-CREATE TABLE `cms_ec_item_tags` (
+CREATE TABLE `cms8_ec_item_tags` (
   `ec_item_id` int(11) NOT NULL DEFAULT '0',
   `ec_item_tag` varchar(255) NOT NULL DEFAULT '',
   `site_id` int(11) DEFAULT NULL,
@@ -244,9 +244,9 @@ CREATE TABLE `cms_ec_item_tags` (
   KEY `NewIndex2` (`ec_item_tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_item_variant` */
+/*Table structure for table `cms8_ec_item_variant` */
 
-CREATE TABLE `cms_ec_item_variant` (
+CREATE TABLE `cms8_ec_item_variant` (
   `ec_item_variant_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ec_item_variant_code` varchar(256) DEFAULT NULL,
   `ec_item_id` int(11) DEFAULT NULL,
@@ -260,9 +260,9 @@ CREATE TABLE `cms_ec_item_variant` (
   KEY `NewIndex2` (`ec_item_lang`)
 ) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_order` */
+/*Table structure for table `cms8_ec_order` */
 
-CREATE TABLE `cms_ec_order` (
+CREATE TABLE `cms8_ec_order` (
   `ec_order_id` int(11) NOT NULL AUTO_INCREMENT,
   `ec_date_created` datetime DEFAULT NULL,
   `site_id` int(11) DEFAULT NULL,
@@ -280,9 +280,9 @@ CREATE TABLE `cms_ec_order` (
   KEY `NewIndex3` (`site_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_order_history` */
+/*Table structure for table `cms8_ec_order_history` */
 
-CREATE TABLE `cms_ec_order_history` (
+CREATE TABLE `cms8_ec_order_history` (
   `ec_order_history_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ec_order_history_title` varchar(255) DEFAULT NULL,
   `ec_order_history_details` text,
@@ -295,9 +295,9 @@ CREATE TABLE `cms_ec_order_history` (
   PRIMARY KEY (`ec_order_history_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_producer` */
+/*Table structure for table `cms8_ec_producer` */
 
-CREATE TABLE `cms_ec_producer` (
+CREATE TABLE `cms8_ec_producer` (
   `ec_producer_id` int(11) NOT NULL AUTO_INCREMENT,
   `ec_producer_title` varchar(255) DEFAULT NULL,
   `ec_producer_abstract` text,
@@ -307,9 +307,9 @@ CREATE TABLE `cms_ec_producer` (
   PRIMARY KEY (`ec_producer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_producer_comment` */
+/*Table structure for table `cms8_ec_producer_comment` */
 
-CREATE TABLE `cms_ec_producer_comment` (
+CREATE TABLE `cms8_ec_producer_comment` (
   `ec_producer_comment_id` int(11) NOT NULL AUTO_INCREMENT,
   `ec_producer_comment_sender_name` varchar(100) DEFAULT NULL,
   `ec_producer_comment_body` text,
@@ -319,9 +319,9 @@ CREATE TABLE `cms_ec_producer_comment` (
   PRIMARY KEY (`ec_producer_comment_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ec_user` */
+/*Table structure for table `cms8_ec_user` */
 
-CREATE TABLE `cms_ec_user` (
+CREATE TABLE `cms8_ec_user` (
   `ec_user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ec_user_name` varchar(100) DEFAULT NULL,
   `ec_user_telephone` varchar(100) DEFAULT NULL,
@@ -335,9 +335,9 @@ CREATE TABLE `cms_ec_user` (
   PRIMARY KEY (`ec_user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_forum_list` */
+/*Table structure for table `cms8_forum_list` */
 
-CREATE TABLE `cms_forum_list` (
+CREATE TABLE `cms8_forum_list` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -347,9 +347,9 @@ CREATE TABLE `cms_forum_list` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_forum_msg` */
+/*Table structure for table `cms8_forum_msg` */
 
-CREATE TABLE `cms_forum_msg` (
+CREATE TABLE `cms8_forum_msg` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `site_id` int(10) unsigned NOT NULL DEFAULT '0',
   `forum_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -369,9 +369,9 @@ CREATE TABLE `cms_forum_msg` (
   FULLTEXT KEY `name` (`name`,`email`,`www`,`subject`,`msg`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2635 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_forum_thread` */
+/*Table structure for table `cms8_forum_thread` */
 
-CREATE TABLE `cms_forum_thread` (
+CREATE TABLE `cms8_forum_thread` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` int(10) unsigned NOT NULL DEFAULT '0',
   `forum_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -382,9 +382,9 @@ CREATE TABLE `cms_forum_thread` (
   KEY `site_id` (`site_id`,`forum_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=617 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_fragment` */
+/*Table structure for table `cms8_fragment` */
 
-CREATE TABLE `cms_fragment` (
+CREATE TABLE `cms8_fragment` (
   `fragment_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `fragment_lang` varchar(3) DEFAULT NULL,
   `site_id` bigint(20) NOT NULL,
@@ -395,9 +395,9 @@ CREATE TABLE `cms_fragment` (
   PRIMARY KEY (`fragment_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_gb` */
+/*Table structure for table `cms8_gb` */
 
-CREATE TABLE `cms_gb` (
+CREATE TABLE `cms8_gb` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(35) NOT NULL DEFAULT '',
   `email` varchar(40) NOT NULL DEFAULT '',
@@ -411,9 +411,9 @@ CREATE TABLE `cms_gb` (
   KEY `data` (`data`)
 ) ENGINE=MyISAM AUTO_INCREMENT=59734 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_golos_pynannja` */
+/*Table structure for table `cms8_golos_pynannja` */
 
-CREATE TABLE `cms_golos_pynannja` (
+CREATE TABLE `cms8_golos_pynannja` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) NOT NULL DEFAULT '0',
   `is_active` tinyint(1) NOT NULL DEFAULT '0',
@@ -425,9 +425,9 @@ CREATE TABLE `cms_golos_pynannja` (
   KEY `site_id` (`site_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_golos_vidpovidi` */
+/*Table structure for table `cms8_golos_vidpovidi` */
 
-CREATE TABLE `cms_golos_vidpovidi` (
+CREATE TABLE `cms8_golos_vidpovidi` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pynannja_id` int(2) NOT NULL DEFAULT '0',
   `site_id` bigint(20) NOT NULL DEFAULT '0',
@@ -438,9 +438,9 @@ CREATE TABLE `cms_golos_vidpovidi` (
   KEY `pynannja_id` (`pynannja_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_golos_vidpovidi_details` */
+/*Table structure for table `cms8_golos_vidpovidi_details` */
 
-CREATE TABLE `cms_golos_vidpovidi_details` (
+CREATE TABLE `cms8_golos_vidpovidi_details` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `poll_id` bigint(20) DEFAULT NULL,
   `answer_id` bigint(20) DEFAULT NULL,
@@ -455,9 +455,9 @@ CREATE TABLE `cms_golos_vidpovidi_details` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11529 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_languages` */
+/*Table structure for table `cms8_languages` */
 
-CREATE TABLE `cms_languages` (
+CREATE TABLE `cms8_languages` (
   `id` char(3) NOT NULL DEFAULT '',
   `name` varchar(255) DEFAULT NULL,
   `is_visible` tinyint(1) NOT NULL DEFAULT '0',
@@ -465,9 +465,9 @@ CREATE TABLE `cms_languages` (
   KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_listener` */
+/*Table structure for table `cms8_listener` */
 
-CREATE TABLE `cms_listener` (
+CREATE TABLE `cms8_listener` (
   `listener_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `listener_event` varchar(255) DEFAULT NULL,
   `site_id` bigint(20) DEFAULT NULL,
@@ -481,9 +481,9 @@ CREATE TABLE `cms_listener` (
   KEY `NewIndex3` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_menu_group` */
+/*Table structure for table `cms8_menu_group` */
 
-CREATE TABLE `cms_menu_group` (
+CREATE TABLE `cms8_menu_group` (
   `id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `site_id` bigint(20) NOT NULL DEFAULT '0',
   `page_id` bigint(20) NOT NULL DEFAULT '0',
@@ -496,9 +496,9 @@ CREATE TABLE `cms_menu_group` (
   PRIMARY KEY (`id`,`lang`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_menu_item` */
+/*Table structure for table `cms8_menu_item` */
 
-CREATE TABLE `cms_menu_item` (
+CREATE TABLE `cms8_menu_item` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `menu_group_id` bigint(20) NOT NULL DEFAULT '0',
   `lang` char(3) NOT NULL DEFAULT 'ukr',
@@ -510,9 +510,9 @@ CREATE TABLE `cms_menu_item` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=526 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_ml` */
+/*Table structure for table `cms8_ml` */
 
-CREATE TABLE `cms_ml` (
+CREATE TABLE `cms8_ml` (
   `i` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `a` varchar(255) DEFAULT NULL,
   `d` datetime DEFAULT NULL,
@@ -521,9 +521,9 @@ CREATE TABLE `cms_ml` (
   PRIMARY KEY (`i`)
 ) ENGINE=MyISAM AUTO_INCREMENT=18716 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_news` */
+/*Table structure for table `cms8_news` */
 
-CREATE TABLE `cms_news` (
+CREATE TABLE `cms8_news` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `lang` char(3) NOT NULL DEFAULT 'ukr',
   `site_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -546,9 +546,9 @@ CREATE TABLE `cms_news` (
   FULLTEXT KEY `title` (`title`,`content`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9012 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_news_category` */
+/*Table structure for table `cms8_news_category` */
 
-CREATE TABLE `cms_news_category` (
+CREATE TABLE `cms8_news_category` (
   `news_id` int(11) NOT NULL DEFAULT '0',
   `category_id` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `pkey` (`news_id`,`category_id`),
@@ -556,9 +556,9 @@ CREATE TABLE `cms_news_category` (
   KEY `category_id` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_news_comment` */
+/*Table structure for table `cms8_news_comment` */
 
-CREATE TABLE `cms_news_comment` (
+CREATE TABLE `cms8_news_comment` (
   `news_comment_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `news_id` bigint(20) DEFAULT NULL,
   `news_lang` varchar(3) DEFAULT NULL,
@@ -571,9 +571,9 @@ CREATE TABLE `cms_news_comment` (
   PRIMARY KEY (`news_comment_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_news_subscriber` */
+/*Table structure for table `cms8_news_subscriber` */
 
-CREATE TABLE `cms_news_subscriber` (
+CREATE TABLE `cms8_news_subscriber` (
   `news_subscriber_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `news_subscriber_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `news_subscriber_email` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
@@ -585,9 +585,9 @@ CREATE TABLE `cms_news_subscriber` (
   KEY `NewIndex1` (`news_subscriber_code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
-/*Table structure for table `cms_news_tags` */
+/*Table structure for table `cms8_news_tags` */
 
-CREATE TABLE `cms_news_tags` (
+CREATE TABLE `cms8_news_tags` (
   `news_id` bigint(20) DEFAULT NULL,
   `lang` varchar(10) DEFAULT NULL,
   `tag` varchar(100) DEFAULT NULL,
@@ -597,9 +597,9 @@ CREATE TABLE `cms_news_tags` (
   KEY `tag` (`tag`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_notification_queue` */
+/*Table structure for table `cms8_notification_queue` */
 
-CREATE TABLE `cms_notification_queue` (
+CREATE TABLE `cms8_notification_queue` (
   `notification_queue_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `notification_queue_to` varchar(255) DEFAULT NULL,
   `notification_queue_subject` varchar(255) DEFAULT NULL,
@@ -609,17 +609,17 @@ CREATE TABLE `cms_notification_queue` (
   PRIMARY KEY (`notification_queue_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=176 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_oid` */
+/*Table structure for table `cms8_oid` */
 
-CREATE TABLE `cms_oid` (
+CREATE TABLE `cms8_oid` (
   `cs` varchar(255) NOT NULL,
   `expires` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`cs`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Table structure for table `cms_page` */
+/*Table structure for table `cms8_page` */
 
-CREATE TABLE `cms_page` (
+CREATE TABLE `cms8_page` (
   `id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `lang` char(3) NOT NULL DEFAULT 'ukr',
   `site_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -643,9 +643,9 @@ CREATE TABLE `cms_page` (
   FULLTEXT KEY `title` (`title`,`content`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_page_menu_group` */
+/*Table structure for table `cms8_page_menu_group` */
 
-CREATE TABLE `cms_page_menu_group` (
+CREATE TABLE `cms8_page_menu_group` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) NOT NULL DEFAULT '0',
   `page_id` bigint(20) NOT NULL DEFAULT '0',
@@ -654,9 +654,9 @@ CREATE TABLE `cms_page_menu_group` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_photogalery` */
+/*Table structure for table `cms8_photogalery` */
 
-CREATE TABLE `cms_photogalery` (
+CREATE TABLE `cms8_photogalery` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `photos` text,
   `photos_m` text,
@@ -671,9 +671,9 @@ CREATE TABLE `cms_photogalery` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2144 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_photogalery_rozdil` */
+/*Table structure for table `cms8_photogalery_rozdil` */
 
-CREATE TABLE `cms_photogalery_rozdil` (
+CREATE TABLE `cms8_photogalery_rozdil` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `photos` text,
   `photos_m` text,
@@ -686,9 +686,9 @@ CREATE TABLE `cms_photogalery_rozdil` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_rsssource` */
+/*Table structure for table `cms8_rsssource` */
 
-CREATE TABLE `cms_rsssource` (
+CREATE TABLE `cms8_rsssource` (
   `rsssource_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) DEFAULT NULL,
   `rsssource_title` varchar(64) DEFAULT NULL,
@@ -701,9 +701,9 @@ CREATE TABLE `cms_rsssource` (
   PRIMARY KEY (`rsssource_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_rsssourceitem` */
+/*Table structure for table `cms8_rsssourceitem` */
 
-CREATE TABLE `cms_rsssourceitem` (
+CREATE TABLE `cms8_rsssourceitem` (
   `rsssourceitem_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) DEFAULT NULL,
   `rsssource_id` bigint(20) DEFAULT NULL,
@@ -719,9 +719,9 @@ CREATE TABLE `cms_rsssourceitem` (
   PRIMARY KEY (`rsssourceitem_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_session` */
+/*Table structure for table `cms8_session` */
 
-CREATE TABLE `cms_session` (
+CREATE TABLE `cms8_session` (
   `id` varchar(50) NOT NULL DEFAULT '',
   `sess_data` text,
   `expires` bigint(20) DEFAULT NULL,
@@ -730,9 +730,9 @@ CREATE TABLE `cms_session` (
   KEY `NewIndex1` (`user_login`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_site` */
+/*Table structure for table `cms8_site` */
 
-CREATE TABLE `cms_site` (
+CREATE TABLE `cms8_site` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `dir` varchar(20) NOT NULL DEFAULT '',
   `title` varchar(255) NOT NULL DEFAULT '',
@@ -756,9 +756,9 @@ CREATE TABLE `cms_site` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_site_search` */
+/*Table structure for table `cms8_site_search` */
 
-CREATE TABLE `cms_site_search` (
+CREATE TABLE `cms8_site_search` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) NOT NULL DEFAULT '0',
   `url` varchar(255) DEFAULT NULL,
@@ -775,18 +775,18 @@ CREATE TABLE `cms_site_search` (
   KEY `checksum` (`checksum`)
 ) ENGINE=MyISAM AUTO_INCREMENT=22345 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_site_user` */
+/*Table structure for table `cms8_site_user` */
 
-CREATE TABLE `cms_site_user` (
+CREATE TABLE `cms8_site_user` (
   `site_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `level` tinyint(2) unsigned NOT NULL DEFAULT '0',
   UNIQUE KEY `site_id` (`site_id`,`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_site_visitor` */
+/*Table structure for table `cms8_site_visitor` */
 
-CREATE TABLE `cms_site_visitor` (
+CREATE TABLE `cms8_site_visitor` (
   `site_visitor_id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   `site_visitor_password` varchar(32) NOT NULL DEFAULT '',
   `site_visitor_login` varchar(30) DEFAULT NULL,
@@ -798,9 +798,9 @@ CREATE TABLE `cms_site_visitor` (
   KEY `NewIndex1` (`site_visitor_email`)
 ) ENGINE=MyISAM AUTO_INCREMENT=139 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_site_visitor_education` */
+/*Table structure for table `cms8_site_visitor_education` */
 
-CREATE TABLE `cms_site_visitor_education` (
+CREATE TABLE `cms8_site_visitor_education` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) NOT NULL DEFAULT '0',
   `site_visitor_id` bigint(20) NOT NULL DEFAULT '0',
@@ -811,9 +811,9 @@ CREATE TABLE `cms_site_visitor_education` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cms_user` */
+/*Table structure for table `cms8_user` */
 
-CREATE TABLE `cms_user` (
+CREATE TABLE `cms8_user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_login` varchar(255) NOT NULL DEFAULT '',
   `user_password` varchar(32) NOT NULL DEFAULT '',
@@ -826,4 +826,172 @@ CREATE TABLE `cms_user` (
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 
-alter table `cms_site` change `dir` `dir` varchar(127) character set utf8 collate utf8_general_ci default '' NOT NULL;
+alter table `cms8_site` change `dir` `dir` varchar(127) character set utf8 collate utf8_general_ci default '' NOT NULL;
+
+
+
+/* =========================== */
+
+
+/*Table structure for table `cms8_calendar` */
+insert  into `cms8_calendar`
+select * from cms_calendar;
+
+insert  into `cms8_calendar_cache`
+select * from cms_calendar_cache;
+
+insert  into `cms8_calendar_category`
+select * from cms_calendar_category;
+
+insert  into `cms8_category`
+select * from cms_category;
+
+INSERT  INTO `cms8_ec_cart` 
+SELECT * FROM cms_ec_cart;
+
+INSERT  INTO `cms8_ec_category`
+select * FROM cms_ec_category;
+
+insert into cms8_ec_category_item_field
+select * from cms_ec_category_item_field;
+
+insert into `cms8_ec_category_item_field`
+select * FROM ;
+
+insert into `cms8_ec_category_item_field_value`
+select * FROM cms_ec_category_item_field_value;
+
+insert into  `cms8_ec_currency` 
+select * FROM cms_ec_currency;
+
+insert into `cms8_ec_delivery` 
+select * FROM cms_ec_delivery;
+
+insert into `cms8_ec_item` 
+select * FROM cms_ec_item;
+
+insert into  `cms8_ec_item_category` 
+select * FROM cms_ec_item_category;
+
+insert into  `cms8_ec_item_comment` 
+select * FROM cms_ec_item_comment;
+
+insert into  `cms8_ec_item_tags` 
+select * FROM cms_ec_item_tags;
+
+insert into  `cms8_ec_item_variant` 
+select * FROM cms_ec_item_variant;
+
+insert into  `cms8_ec_order` 
+select * FROM cms_ec_order;
+
+insert into  `cms8_ec_order_history` 
+select * FROM cms_ec_order_history;
+
+insert into  `cms8_ec_producer` 
+select * FROM cms_ec_producer;
+
+insert into  `cms8_ec_producer_comment` 
+select * FROM cms_ec_producer_comment;
+
+insert into  `cms8_ec_user` 
+select * FROM cms_ec_user;
+
+insert into  `cms8_forum_list` 
+select * FROM cms_forum_list;
+
+insert into  `cms8_forum_msg` 
+select * FROM cms_forum_msg;
+
+insert into `cms8_forum_thread` 
+select * FROM cms_forum_thread;
+
+insert into `cms8_fragment` 
+select * FROM cms_fragment;
+
+insert into `cms8_gb` 
+select * FROM cms_gb;
+
+insert into `cms8_golos_pynannja` 
+select * FROM cms_golos_pynannja;
+
+insert into `cms8_golos_vidpovidi` 
+select * FROM cms_golos_vidpovidi;
+
+insert into `cms8_golos_vidpovidi_details` 
+select * FROM cms_golos_vidpovidi_details;
+
+insert into `cms8_languages` 
+select * FROM cms_languages;
+
+insert into `cms8_listener` 
+select * FROM cms_listener;
+
+insert into `cms8_menu_group` 
+select * FROM cms_menu_group;
+
+insert into `cms8_menu_item` 
+select * FROM cms_menu_item;
+
+insert into `cms8_ml` 
+select * FROM cms_ml;
+
+insert into `cms8_news` 
+select * FROM cms_news;
+
+insert into `cms8_news_category` 
+select * FROM cms_news_category;
+
+insert into `cms8_news_comment` 
+select * FROM cms_news_comment;
+
+insert into `cms8_news_subscriber` 
+select * FROM cms_news_subscriber;
+
+insert into `cms8_news_tags` 
+select * FROM `cms_news_tags`;
+
+insert into `cms8_notification_queue` 
+select * FROM cms_notification_queue;
+
+insert into `cms8_oid` 
+select * FROM cms_oid;
+
+insert into `cms8_page` 
+select * FROM cms_page;
+
+insert into `cms8_page_menu_group` 
+select * FROM cms_page_menu_group;
+
+insert  into `cms8_photogalery` 
+select * FROM cms_photogalery;
+
+insert into `cms8_photogalery_rozdil` 
+select * FROM cms_photogalery_rozdil;
+
+insert into `cms8_rsssource` 
+select * FROM cms_rsssource;
+
+insert into  `cms8_rsssourceitem` 
+select * FROM `cms_rsssourceitem`;
+
+insert into `cms8_session` 
+select * FROM cms_session;
+
+insert into `cms8_site` 
+select * FROM cms_site;
+
+insert  into `cms8_site_search` 
+select * FROM cms_site_search;
+
+insert into  `cms8_site_user` 
+select * FROM cms_site_user;
+
+insert into  `cms8_site_visitor` 
+select * FROM cms_site_visitor;
+
+insert into `cms8_site_visitor_education` 
+select * FROM cms_site_visitor_education;
+
+insert into  `cms8_user` 
+select * FROM cms_user;

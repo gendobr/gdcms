@@ -1,0 +1,258 @@
+{assign var="znu_root_url" value="http://www.znu.edu.ua"}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{$page.title} - {txt lang=$text.language_name variants="eng=ZNU::rus=ЗНУ::ukr=ЗНУ"}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="content-language" content="uk">
+    <meta name="robots" content="all,follow">
+    <meta name="description" content="...">
+    <meta name="keywords" content="...">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="index" href="./" title="Home">
+
+
+   <!-- common CSS -->
+   <link rel="stylesheet" type="text/css" href="{$site_root_url}/templates/znu11files/style.css"  media="screen" >
+   <!--  , projection -->
+   <!-- print -->
+   <link rel="stylesheet" media="print" type="text/css" href="{$site_root_url}/templates/znu11files/print.css"> 
+
+   <!-- media queries -->
+   <link rel="stylesheet" type="text/css" href="{$site_root_url}/templates/znu11files/custom.css"  media="screen">
+<!--[if IE]>
+<link rel="stylesheet" class='mediaquery' type="text/css" href="znu11files/ie.css" media="screen">
+<![endif]-->
+
+
+   <!--[if lt IE 9]>
+   <script type="text/javascript" src="{$site_root_url}/templates/znu11files/html5.js"></script>
+   <script type="text/javascript" src="{$site_root_url}/templates/znu11files/jquery-1.11.0.min.js"></script>
+   <script type="text/javascript" src="{$site_root_url}/templates/znu11files/jmediaqueries.js"></script>
+   <![endif]-->
+
+</head>
+<body topmargin="0" leftmargin="0">
+	<span id="topnavigation"><ul class="menu1">
+      <!--  language selector - begin -->
+      {foreach from=$lang key=ke item=ln}
+          {if $ln.lang eq $text.language_name}
+            <li class="menu1-item"><span class="top {$ln.lang}">{$ln.lang}</span></li>
+          {else}
+            <li class="menu1-item"><a href="{$ln.url}" class="top {$ln.lang}">{$ln.lang}</a></li>
+          {/if}
+      {/foreach}
+      <!--  language selector - end -->
+      <li class="menu1-item"><a href="{$znu_root_url}/cms/index.php?action=category%2Ftree&site_id=73&interface_lang={$text.language_name}" class="top map">{txt lang=$text.language_name variants="eng=Site map::rus=Карта сайта::ukr=Мапа сайту"}</a></li>
+      <li class="menu1-item"><a name="top" href="{$znu_root_url}/{$text.language_name}/ " class="top home">{txt lang=$text.language_name variants="eng=Main page::rus=Главная страница::ukr=Головна сторінка"}</a></li>
+      </ul><span class="search"><form action="http://sites.znu.edu.ua/search.php"><input type=hidden name=site_id value="25"><input type=hidden name=lang value="{$text.language_name}"><input type=text class="txt" name="keywords"><input type=submit value="{txt lang=$text.language_name variants="eng=Search::rus=Найти::ukr=Знайти"}" class="btn"></form>     
+		</span>
+	</span><!--
+	--><span class="osnova">
+		<span id="header">
+			<a href="{$site_root_url}" class="nounderline"><img src="{$site_root_url}/templates/znu11files/logo.png" class="logo">
+			<h1 class="logo_text">{txt lang=$text.language_name variants="eng=Zaporizhzhya National University::rus=Запорожский национальний университет::ukr=Запорізький національний університет"}</h1></a>
+			<span id="headertext">
+				<span class="menu2">
+					{fragment place="topmenu" lang=$text.language_name site_id=$site.id}
+				</span>
+			</span>
+		</span><!--
+		--><span class="content">
+			<span id="Where_you_are">
+				{foreach from=$menu key=kg item=mg}
+					{if $mg.code eq 'breadcrumbs'}
+					<!-- menu group - begin  -->
+						{foreach from=$mg.items key=ki item=mi}
+							{if $mi.url}
+								/ <a href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a>
+							{else}
+								/ <b>{$mi.html}</b>
+							{/if}
+						{/foreach}
+					<!-- menu group - end -->
+					{/if}
+				{/foreach}
+				/ <b>{$page.title}</b>
+			</span><!--
+			--><span class="leftcolumn">
+				<span class="textblock">
+					<h1 class="zagolovok">{if $page.header}{$page.header}{else}{$page.title}{/if}</h1>
+					<span class="texty">
+						{sysmsg}
+						{foreach from=$menu key=kg item=mg}
+							{if $mg.code eq 'subitems'}
+								<ul>
+									<!-- menu group - begin  -->
+									{foreach from=$mg.items key=ki item=mi}
+										{if $mi.url}
+											<li><a href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a></li>
+										{else}
+											<li><b>{$mi.html}</b></li>
+										{/if}
+									{/foreach}
+									<!-- menu group - end -->
+								</ul><br/>
+							{/if}
+						{/foreach}
+						{$page.content}
+					</span>
+				</span><!--
+				-->{if $page.next}<!--
+					-->{foreach from=$page.next item=pg}<!--
+						--><br><span class="textblock">
+							<h1 class="zagolovok">{$pg.title}</h1></div>
+							<span class="texty">
+								{$pg.content}
+							</span>
+						</span>
+					{/foreach}
+				{/if}
+			</span><!--
+			--><span class="rightcolumn">
+				<span class="slideshow">
+					<center><script type="text/javascript" src="http://www.znu.edu.ua/cms/index.php?action=banner%2Frotator&site_id=73&lang={$text.language_name}"></script></center>
+				</span><!--
+				--><span class="menu3">
+					{foreach from=$menu key=kg item=mg}
+						{if $mg.code eq 'right'}
+						<!-- menu group - begin  -->
+							<ul>
+							{foreach from=$mg.items key=ki item=mi}
+								{if $mi.url}
+									<li><a class="rightlink" href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a></li>
+								{else}
+									<li>{$mi.html}</li>
+								{/if}
+							{/foreach}
+							</ul>
+							<!-- menu group - end -->
+						{/if}
+					 {/foreach}					
+				</span><!--
+				--><span class="knopky">
+					<center>
+						{fragment place="ce_cikavo" lang=$text.language_name site_id=$site.id}
+					</center>
+				</span><!--
+				--><span class="sociology">
+<script type="text/javascript" src="http://sites.znu.edu.ua/cms/scripts/lib/ajax_loadblock.js"></script>
+<div id=news1392722212> </div>
+<script type="text/javascript">
+ajax_loadblock('news1392722212','http://sites.znu.edu.ua/cms/index.php?action=poll/block&site_id=58&lang={$lang}&poll_id=0&template=template_poll_ask_block',null);
+</script>
+				</span>
+			</span>
+		</span>
+	</span><!-- 
+	--><span id="footer">
+		<p>&copy; 2012 {txt lang=$text.language_name variants="eng=ZNU, Zaporizhzhya National University, Zhukovsky str., 66, Zaporizhzhya, Ukraine, 69600 ::rus=ЗНУ  Запорожский национальний университет, 69600, г.Запорожье, ул. Жуковского, 66 ::ukr=ЗНУ Запорізький національний університет, 69600, м. Запоріжжя, вул. Жуковського, 66"}
+    <br/><br/></p>
+	{literal}
+            <span style="display:inline-block;">
+            <table cellSpacing=0 cellPadding=0 align=center border=0 class="noprint">
+            <tr>
+            <td align=center style="border:none;" rowspan=2 valign=top>
+
+            <script language="javascript">//<!--
+            mtI="073010103502";mtG="26";mtT="8";mtS='http://073010103502.c.mystat-in.net/?';
+            mtD=document;mtN=navigator.appName;mtR=escape(mtD.referrer);
+            mtW="";mtC="";mtV="0";mtJ="1";
+            //--></script><script language="javascript1.1">//<!--
+            mtV="1";mtJ = (navigator.javaEnabled()?"1":"0");
+            //--></script><script language="javascript1.2">//<!--
+            mtE=screen;mtW=mtE.width;mtN!="Netscape"?mtC=mtE.colorDepth:mtC=mtE.pixelDepth;mtV="2";
+            //--></script><script language="javascript1.3">//<!--
+            mtV="3";
+            //--></script><script language="javascript">//<!--
+            mtUrl="";mtUrl+="\""+mtS+"i"+mtI+"&t"+mtT+"&g"+mtG+"&w"+mtW+"&c"+mtC+"&r"+mtR+"&v"+mtV+"&j"+mtJ+"\"";
+            mtUrl="<a href=http://mytop-in.net/ target=_blank><img src="+mtUrl+"width=81 height=63 border=0 alt=\"Rated by MyTOP\"></a>";
+            mtD.write(mtUrl);
+            //--></script>
+            <noscript>
+            <a href=http://mytop-in.net/ target=_blank><img src=http://073010103502.c.mystat-in.net/?i073010103502&t8&g26&j0 width=81 height=63 border=0 alt="Rated by MyTOP"></a>
+            </noscript>
+
+                </td>
+                <td align=right style="border:none;">
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter17291668 = new Ya.Metrika({id:17291668, enableAll: true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/17291668" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+            <!--Rating@Mail.ru COUNTER--><script language="JavaScript"><!--
+            d=document;a='';a+=';r='+escape(d.referrer)
+            js=10//--></script><script language="JavaScript1.1"><!--
+            a+=';j='+navigator.javaEnabled()
+            js=11//--></script><script language="JavaScript1.2"><!--
+            s=screen;a+=';s='+s.width+'*'+s.height
+            a+=';d='+(s.colorDepth?s.colorDepth:s.pixelDepth)
+            js=12//--></script><script language="JavaScript1.3"><!--
+            js=13//--></script><script language="JavaScript"><!--
+            d.write('<a href="http://top.mail.ru/jump?from=308846"'+
+            ' target=_top><img src="http://top.list.ru/counter'+
+            '?id=308846;t=131;js='+js+a+';rand='+Math.random()+
+            '" alt="Рейтинг@Mail.ru"'+' border=0 height=40 width=88></a>')
+            if(js>11)d.write('<'+'!-- ')//--></script><noscript><a
+            target=_top href="http://top.mail.ru/jump?from=308846"><img
+            src="http://top.list.ru/counter?js=na;id=308846;t=131"
+            border=0 height=40 width=88
+            alt="Рейтинг@Mail.ru"></a></noscript><script language="JavaScript"><!--
+            if(js>11)d.write('--'+'>')//--></script><!--/COUNTER-->
+
+            </td>
+
+            <td align=right valign=top style="border:none;">
+            </td>
+
+            </tr>
+            <tr>
+            <td align=center style="border:none;padding-left:5px;" colspan=2>
+
+            <!-- bigmir)net TOP 100 --><a href=http://www.bigmir.net/?cl=24184 target=_blank><script language="javascript"><!--
+            bmQ='<img src=http://c.bigmir.net/?s24184&t10'
+            bmD=document
+            bmD.cookie="b=b"
+            if(bmD.cookie)bmQ+='&c1'
+            //--></script><script language="javascript1.2"><!--
+            bmS=screen;bmQ+='&d'+(bmS.colorDepth?bmS.colorDepth:bmS.pixelDepth)+"&r"+bmS.width;
+            //--></script><script language="javascript"><!--
+            bmF = bmD.referrer.slice(7);
+            ((bmI=bmF.indexOf('/'))!=-1)?(bmF=bmF.substring(0,bmI)):(bmI=bmF.length);
+            if(bmF!=window.location.href.substring(7,7+bmI))bmQ+='&f'+escape(bmD.referrer);
+            bmD.write(bmQ+" border=0 width=140 height=17 alt='bigmir TOP100'>");
+            //--></script></a>
+            <!-- bigmir)net TOP 100 -->
+            </td>
+            </tr>
+            </table>
+            </span>
+            {/literal}
+	</span>
+</body>
+</html>      
+
+
+
