@@ -108,7 +108,7 @@ $message='';
 
   /*
     select l.*, s.dir, s.url, s.title, u.user_login
-    from cms_listener as l, cms_site as s, cms_user as u
+    from {$GLOBALS['table_prefix']}listener as l, {$GLOBALS['table_prefix']}site as s, {$GLOBALS['table_prefix']}user as u
     where l.site_id=s.id and u.id=l.user_id
   */
   $re->from="{$table_prefix}listener as l, {$table_prefix}site as s, {$table_prefix}user as u";

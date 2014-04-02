@@ -1,11 +1,11 @@
 <?php
 
 /*
- * Ремонт дерева категорий
- * скрипт выдаёт набор SQL запросов, которые надо выполнить, чтобы отремонтировать дерево категорий
- * Никаких изменений в БД скрипт не выполняет
+ * пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ SQL пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  *
- * Использует резервную информацию из колонки 'path' таблицы  {$table_prefix}category
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 'path' пїЅпїЅпїЅпїЅпїЅпїЅпїЅ  {$table_prefix}category
  *
  *
  */
@@ -23,13 +23,13 @@ $site_id = (int) $input_vars['site_id'];
 $query = "set @site_id=$site_id";
 db_execute($query);
 
-//Есть ли категории, которые неправильно стоят в иерархии
-$query = "select @category_id:=category_id, @start:=`start`, @finish:=finish from cms_category where site_id=@site_id and `start`=0";
+//пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+$query = "select @category_id:=category_id, @start:=`start`, @finish:=finish from {$GLOBALS['table_prefix']}category where site_id=@site_id and `start`=0";
 
 
 $query = "
-/* Есть ли категории, которые неправильно стоят в иерархии */
-select ch.category_id, pa.category_id from cms_category ch,  cms_category pa
+/* пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
+select ch.category_id, pa.category_id from {$GLOBALS['table_prefix']}category ch,  {$GLOBALS['table_prefix']}category pa
 where ch.start<pa.start and pa.start<ch.finish
 and pa.finish>ch.finish
 and pa.site_id=@site_id
@@ -37,8 +37,8 @@ and ch.site_id=@site_id
 
 union
 
-/* поля start и finish должны быть уникальны */
-select ch.category_id, pa.category_id from cms_category ch,  cms_category pa
+/* пїЅпїЅпїЅпїЅ start пїЅ finish пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
+select ch.category_id, pa.category_id from {$GLOBALS['table_prefix']}category ch,  {$GLOBALS['table_prefix']}category pa
 where ( ch.start=pa.start OR ch.start=pa.finish OR ch.finish=pa.finish )
 and pa.site_id=@site_id
 and ch.site_id=@site_id
@@ -50,13 +50,13 @@ if (count($rows) == 0) {
 }
 
 /*
-  select ch.category_id, pa.category_id from cms_category ch,  cms_category pa
+  select ch.category_id, pa.category_id from {$GLOBALS['table_prefix']}category ch,  {$GLOBALS['table_prefix']}category pa
   where ch.start<pa.start and pa.start<ch.finish
   and pa.finish>ch.finish
   and pa.site_id=@site_id
   and ch.site_id=@site_id;
 
-  select ch.category_id, pa.category_id from cms_category ch,  cms_category pa
+  select ch.category_id, pa.category_id from {$GLOBALS['table_prefix']}category ch,  {$GLOBALS['table_prefix']}category pa
   where ( ch.start=pa.start OR ch.start=pa.finish OR ch.finish=pa.finish )
   and pa.site_id=@site_id
   and ch.site_id=@site_id
@@ -66,7 +66,7 @@ if (count($rows) == 0) {
 $query = "select category_id, site_id,category_title,start,finish,deep,path from {$table_prefix}category where site_id=$site_id order by path asc";
 $categories = db_getrows($query);
 
-// количество потомков
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 function n_descendants($path, $categories) {
     //$deep=substr_count($path,'/');
     $cnt = 0;
@@ -81,7 +81,7 @@ function n_descendants($path, $categories) {
 }
 
 // echo n_descendants('227/diff',$categories);
-// идентификатор предыдущего брата
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 function get_prev_sibling($path, $categories) {
     // prn($categories);exit();
     $deep = substr_count($path, '/');
@@ -91,7 +91,7 @@ function get_prev_sibling($path, $categories) {
     $cnt = -1;
 
 
-    //  найти всех братьев
+    //  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     $siblings = Array();
     foreach ($categories as $key => $cat) {
         // prn($cat['path']);
@@ -103,7 +103,7 @@ function get_prev_sibling($path, $categories) {
         }
     }
     // prn($path,$siblings);
-    // Упорядочить по полю start
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ start
     uasort($siblings, "orderByStart");
     // prn($path,$siblings);
     //foreach($categories as $key=>$cat){
@@ -125,7 +125,7 @@ function orderByStart($a, $b) {
 
 //prn("strcmp('227/diff', '227/university')=".strcmp('227/diff', '227/university'));
 //echo " all/dept/econ get_prev_siblings=". get_prev_sibling('all/dept/econ',$categories);exit();
-// найти родителя
+// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 function get_parent($path, $categories) {
     //prn($path);
     $prefix = preg_replace("/(^|\\/)[^\\/]+\$/", '', $path);
@@ -137,7 +137,7 @@ function get_parent($path, $categories) {
     return -1;
 }
 
-// найти ближайшего предка
+// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 function get_ancestor($path, $categories) {
     //prn($path);
     $prefix = preg_replace("/(^|\\/)[^\\/]+\$/", '', $path);
@@ -153,7 +153,7 @@ function get_ancestor($path, $categories) {
 }
 
 // prn(get_parent('227/university',$categories)); exit();
-// идентификаторы потомков
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 function get_children($path, $categories) {
     $deep = substr_count($path, '/') + 1;
     $cnt = Array();
@@ -183,7 +183,7 @@ for ($i = 1; $i < $cnt; $i++) {
 
     $parent_path = $categories[$i]['path'];
     while ($key < 0) {
-        // родитель не найден, надо его создать
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         prn("creating parent for $parent_path ");
         $parent_path = preg_replace("/(^|\\/)[^\\/]+\$/", '', $parent_path);
         $parent_code = preg_replace("/^(\\w+\\/)+/", '', $parent_path);
@@ -218,10 +218,10 @@ usort($newcategories, "catcmp");
 $categories = $newcategories;
 
 // prn($categories); exit();
-// выстраиваем категории в правильном порядке
-// нашли корень (он 1-й в списке, т.к. путь у него самый короткий)
-//   у корня нашли детей и кол-во потомков, и детей выстроили в правильном порядке
-//   для каждого из детей
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ 1-пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ.пїЅ. пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+//   пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+//   пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
 
 class node {
@@ -254,7 +254,7 @@ class node {
                 $children[$key] = $cat;
             }
         }
-        // Упорядочить по полю start
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ start
         uasort($children, "orderByStart");
 
         $children_nodes = Array();

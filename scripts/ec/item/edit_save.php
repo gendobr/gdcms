@@ -246,15 +246,15 @@ if ($all_is_ok) {
 
         // ------------- update language in related tables - begin -------------
         if ($this_ec_item_info['ec_item_lang'] != $lng) {
-            // cms_ec_item_comment
+            // {$GLOBALS['table_prefix']}ec_item_comment
             $query = "UPDATE {$table_prefix}ec_item_comment SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
             db_execute($query);
 
-            // cms_ec_item_variant
+            // {$GLOBALS['table_prefix']}ec_item_variant
             $query = "UPDATE {$table_prefix}ec_item_variant SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
             db_execute($query);
 
-            // cms_ec_category_item_field_value
+            // {$GLOBALS['table_prefix']}ec_category_item_field_value
             $query = "UPDATE {$table_prefix}ec_category_item_field_value SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
             db_execute($query);
         }

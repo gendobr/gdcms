@@ -283,23 +283,23 @@ if (isset($input_vars['category_id'])) {
     $category_ids=join(',',$category_ids);
     if (isset($input_vars['category_filter_mode'])) {
         //$category_restriction = "
-        //       inner join cms_news_category as nc on (nc.news_id=ne.id)
-        //       inner join cms_category as ch on (nc.category_id=ch.category_id)
-        //       inner join cms_category as pa on (pa.start<=ch.start and ch.finish<=pa.finish and pa.category_id={$news_browse_tree->info['category_id']})
+        //       inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
+        //       inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id)
+        //       inner join {$GLOBALS['table_prefix']}category as pa on (pa.start<=ch.start and ch.finish<=pa.finish and pa.category_id={$news_browse_tree->info['category_id']})
         //      ";
         $category_restriction = "
-               inner join cms_news_category as nc on (nc.news_id=ne.id)
-               inner join cms_category as ch on (nc.category_id=ch.category_id)
-               inner join cms_category as pa on (pa.start<=ch.start and ch.finish<=pa.finish and pa.category_id in({$category_ids}))
+               inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
+               inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id)
+               inner join {$GLOBALS['table_prefix']}category as pa on (pa.start<=ch.start and ch.finish<=pa.finish and pa.category_id in({$category_ids}))
               ";
     } else {
         //$category_restriction = "
-        //       inner join cms_news_category as nc on (nc.news_id=ne.id)
-        //       inner join cms_category as ch on (nc.category_id=ch.category_id and ch.category_id={$news_browse_tree->info['category_id']})
+        //       inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
+        //       inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id and ch.category_id={$news_browse_tree->info['category_id']})
         //      ";
         $category_restriction = "
-               inner join cms_news_category as nc on (nc.news_id=ne.id)
-               inner join cms_category as ch on (nc.category_id=ch.category_id and ch.category_id  in({$category_ids}))
+               inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
+               inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id and ch.category_id  in({$category_ids}))
               ";
     }
     //$category_restriction="AND ne.category_id={$news_browse_tree->info['category_id']}";
