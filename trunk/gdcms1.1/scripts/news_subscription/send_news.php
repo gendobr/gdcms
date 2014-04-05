@@ -114,7 +114,7 @@ if($subscribers){
                           , 'unsubscribe_link'=>$unsubscribe_link
                        ));
 
-        notification_queue($subscriber_info['news_subscriber_email'], $message_subj, $message_body, 'notify_action_email_html');
+        notification_queue($subscriber_info['news_subscriber_email'], $message_subj, $message_body, 'notify_action_email_html',$this_news_info['site_id']);
 
         $report.="<div>{$i} {$subscriber_info['news_subscriber_name']} {$subscriber_info['news_subscriber_email']} - OK</div>";
         $i++;

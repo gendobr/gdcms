@@ -51,19 +51,21 @@ function notify($event,$site_info,$data) {
     }
 }
 
-function notification_queue($sendto,$subj,$body,$handler) {
+function notification_queue($sendto,$subj,$body,$handler,$site_id=0) {
     $query="INSERT INTO {$GLOBALS['table_prefix']}notification_queue(
                     notification_queue_to,
                     notification_queue_subject,
                     notification_queue_body,
                     notification_queue_attempts,
-                    notification_queue_function)
+                    notification_queue_function,
+                    site_id)
                 VALUES(
                     '".DbStr($sendto)."',
                     '".DbStr($subj)."',
                     '".DbStr($body)."',
                     0,
-                    '".DbStr($handler)."')
+                    '".DbStr($handler)."',
+                    '".((int)$site_id)."')
         ";
     //prn($query);
     db_execute($query);
