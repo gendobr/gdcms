@@ -3,10 +3,10 @@
 
 <html>
 <head>
-<title>{$page.title} - {txt lang=$text.language_name variants="eng=ZNU::rus=ЗНУ::ukr=ЗНУ"}</title>
+<title>{$page.title} - {txt lang=$text.language_name variants="eng=ZNU::rus=Р—РќРЈ::ukr=Р—РќРЈ"}</title>
 
 
-    <meta http-equiv="content-type" content="text/html; charset=windows-1251" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="content-language" content="cs" />
     <meta name="robots" content="all,follow" />
     <meta name="author" content="All: ... [Nazev webu - www.url.cz]; e-mail: info@url.cz" />
@@ -37,14 +37,14 @@
         <a href="{$ln.url}" style='background-image:url({$site_root_url}/templates/ZNU_8/images/icon_{$ln.lang}.gif);background-repeat:no-repeat;padding-left:19px;'>{$ln.lang}</a>
      {/foreach}
     {* language selector - end *}
-    | <a href={$ZNU_root_url}/{$text.language_name}/  style='background-image:url({$site_root_url}/templates/ZNU_8/images/icon_home.gif);background-repeat:no-repeat;padding-left:17px;'>{txt lang=$text.language_name variants="eng=ZNU Main Page::rus=Главная страница ЗНУ::ukr=Головна сторінка ЗНУ"}</a> &nbsp;
-      <a href={$ZNU_root_url}/{$text.language_name}/sitemap/ style='background-image:url({$site_root_url}/templates/ZNU_8/images/icon_sitemap.gif);background-repeat:no-repeat;padding-left:17px;'>{txt lang=$text.language_name variants="eng=Site map::rus=Карта сайта::ukr=Мапа сайту"}</a>
-    | <a href=# onclick='show_drop_down_menu();return false;'>{txt lang=$text.language_name variants="eng=Adjust view::rus=Настроить вид::ukr=Налаштувати вигляд"}</a>
+    | <a href={$ZNU_root_url}/{$text.language_name}/  style='background-image:url({$site_root_url}/templates/ZNU_8/images/icon_home.gif);background-repeat:no-repeat;padding-left:17px;'>{txt lang=$text.language_name variants="eng=ZNU Main Page::rus=Р“Р»Р°РІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° Р—РќРЈ::ukr=Р“РѕР»РѕРІРЅР° СЃС‚РѕСЂС–РЅРєР° Р—РќРЈ"}</a> &nbsp;
+      <a href={$ZNU_root_url}/{$text.language_name}/sitemap/ style='background-image:url({$site_root_url}/templates/ZNU_8/images/icon_sitemap.gif);background-repeat:no-repeat;padding-left:17px;'>{txt lang=$text.language_name variants="eng=Site map::rus=РљР°СЂС‚Р° СЃР°Р№С‚Р°::ukr=РњР°РїР° СЃР°Р№С‚Сѓ"}</a>
+    | <a href=# onclick='show_drop_down_menu();return false;'>{txt lang=$text.language_name variants="eng=Adjust view::rus=РќР°СЃС‚СЂРѕРёС‚СЊ РІРёРґ::ukr=РќР°Р»Р°С€С‚СѓРІР°С‚Рё РІРёРіР»СЏРґ"}</a>
      <div id=bla style='display:none;' class=dropdownmenu>
-   {*<a href=# onclick='set_template("green");return false;'>Зелений стиль</a><br />
-     <a href=# onclick='set_template("green");return false;'>Синій стиль</a><br />*}
-     <a href=# onclick='hide_animation();return false;' style='text-decoration:line-through;'>{txt lang=$text.language_name variants="eng=Animation::rus=Анимация::ukr=Анімація"}</a><br />
-     <a href=# onclick='show_animation();return false;'>{txt lang=$text.language_name variants="eng=Animation::rus=Анимация::ukr=Анімація"}</a><br />
+   {*<a href=# onclick='set_template("green");return false;'>Р—РµР»РµРЅРёР№ СЃС‚РёР»СЊ</a><br />
+     <a href=# onclick='set_template("green");return false;'>РЎРёРЅС–Р№ СЃС‚РёР»СЊ</a><br />*}
+     <a href=# onclick='hide_animation();return false;' style='text-decoration:line-through;'>{txt lang=$text.language_name variants="eng=Animation::rus=РђРЅРёРјР°С†РёСЏ::ukr=РђРЅС–РјР°С†С–СЏ"}</a><br />
+     <a href=# onclick='show_animation();return false;'>{txt lang=$text.language_name variants="eng=Animation::rus=РђРЅРёРјР°С†РёСЏ::ukr=РђРЅС–РјР°С†С–СЏ"}</a><br />
      </div>
   </td></tr>
   <!-- top site menu - end -->
@@ -55,7 +55,7 @@
 <tr><td  width=122 style="border:none; padding:0; margin:0; background-image:url({$site_root_url}/templates/ZNU_8/images/site_header_left.png); background-repeat:no-repeat; background-position:top left;background-color:#3a54a9;" align=left><div  style="border:none; padding:0; margin:0;"><img src={$site_root_url}/templates/ZNU_8/images/emblema9.png align=left  style='position:relative; top:20px;margin-left:15px;'></div></td>
 <td style="border:none; background-image:url({$site_root_url}/templates/ZNU_8/images/site_header_right-tlo.png);   background-repeat:no-repeat; background-position: bottom right; padding:0; margin:0; vertical-align: top; padding-top:26px; height:120px;">
 {*<div style='margin-left:100px;overflow:hidden;margin-right:10px;text-align:right;'><a href="http://sites.znu.edu.ua/slavetni_zp/"><img style='border:none;' src="http://sites.znu.edu.ua/slavetni_zp/img/baner.jpg"></a></div>*}
-<img src={$site_root_url}/templates/ZNU_8/images/text_1_{$text.language_name}.gif alt="{txt lang=$text.language_name variants="eng=Zaporizhzhya National University::rus=Запорожский национальный университет::ukr=Запорізький національний університет"}" style="vertical-align: bottom;">
+<img src={$site_root_url}/templates/ZNU_8/images/text_1_{$text.language_name}.gif alt="{txt lang=$text.language_name variants="eng=Zaporizhzhya National University::rus=Р—Р°РїРѕСЂРѕР¶СЃРєРёР№ РЅР°С†РёРѕРЅР°Р»СЊРЅС‹Р№ СѓРЅРёРІРµСЂСЃРёС‚РµС‚::ukr=Р—Р°РїРѕСЂС–Р·СЊРєРёР№ РЅР°С†С–РѕРЅР°Р»СЊРЅРёР№ СѓРЅС–РІРµСЂСЃРёС‚РµС‚"}" style="vertical-align: bottom;">
 <img src={$site_root_url}/templates/ZNU_8/images/text_2_{$text.language_name}.gif style="vertical-align: bottom;">
 <img src={$site_root_url}/templates/ZNU_8/images/text_3_{$text.language_name}.gif style="vertical-align: bottom;"></td></tr>
 </table></div>
@@ -65,33 +65,33 @@
 
   <!-- marquee - begin -->
   <tr><td colspan=3 style='vertical-align:top; border:none;padding:0;'><div  id=site_header_marquee><marquee style="border: none; width: 100%;font-weight:bold;color:white;background-COLOR: #5774c2;" scrollamount=1
-direction="left">Навчайся в Європі вже сьогодні! ЗНУ - класична освіта за європейськими стандартами!</marquee></div></td></tr>
+direction="left">РќР°РІС‡Р°Р№СЃСЏ РІ Р„РІСЂРѕРїС– РІР¶Рµ СЃСЊРѕРіРѕРґРЅС–! Р—РќРЈ - РєР»Р°СЃРёС‡РЅР° РѕСЃРІС–С‚Р° Р·Р° С”РІСЂРѕРїРµР№СЃСЊРєРёРјРё СЃС‚Р°РЅРґР°СЂС‚Р°РјРё!</marquee></div></td></tr>
   <!-- marquee - end -->
 
    <!-- top menu tabs - begin -->
   <tr><td colspan=3 id=top_menu_tabs style="vertical-align:top;">
   <table class=design_cell cellpadding=0 cellspacing=0 border=1><tr class=design_cell>
    <td class=design_cell valign=bottom>
-   <a href={$ZNU_root_url}/{$text.language_name}/university><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=University::rus=Университет::ukr=Університет"}</div></a>
+   <a href={$ZNU_root_url}/{$text.language_name}/university><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=University::rus=РЈРЅРёРІРµСЂСЃРёС‚РµС‚::ukr=РЈРЅС–РІРµСЂСЃРёС‚РµС‚"}</div></a>
    </td>
    <td class=design_cell valign=bottom>
-   <a href={$ZNU_root_url}/{$text.language_name}/pk><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=For entrant::rus=Абитуриенту::ukr=Абітурієнту"}</div></a>
+   <a href={$ZNU_root_url}/{$text.language_name}/pk><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=For entrant::rus=РђР±РёС‚СѓСЂРёРµРЅС‚Сѓ::ukr=РђР±С–С‚СѓСЂС–С”РЅС‚Сѓ"}</div></a>
    </td>
    <td class=design_cell valign=bottom>
-   <a href={$ZNU_root_url}/{$text.language_name}/edu><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Study::rus=Учёба::ukr=Навчання"}</div></a>
+   <a href={$ZNU_root_url}/{$text.language_name}/edu><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Study::rus=РЈС‡С‘Р±Р°::ukr=РќР°РІС‡Р°РЅРЅСЏ"}</div></a>
    </td>
    <td class=design_cell valign=bottom>
-   <a href={$ZNU_root_url}/{$text.language_name}/sci><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Science::rus=Наука::ukr=Наука"}</div></a>
+   <a href={$ZNU_root_url}/{$text.language_name}/sci><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Science::rus=РќР°СѓРєР°::ukr=РќР°СѓРєР°"}</div></a>
    </td>
    <td class=design_cell valign=bottom>
-   <a href={$ZNU_root_url}/{$text.language_name}/podiji><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Events::rus=События::ukr=Події"}</div></a>
+   <a href={$ZNU_root_url}/{$text.language_name}/podiji><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Events::rus=РЎРѕР±С‹С‚РёСЏ::ukr=РџРѕРґС–С—"}</div></a>
    </td>
    <td class=design_cell valign=bottom>
-   <a href={$ZNU_root_url}/{$text.language_name}/spilkuvannja><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Contacts::rus=Общение::ukr=Спілкування"}</div></a>
+   <a href={$ZNU_root_url}/{$text.language_name}/spilkuvannja><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Contacts::rus=РћР±С‰РµРЅРёРµ::ukr=РЎРїС–Р»РєСѓРІР°РЅРЅСЏ"}</div></a>
    </td>
    {*
    <td class=design_cell valign=bottom>
-   <a href="http://web.znu.edu.ua/pk/"><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Admission office::rus=Приёмная комиссия::ukr=Приймальна комісія"}</div></a>
+   <a href="http://web.znu.edu.ua/pk/"><div class=tab_left_corner>{txt lang=$text.language_name variants="eng=Admission office::rus=РџСЂРёС‘РјРЅР°СЏ РєРѕРјРёСЃСЃРёСЏ::ukr=РџСЂРёР№РјР°Р»СЊРЅР° РєРѕРјС–СЃС–СЏ"}</div></a>
    </td>
    *}
   </tr></table></td></tr>
@@ -101,8 +101,8 @@ direction="left">Навчайся в Європі вже сьогодні! ЗНУ - класична освіта за європе
   <tr>
     <td id=address_bar style="vertical-align:top;">
     {* ------------------- current position - begin --------------------------- *}
-    {*<span id=Where_you_are>{txt lang=$text.language_name variants="eng=Where you are::rus=Где вы сейчас::ukr=Де ви зараз"} :</span>*}
-    <a href={$ZNU_root_url}/{$text.language_name}/>{txt lang=$text.language_name variants="eng=ZNU Main Page::rus=Главная страница ЗНУ::ukr=Головна сторінка ЗНУ"}</a> &gt;
+    {*<span id=Where_you_are>{txt lang=$text.language_name variants="eng=Where you are::rus=Р“РґРµ РІС‹ СЃРµР№С‡Р°СЃ::ukr=Р”Рµ РІРё Р·Р°СЂР°Р·"} :</span>*}
+    <a href={$ZNU_root_url}/{$text.language_name}/>{txt lang=$text.language_name variants="eng=ZNU Main Page::rus=Р“Р»Р°РІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° Р—РќРЈ::ukr=Р“РѕР»РѕРІРЅР° СЃС‚РѕСЂС–РЅРєР° Р—РќРЈ"}</a> &gt;
     <a href={$site.url}>{$site.title}</a> &gt;
     <b>{$page.title}</b>
     {* ------------------- current position - end ----------------------------- *}
@@ -153,39 +153,39 @@ direction="left">Навчайся в Європі вже сьогодні! ЗНУ - класична освіта за європе
       <!-- menu group - end -->
       {/foreach}
 
-    <h3>{txt lang=$text.language_name variants="eng=Our University::rus=Наш университет::ukr=Наш університет"}</h3>
+    <h3>{txt lang=$text.language_name variants="eng=Our University::rus=РќР°С€ СѓРЅРёРІРµСЂСЃРёС‚РµС‚::ukr=РќР°С€ СѓРЅС–РІРµСЂСЃРёС‚РµС‚"}</h3>
     <div class=right_column_content>
      <a href=http://web.znu.edu.ua/pk/> <img border=0 src=http://www.znu.edu.ua/templates/znu8/images/banners/pk2010_{$text.language_name}.jpg style='margin:5px;'></a><br>
 
     {*
 	 <a href=http://sites.znu.edu.ua/den-peremogy-2010><img border=0 src=http://www.znu.edu.ua/templates/znu8/images/banners/den-peremogy.jpg style='margin:5px;'></a>
-	  Старые баннеры
+	  РЎС‚Р°СЂС‹Рµ Р±Р°РЅРЅРµСЂС‹
 	  <a href=http://sites.znu.edu.ua/cms/index.php?action=news/view_details&news_id=8491&lang={$text.language_name}><img border=0 src=http://www.znu.edu.ua/templates/znu8/images/banners/reje_{$text.language_name}.jpg style='margin:5px;' align=center></a>
       <a href=http://sites.znu.edu.ua/gallery.php?site_id=41&interface_lang={$text.language_name} style='display:block;text-align:center;{ *background-color:#D3DFF8;* }'><img border=0 src=http://www.znu.edu.ua/templates/znu8/show/image.php?t={$smarty.now} style='margin:5px;'></a>
       <a href=http://web.znu.edu.ua/pk/><img border=0 src=http://www.znu.edu.ua/img/2009/pryjm-kamp2009-{$text.language_name}.jpg style='margin:5px;'></a><br>
       <a href=http://web.znu.edu.ua/pk/konkurs/><img border=0 src=http://www.znu.edu.ua/img/2009/rejtyng{$text.language_name}.jpg style='margin:5px;'></a><br>
 	*}
     <ul>
-	<li><a  style='-moz-border-radius:5px; -webkit-border-radius:5px;background-image:url(http://www.znu.edu.ua/templates/znu8/images/ico_archive2.gif);color:orange;background-color:#192666;' href="http://web.znu.edu.ua/pk/docs/pravila1.pdf">{txt lang=$text.language_name variants="eng=ZNU Admission Rules::rus=Правила приёма в ЗНУ::ukr=Правила прийому до ЗНУ"}</a></li>
-    <li><a href="{$ZNU_root_url}/{$text.language_name}/university/docs">{txt lang=$text.language_name variants="eng=Official Documents::rus=Официальные документы, регламентирующие работу ЗНУ::ukr=Офіційні документи, що регламентують роботу ЗНУ"}</a></li>
-    <li><a href="http://sites.znu.edu.ua/navchalnyj_viddil/">{txt lang=$text.language_name variants="eng=Official Documents Governing the Learning in ZNU::rus=Официальные документы, регламентирующие учебный процесс ЗНУ::ukr=Офіційні документи, що регламентують навчальний процес ЗНУ"}</a></li>
+	<li><a  style='-moz-border-radius:5px; -webkit-border-radius:5px;background-image:url(http://www.znu.edu.ua/templates/znu8/images/ico_archive2.gif);color:orange;background-color:#192666;' href="http://web.znu.edu.ua/pk/docs/pravila1.pdf">{txt lang=$text.language_name variants="eng=ZNU Admission Rules::rus=РџСЂР°РІРёР»Р° РїСЂРёС‘РјР° РІ Р—РќРЈ::ukr=РџСЂР°РІРёР»Р° РїСЂРёР№РѕРјСѓ РґРѕ Р—РќРЈ"}</a></li>
+    <li><a href="{$ZNU_root_url}/{$text.language_name}/university/docs">{txt lang=$text.language_name variants="eng=Official Documents::rus=РћС„РёС†РёР°Р»СЊРЅС‹Рµ РґРѕРєСѓРјРµРЅС‚С‹, СЂРµРіР»Р°РјРµРЅС‚РёСЂСѓСЋС‰РёРµ СЂР°Р±РѕС‚Сѓ Р—РќРЈ::ukr=РћС„С–С†С–Р№РЅС– РґРѕРєСѓРјРµРЅС‚Рё, С‰Рѕ СЂРµРіР»Р°РјРµРЅС‚СѓСЋС‚СЊ СЂРѕР±РѕС‚Сѓ Р—РќРЈ"}</a></li>
+    <li><a href="http://sites.znu.edu.ua/navchalnyj_viddil/">{txt lang=$text.language_name variants="eng=Official Documents Governing the Learning in ZNU::rus=РћС„РёС†РёР°Р»СЊРЅС‹Рµ РґРѕРєСѓРјРµРЅС‚С‹, СЂРµРіР»Р°РјРµРЅС‚РёСЂСѓСЋС‰РёРµ СѓС‡РµР±РЅС‹Р№ РїСЂРѕС†РµСЃСЃ Р—РќРЈ::ukr=РћС„С–С†С–Р№РЅС– РґРѕРєСѓРјРµРЅС‚Рё, С‰Рѕ СЂРµРіР»Р°РјРµРЅС‚СѓСЋС‚СЊ РЅР°РІС‡Р°Р»СЊРЅРёР№ РїСЂРѕС†РµСЃ Р—РќРЈ"}</a></li>
 
 
-    <li{*id=active*}><a href="http://library.znu.edu.ua">{txt lang=$text.language_name variants="eng=Scientific Library::rus=Научная библиотека::ukr=Наукова бібліотека"}</a></li>
-    <li><a href="{$ZNU_root_url}/{$text.language_name}/university/international">{txt lang=$text.language_name variants="eng=International relations::rus=Международные связи::ukr=Міжнародні зв'язки"}</a></li>
-    <li><a href="{$ZNU_root_url}/{$text.language_name}/diff/liberal_edu">{txt lang=$text.language_name variants="eng=Department of Humanities and Еducation::rus=Воспитательная работа::ukr=Виховна робота"}</a></li>
-    <li><a href="{$ZNU_root_url}/{$text.language_name}/diff">{txt lang=$text.language_name variants="eng=Public life::rus=Общественная жизнь::ukr=Суспільне життя"}</a></li>
-    <li><a href="{$ZNU_root_url}/{$text.language_name}/graduates">{txt lang=$text.language_name variants="eng=Alumni::rus=Выпускнику::ukr=Випускнику"}</a></li>
+    <li{*id=active*}><a href="http://library.znu.edu.ua">{txt lang=$text.language_name variants="eng=Scientific Library::rus=РќР°СѓС‡РЅР°СЏ Р±РёР±Р»РёРѕС‚РµРєР°::ukr=РќР°СѓРєРѕРІР° Р±С–Р±Р»С–РѕС‚РµРєР°"}</a></li>
+    <li><a href="{$ZNU_root_url}/{$text.language_name}/university/international">{txt lang=$text.language_name variants="eng=International relations::rus=РњРµР¶РґСѓРЅР°СЂРѕРґРЅС‹Рµ СЃРІСЏР·Рё::ukr=РњС–Р¶РЅР°СЂРѕРґРЅС– Р·РІ'СЏР·РєРё"}</a></li>
+    <li><a href="{$ZNU_root_url}/{$text.language_name}/diff/liberal_edu">{txt lang=$text.language_name variants="eng=Department of Humanities and Р•ducation::rus=Р’РѕСЃРїРёС‚Р°С‚РµР»СЊРЅР°СЏ СЂР°Р±РѕС‚Р°::ukr=Р’РёС…РѕРІРЅР° СЂРѕР±РѕС‚Р°"}</a></li>
+    <li><a href="{$ZNU_root_url}/{$text.language_name}/diff">{txt lang=$text.language_name variants="eng=Public life::rus=РћР±С‰РµСЃС‚РІРµРЅРЅР°СЏ Р¶РёР·РЅСЊ::ukr=РЎСѓСЃРїС–Р»СЊРЅРµ Р¶РёС‚С‚СЏ"}</a></li>
+    <li><a href="{$ZNU_root_url}/{$text.language_name}/graduates">{txt lang=$text.language_name variants="eng=Alumni::rus=Р’С‹РїСѓСЃРєРЅРёРєСѓ::ukr=Р’РёРїСѓСЃРєРЅРёРєСѓ"}</a></li>
 
-    <li><a href="http://sites.znu.edu.ua/bestgraduates/">{txt lang=$text.language_name variants="eng=Best Graduates::rus=Випускники - наша гордость::ukr=Випускники - наша гордість"}</a></li>
-    <li><a href="http://sites.znu.edu.ua/excellentstudents/">{txt lang=$text.language_name variants="eng=Honored Excellent Students::rus=Почётные отличники ЗНУ::ukr=Почесні відмінники ЗНУ"}</a></li>
+    <li><a href="http://sites.znu.edu.ua/bestgraduates/">{txt lang=$text.language_name variants="eng=Best Graduates::rus=Р’РёРїСѓСЃРєРЅРёРєРё - РЅР°С€Р° РіРѕСЂРґРѕСЃС‚СЊ::ukr=Р’РёРїСѓСЃРєРЅРёРєРё - РЅР°С€Р° РіРѕСЂРґС–СЃС‚СЊ"}</a></li>
+    <li><a href="http://sites.znu.edu.ua/excellentstudents/">{txt lang=$text.language_name variants="eng=Honored Excellent Students::rus=РџРѕС‡С‘С‚РЅС‹Рµ РѕС‚Р»РёС‡РЅРёРєРё Р—РќРЈ::ukr=РџРѕС‡РµСЃРЅС– РІС–РґРјС–РЅРЅРёРєРё Р—РќРЈ"}</a></li>
 
 
-    <li><a href="http://sites.znu.edu.ua/gallery.php?site_id=27&interface_lang={$text.language_name}">{txt lang=$text.language_name variants="eng=Photo Gallery::rus=Фотогаллерея::ukr=Фотогалерея"}</a></li>
+    <li><a href="http://sites.znu.edu.ua/gallery.php?site_id=27&interface_lang={$text.language_name}">{txt lang=$text.language_name variants="eng=Photo Gallery::rus=Р¤РѕС‚РѕРіР°Р»Р»РµСЂРµСЏ::ukr=Р¤РѕС‚РѕРіР°Р»РµСЂРµСЏ"}</a></li>
     </ul>
     </div>
     {if $banners neq ''}
-    {*<h3>{txt lang=$text.language_name variants="eng=It's Interesting::rus=Это интересно::ukr=Це цікаво"}</h3>*}
+    {*<h3>{txt lang=$text.language_name variants="eng=It's Interesting::rus=Р­С‚Рѕ РёРЅС‚РµСЂРµСЃРЅРѕ::ukr=Р¦Рµ С†С–РєР°РІРѕ"}</h3>*}
     <div class=right_column_content style='width:180px;'><br />
     {$banners}
     </ul>
@@ -201,7 +201,7 @@ direction="left">Навчайся в Європі вже сьогодні! ЗНУ - класична освіта за європе
   <tr>
     <td colspan=2 class=footer_left style="vertical-align: top;"><div class=left_edge>
     &copy; 2007 <a href={$ZNU_root_url}>ZNU</a>
-    {$znu8_text.ZNU_Address}{txt lang=$text.language_name variants="eng=Zaporizhzhya National University, Zhukovsky str., 66, Zaporizhzhya, Ukraine, 69600::rus=Запорожский национальний университет, 69600, г.Запорожье, ул. Жуковского, 66::ukr=Запорізький національний університет, 69600, м. Запоріжжя, вул. Жуковського, 66"}
+    {$znu8_text.ZNU_Address}{txt lang=$text.language_name variants="eng=Zaporizhzhya National University, Zhukovsky str., 66, Zaporizhzhya, Ukraine, 69600::rus=Р—Р°РїРѕСЂРѕР¶СЃРєРёР№ РЅР°С†РёРѕРЅР°Р»СЊРЅРёР№ СѓРЅРёРІРµСЂСЃРёС‚РµС‚, 69600, Рі.Р—Р°РїРѕСЂРѕР¶СЊРµ, СѓР». Р–СѓРєРѕРІСЃРєРѕРіРѕ, 66::ukr=Р—Р°РїРѕСЂС–Р·СЊРєРёР№ РЅР°С†С–РѕРЅР°Р»СЊРЅРёР№ СѓРЅС–РІРµСЂСЃРёС‚РµС‚, 69600, Рј. Р—Р°РїРѕСЂС–Р¶Р¶СЏ, РІСѓР». Р–СѓРєРѕРІСЃСЊРєРѕРіРѕ, 66"}
     <br />
 <br />
 <br />
@@ -213,7 +213,7 @@ direction="left">Навчайся в Європі вже сьогодні! ЗНУ - класична освіта за європе
     <td colspan=1 class=footer_right style="vertical-align: top;"><div><div class=right_edge1>
     <a href=#top><img class=img_top_link src={$site_root_url}/templates/ZNU_8/images/tr.gif align=left width=30px height=80px></a>
     <div style='padding:5px;'>
-    Free template created by <a href="http://www.nuvio.cz">Nuvio | Webdesign</a> <!-- DONВґT REMOVE, PLEASE! --> and modified by ZNU Web laboratory
+    Free template created by <a href="http://www.nuvio.cz">Nuvio | Webdesign</a> <!-- DONР’Т‘T REMOVE, PLEASE! --> and modified by ZNU Web laboratory
     </div>
     <br />
 <br />
@@ -276,12 +276,12 @@ js=13//--></script><script language="JavaScript"><!--
 d.write('<a href="http://top.mail.ru/jump?from=308846"'+
 ' target=_top><img src="http://top.list.ru/counter'+
 '?id=308846;t=131;js='+js+a+';rand='+Math.random()+
-'" alt="Рейтинг@Mail.ru"'+' border=0 height=40 width=88></a>')
+'" alt="Р РµР№С‚РёРЅРі@Mail.ru"'+' border=0 height=40 width=88></a>')
 if(js>11)d.write('<'+'!-- ')//--></script><noscript><a
 target=_top href="http://top.mail.ru/jump?from=308846"><img
 src="http://top.list.ru/counter?js=na;id=308846;t=131"
 border=0 height=40 width=88
-alt="Рейтинг@Mail.ru"></a></noscript><script language="JavaScript"><!--
+alt="Р РµР№С‚РёРЅРі@Mail.ru"></a></noscript><script language="JavaScript"><!--
 if(js>11)d.write('--'+'>')//--></script><!--/COUNTER-->
 
 </td>

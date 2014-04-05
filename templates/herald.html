@@ -2,17 +2,17 @@
 // custom messages for languages 
    $herald_text=Array('ukr'=>Array(),'rus'=>Array(),'eng'=>Array());
 
-  $herald_text['ukr']['Site_title']="Ãîëîâíà ñòîð³íêà";
-  $herald_text['rus']['Site_title']="Ãîëîâíà ñòîð³íêà";
+  $herald_text['ukr']['Site_title']="Ð“Ð¾Ð»Ð¾Ð²Ð½Ð° ÑÑ‚Ð¾Ñ€Ñ–Ð½ÐºÐ°";
+  $herald_text['rus']['Site_title']="Ð“Ð¾Ð»Ð¾Ð²Ð½Ð° ÑÑ‚Ð¾Ñ€Ñ–Ð½ÐºÐ°";
   $herald_text['eng']['Site_title']="ZNU Herald";
 
 
-  $herald_text['ukr']['Ministry_of_education']="ÌIÍIÑÒÅÐÑÒÂÎ ÎÑÂIÒÈ";
-  $herald_text['rus']['Ministry_of_education']="ÌÈÍÈÑÒÅÐÑÒÂÎ ÎÁÐÀÇÎÂÀÍÈß";
+  $herald_text['ukr']['Ministry_of_education']="ÐœIÐIÐ¡Ð¢Ð•Ð Ð¡Ð¢Ð’Ðž ÐžÐ¡Ð’IÐ¢Ð˜";
+  $herald_text['rus']['Ministry_of_education']="ÐœÐ˜ÐÐ˜Ð¡Ð¢Ð•Ð Ð¡Ð¢Ð’Ðž ÐžÐ‘Ð ÐÐ—ÐžÐ’ÐÐÐ˜Ð¯";
   $herald_text['eng']['Ministry_of_education']="The MINISTRY of EDUCATION";
   
-  $herald_text['ukr']['And_SCIENCE_of_UKRAINE']="I ÍÀÓÊÈ ÓÊÐÀ¯ÍÈ";
-  $herald_text['rus']['And_SCIENCE_of_UKRAINE']="È ÍÀÓÊÈ ÓÊÐÀÈÍÛ";
+  $herald_text['ukr']['And_SCIENCE_of_UKRAINE']="I ÐÐÐ£ÐšÐ˜ Ð£ÐšÐ ÐÐ‡ÐÐ˜";
+  $herald_text['rus']['And_SCIENCE_of_UKRAINE']="Ð˜ ÐÐÐ£ÐšÐ˜ Ð£ÐšÐ ÐÐ˜ÐÐ«";
   $herald_text['eng']['And_SCIENCE_of_UKRAINE']="And SCIENCE of UKRAINE";
   
   
@@ -21,7 +21,7 @@ $this->_tpl_vars['herald_text']=$herald_text[$this->_tpl_vars['text']['language_
  -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML><HEAD><TITLE>{$herald_text.Site_title} : {$page.title}</TITLE>
-<META http-equiv=Content-Type content="text/html; charset=windows-1251"><LINK 
+<META http-equiv=Content-Type content="text/html; charset=UTF-8"><LINK 
 href="{$site_root_url}/templates/herald.files/herald.css" type=text/css rel=stylesheet>
 <SCRIPT src="{$site_root_url}/templates/herald.files/herald.js">
 </SCRIPT>
@@ -100,10 +100,10 @@ href="{$site_root_url}/templates/herald.files/herald.css" type=text/css rel=styl
     <div align=right><a href="#" onclick="print_page_content('page_content'); return false;" title="{$text.Printer_friendly_version}"><img src={$site_root_url}/templates/ZNU_5/print.gif  alt="{$text.Printer_friendly_version}" width=16 height=14 border=0></a></div>
 *}
     <span class="textblok" id="page_content">
-<!-- âì³ñò öåíòðàëüíîãî áëîêó -->
+<!-- Ð²Ð¼Ñ–ÑÑ‚ Ñ†ÐµÐ½Ñ‚Ñ€Ð°Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ð±Ð»Ð¾ÐºÑƒ -->
     {sysmsg}
     {$page.content} 
-<!-- çàê³í÷èâñÿ âì³ñò öåíòðàëüíîãî áëîêó -->
+<!-- Ð·Ð°ÐºÑ–Ð½Ñ‡Ð¸Ð²ÑÑ Ð²Ð¼Ñ–ÑÑ‚ Ñ†ÐµÐ½Ñ‚Ñ€Ð°Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ð±Ð»Ð¾ÐºÑƒ -->
     </span>
   </TD></TR>
 

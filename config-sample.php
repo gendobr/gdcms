@@ -69,6 +69,8 @@ define('mail_FromName', 'Site Admin');
 
 // ---------------------------- mailer options -- end --------------------------
 
+date_default_timezone_set('Europe/Kiev');
+
 define('default_language', 'ukr');
 
 define('rows_per_page', 10);
@@ -79,7 +81,7 @@ define('use_custom_sessions', false);
 define('SMARTY_DIR', script_root . '/smarty/libs/');
 
 // regexp
-define('allowed_file_extension', 'doc|jpg|jpeg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|ico|docx|otf');
+define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z');
 
 define('apw', md5('qzwxdcft' . date('H')));
 
@@ -97,9 +99,8 @@ define('gallery_small_image_width', 150);
 define('gallery_small_image_height', 150);
 
 
-
-
-
+// number of emails which can be sent at once
+define('emails_at_once',1);
 
 
 
