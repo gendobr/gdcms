@@ -73,8 +73,8 @@ function notification_queue($sendto,$subj,$body,$handler) {
 function notification_transliterate($str) {
     //return iconv(site_charset, "cp1252//TRANSLIT", $str);
     $tor=str_replace(
-            Array('∏' ,'ˆ' ,'˜' ,'¯' ,'˘'  ,'˛' ,'ˇ' ,'˚','‡','·','‚','„','‰','Â','Ê' ,'Á','Ë','È','Í','Î','Ï','Ì','Ó','Ô','','Ò','Ú','Û','Ù','ı' ,'˝','ø' ,'≥','≤','¸',
-            '®' ,'÷' ,'◊' ,'ÿ' ,'Ÿ'  ,'ﬁ' ,'ﬂ' ,'€','¿','¡','¬','√','ƒ','≈','∆' ,'«','»','…',' ','À','Ã','Õ','Œ','œ','–','—','“','”','‘','’' ,'›','?')
+            Array('—ë' ,'—Ü' ,'—á' ,'—à' ,'—â'  ,'—é' ,'—è' ,'—ã','–∞','–±','–≤','–≥','–¥','–µ','–∂' ,'–∑','–∏','–π','–∫','–ª','–º','–Ω','–æ','–ø','—Ä','—Å','—Ç','—É','—Ñ','—Ö' ,'—ç','—ó' ,'—ñ','–Ü','—å',
+            '–Å' ,'–¶' ,'–ß' ,'–®' ,'–©'  ,'–Æ' ,'–Ø' ,'–´','–ê','–ë','–í','–ì','–î','–ï','–ñ' ,'–ó','–ò','–ô','–ö','–õ','–ú','–ù','–û','–ü','–†','–°','–¢','–£','–§','–•' ,'–≠','?')
             ,Array('yo','ts','ch','sh','sch','yu','ya','y','a','b','v','g','d','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','kh','e','yi','i','I','`',
             'yo','ts','ch','sh','sch','yu','ya','y','a','b','v','g','d','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','kh','e','yi')
             ,$str);
@@ -82,13 +82,13 @@ function notification_transliterate($str) {
     return $tor;
 }
 
-function notification_queue_next() {
+function notification_queue_next($n_messages=1) {
     $query="SELECT *
             FROM {$GLOBALS['table_prefix']}notification_queue
             WHERE notification_queue_attempts<10
-            ORDER BY notification_queue_id ASC LIMIT 0,1";
-    $row=db_getonerow($query);
-    if($row) {
+            ORDER BY notification_queue_id ASC LIMIT 0,$n_messages";
+    $rows=db_getrows($query);
+    foreach($rows as $row) {
         $query="UPDATE {$GLOBALS['table_prefix']}notification_queue
                 SET notification_queue_attempts=notification_queue_attempts+1
                 WHERE notification_queue_id={$row['notification_queue_id']}";
@@ -111,7 +111,6 @@ function notification_queue_next() {
         }
         //echo $query;
         prn($row['notification_queue_id'],$row['notification_queue_subject'],$row['notification_queue_attempts'],$row['notification_queue_function'],'sucess='.$success);
-
     }
 }
 

@@ -7,7 +7,6 @@
   if(isset($input_vars['interface_lang'])) if($input_vars['interface_lang']) $input_vars['lang']=$input_vars['interface_lang'];
   if(!isset($input_vars['lang'])   ) $input_vars['lang']=default_language;
   if(strlen($input_vars['lang'])==0) $input_vars['lang']=default_language;
-  // $lang=$input_vars['lang'];
   $lang = get_language('lang');
 # -------------------- set interface language - end -----------------------------
 
@@ -80,9 +79,9 @@ function get_cached_page($url, $timeout=300) {
 }
 
 $page=Array();
-$page['title']=txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Запорізький національний університет::rus=Запорожский национальний университет::eng=Zaporizhzhya National University'));
+$page['title']=txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Р—Р°РїРѕСЂС–Р·СЊРєРёР№ РЅР°С†С–РѕРЅР°Р»СЊРЅРёР№ СѓРЅС–РІРµСЂСЃРёС‚РµС‚::rus=Р—Р°РїРѕСЂРѕР¶СЃРєРёР№ РЅР°С†РёРѕРЅР°Р»СЊРЅРёР№ СѓРЅРёРІРµСЂСЃРёС‚РµС‚::eng=Zaporizhzhya National University'));
 $page['header']="<a style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/news.php?start=0&site_id=27&interface_lang={$lang}>"
-              .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Новини прес-центру ЗНУ::rus=Новости пресс-центра ЗНУ::eng=ZNU Press Centre News'))
+              .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=РќРѕРІРёРЅРё РїСЂРµСЃ-С†РµРЅС‚СЂСѓ Р—РќРЈ::rus=РќРѕРІРѕСЃС‚Рё РїСЂРµСЃСЃ-С†РµРЅС‚СЂР° Р—РќРЈ::eng=ZNU Press Centre News'))
               ."</a>";
 $page['abstract']='';
 $page['lang']=$lang;
@@ -91,7 +90,7 @@ $page['content']= get_cached_page("http://sites.znu.edu.ua/cms/index.php?action=
 ."<div align=right>
       <a href='http://sites.znu.edu.ua/cms/index.php?action=news/rss&site_id=27&lang={$lang}&rows=10&template=&date=desc&category_id=0'><img src=http://sites.znu.edu.ua/cms/img/rss.gif style='margin:0px;border:none;'></a>
       <a href=http://sites.znu.edu.ua/news.php?start=0&site_id=27&interface_lang={$lang} class=more_news_button>"
-      .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі новини::rus=Все новости::eng=All News'))
+      .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Р’СЃС– РЅРѕРІРёРЅРё::rus=Р’СЃРµ РЅРѕРІРѕСЃС‚Рё::eng=All News'))
       ."</a>
    </div>";
 
@@ -106,13 +105,13 @@ $page['next']=Array();
   if(strlen($anonsy)>0){
        $page['next'][]=Array(
         'title'=>"<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/news.php?action=news%2Fview&site_id=28&lang=$lang>"
-              .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Анонси::rus=Анонсы::eng=Announces'))
+              .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=РђРЅРѕРЅСЃРё::rus=РђРЅРѕРЅСЃС‹::eng=Announces'))
               ."</a>"
        ,'content'=>$anonsy
        ."
 	<div align=right>
 	<a href='http://sites.znu.edu.ua/news.php?action=news%2Fview&site_id=28&lang=$lang' class=more_news_button>"
-  .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі анонси::rus=Все анонсы::eng=All Announces'))
+  .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Р’СЃС– Р°РЅРѕРЅСЃРё::rus=Р’СЃРµ Р°РЅРѕРЅСЃС‹::eng=All Announces'))
   ."</a></div>"
   );
   }
@@ -120,13 +119,14 @@ $page['next']=Array();
 // holiday
   if ($lang == 'ukr') {
     $reply = trim(get_cached_page('http://sites.znu.edu.ua/holiday/index.php?action=events/block&rows_per_page=100&plus=' . rawurlencode(isset($_REQUEST['plus']) ? $_REQUEST['plus'] : '')));
+    $reply = iconv ( 'cp1251' , site_charset , $reply);
     if (strlen($reply) > 0) {
         $page['next'][] = Array(
-            'title' => "<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/holiday/index.php?action=main>Святковий календар</a>"
+            'title' => "<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/holiday/index.php?action=main>РЎРІСЏС‚РєРѕРІРёР№ РєР°Р»РµРЅРґР°СЂ</a>"
             , 'content' => $reply
             . "<br>
             <div align=right>
-                <a href=http://sites.znu.edu.ua/holiday/index.php?action=events/search_results class=more_news_button>Всі свята</a>
+                <a href=http://sites.znu.edu.ua/holiday/index.php?action=events/search_results class=more_news_button>Р’СЃС– СЃРІСЏС‚Р°</a>
             </div>
           "
         );
@@ -139,14 +139,14 @@ $page['next']=Array();
   if(strlen($reply)>0)
      $page['next'][]=Array(
         'title'=>"<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/news.php?site_id=19&lang={$lang}>"
-        .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Запрошення на конференції, конкурси::rus=Приглашения на конференции, конкурсы::eng=Invitations to conferences and seminars'))
+        .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Р—Р°РїСЂРѕС€РµРЅРЅСЏ РЅР° РєРѕРЅС„РµСЂРµРЅС†С–С—, РєРѕРЅРєСѓСЂСЃРё::rus=РџСЂРёРіР»Р°С€РµРЅРёСЏ РЅР° РєРѕРЅС„РµСЂРµРЅС†РёРё, РєРѕРЅРєСѓСЂСЃС‹::eng=Invitations to conferences and seminars'))
         ."</a>"
        ,'content'=>$reply
           ."<br>
             <div align=right>
                 <a href=\"http://sites.znu.edu.ua/cms/index.php?action=news/rss&site_id=19&lang=ukr&rows=10&template=&date=desc&category_id=0\"><img src=http://sites.znu.edu.ua/cms/img/rss.gif style='margin:0px;border:none;'></a>
                 <a href=http://sites.znu.edu.ua/news.php?site_id=19&lang=ukr class=more_news_button>"
-               .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі запрошення::rus=Все приглашения::eng=All Invitations'))
+               .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Р’СЃС– Р·Р°РїСЂРѕС€РµРЅРЅСЏ::rus=Р’СЃРµ РїСЂРёРіР»Р°С€РµРЅРёСЏ::eng=All Invitations'))
                ."</a>
             </div>
           "
