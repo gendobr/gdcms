@@ -85,7 +85,6 @@ define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|j
 
 define('apw', md5('qzwxdcft' . date('H')));
 
-
 define('liqpay_merchant_id', '******************');
 define('liqpay_merchant_sign', '******************');
 define('liqpay_test_mode', true);
