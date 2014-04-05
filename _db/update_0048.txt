@@ -1,0 +1,1 @@
+alter table `cms8_notification_queue` add column `site_id` integer;
