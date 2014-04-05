@@ -110,9 +110,17 @@ if (is_logged()) {
         , 'attributes' => ' target=_blank '
     );
 
+    
+    // get user sites
+    $keys=array_keys($_SESSION['user_info']['sites']);
+    foreach($keys as &$val){
+        $val*=1;
+    }
+    $query="select count(*) as n from {$GLOBALS['table_prefix']}notification_queue WHERE site_id in(".join(',',$keys).")";
+    $n_notification_queue=  db_getonerow($query);
     $input_vars['page_menu']['admin']['items']['notifier/cron'] = Array(
         'URL' => "index.php?action=notifier/cron"
-        , 'innerHTML' => 'Run notifier cron task'
+        , 'innerHTML' => 'Run notifier cron task ('.$n_notification_queue['n'].')'
         , 'attributes' => ' target=_blank '
     );
 
