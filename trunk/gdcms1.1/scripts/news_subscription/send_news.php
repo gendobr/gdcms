@@ -74,8 +74,7 @@ if($subscribers){
     $template_subscription = site_get_template($this_site_info, 'template_subscription');
     if(isset($input_vars['debug']) && $input_vars['debug']==$input_vars['action']) prn('$template_subscription='.$template_subscription);
 
-
-    $message_subj=$this_site_info['title']."-".$this_news_info['title'];
+    $message_subj=$this_news_info['title'];
 
     $report='Sending email <br>';
 
