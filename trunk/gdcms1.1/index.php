@@ -50,6 +50,8 @@ if($db)
     }
   //------------------- draw page -- end ---------------------------------------
   db_close($db);
+}else{
+   header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+   die("DataBase Connection Error");
 }
-else die("DataBase Connection Error");
 ?>
