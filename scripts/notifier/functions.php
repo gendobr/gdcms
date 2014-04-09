@@ -108,7 +108,8 @@ function notification_queue_next($n_messages=1) {
 
         if($success) {
             $query="DELETE FROM {$GLOBALS['table_prefix']}notification_queue
-                    WHERE notification_queue_id={$row['notification_queue_id']}";
+                    WHERE notification_queue_id={$row['notification_queue_id']}
+                       OR notification_queue_attempts>=10";
             db_execute($query);
         }
         //echo $query;

@@ -30,9 +30,14 @@ if (get_level($site_id) == 0) {
 // get list of pages
 
 // get list of pages
+//$pagelist = db_getrows("select distinct rozdil
+//                        from {$GLOBALS['table_prefix']}photogalery
+//                        WHERE site=$site_id ORDER BY rozdil ASC");
+
 $pagelist = db_getrows("select distinct rozdil
-                        from {$GLOBALS['table_prefix']}photogalery
-                        WHERE site=$site_id ORDER BY rozdil ASC");
+                        from {$GLOBALS['table_prefix']}photogalery_rozdil
+                        WHERE site_id=$site_id ORDER BY rozdil ASC");
+                    
 // prn($pagelist);
 $json = Array('files' => Array(), 'dirs' => Array(), 'parents' => Array());
 $cnt = count($pagelist);
