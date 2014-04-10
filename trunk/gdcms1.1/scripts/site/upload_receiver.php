@@ -90,41 +90,40 @@ if(strlen($destination_dir_relative)==0){
 
 
 
-
-function utf8_to_cp1251($s) {
-    $out='';
-    $byte2=false;
-    if ((mb_detect_encoding($s, 'UTF-8,CP1251')) == "UTF-8") {
-        for ($c = 0; $c < strlen($s); $c++) {
-            $i = ord($s[$c]);
-            if ($i <= 127)
-                $out.=$s[$c];
-            if ($byte2) {
-                $new_c2 = ($c1 & 3) * 64 + ($i & 63);
-                $new_c1 = ($c1 >> 2) & 5;
-                $new_i = $new_c1 * 256 + $new_c2;
-                if ($new_i == 1025) {
-                    $out_i = 168;
-                } else {
-                    if ($new_i == 1105) {
-                        $out_i = 184;
-                    } else {
-                        $out_i = $new_i - 848;
-                    }
-                }
-                $out.=chr($out_i);
-                $byte2 = false;
-            }
-            if (($i >> 5) == 6) {
-                $c1 = $i;
-                $byte2 = true;
-            }
-        }
-        return $out;
-    } else {
-        return $s;
-    }
-}
+//function utf8_to_cp1251($s) {
+//    $out='';
+//    $byte2=false;
+//    if ((mb_detect_encoding($s, 'UTF-8,CP1251')) == "UTF-8") {
+//        for ($c = 0; $c < strlen($s); $c++) {
+//            $i = ord($s[$c]);
+//            if ($i <= 127)
+//                $out.=$s[$c];
+//            if ($byte2) {
+//                $new_c2 = ($c1 & 3) * 64 + ($i & 63);
+//                $new_c1 = ($c1 >> 2) & 5;
+//                $new_i = $new_c1 * 256 + $new_c2;
+//                if ($new_i == 1025) {
+//                    $out_i = 168;
+//                } else {
+//                    if ($new_i == 1105) {
+//                        $out_i = 184;
+//                    } else {
+//                        $out_i = $new_i - 848;
+//                    }
+//                }
+//                $out.=chr($out_i);
+//                $byte2 = false;
+//            }
+//            if (($i >> 5) == 6) {
+//                $c1 = $i;
+//                $byte2 = true;
+//            }
+//        }
+//        return $out;
+//    } else {
+//        return $s;
+//    }
+//}
 
 // $log = 'Uploading files: into ' . $destination_dir_relative .';</br>';
 $log = '';
@@ -137,7 +136,8 @@ foreach ($_FILES as $fld => $vals) {
 
     //$vals['name'] = $_FILES[$fld]['name'] = encode_file_name(iconv('utf8',site_charset,$vals['name']));
     //$vals['name'] = $_FILES[$fld]['name'] = encode_file_name($vals['name']);
-    $vals['name'] = $_FILES[$fld]['name'] = encode_file_name(utf8_to_cp1251($vals['name']));
+    //$vals['name'] = $_FILES[$fld]['name'] = encode_file_name(utf8_to_cp1251($vals['name']));
+    $vals['name'] = $_FILES[$fld]['name'] = encode_file_name($vals['name']);
 
     $fname = upload_file($fld, $destination_dir);
     $log.="Uploading file {$_FILES[$fld]['name']} => <a href='{$destination_dir_url}/{$fname}' target=_blank>$destination_dir_relative/$fname</a>;";

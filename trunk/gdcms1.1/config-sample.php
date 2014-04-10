@@ -81,7 +81,7 @@ define('use_custom_sessions', false);
 define('SMARTY_DIR', script_root . '/smarty/libs/');
 
 // regexp
-define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z');
+define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt');
 
 define('apw', md5('qzwxdcft' . date('H')));
 
