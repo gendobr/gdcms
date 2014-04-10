@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*
   File functions
@@ -205,6 +205,7 @@ function encode_file_name($str) {
                  , Array('yo', 'ts', 'ch', 'sh', 'sch', 'yu', 'ya', 'y', 'a', 'b', 'v', 'g', 'd', 'e', 'zh', 'z', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'kh', 'e', 'yi','i',
                          'yo', 'ts', 'ch', 'sh', 'sch', 'yu', 'ya', 'y', 'a', 'b', 'v', 'g', 'd', 'e', 'zh', 'z', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'kh', 'e', 'yi')
                     , $tor);
+    // prn($tor);
     $tor = preg_replace('/[^a-z0-9_-]/i', '-', $tor);
     if (strlen($tor) > 200)
         $tor = substr($tor, 0, 99) . '--' . substr($str, -1, 99);

@@ -86,7 +86,7 @@ $page['header']="<a style=\"color:#192666; font-family:georgia,serif;\" href=htt
 $page['abstract']='';
 $page['lang']=$lang;
 $page['site_id']=$site_id;
-$page['content']= get_cached_page("http://sites.znu.edu.ua/cms/index.php?action=news/block&site_id=27&lang={$lang}&rows=5&abstracts=yes&template=block_news")
+$page['content']= get_cached_page("http://sites.znu.edu.ua:8000/cms/index.php?action=news/block&site_id=27&lang={$lang}&rows=5&abstracts=yes&template=block_news")
 ."<div align=right>
       <a href='http://sites.znu.edu.ua/cms/index.php?action=news/rss&site_id=27&lang={$lang}&rows=10&template=&date=desc&category_id=0'><img src=http://sites.znu.edu.ua/cms/img/rss.gif style='margin:0px;border:none;'></a>
       <a href=http://sites.znu.edu.ua/news.php?start=0&site_id=27&interface_lang={$lang} class=more_news_button>"
@@ -100,7 +100,7 @@ $page['next']=Array();
 
 
 // anonsy
-  $anonsy=trim(get_cached_page('http://sites.znu.edu.ua/cms/index.php?action=news/block&site_id=28&lang='.$lang.'&rows=10&abstracts=yes&template=block_anonsy&date=asc&category_id=166&orderby=weight+asc'));
+  $anonsy=trim(get_cached_page('http://sites.znu.edu.ua:8000/cms/index.php?action=news/block&site_id=28&lang='.$lang.'&rows=10&abstracts=yes&template=block_anonsy&date=asc&category_id=166&orderby=weight+asc'));
   //echo(checkStr($anonsy));
   if(strlen($anonsy)>0){
        $page['next'][]=Array(
@@ -118,7 +118,7 @@ $page['next']=Array();
 
 // holiday
   if ($lang == 'ukr') {
-    $reply = trim(get_cached_page('http://sites.znu.edu.ua/holiday/index.php?action=events/block&rows_per_page=100&plus=' . rawurlencode(isset($_REQUEST['plus']) ? $_REQUEST['plus'] : '')));
+    $reply = trim(get_cached_page('http://sites.znu.edu.ua:8000/holiday/index.php?action=events/block&rows_per_page=100&plus=' . rawurlencode(isset($_REQUEST['plus']) ? $_REQUEST['plus'] : '')));
     $reply = iconv ( 'cp1251' , site_charset , $reply);
     if (strlen($reply) > 0) {
         $page['next'][] = Array(
@@ -135,7 +135,7 @@ $page['next']=Array();
 
 
 // invitations
-  $reply=trim(get_cached_page("http://sites.znu.edu.ua/cms/index.php?action=news/block&site_id=19&lang={$lang}&rows=5&abstracts=yes&template=block_news&category_id=84"));
+  $reply=trim(get_cached_page("http://sites.znu.edu.ua:8000/cms/index.php?action=news/block&site_id=19&lang={$lang}&rows=5&abstracts=yes&template=block_news&category_id=84"));
   if(strlen($reply)>0)
      $page['next'][]=Array(
         'title'=>"<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/news.php?site_id=19&lang={$lang}>"
