@@ -85,9 +85,11 @@ function notification_transliterate($str) {
 }
 
 function notification_queue_next($n_messages=1) {
+    $max_attempts=5;
+    
     $query="SELECT *
             FROM {$GLOBALS['table_prefix']}notification_queue
-            WHERE notification_queue_attempts<10
+            WHERE notification_queue_attempts<$max_attempts
             ORDER BY notification_queue_id ASC LIMIT 0,$n_messages";
     $rows=db_getrows($query);
     foreach($rows as $row) {
@@ -109,8 +111,11 @@ function notification_queue_next($n_messages=1) {
         if($success) {
             $query="DELETE FROM {$GLOBALS['table_prefix']}notification_queue
                     WHERE notification_queue_id={$row['notification_queue_id']}
-                       OR notification_queue_attempts>=10";
-            db_execute($query);
+                       OR notification_queue_attempts>=$max_attempts";
+            $query="DELETE FROM {$GLOBALS['table_prefix']}notification_queue
+                    WHERE notification_queue_id={$row['notification_queue_id']}
+                    ";
+                    db_execute($query);
         }
         //echo $query;
         prn($row['notification_queue_id'],$row['notification_queue_subject'],$row['notification_queue_attempts'],$row['notification_queue_function'],'sucess='.$success);
