@@ -13,8 +13,15 @@ run('notifier/functions');
         </head>
         <body>";
 
-echo notification_queue_next(emails_at_once);
+$fname=template_cache_root.'/notifier_cron_log.txt';
 
+if(time()-filemtime($fname)>=58){
+	$log=notification_queue_next(emails_at_once);
+	file_put_contents($fname, $log);
+	echo $log;
+}else{
+	echo "------";
+}
 echo "</body></html>";
 
 $GLOBALS['main_template_name']='';

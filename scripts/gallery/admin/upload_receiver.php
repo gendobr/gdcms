@@ -79,7 +79,7 @@ function img_resize($photos, $imagefile, $width, $height, $rgb=0xFFFFFF, $qualit
     imagedestroy($trumbalis);
     return true;
 }
-
+/*
 function cp1251_to_utf8($s) {
     if ((mb_detect_encoding($s, 'UTF-8,CP1251')) == "WINDOWS-1251") {
         $c209 = chr(209);
@@ -139,7 +139,7 @@ function utf8_to_cp1251($s) {
         return $s;
     }
 }
-
+*/
 // ----------------- resizing image to reate small image - end -----------------
 // prn($_FILES);
 // prn($_REQUEST);
@@ -149,15 +149,15 @@ $gallery_small_image_height = defined('gallery_small_image_height')?gallery_smal
 
 foreach ($_FILES as $uploadedfile) {
 
-    $rozdil = utf8_to_cp1251($input_vars["rozdil"]);
+    $rozdil = $input_vars["rozdil"];
     //echo "\$rozdil=$rozdil;<br>\n";
 
     $rozdil2 = encode_dir_name($rozdil);
 
-    $pidpys = utf8_to_cp1251($input_vars["pidpys"]);
+    $pidpys = $input_vars["pidpys"];
     //echo "\$pidpys=$pidpys;<br>\n";
 
-    $autor = utf8_to_cp1251($input_vars["autor"]);
+    $autor = $input_vars["autor"];
     //echo "\$autor=$autor;<br>\n";
 
     $rik = (int) $input_vars["rik"];

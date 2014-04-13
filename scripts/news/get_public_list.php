@@ -273,39 +273,45 @@ $lang = DbStr($input_vars['lang']);
 
 
 # --------------------------- get list of news - begin -----------------------
-# ------------------------- category restriction - begin -------------------
-//if ($news_browse_tree->info && $news_browse_tree->info['start'] > 0) {
+
+
+
+
 if (isset($input_vars['category_id'])) {
     $category_ids=preg_split("/(;|:|,| )+/", $input_vars['category_id']);
     for($i=0,$cnt=count($category_ids);$i<$cnt;$i++){
       $category_ids[$i]*=1;
+      if($category_ids[$i]<=0){
+         unset($category_ids[$i]);
+      }
     }
-    $category_ids=join(',',$category_ids);
-    if (isset($input_vars['category_filter_mode'])) {
-        //$category_restriction = "
-        //       inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
-        //       inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id)
-        //       inner join {$GLOBALS['table_prefix']}category as pa on (pa.start<=ch.start and ch.finish<=pa.finish and pa.category_id={$news_browse_tree->info['category_id']})
-        //      ";
+    $category_ids=array_values($category_ids);
+
+    if(count($category_ids)>0){
+      $category_ids=join(',',$category_ids);
+      if (isset($input_vars['category_filter_mode'])) {
         $category_restriction = "
                inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
                inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id)
                inner join {$GLOBALS['table_prefix']}category as pa on (pa.start<=ch.start and ch.finish<=pa.finish and pa.category_id in({$category_ids}))
               ";
-    } else {
-        //$category_restriction = "
-        //       inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
-        //       inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id and ch.category_id={$news_browse_tree->info['category_id']})
-        //      ";
+      } else {
         $category_restriction = "
                inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
                inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id and ch.category_id  in({$category_ids}))
               ";
+      }
+
     }
     //$category_restriction="AND ne.category_id={$news_browse_tree->info['category_id']}";
 }else
     $category_restriction = '';
 # ------------------------- category restriction - end ---------------------
+
+
+
+
+
 # ------------------------- date restriction - begin -----------------------
 $news_date_restriction = '';
 if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']) > 0)
