@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Èçìåíåíèå ñâîéñòâ êàòåãîðèè
+  Ð˜Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ ÑÐ²Ð¾Ð¹ÑÑ‚Ð² ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸
  */
 
 run('category/functions');
@@ -136,8 +136,8 @@ $rep->field['category_title'] = new db_record_editor_field_string(
 #$rep->field['is_deleted']=new db_record_editor_field_integer(
 #                 'is_deleted'
 #                ,'is_deleted'
-#                ,'integer(1='.rawurlencode('Äà').'&0='.rawurlencode('Íåò').')'
-#                ,'Óäàëåíà');
+#                ,'integer(1='.rawurlencode('Ð”Ð°').'&0='.rawurlencode('ÐÐµÑ‚').')'
+#                ,'Ð£Ð´Ð°Ð»ÐµÐ½Ð°');
 # is_part_of            bigint(20)
 if ($this_category->info['start'] > 0) {
     $list_of_categories = "SELECT * FROM {$table_prefix}category WHERE site_id={$site_id} ORDER BY start";
@@ -220,8 +220,8 @@ if ($success) {
     #  ----------------------- move branch - begin ------------------------------
     if ($this_category->info['start'] > 0)
         if ($this_category->info['is_part_of'] != $rep->value_of('is_part_of')) {
-            // âñòàâèòü ïåðåìåùåíèå âåòêè ¹  $category_id
-            // âíóòðü âåòêè $rep->value_of('is_part_of')
+            // Ð²ÑÑ‚Ð°Ð²Ð¸Ñ‚ÑŒ Ð¿ÐµÑ€ÐµÐ¼ÐµÑ‰ÐµÐ½Ð¸Ðµ Ð²ÐµÑ‚ÐºÐ¸ â„–  $category_id
+            // Ð²Ð½ÑƒÑ‚Ñ€ÑŒ Ð²ÐµÑ‚ÐºÐ¸ $rep->value_of('is_part_of')
             if (!$this_category->move_to($rep->value_of('is_part_of'))) {
                 // some errors occur
                 // change to previous value

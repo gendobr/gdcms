@@ -59,16 +59,16 @@ class db_record_editor_2 extends db_record_editor_common
                   ,'ERROR_invalid_value_of_primary_key'=>'ERROR: Invalid value of primary key %s'
                   );
    */
-   var $text=Array('ERROR'=>'Œÿ»¡ ¿'
-                  ,'Changes_saved_successfully'=>'»ÁÏÂÌÂÌËˇ ÛÒÔÂ¯ÌÓ ÒÓı‡ÌÂÌ˚'
-                  ,'Length_of'=>'ƒÎËÌ‡ ÒÚÓÍË'
-                  ,'is_greater_than'=>'·ÓÎ¸¯Â ˜ÂÏ'
-                  ,'value_of'=>'ÁÌ‡˜ÂÌËÂ Ô‡‡ÏÂÚ‡'
-                  ,'is_empty'=>'ÌÂ Á‡‰‡ÌÓ'
-                  ,'is_not_set'=>'ÌÂ Á‡‰‡ÌÓ'
-                  ,'forbidden_value_of'=>'ÌÂ‰ÓÔÛÒÚËÏÓÂ ÁÌ‡˜ÂÌËÂ Ô‡‡ÏÂÚ‡'
-                  ,'is_less_than'=>'ÏÂÌ¸¯Â ˜ÂÏ'
-                  ,'ERROR_invalid_value_of_primary_key'=>'Œÿ»¡ ¿: ÕÂ‰ÓÔÛÒÚËÏÓÂ ÁÌ‡˜ÂÌËÂ ÍÎ˛˜Â‚Ó„Ó ÔÓÎˇ %s'
+   var $text=Array('ERROR'=>'–û–®–ò–ë–ö–ê'
+                  ,'Changes_saved_successfully'=>'–ò–∑–º–µ–Ω–µ–Ω–∏—è —É—Å–ø–µ—à–Ω–æ —Å–æ—Ö—Ä–∞–Ω–µ–Ω—ã'
+                  ,'Length_of'=>'–î–ª–∏–Ω–∞ —Å—Ç—Ä–æ–∫–∏'
+                  ,'is_greater_than'=>'–±–æ–ª—å—à–µ —á–µ–º'
+                  ,'value_of'=>'–∑–Ω–∞—á–µ–Ω–∏–µ –ø–∞—Ä–∞–º–µ—Ç—Ä–∞'
+                  ,'is_empty'=>'–Ω–µ –∑–∞–¥–∞–Ω–æ'
+                  ,'is_not_set'=>'–Ω–µ –∑–∞–¥–∞–Ω–æ'
+                  ,'forbidden_value_of'=>'–Ω–µ–¥–æ–ø—É—Å—Ç–∏–º–æ–µ –∑–Ω–∞—á–µ–Ω–∏–µ –ø–∞—Ä–∞–º–µ—Ç—Ä–∞'
+                  ,'is_less_than'=>'–º–µ–Ω—å—à–µ —á–µ–º'
+                  ,'ERROR_invalid_value_of_primary_key'=>'–û–®–ò–ë–ö–ê: –ù–µ–¥–æ–ø—É—Å—Ç–∏–º–æ–µ –∑–Ω–∞—á–µ–Ω–∏–µ –∫–ª—é—á–µ–≤–æ–≥–æ –ø–æ–ª—è %s'
                   );
 
 
@@ -281,7 +281,7 @@ function draw(&$form)
 
 
   $tor.='
-    <tr><td></td><td colspan=2><input type=submit value="—Óı‡ÌËÚ¸ ËÁÏÂÌÂÌËˇ"></td></tr>
+    <tr><td></td><td colspan=2><input type=submit value="–°–æ—Ö—Ä–∞–Ω–∏—Ç—å –∏–∑–º–µ–Ω–µ–Ω–∏—è"></td></tr>
     </table>
     </form>
   ';
