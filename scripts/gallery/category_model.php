@@ -526,6 +526,19 @@ function gallery_synchronize_categories($site_id) {
         // prn($query);
         db_execute($query);
     }
+    
+    // ------------------ re-create rozdil2 fields - begin ---------------------
+    //    $photogalery_rozdil_list = db_getrows(
+    //            "SELECT *
+    //             FROM {$GLOBALS['table_prefix']}photogalery_rozdil
+    //             WHERE site_id = {$site_id}
+    //             ORDER BY rozdil");
+    //    for($i=0,$cnt=count($photogalery_rozdil_list);$i<$cnt;$i++){
+    //        $query = "UPDATE {$GLOBALS['table_prefix']}photogalery_rozdil SET rozdil2='" . DbStr(encode_dir_name($photogalery_rozdil_list[$i]['rozdil'])) . "' WHERE site_id={$site_id} AND id={$photogalery_rozdil_list[$i]['id']} ";
+    //        //prn($query);
+    //        db_execute($query);
+    //    }
+    // ------------------ re-create rozdil2 fields - end -----------------------
 }
 
 ?>
