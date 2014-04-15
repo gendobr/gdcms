@@ -52,9 +52,12 @@ $rozdilizformy = (isset($input_vars['rozdilizformy'])) ? $input_vars['rozdilizfo
 $rozdil2=(isset($input_vars['rozdil2'])) ? $input_vars['rozdil2'] : '';
 if($rozdil2){
     //prn($rozdil2);
+    // header("Debug1: $rozdil2");
     $query="SELECT * FROM {$table_prefix}photogalery_rozdil WHERE rozdil2='".DbStr($rozdil2)."'";
+    // header("Debug2: {$query}");
     $rozdilizformy=  db_getonerow($query);
     $rozdilizformy=$rozdilizformy['rozdil'];
+    // header("Debug2: {$rozdilizformy['rozdil']}");
     //prn($rozdilizformy);
 }
 
@@ -191,5 +194,4 @@ global $main_template_name;
 $main_template_name = '';
 
 
-//--------------------------- Гена допридумывал --------------------------
 ?>
