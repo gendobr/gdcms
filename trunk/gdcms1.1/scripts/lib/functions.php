@@ -223,8 +223,17 @@ function load_msg($language='') {
 function text($string_name) {
     global $text;
     if(!is_array($text)) load_msg();
-    if(isset($text[$string_name])) return $text[$string_name];
-    return $_SESSION['lang'].':'.$string_name;
+    
+    if(is_array($string_name)){
+        $tor=Array();
+        foreach($string_name as $key){
+            $tor[$key]=isset($text[$key])?$text[$key]:($_SESSION['lang'].':'.$key);
+        }
+        return $tor;
+    }else{
+        if(isset($text[$string_name])) return $text[$string_name];
+        return $_SESSION['lang'].':'.$string_name;
+    }
 }
 //----------- load messages - end ----------------------------------------------
 

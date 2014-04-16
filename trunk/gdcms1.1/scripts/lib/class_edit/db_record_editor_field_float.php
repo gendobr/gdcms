@@ -18,12 +18,8 @@ class db_record_editor_field_float extends db_record_editor_field
   function db_record_editor_field_float($_field,$_alias,$_ttype,$_label,$form_name_prefix='db_record_editor_')
   {
      $this->field_init($_field,$_alias,$_ttype,$_label,$form_name_prefix);
-
-   # $this->text['ERROR_value_of_is_greater_than']='ERROR: Value of %s is greater than %s';
-   # $this->text['ERROR_value_of_is_less_than']='ERROR: Value of %s is less than %s';
-
-     $this->text['ERROR_value_of_is_greater_than']='ÎØÈÁÊÀ: Çíà÷åíèå ïàðàìåòðà %s áîëüøå ÷åì %s';
-     $this->text['ERROR_value_of_is_less_than']='ÎØÈÁÊÀ: Çíà÷åíèå ïàðàìåòðà %s ìåíüøå ÷åì %s';
+     //$this->text['ERROR_value_of_is_greater_than']='ÐžÐ¨Ð˜Ð‘ÐšÐ: Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° %s Ð±Ð¾Ð»ÑŒÑˆÐµ Ñ‡ÐµÐ¼ %s';
+     //$this->text['ERROR_value_of_is_less_than']='ÐžÐ¨Ð˜Ð‘ÐšÐ: Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° %s Ð¼ÐµÐ½ÑŒÑˆÐµ Ñ‡ÐµÐ¼ %s';
 
 
    # ------------------- set default value - begin -----------------------------
@@ -50,7 +46,7 @@ class db_record_editor_field_float extends db_record_editor_field
          {
             $this->all_is_ok=false;
             $messages.="<font color=red><b>"
-                      .sprintf($this->text['ERROR_value_of_is_greater_than']
+                      .sprintf(self::$text['ERROR_value_of_is_greater_than']
                               ,$this->label
                               ,$this->options['max'])
                       ."</b></font><br/>\r\n";
@@ -65,7 +61,7 @@ class db_record_editor_field_float extends db_record_editor_field
           {
              $this->all_is_ok=false;
              $messages.="<font color=red><b>"
-                       .sprintf($this->text['ERROR_value_of_is_less_than']
+                       .sprintf(self::$text['ERROR_value_of_is_less_than']
                                ,$this->label
                                ,$this->options['min'])
                        ."</b></font><br/>\r\n";

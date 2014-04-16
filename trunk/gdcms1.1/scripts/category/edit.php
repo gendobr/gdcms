@@ -85,9 +85,8 @@ run('lib/class_edit/db_record_editor_field_datetime');
 run('lib/class_edit/db_record_editor_field_unix_timestamp');
 run('lib/class_edit/db_record_editor_field_textarea');
 run('lib/class_edit/db_record_editor_field_email');
-
 run('lib/class_edit/db_record_editor_2');
-
+db_record_editor_field::$text=db_record_editor_2::$text=$GLOBALS['text'];
 
 
 

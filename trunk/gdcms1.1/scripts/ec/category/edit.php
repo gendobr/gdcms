@@ -1,6 +1,6 @@
 <?php
 /*
-  Изменение свойств категории
+  
 */
 
 run('ec/category/functions');
@@ -81,7 +81,7 @@ run('lib/class_edit/db_record_editor_field_email');
 
 run('lib/class_edit/db_record_editor_2');
 
-
+db_record_editor_field::$text=db_record_editor_2::$text=$GLOBALS['text'];
 
 
 
@@ -117,8 +117,8 @@ $rep->field['ec_category_title']=new db_record_editor_field_string(
 #$rep->field['is_deleted']=new db_record_editor_field_integer(
 #                 'is_deleted'
 #                ,'is_deleted'
-#                ,'integer(1='.rawurlencode('Да').'&0='.rawurlencode('Нет').')'
-#                ,'Удалена');
+#                ,'integer(1='.rawurlencode('пїЅпїЅ').'&0='.rawurlencode('пїЅпїЅпїЅ').')'
+#                ,'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
 
 # is_part_of            bigint(20)
 if($this_category->info['start']>0)
@@ -151,7 +151,7 @@ if($this_category->info['start']>0)
 $rep->field['is_visible']=new db_record_editor_field_integer(
                  'is_visible'
                 ,'is_visible'
-                ,"integer(0=".rawurlencode('Нет')."&1=".rawurlencode('Да').")"
+                ,"integer(0=".rawurlencode('пїЅпїЅпїЅ')."&1=".rawurlencode('пїЅпїЅ').")"
                 ,text('ec_category_is_visible'));
 
 
@@ -205,8 +205,8 @@ $rep->set_primary_key('ec_category_id',$ec_category_id);
       if($this_category->info['start']>0)
       if($this_category->info['is_part_of']!=$rep->value_of('is_part_of'))
       {
-         // вставить перемещение ветки №  $category_id
-         // внутрь ветки $rep->value_of('is_part_of')
+         // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ  $category_id
+         // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ $rep->value_of('is_part_of')
          if(!$this_category->move_to($rep->value_of('is_part_of')))
          {
          // some errors occur
