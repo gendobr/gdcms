@@ -24,7 +24,7 @@ class db_record_editor_field_email extends db_record_editor_field_string{
     $to_return=ereg('^([a-zA-Z_0-9\.-]+)@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$', $email);
     if($to_return) return '';
     $this->all_is_ok=false;
-    return sprintf('<b><font color=red>'.$this->text['ERROR_invalid_format_of'].'</font></b> ',$this->label);
+    return sprintf('<b><font color=red>'.self::$text['ERROR_invalid_format_of'].'</font></b> ',$this->label);
   }
 
 }

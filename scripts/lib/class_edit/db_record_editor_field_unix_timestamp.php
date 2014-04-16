@@ -25,9 +25,9 @@ class db_record_editor_field_unix_timestamp extends db_record_editor_field
    # $this->text['ERROR_value_of_is_less_than']='ERROR: Value of %s is less than %s';
    # $this->text['ERROR_invalid_format_of']='ERROR: Value of %s has invalid format';
 
-     $this->text['ERROR_value_of_is_greater_than']='ÎØÈÁÊÀ: Çíà÷åíèå ïàðàìåòðà %s áîëüøå ÷åì %s';
-     $this->text['ERROR_value_of_is_less_than']='ÎØÈÁÊÀ: Çíà÷åíèå ïàðàìåòðà %s ìåíüøå ÷åì %s';
-     $this->text['ERROR_invalid_format_of']='ÎØÈÁÊÀ: Íåïðàâèëüíàÿ ôîðìà ïàðàìåòðà %s ';
+     //$this->text['ERROR_value_of_is_greater_than']='ÐžÐ¨Ð˜Ð‘ÐšÐ: Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° %s Ð±Ð¾Ð»ÑŒÑˆÐµ Ñ‡ÐµÐ¼ %s';
+     //$this->text['ERROR_value_of_is_less_than']='ÐžÐ¨Ð˜Ð‘ÐšÐ: Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° %s Ð¼ÐµÐ½ÑŒÑˆÐµ Ñ‡ÐµÐ¼ %s';
+     //$this->text['ERROR_invalid_format_of']='ÐžÐ¨Ð˜Ð‘ÐšÐ: ÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð°Ñ Ñ„Ð¾Ñ€Ð¼Ð° Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° %s ';
 
 
    # ------------------- set default value - begin -----------------------------
@@ -57,7 +57,7 @@ class db_record_editor_field_unix_timestamp extends db_record_editor_field
       {
          $this->all_is_ok=false;
          $messages.="<font color=red><b>"
-                   .sprintf($this->text['ERROR_invalid_format_of'],$this->label)
+                   .sprintf(self::$text['ERROR_invalid_format_of'],$this->label)
                    ."</b></font><br/>\r\n";
          return $messages;
       }
@@ -68,7 +68,7 @@ class db_record_editor_field_unix_timestamp extends db_record_editor_field
       {
          $this->all_is_ok=false;
          $messages.="<font color=red><b>"
-                    .sprintf($this->text['ERROR_value_of_is_greater_than']
+                    .sprintf(self::$text['ERROR_value_of_is_greater_than']
                             ,$this->label
                             ,date($this->datetime_format,$this->options['max']))
                     ."</b></font><br/>\r\n";
@@ -79,7 +79,7 @@ class db_record_editor_field_unix_timestamp extends db_record_editor_field
       {
          $this->all_is_ok=false;
          $messages.="<font color=red><b>"
-                   .sprintf($this->text['ERROR_value_of_is_less_than']
+                   .sprintf(self::$text['ERROR_value_of_is_less_than']
                            ,$this->label
                            ,date($this->datetime_format,$this->options['min']))
                    ."</b></font><br/>\r\n";

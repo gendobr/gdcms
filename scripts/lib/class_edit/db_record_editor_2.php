@@ -59,7 +59,7 @@ class db_record_editor_2 extends db_record_editor_common
                   ,'ERROR_invalid_value_of_primary_key'=>'ERROR: Invalid value of primary key %s'
                   );
    */
-   var $text=Array('ERROR'=>'ОШИБКА'
+   public static $text=Array('ERROR'=>'ОШИБКА'
                   ,'Changes_saved_successfully'=>'Изменения успешно сохранены'
                   ,'Length_of'=>'Длина строки'
                   ,'is_greater_than'=>'больше чем'
@@ -167,7 +167,7 @@ function get_info_from_db()
 
       // die('#');
     # report success
-      $this->messages.="<font color=green><b>{$this->text['Changes_saved_successfully']}</b></font><br/>";
+      $this->messages.="<font color=green><b>".self::$text['Changes_saved_successfully']."</b></font><br/>";
 
     if($this->record_is_found)
     {# ----------------- update record -- begin --------------------------------

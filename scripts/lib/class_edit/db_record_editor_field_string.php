@@ -19,8 +19,8 @@ class db_record_editor_field_string extends db_record_editor_field
   {
      $this->field_init($_field,$_alias,$_ttype,$_label,$form_name_prefix);
 
-   # $this->text['ERROR_value_of_is_longer_than']='ERROR: Value of %s is longer than %s';
-     $this->text['ERROR_value_of_is_longer_than']='ÎØÈÁÊÀ: Çíà÷åíèå ñòðîêè %s äëèíåå ÷åì %s';
+     # $this->text['ERROR_value_of_is_longer_than']='ERROR: Value of %s is longer than %s';
+     //  $this->text['ERROR_value_of_is_longer_than']='ÐžÐ¨Ð˜Ð‘ÐšÐ: Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ ÑÑ‚Ñ€Ð¾ÐºÐ¸ %s Ð´Ð»Ð¸Ð½ÐµÐµ Ñ‡ÐµÐ¼ %s';
 
 
    # ------------------- set default value - begin -----------------------------
@@ -47,8 +47,8 @@ class db_record_editor_field_string extends db_record_editor_field
         {
           $this->all_is_ok=false;
           $messages.="<font color=red><b>"
-                     .sprintf($this->text['ERROR_value_of_is_longer_than']
-                             ,$_label
+                     .sprintf(self::$text['ERROR_value_of_is_longer_than']
+                             ,$this->label
                              ,$this->options['maxlength'])
                      ."</b></font><br/>";
         }

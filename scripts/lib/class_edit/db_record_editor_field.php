@@ -58,14 +58,14 @@ class db_record_editor_field extends db_record_editor_common
  # in primary key
    var $primary_key=false;
 
-  var $text=Array(
+  public static $text=Array(
   # 'ERROR_value_of_is_empty'=>'ERROR: Value of %s is empty'
   #,'ERROR_forbidden_value_of'=>'ERROR: Forbidden value of  %s'
   #,'ERROR_data_not_posted'=>'ERROR: Parameter %s is not posted'
-    'ERROR_value_of_is_empty'=>'ÎØÈÁÊÀ: Ïóñòîå ïîëå %s '
-   ,'ERROR_forbidden_value_of'=>'ÎØÈÁÊÀ: Íåäîïóñòèìîå çíà÷åíèå ïàðàìåòðà %s'
-   ,'ERROR_data_not_posted'=>'ÎØÈÁÊÀ: Ïàðàìåòð %s íå çàäàí'
-   ,'ERROR_invalid_format_of'=>'ÎØÈÁÊÀ:  %s èìååò íåïðàâèëüíóþ ôîðìó'
+    'ERROR_value_of_is_empty'=>'ÐžÐ¨Ð˜Ð‘ÐšÐ: ÐŸÑƒÑÑ‚Ð¾Ðµ Ð¿Ð¾Ð»Ðµ %s '
+   ,'ERROR_forbidden_value_of'=>'ÐžÐ¨Ð˜Ð‘ÐšÐ: ÐÐµÐ´Ð¾Ð¿ÑƒÑÑ‚Ð¸Ð¼Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° %s'
+   ,'ERROR_data_not_posted'=>'ÐžÐ¨Ð˜Ð‘ÐšÐ: ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ %s Ð½Ðµ Ð·Ð°Ð´Ð°Ð½'
+   ,'ERROR_invalid_format_of'=>'ÐžÐ¨Ð˜Ð‘ÐšÐ:  %s Ð¸Ð¼ÐµÐµÑ‚ Ð½ÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½ÑƒÑŽ Ñ„Ð¾Ñ€Ð¼Ñƒ'
 
   );
   var $template="
@@ -144,7 +144,7 @@ class db_record_editor_field extends db_record_editor_common
       {
          $this->all_is_ok=false;
          $this->messages.="<font color=red><b>"
-                         .sprintf($this->text['ERROR_data_not_posted'],$this->label)
+                         .sprintf(self::$text['ERROR_data_not_posted'],$this->label)
                          ."</b></font><br/>";
       }
    // ------------------ get posted data - end ---------------------------------
@@ -160,7 +160,7 @@ class db_record_editor_field extends db_record_editor_common
         {
            $this->all_is_ok=false;
            $this->messages.="<font color=red><b>"
-                           .sprintf($this->text['ERROR_value_of_is_empty'],$this->label)
+                           .sprintf(self::$text['ERROR_value_of_is_empty'],$this->label)
                            ."</b></font><br/>";
         }                  
       //------------------ check if value is defined - end ---------------------
@@ -173,7 +173,7 @@ class db_record_editor_field extends db_record_editor_common
            #    '$posted_data='.$posted_data);
            $this->all_is_ok=false;
            $this->messages.="<font color=red><b>"
-                           .sprintf($this->text['ERROR_forbidden_value_of'],$this->label)
+                           .sprintf(self::$text['ERROR_forbidden_value_of'],$this->label)
                            ."</b></font><br/>";
         }
       //------------- check if value is allowed - end --------------------------
