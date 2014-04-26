@@ -1,4 +1,32 @@
 if(!ajax_loadblock){
+
+    var stripAndExecuteScript=function  (text) {
+        var scripts = '';
+        var cleaned = text.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
+            // console.log(arguments);
+            scripts += arguments[1] + "\n";
+            return '';
+        });
+
+
+        var head = document.getElementsByTagName("head")[0] ||
+        document.documentElement,
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        try {
+            // doesn't work on ie...
+            script.appendChild(document.createTextNode(scripts));
+        } catch(e) {
+            // IE has funky script nodes
+            script.text = scripts;
+        }
+        head.appendChild(script);
+        head.removeChild(script);
+
+        return cleaned;
+    };
+
+
     var ajax_loadblock=function(elementId,URL,data){
         var request;
         try {
@@ -38,29 +66,4 @@ if(!ajax_loadblock){
         request.send(data);
     }
 
-    function stripAndExecuteScript (text) {
-        var scripts = '';
-        var cleaned = text.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
-            // console.log(arguments);
-            scripts += arguments[1] + "\n";
-            return '';
-        });
-
-
-        var head = document.getElementsByTagName("head")[0] ||
-        document.documentElement,
-        script = document.createElement("script");
-        script.type = "text/javascript";
-        try {
-            // doesn't work on ie...
-            script.appendChild(document.createTextNode(scripts));
-        } catch(e) {
-            // IE has funky script nodes
-            script.text = scripts;
-        }
-        head.appendChild(script);
-        head.removeChild(script);
-
-        return cleaned;
-    };
 }
