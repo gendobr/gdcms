@@ -13,6 +13,11 @@
 
     $category=<category_id> restrict category
 */
+
+header('Content-Type:text/html; charset='.site_charset);
+header('Access-Control-Allow-Origin: *');
+
+
 $input_vars['category_filter_mode']='yes';
 include(script_root.'/news/get_public_list.php');
 if(isset($input_vars['debug'])) prn($list_of_news);
@@ -74,7 +79,7 @@ header('Content-Type:text/html; charset='.site_charset);
 header('Access-Control-Allow-Origin: *');
 
 
-if(isset($input_vars['element'])){
+if(isset($input_vars['element']) && strlen(trim($input_vars['element']))>0){
     echo "
     <html>
         <head>
