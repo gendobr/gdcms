@@ -855,8 +855,21 @@ select * FROM cms_ec_category;
 insert into cms8_ec_category_item_field
 select * from cms_ec_category_item_field;
 
-insert into `cms8_ec_category_item_field`
-select * FROM ;
+insert into `cms8_ec_category_item_field`(
+ec_category_item_field_id,
+site_id,
+ec_category_id,
+ec_category_item_field_title,
+ec_category_item_field_options,
+ec_category_item_field_ordering,
+ec_category_item_field_type)
+select ec_category_item_field_id,
+site_id,
+ec_category_id,
+ec_category_item_field_title,
+ec_category_item_field_options,
+ec_category_item_field_ordering,
+ec_category_item_field_type FROM cms_ec_category_item_field;
 
 insert into `cms8_ec_category_item_field_value`
 select * FROM cms_ec_category_item_field_value;
