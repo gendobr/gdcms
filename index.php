@@ -71,7 +71,7 @@ if ($db) {
 } else {
     header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
     // report to log file
-    $error_message = date('Y-m-d-H-i-s') . ' ' . mysql_errno() . ":" . mysql_error() . "\n";
+    $error_message = date('Y-m-d-H-i-s') . ' ' . mysql_errno() . ":" . mysql_error() . "{$_SERVER['HTTP_USER_AGENT']}\n";
     file_put_contents(template_cache_root . '/db_connect_errors.txt', $error_message, FILE_APPEND | LOCK_EX);
 
     die("DataBase Connection Error");
