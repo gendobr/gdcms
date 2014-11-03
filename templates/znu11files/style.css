@@ -1,5 +1,5 @@
 
-html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,select,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,button,caption,cite,code,dfn,em,input,optgroup,option,select,strong,textarea,th,var{font:inherit}del,ins{text-decoration:none}li{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:baseline}sub{vertical-align:baseline}legend{color:#000}
+html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,select,p,blockquote,th,td{margin:0;padding:2px;}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,button,caption,cite,code,dfn,input,optgroup,option,select,textarea,th,var{font:inherit}del,ins{text-decoration:none}li{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:baseline}sub{vertical-align:baseline}legend{color:#000}
 
 
 
@@ -27,25 +27,36 @@ body{
 @font-face {
    font-family: "Academy Bold"; /* имя шрифта для CSS правил */
    src: local("Academy Bold"), /* проверяем наличие шрифта в ОС пользователя */
-   url(img/Academy Bold.otf); /* если шрифт не установлен, тогда загружаем его по указанному пути */
+   url('Academy Bold.otf'); /* если шрифт не установлен, тогда загружаем его по указанному пути */
 }
+
 
 h1,h2 {font-family:"georgia",serif; font-weight:normal;}
 a:-webkit-any-link {
-color: -webkit-link;
-text-decoration: underline;
+text-decoration: none;
 cursor: auto;
 }
 a {
-color: #192666;
+color: #5172c1;
+text-decoration: none;
+border-bottom: 1px solid #5172c1;
 }
 a:visited {
 color: #192666;
+text-decoration: none;
+border-bottom: 1px solid #192666;
 }
 a:hover {
-color: #4F6AD7;
+text-decoration: none;
+color: #4F6AD7;border-bottom: 1px solid #4F6AD7;
 }
 a.nounderline { text-decoration:none; border-bottom:none;}
+
+.slideshow a, .toptab a, #footer a, #topnavigation a {border-bottom:none;}
+
+
+
+
 
 span#topnavigation{
 		display: inline-block;
@@ -78,8 +89,9 @@ padding-top: 10px;
 padding-bottom: 10px;
 background-color: white;
 font-size: 9pt;
-color: #6182D1;
+color: #5172c1;
 border-top: 10px solid #89a9f0;
+   font-weight: bold;
 }
 	.leftcolumn{
 		display: inline-block;
@@ -89,7 +101,8 @@ vertical-align:top;
 	.textblock{
 		display: inline-block;
 		text-align:left;
-				margin: 0px 0px 15px 15px;
+				margin: 0px 0px 15px 9px;
+				overflow:hidden;
 padding: 0px 0px 5px 0px;
 border: 1px solid #b2c7f4;
 background-position: top left;
@@ -135,11 +148,22 @@ margin:15px;
 font-size: 11pt;
 line-height: 150%;
 color: #192666;
+width:96%;
+
 }
+.texty *{max-width:100%;
+}
+.textblock .texty img[align=left]{
+margin:5px 10px 10px 0;
+}
+.textblock .texty img[align=right]{
+margin:5px 0 10px 10px;
+}
+
 .content  h1{font-size:20pt; color: #192666;font-family: "verdana",sans-serif;line-height: 150%;}
 .content  h2{font-size:18pt; color: #192666;font-family: "verdana",sans-serif;line-height: 150%;}
 .content  h3{font-size:16pt; color: #192666;font-family: "verdana",sans-serif;line-height: 150%;}
-.content  h4{font-size:14pt; color: #192666;font-family: "verdana",sans-serif;line-height: 150%;}
+.content  h4{font-size:14pt; color: #5172c1;font-family: "verdana",sans-serif;line-height: 150%;}
 .content  h5{font-size:10pt; color: #000;font-family: "verdana",sans-serif;line-height: 150%;font-weight: bold;}
 .content  h6{font-size:8pt; color: #192666;font-family: "verdana",sans-serif;line-height: 150%;}
 .content p{margin-bottom:3px;}
@@ -216,7 +240,7 @@ background: linear-gradient(top, #FFA600, #FFBB3D);
 		display: inline-block;
 		text-align:left;
 margin: 0 15px 0px 0px;
-padding-bottom: 15px;
+padding: 15px 0 15px 0;
 background-color: #cedbf9;
 box-shadow: 0px 0px 20px #82a3ef inset;
 -webkit-box-shadow: inset 0px 0px 20px #82a3ef;
@@ -297,7 +321,7 @@ span#topnavigation input.txt   ,
 span#topnavigation  input.btn{
    border:1px solid #192666;
    color:black;
-   height:22px;
+   height:28px;
    vertical-align:middle;
 }
 
@@ -309,7 +333,22 @@ span#topnavigation input.btn{
   padding-left:5px;
   padding-right:5px;
 }
-
+span.searchanons input[type="submit"], span#topnavigation input[type="submit"] {
+  background-color:#F2F5FE;
+  padding-left:5px;
+  padding-right:5px;
+  border: 1px solid #192666;
+color: black;
+height: 28px;
+vertical-align: middle;
+}
+span.searchanons input[type="text"], span#topnavigation input[type="text"]{
+border: 1px solid #192666;
+color: black;
+height: 22px;
+vertical-align: middle;
+background-color: white;
+}
 .top{
   background-repeat:no-repeat;
   background-position:center left;
@@ -349,6 +388,7 @@ span#topnavigation{
 span#topnavigation ul.menu1{
 vertical-align:top;
 	display:inline-block;
+	margin-right: 10px;
 }
 span#topnavigation li.menu1-item{
 vertical-align:top;
@@ -399,17 +439,18 @@ span#header{
  -khtml-border-bottom-left-radius:0px; 
 }
 	span#header img{
-		float:left;margin-right:10px;
+		float:left;margin-right:10px;margin-top: 10px;
 	}
 	span#headertext{
 display: inline-block;
 
 	}
 h1.logo_text{
+color:orange;
 background: -webkit-gradient(linear, left bottom,left top,color-stop(0.2, #ff8318),
 color-stop(1, #ffe030));
 -webkit-background-clip: text;
-color: transparent;
+-webkit-text-fill-color: transparent;
 font-family: "Academy Bold";
 }
 
@@ -481,7 +522,9 @@ zoom: 1;
   color:#ffe030;
   text-decoration:none;
   margin:2px;
+
 }
+ .submenu a{display:block;}
 
 .toptab a:hover{
   color:#fff4a5;
@@ -492,7 +535,7 @@ zoom: 1;
   display:block;
   font-size:9pt;
   color:orange;
-  margin:3pt;
+  margin:2px 2px 0 2px;
 }
 
 .toptab a.toptabhead:hover{

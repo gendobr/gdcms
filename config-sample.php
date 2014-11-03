@@ -16,7 +16,7 @@ define('site_root_URL', "http" . (isset($_SERVER['HTTPS']) ? 's' : '') . "://{$_
 define('site_public_URL', "http://{$_SERVER['HTTP_HOST']}/cms"); // ZSU
 
 define('site_URL', site_root_URL . '/index.php');
-define('sites_root_URL', 'http://gen.znu.edu.ua/_sites');
+define('sites_root_URL', 'http://127.0.0.1/_sites');
 //------------------------ URLs - end ------------------------------------------
 
 //----------------------- directories -- begin ---------------------------------
@@ -81,7 +81,7 @@ define('use_custom_sessions', false);
 define('SMARTY_DIR', script_root . '/smarty/libs/');
 
 // regexp
-define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt');
+define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt|xlsx|xlsm|xltx|xltm|xlam|docx|docm|dotx|dotm|pptx|pptm|potx|potm|ppam|ppsx|ppsm');
 
 define('apw', md5('qzwxdcft' . date('H')));
 

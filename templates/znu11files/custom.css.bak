@@ -1,6 +1,7 @@
 @media screen and (max-width : 400px){
  	span#topnavigation{
 		width:320px;
+		margin-bottom:3px;
 		
 			}
 	.osnova{
@@ -20,7 +21,7 @@ font-size:18pt;
    width:144px;
    margin:5px 1px 0px 0px;
    padding:5px 3px 0px 3px;
-   height:30px;
+   height:35px;
 	}
 	.submenu{display:none;}
  	.menu2{
@@ -40,7 +41,7 @@ font-size:18pt;
 		
 	}
 	.textblock{
-		width:310px;
+		width:300px;
 		
 	}
 
@@ -69,7 +70,7 @@ font-size:18pt;
 @media screen and (min-width : 401px) and (max-width : 600px){
   	span#topnavigation{
 		width:400px;
-		
+		margin-bottom:3px;
 	}
 	.osnova{
 		width:400px;
@@ -83,10 +84,10 @@ font-size:18pt;
 	h1.logo_text{
 font-size:20pt;}
 		li.toptab{
-   width:186px;
+   width:184px;
    margin:5px 1px 0px 0px;
    padding:5px 3px 0px 3px;
-   height:30px;
+   height:35px;
 	}
 	.submenu{display:none;}
  	.menu2{
@@ -135,7 +136,7 @@ font-size:20pt;}
 @media screen and (min-width : 601px) and (max-width : 800px){
    	span#topnavigation{
 		width:600px;
-		
+		margin-bottom:3px;
 	}
 	.osnova{
 		width:600px;
@@ -151,7 +152,7 @@ font-size:24pt;}
 		li.toptab{
    margin:5px 1px 0px 0px;
    padding:5px 1px 0px 1px;
-   height:90px;
+   height:100px;
 	}
 	.submenu{width:138px;}
  	.menu2{
@@ -199,7 +200,7 @@ font-size:24pt;}
 
 @media screen and (min-width : 801px) and (max-width : 1023px){
   	span#topnavigation{
-		width:800px;
+		width:785px;
 		
 	}
 	.osnova{
@@ -217,9 +218,11 @@ font-size:28pt;}
    
    margin:5px 1px 0px 0px;
    padding:5px 1px 0px 1px;
-   height:110px;
+   height:115px;
 	}
-	.submenu{width:86px;}
+
+	.toptab{width:92px;}
+	.submenu{width:100%;}
  	.menu2{
 		width:100%;
 		
@@ -287,9 +290,10 @@ font-size:28pt;}
    
    margin:5px 1px 0px 0px;
    padding:5px 3px 0px 3px;
-   height:84px;
+   height:100px;
 	}
-	.submenu{width:117px;}
+	.toptab{width:117px;}
+	.submenu{width:100%;}
 	.content{
 		width:1000px;
 		
@@ -346,9 +350,10 @@ font-size:28pt;}
    
    margin:5px 1px 0px 0px;
    padding:5px 3px 0px 3px;
-   height:84px;
+   height:100px;
 	}
-	.submenu{width:117px;}
+	.toptab{width:117px;}
+	.submenu{width:100%;}
 	.content{
 		width:1100px;
 		

@@ -3,5 +3,5 @@ color: orange;
 font-weight: bold;
 }
 .rightcolumn{
-background-color: #abbff7;
+background-color: #b6c8f8;
 }
