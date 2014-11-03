@@ -5,3 +5,54 @@ font-weight: bold;
 .rightcolumn{
 background-color: #b6c8f8;
 }
+  	span#topnavigation{
+		width:800px;
+		
+	}
+	.osnova{
+		width:800px;
+		
+	}
+	span#header{
+		width:780px;
+		padding: 10px 10px 0 10px;
+		
+	}
+	h1.logo_text{
+font-size:28pt;}
+	li.toptab{
+   
+   margin:5px 1px 0px 0px;
+   padding:5px 1px 0px 1px;
+   height:110px;
+	}
+	.submenu{width:86px;}
+ 	.menu2{
+		width:100%;
+		
+	}
+	.content{
+		width:800px;
+		
+	}
+	#Where_you_are{
+		width:770px;
+		
+	}
+	.leftcolumn{
+		width:580px;
+		
+	}
+	.textblock{
+		width:570px;
+		
+	}
+
+	.rightcolumn{
+		width:200px;
+		
+	}
+	span#footer{
+		width:800px;
+		
+	}

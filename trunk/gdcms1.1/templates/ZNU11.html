@@ -1,5 +1,5 @@
 {assign var="znu_root_url" value="http://www.znu.edu.ua"}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
 <head>
 <title>{$page.title} - {txt lang=$text.language_name variants="eng=ZNU::rus=ЗНУ::ukr=ЗНУ"}</title>
@@ -17,12 +17,12 @@
    <!--  , projection -->
    <!-- print -->
    <link rel="stylesheet" media="print" type="text/css" href="{$site_root_url}/templates/znu11files/print.css"> 
-
+<!--[if IE]>
+<link rel="stylesheet" class='mediaquery' type="text/css" href="{$site_root_url}/templates/znu11files/ie.css" media="screen">
+<![endif]-->
    <!-- media queries -->
    <link rel="stylesheet" type="text/css" href="{$site_root_url}/templates/znu11files/custom.css"  media="screen">
-<!--[if IE]>
-<link rel="stylesheet" class='mediaquery' type="text/css" href="znu11files/ie.css" media="screen">
-<![endif]-->
+
 
 
    <!--[if lt IE 9]>
@@ -50,11 +50,11 @@
 	</span><!--
 	--><span class="osnova">
 		<span id="header">
-			<a href="{$site_root_url}" class="nounderline"><img src="{$site_root_url}/templates/znu11files/logo.png" class="logo">
+			<a href="http://www.znu.edu.ua/" class="nounderline"><img src="{$site_root_url}/templates/znu11files/logo.png" class="logo">
 			<h1 class="logo_text">{txt lang=$text.language_name variants="eng=Zaporizhzhya National University::rus=Запорожский национальний университет::ukr=Запорізький національний університет"}</h1></a>
 			<span id="headertext">
 				<span class="menu2">
-					{fragment place="topmenu" lang=$text.language_name site_id=$site.id}
+					{fragment place="topmenu" lang=$text.language_name site_id=73}
 				</span>
 			</span>
 		</span><!--
@@ -114,25 +114,11 @@
 					<center><script type="text/javascript" src="http://www.znu.edu.ua/cms/index.php?action=banner%2Frotator&site_id=73&lang={$text.language_name}"></script></center>
 				</span><!--
 				--><span class="menu3">
-					{foreach from=$menu key=kg item=mg}
-						{if $mg.code eq 'right'}
-						<!-- menu group - begin  -->
-							<ul>
-							{foreach from=$mg.items key=ki item=mi}
-								{if $mi.url}
-									<li><a class="rightlink" href="{$mi.url}" title="{$mi.description}" {$mi.attributes}>{$mi.html}</a></li>
-								{else}
-									<li>{$mi.html}</li>
-								{/if}
-							{/foreach}
-							</ul>
-							<!-- menu group - end -->
-						{/if}
-					 {/foreach}					
+					{fragment place="rightmenu" lang=$text.language_name site_id=73}
 				</span><!--
 				--><span class="knopky">
 					<center>
-						{fragment place="ce_cikavo" lang=$text.language_name site_id=$site.id}
+						{fragment place="ce_cikavo" lang=$text.language_name site_id=73}
 					</center>
 				</span><!--
 				--><span class="sociology">

@@ -157,7 +157,7 @@ function show_related_news($params) {
     # prn($tags);
     # ---------------- get all tags of the current news - end --------------
     # ---------------- get news using tags - begin -------------------------
-    $query = "select distinct nws.id,nws.lang,nws.site_id,nws.title
+    $query = "select distinct nws.id,nws.lang,nws.site_id,nws.title,nws.news_code
               from  {$table_prefix}news as nws,
                       {$table_prefix}news_tags as nt
               where nws.id=nt.news_id
@@ -173,9 +173,12 @@ function show_related_news($params) {
     $tmp = db_getrows($query);
     $tor = '';
     foreach ($tmp as $row) {
-        $tor.="<div class=\"see_also\"><a href=\""
-                . url_prefix_news_details . "news_id={$row['id'] }&lang={$row['lang']}"
-                . "\">{$row['title']}</a></div>";
+        //url_template_news_details
+        $url_news=str_replace(
+                Array('{news_id}','{lang}','{news_code}'),
+                Array($row['id'],$row['lang'],$row['news_code']),
+                url_template_news_details);
+        $tor.="<div class=\"see_also\"><a href=\"{$url_news}\">{$row['title']}</a></div>";
     }
     # ---------------- get news using tags - end ---------------------------
     return $tor;
