@@ -226,6 +226,15 @@ if (strlen(trim($tags)) > 0) {
 //echo "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'";exit('115');
 $news_info = db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'");
 
+
+
+$news_info['news_url'] = str_replace(
+                Array('{news_id}','{lang}','{news_code}'),
+                Array($news_info['id'],$lang,$news_info['news_code']),
+                url_template_news_details);
+
+
+
     $feedback = Array(
         'status' => 'success',
         'news' => $news_info
