@@ -121,7 +121,9 @@ define('url_pattern_gallery_image', site_public_URL . "/index.php?action=gallery
 
 # ----------------------------- urls without mod_rewrite - end -----------------------------
 # ----------------------------- urls using mod_rewrite in apache - begin -------------------
-define('url_template_news_details', sites_root_URL . "/news_details.php?news_id={news_id}&lang={lang}&news_code={news_code}");
+//define('url_template_news_details', sites_root_URL . "/news_details.php?news_id={news_id}&lang={lang}&news_code={news_code}");
+define('url_template_news_details', site_public_URL . "/index.php?action=news/view_details&news_id={news_id}&lang={lang}&news_code={news_code}");
+
 
 define('url_prefix_news_list', sites_root_URL . "/news.php?");
 define('url_prefix_guestbook', "/cms/index.php?action=gb/guestbook&");
