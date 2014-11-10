@@ -111,6 +111,7 @@ function db_getrows($query) {
     return $tor;
 }
 function db_getonerow($query) {
+    //if($_REQUEST['v']==1) prn($query);
     $result_id=db_execute($query);
     $tor=mysql_fetch_array($result_id, MYSQL_ASSOC);
     mysql_free_result($result_id);
