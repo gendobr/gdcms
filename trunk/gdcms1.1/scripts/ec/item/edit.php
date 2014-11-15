@@ -15,14 +15,14 @@ run('site/menu');
 //prn($input_vars);
 # ------------------- check ec_item_id - begin ------------------------------------
 $ec_item_id = 0;
+$ec_item_lang = get_language('ec_item_lang');
 if (isset($input_vars['ec_item_id'])) {
     $ec_item_id = (int) $input_vars['ec_item_id'];
     //$ec_item_lang = DbStr($input_vars['ec_item_lang']);
-    $ec_item_lang = get_language('ec_item_lang');
-
     $this_ec_item_info = get_ec_item_info($ec_item_id, $ec_item_lang, 0, false);
-    if (!$this_ec_item_info)
+    if (!$this_ec_item_info) {
         $ec_item_id = 0;
+    }
 }
 if ($ec_item_id == 0) {
     $this_ec_item_info = get_ec_item_info(0, (isset($input_vars['ec_item_lang']) ? $input_vars['ec_item_lang'] : default_language), ((int) (isset($input_vars['site_id']) ? $input_vars['site_id'] : 0)));
@@ -31,14 +31,16 @@ if ($ec_item_id == 0) {
 //prn('$this_ec_item_info',$this_ec_item_info);
 # ------------------- check ec_item_id - end --------------------------------------
 # ------------------- get site info - begin ---------------------------------------
-if ($ec_item_id > 0)
+if ($ec_item_id > 0) {
     $site_id = $this_ec_item_info['site_id'];
-else
+} else {
     $site_id = (int) (isset($input_vars['site_id']) ? $input_vars['site_id'] : 0);
+}
 $this_site_info = get_site_info($site_id);
 //prn('$this_site_info=',$this_site_info);
-if ($this_site_info)
+if ($this_site_info) {
     $this_ec_item_info['site_id'] = $site_id;
+}
 # ------------------- get site info - end -----------------------------------------
 //prn('$ec_item_id='.$ec_item_id);
 //('$this_ec_item_info',$this_ec_item_info);
@@ -53,11 +55,12 @@ if ($user_cense_level <= 0) {
 # ------------------- get permission - end ----------------------------------------
 # ----------------- save changes - begin ------------------------------------------
 if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 0) {
-    $this_ec_item_info = run(
-            'ec/item/edit_save', Array(
-        'this_ec_item_info' => $this_ec_item_info,
-        'this_site_info' => $this_site_info
-    ));
+    $this_ec_item_info = run('ec/item/edit_save', Array('this_ec_item_info' => $this_ec_item_info, 'this_site_info' => $this_site_info));
+    
+    // http://localhost/cms/index.php?action=ec/item/edit&site_id=8&ec_item_id=1&ec_item_lang=ukr
+    header('Location:'.site_URL."?action=ec/item/edit&site_id={$site_id}&ec_item_id={$this_ec_item_info['ec_item_id']}&ec_item_lang={$this_ec_item_info['ec_item_lang']}");
+    exit();
+    
     $message = $this_ec_item_info['message'];
     $ec_item_id = $this_ec_item_info['ec_item_id'];
     $ec_item_lang = $this_ec_item_info['ec_item_lang'];
@@ -68,11 +71,13 @@ $notify_managers_form = '';
 foreach ($this_site_info['managers'] as $mn) {
     $notify_managers_form .="<input type=checkbox name='notify[{$mn['id']}]'> {$mn['full_name']}<br/>";
 }
-if (strlen($notify_managers_form) > 0)
+if (strlen($notify_managers_form) > 0) {
     $notify_managers_form = "<tr><td colspan=6><b>{$text['Send_notification_to']}</b><br/>{$notify_managers_form}</td></tr>";
+}
 
-if (!isset($message))
+if (!isset($message)) {
     $message = '';
+}
 
 
 $input_vars['aed'] = (isset($input_vars['aed'])) ? ( (int) $input_vars['aed']) : 0;
@@ -89,8 +94,9 @@ $input_vars['page_content'] = '';
 $query = "SELECT ec_category_id, ec_category_title, deep FROM {$table_prefix}ec_category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
 $tmp = db_getrows($query);
 $list_of_categories = Array();
-foreach ($tmp as $tm)
+foreach ($tmp as $tm) {
     $list_of_categories[$tm['ec_category_id']] = str_repeat(' + ', $tm['deep'] - 1) . get_langstring($tm['ec_category_title']);
+}
 unset($tmp, $tm);
 //prn($list_of_categories);
 # ------------------------ list of categories - end ---------------------------
@@ -98,8 +104,9 @@ unset($tmp, $tm);
 $query = "SELECT ec_producer_id, ec_producer_title  FROM {$table_prefix}ec_producer WHERE site_id={$site_id} ORDER BY ec_producer_title ASC";
 $tmp = db_getrows($query);
 $list_of_producers = Array();
-foreach ($tmp as $tm)
+foreach ($tmp as $tm) {
     $list_of_producers[$tm['ec_producer_id']] = get_langstring($tm['ec_producer_title']);
+}
 unset($tmp, $tm);
 //prn($list_of_categories);
 # ------------------------ list of producers - end ----------------------------
@@ -107,8 +114,9 @@ unset($tmp, $tm);
 $query = "SELECT ec_currency_code, ec_curency_title  FROM {$table_prefix}ec_currency ORDER BY ec_curency_title ASC";
 $tmp = db_getrows($query);
 $list_of_currencies = Array();
-foreach ($tmp as $tm)
+foreach ($tmp as $tm) {
     $list_of_currencies[$tm['ec_currency_code']] = get_langstring($tm['ec_curency_title']);
+}
 unset($tmp, $tm);
 //prn($list_of_currencies);
 # ------------------------ list of curency_titles - end -----------------------
@@ -128,52 +136,85 @@ unset($tmp, $tm);
 # ------------------------ list of publication_states - begin -----------------
 $publication_states = Array();
 $cnt = array_keys($GLOBALS['ec_item_publication_states']);
-foreach ($cnt as $ke)
+foreach ($cnt as $ke) {
     $publication_states[$ke] = text($GLOBALS['ec_item_publication_states'][$ke]);
+}
 # ------------------------ list of publication_states - end -------------------
 # ------------------------ list of weight units - begin -----------------------
 $tmp = explode('|', weight_units);
 $list_of_weight_units = Array();
-foreach ($tmp as $unitname)
+foreach ($tmp as $unitname) {
     $list_of_weight_units[$unitname] = text('ec_units_' . $unitname);
+}
 # ------------------------ list of weight units - end -------------------------
 # ------------------------ list of length units - begin -----------------------
 $tmp = explode('|', length_units);
 $list_of_length_units = Array();
-foreach ($tmp as $unitname)
+foreach ($tmp as $unitname) {
     $list_of_length_units[$unitname] = text('ec_units_' . $unitname);
+}
 # ------------------------ list of length units - end -------------------------
 
 
 
-if (!isset($file_upload_form)){
+if (!isset($file_upload_form)) {
     $file_upload_form = '';
 }
 
 # ------------------------ list of images - begin -----------------------------
-$imagelist = '';
+$imagelist = '
+    <style type="text/css">
+      .btn{
+        float:right;
+        padding:3px;
+        border:1px solid black;
+        margin-left:3px;
+        margin-bottom:3px;
+      }
+      .imgr{
+        clear:right;
+        display:block;
+      }
+      .imgblk{
+         display:inline-block;
+         margin-bottom:10px;
+         margin-right:10px;
+         padding:3px;
+         background-color:silver;
+      }
+    </style>
+    ';
 if (isset($this_ec_item_info['ec_item_img']) && count($this_ec_item_info['ec_item_img']) > 0) {
-    #prn($this_ec_item_info['ec_item_img']);
+    // prn($this_ec_item_info['ec_item_img']);
     foreach ($this_ec_item_info['ec_item_img'] as $key => $img_src) {
-        $imagelist.="<span style='display:inline-block;width:99%;'>" . text('Image') . " {$key}
-                            <input type=submit name=ec_item_imgup{$key} value=\"&uarr;\">
-                            <input type=submit name=ec_item_imgdown{$key} value=\"&darr;\">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type=submit name=ec_item_imgdelete{$key} value=\"" . text('Delete') . "\"><br>
-                            <img style='max-width:100%;' src=\"{$this_site_info['url']}{$img_src}\"><br>
-                        </span>";
+        //$img_src=explode("\t",$img_src);
+        $imagelist.="<span style='' class='imgblk'> {$key}.
+                            <input type=submit class=\"btn\" name=ec_item_imgdelete{$key} value=\"&times;\">
+                            <input type=submit class=\"btn\" name=ec_item_imgup{$key} value=\"&uarr;\">
+                            <input type=submit class=\"btn\" name=ec_item_imgdown{$key} value=\"&darr;\">
+                            <a href=\"{$this_site_info['url']}{$img_src['big']}\" target=_blank class=\"imgr\"><img style='max-width:100%;' src=\"{$this_site_info['url']}{$img_src['small']}\"></a>
+                     </span>";
     }
 }
-$imagelist.="<div>" . text('Image') . ":<input type=file name=ec_item_img1></div>";
-$imagelist.="<div>" . text('Image') . ":<input type=file name=ec_item_img2></div>";
-$imagelist.="<div>" . text('Image') . ":<input type=file name=ec_item_img3></div>";
+$imagelist.="
+<div>
+<input type=file name=ec_item_img1>
+<input type=file name=ec_item_img2>
+<input type=file name=ec_item_img3><br>
+<input type=file name=ec_item_img4>
+<input type=file name=ec_item_img5>
+<input type=file name=ec_item_img6>
+<br>
+<input type=submit value=\"".text('Upload')."\">
+</div>";
 # ------------------------ list of images - end -------------------------------
 # ------------------------ list of additional fields - begin ------------------
 # category_id should be set
 $ec_category_item_field = "";
 //prn($this_ec_item_info);
-if (!isset($this_ec_item_info['ec_category_item_field']) || !is_array($this_ec_item_info['ec_category_item_field']))
+if (!isset($this_ec_item_info['ec_category_item_field']) || !is_array($this_ec_item_info['ec_category_item_field'])) {
     $this_ec_item_info['ec_category_item_field'] = Array();
+}
 foreach ($this_ec_item_info['ec_category_item_field'] as $fld) {
     $options = Array();
     if (strlen($fld['ec_category_item_field_options'])) {
@@ -218,7 +259,7 @@ $additional_categories_selector = "
 $additional_categories_js = "
       var selectors=[];
     ";
-$cnt = count($this_ec_item_info['additional_categories']);
+$cnt = isset($this_ec_item_info['additional_categories']) ? count($this_ec_item_info['additional_categories']) : 0;
 for ($i = 0; $i < $cnt; $i++) {
     $additional_categories_selector.="
     	<div id=additional_category_{$i}>
@@ -428,7 +469,7 @@ $input_vars['page_content'].="
 
     <td align=\"right\">" . text('ec_item_ordering_') . ":</td>
     <td colspan=1>
-     <input type=text MAXLENGTH=60 name=ec_item_ordering value=\"" . checkStr($this_ec_item_info['ec_item_ordering']) . "\" style='width:30pt;'><!--
+     <input type=text MAXLENGTH=60 name=ec_item_ordering value=\"" . checkStr(isset($this_ec_item_info['ec_item_ordering']) ? $this_ec_item_info['ec_item_ordering'] : 0) . "\" style='width:30pt;'><!--
   --></td>
 
 
@@ -460,10 +501,26 @@ $input_vars['page_content'].="
        });
     </script>
 
+";
+
+
+
+$input_vars['page_content'].="
+  <tr>
+    <td colspan=6><br><br><b>" . text('Images') . ":</b><br/><br/>
+       $imagelist
+    <br></td>
+  </tr>
+  
+";
+
+
+$input_vars['page_content'].="
+
 
   <tr>
-  <td colspan=6>
-  " . text('Short_description') . ":<br>
+  <td colspan=6><br><br>
+  <b>" . text('Short_description') . ":</b><br>
       <div>
           <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
@@ -483,7 +540,7 @@ $input_vars['page_content'].="
 
 
   <tr>
-  <td colspan=6>
+  <td colspan=6><br><br>
   <b>" . text('Long_description') . "</b>:<br>
       <div>
           <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
@@ -544,15 +601,6 @@ $input_vars['page_content'].="
 
 ";
 
-
-
-$input_vars['page_content'].="
-  <tr>
-    <td colspan=6>" . text('Images') . ":<br><br>
-       $imagelist
-    <br><br></td>
-  </tr>
-";
 
 
 $input_vars['page_content'].="
