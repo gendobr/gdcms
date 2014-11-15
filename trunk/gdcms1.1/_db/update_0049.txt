@@ -1,0 +1,1 @@
+ALTER TABLE `cms_ec_producer` ADD COLUMN `ec_producer_logo` VARCHAR(255) NULL AFTER `ec_producer_img`;
