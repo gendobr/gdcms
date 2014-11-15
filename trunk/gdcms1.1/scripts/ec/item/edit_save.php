@@ -145,74 +145,74 @@ $this_ec_item_info['ec_item_variants'] = $input_vars['ec_item_variants'];
 //----------------- save - begin -----------------------------------------------
 if ($all_is_ok) {
 
-    // ----------------- resizing image to create small image - begin ----------
-    /**
-     * $type="resample"|"inscribe"|"circumscribe"
-     */
-    function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resample", $backgroundColor = 0xFFFFFF, $quality = 100) {
-        if (!file_exists($inputfile)) {
-            return false;
-        }
-        $size = getimagesize($inputfile);
-        if ($size === false) {
-            return false;
-        }
-
-        $format = strtolower(substr($size['mime'], strpos($size['mime'], '/') + 1));
-        $icfunc = "imagecreatefrom" . $format;
-        if (!function_exists($icfunc)) {
-            return false;
-        }
-
-        switch ($type) {
-            case "inscribe":
-                $ratio = $width / $size[0];
-                $new_width = floor($size[0] * $ratio);
-                $new_height = floor($size[1] * $ratio);
-                if ($new_height > $height) {
-                    $ratio = $height / $size[1];
-                    $new_width = floor($size[0] * $ratio);
-                    $new_height = floor($size[1] * $ratio);
-                }
-                break;
-            case "circumscribe":
-                $ratio = $width / $size[0];
-                $new_width = floor($size[0] * $ratio);
-                $new_height = floor($size[1] * $ratio);
-                if ($new_height < $height) {
-                    $ratio = $height / $size[1];
-                    $new_width = floor($size[0] * $ratio);
-                    $new_height = floor($size[1] * $ratio);
-                }
-                break;
-            default:
-                $ratio = $width / $size[0];
-                $new_width = floor($size[0] * $ratio);
-                $new_height = floor($size[1] * $ratio);
-                if ($new_height > $height) {
-                    $ratio = $height / $size[1];
-                    $new_width = floor($size[0] * $ratio);
-                    $new_height = floor($size[1] * $ratio);
-                }
-                $width=$new_width;
-                $height=$new_height;
-                break;
-        }
-        $new_left = floor(($width - $new_width) / 2);
-        $new_top = floor(($height - $new_height) / 2);
-
-        $bigimg = $icfunc($inputfile);
-        $trumbalis = imagecreatetruecolor($width, $height);
-
-        imagefill($trumbalis, 0, 0, $backgroundColor);
-        imagecopyresampled($trumbalis, $bigimg, $new_left, $new_top, 0, 0, $new_width, $new_height, $size[0], $size[1]);
-        imagejpeg($trumbalis, $outputfile, $quality);
-
-        imagedestroy($bigimg);
-        imagedestroy($trumbalis);
-        return true;
-    }
-
+//    // ----------------- resizing image to create small image - begin ----------
+//    /**
+//     * $type="resample"|"inscribe"|"circumscribe"
+//     */
+//    function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resample", $backgroundColor = 0xFFFFFF, $quality = 100) {
+//        if (!file_exists($inputfile)) {
+//            return false;
+//        }
+//        $size = getimagesize($inputfile);
+//        if ($size === false) {
+//            return false;
+//        }
+//
+//        $format = strtolower(substr($size['mime'], strpos($size['mime'], '/') + 1));
+//        $icfunc = "imagecreatefrom" . $format;
+//        if (!function_exists($icfunc)) {
+//            return false;
+//        }
+//
+//        switch ($type) {
+//            case "inscribe":
+//                $ratio = $width / $size[0];
+//                $new_width = floor($size[0] * $ratio);
+//                $new_height = floor($size[1] * $ratio);
+//                if ($new_height > $height) {
+//                    $ratio = $height / $size[1];
+//                    $new_width = floor($size[0] * $ratio);
+//                    $new_height = floor($size[1] * $ratio);
+//                }
+//                break;
+//            case "circumscribe":
+//                $ratio = $width / $size[0];
+//                $new_width = floor($size[0] * $ratio);
+//                $new_height = floor($size[1] * $ratio);
+//                if ($new_height < $height) {
+//                    $ratio = $height / $size[1];
+//                    $new_width = floor($size[0] * $ratio);
+//                    $new_height = floor($size[1] * $ratio);
+//                }
+//                break;
+//            default:
+//                $ratio = $width / $size[0];
+//                $new_width = floor($size[0] * $ratio);
+//                $new_height = floor($size[1] * $ratio);
+//                if ($new_height > $height) {
+//                    $ratio = $height / $size[1];
+//                    $new_width = floor($size[0] * $ratio);
+//                    $new_height = floor($size[1] * $ratio);
+//                }
+//                $width=$new_width;
+//                $height=$new_height;
+//                break;
+//        }
+//        $new_left = floor(($width - $new_width) / 2);
+//        $new_top = floor(($height - $new_height) / 2);
+//
+//        $bigimg = $icfunc($inputfile);
+//        $trumbalis = imagecreatetruecolor($width, $height);
+//
+//        imagefill($trumbalis, 0, 0, $backgroundColor);
+//        imagecopyresampled($trumbalis, $bigimg, $new_left, $new_top, 0, 0, $new_width, $new_height, $size[0], $size[1]);
+//        imagejpeg($trumbalis, $outputfile, $quality);
+//
+//        imagedestroy($bigimg);
+//        imagedestroy($trumbalis);
+//        return true;
+//    }
+//
     // ----------------- resizing image to create small image - end ------------
 
     $message.="<font color=green>{$text['Page_saved_successfully']}</font><br>\n";
@@ -297,7 +297,8 @@ if ($all_is_ok) {
 
     if ($this_ec_item_info['ec_item_id'] > 0) {
 
-        $ec_item_img=$this_ec_item_info['ec_item_img'];
+        $ec_item_img=array_values($this_ec_item_info['ec_item_img']);
+        //prn($ec_item_img);
         $cnt=count($ec_item_img);
         for($i=0;$i<$cnt;$i++){
             $ec_item_img[$i]=join("\t",$ec_item_img[$i]);

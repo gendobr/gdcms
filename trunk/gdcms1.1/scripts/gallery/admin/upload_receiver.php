@@ -46,16 +46,19 @@ run('gallery/category_model');
 
 // ----------------- resizing image to reate small image - begin ---------------
 function img_resize($photos, $imagefile, $width, $height, $rgb=0xFFFFFF, $quality=100) {
-    if (!file_exists($photos))
+    if (!file_exists($photos)) {
         return false;
+    }
     $size = getimagesize($photos);
-    if ($size === false)
+    if ($size === false) {
         return false;
+    }
 
     $format = strtolower(substr($size['mime'], strpos($size['mime'], '/') + 1));
     $icfunc = "imagecreatefrom" . $format;
-    if (!function_exists($icfunc))
+    if (!function_exists($icfunc)) {
         return false;
+    }
 
     $x_ratio = $width / $size[0];
     $y_ratio = $height / $size[1];

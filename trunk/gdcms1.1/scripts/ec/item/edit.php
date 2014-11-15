@@ -57,9 +57,8 @@ if ($user_cense_level <= 0) {
 if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 0) {
     $this_ec_item_info = run('ec/item/edit_save', Array('this_ec_item_info' => $this_ec_item_info, 'this_site_info' => $this_site_info));
     
-    // http://localhost/cms/index.php?action=ec/item/edit&site_id=8&ec_item_id=1&ec_item_lang=ukr
-    header('Location:'.site_URL."?action=ec/item/edit&site_id={$site_id}&ec_item_id={$this_ec_item_info['ec_item_id']}&ec_item_lang={$this_ec_item_info['ec_item_lang']}");
-    exit();
+    //header('Location:'.site_URL."?action=ec/item/edit&site_id={$site_id}&ec_item_id={$this_ec_item_info['ec_item_id']}&ec_item_lang={$this_ec_item_info['ec_item_lang']}");
+    //exit();
     
     $message = $this_ec_item_info['message'];
     $ec_item_id = $this_ec_item_info['ec_item_id'];
