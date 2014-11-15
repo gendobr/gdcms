@@ -90,9 +90,11 @@ function get_ec_item_info($ec_item_id,$lang,$site_id=0,$use_cache=true,$ec_item_
     // ----- parse size - end --------------------------------------------------
 
     // ----- parse weight - begin ----------------------------------------------
-    if(preg_match('/('.$nm.') ('.weight_units.')/',$tor['ec_item_weight']))
-        $tor['ec_item_weight']=preg_split('/x| +/',$tor['ec_item_weight']);
-    else $tor['ec_item_weight']=Array('','g');
+    if (preg_match('/(' . $nm . ') (' . weight_units . ')/', $tor['ec_item_weight'])) {
+        $tor['ec_item_weight'] = preg_split('/x| +/', $tor['ec_item_weight']);
+    } else {
+        $tor['ec_item_weight'] = Array('', 'g');
+    }
     // ----- parse weight - end ------------------------------------------------
 
 
@@ -678,11 +680,19 @@ function ec_item_adjust($_info,$this_site_info) {
 
     // ------------------- images - begin ---------------------------------------
     $_info['ec_main_image']='';
-    if(strlen($_info['ec_item_img'])) {
-        $_info['ec_item_img']=explode("\n",$_info['ec_item_img']);
-        if(count($_info['ec_item_img'])>0) $_info['ec_main_image']=$_info['ec_item_img'][0];
+    if (strlen($_info['ec_item_img'])) {
+        $_info['ec_item_img'] = explode("\n", $_info['ec_item_img']);
+        if (count($_info['ec_item_img']) > 0) {
+            $cnt=count($_info['ec_item_img']);
+            for($i=0; $i<$cnt;$i++){
+                $tmp=explode("\t",$_info['ec_item_img'][$i]);
+                $_info['ec_item_img'][$i]=Array('small'=>$tmp[0],'big'=>$tmp[1]);
+            }
+            $_info['ec_main_image'] = $_info['ec_item_img'][0];
+        }
+    } else {
+        $_info['ec_item_img'] = Array();
     }
-    else $_info['ec_item_img']=Array();
 
     // ------------------- images - end -----------------------------------------
 

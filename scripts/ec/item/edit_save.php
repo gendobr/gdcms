@@ -18,8 +18,9 @@ if ($lng != $this_ec_item_info['ec_item_lang']) {
     $query = "SELECT ec_item_lang FROM {$table_prefix}ec_item WHERE ec_item_id={$this_ec_item_info['ec_item_id']}";
     $tmp = db_getrows($query);
     $existins_langs = Array();
-    foreach ($tmp as $ln)
+    foreach ($tmp as $ln) {
         $existins_langs[] = $ln['ec_item_lang'];
+    }
     //-------------------- get existing page languages - end -------------------
     //-------------------- get available languages - begin ---------------------
     $existins_langs[] = '';
@@ -28,8 +29,9 @@ if ($lng != $this_ec_item_info['ec_item_lang']) {
                 WHERE is_visible=1 AND id NOT IN('" . join("','", $existins_langs) . "')";
     $tmp = db_getrows($query);
     $avail_lang = Array();
-    foreach ($tmp as $ln)
+    foreach ($tmp as $ln) {
         $avail_lang[] = $ln['id'];
+    }
     //-------------------- get available languages - end -----------------------
 
     if (!in_array($lng, $avail_lang)) {
@@ -98,8 +100,9 @@ if (strlen($this_ec_item_info['ec_item_tags']) > 0) {
     $this_ec_item_info['ec_item_tags'] = preg_split('/,|;/', $this_ec_item_info['ec_item_tags']);
     //prn($this_ec_item_info['ec_item_tags']);
     $cnt = count($this_ec_item_info['ec_item_tags']);
-    for ($i = 0; $i < $cnt; $i++)
+    for ($i = 0; $i < $cnt; $i++) {
         $this_ec_item_info['ec_item_tags'][$i] = trim($this_ec_item_info['ec_item_tags'][$i]);
+    }
     $this_ec_item_info['ec_item_tags'] = join(',', $this_ec_item_info['ec_item_tags']);
 }
 //prn($this_ec_item_info['ec_item_tags']);
@@ -113,31 +116,26 @@ $this_ec_item_info['ec_item_material'] = $input_vars['ec_item_material'];
 $this_ec_item_info['ec_item_mark'] = $input_vars['ec_item_mark'];
 
 //
-$this_ec_item_info['ec_item_size'] = ec_item_size_check(
-        $input_vars['ec_item_size'][0], $input_vars['ec_item_size'][1], $input_vars['ec_item_size'][2], $input_vars['ec_item_size'][3]);
+$this_ec_item_info['ec_item_size'] = ec_item_size_check($input_vars['ec_item_size'][0], $input_vars['ec_item_size'][1], $input_vars['ec_item_size'][2], $input_vars['ec_item_size'][3]);
 
-$this_ec_item_info['ec_item_weight'] = Array(
-    checkFloat($input_vars['ec_item_weight'][0]),
-    $input_vars['ec_item_weight'][1]);
+$this_ec_item_info['ec_item_weight'] = Array(checkFloat($input_vars['ec_item_weight'][0]), $input_vars['ec_item_weight'][1]);
 
-
-$this_ec_item_info['ec_item_ordering'] = (int)$input_vars['ec_item_ordering'];
-
+$this_ec_item_info['ec_item_ordering'] = (int) $input_vars['ec_item_ordering'];
 
 // check ec_item_code
 $this_ec_item_info['ec_item_code'] = encode_dir_name($input_vars['ec_item_code']);
-if(strlen($this_ec_item_info['ec_item_code'])==0){
+if (strlen($this_ec_item_info['ec_item_code']) == 0) {
     $this_ec_item_info['ec_item_code'] = encode_dir_name($input_vars['ec_item_title']);
 }
 // ec_item_code must be unique
-$query="SELECT * from  {$GLOBALS['table_prefix']}ec_item "
-           . "WHERE ec_item_code='".DbStr($this_ec_item_info['ec_item_code'])."'"
-           . " AND ec_item_id<>{$this_ec_item_info['ec_item_id']}";
+$query = "SELECT * from  {$GLOBALS['table_prefix']}ec_item "
+        . "WHERE ec_item_code='" . DbStr($this_ec_item_info['ec_item_code']) . "'"
+        . " AND ec_item_id<>{$this_ec_item_info['ec_item_id']}";
 // prn($query);
-//           prn($input_vars);
-$ec_item_code_duplicate=db_getonerow($query);
-if($ec_item_code_duplicate){
-    $this_ec_item_info['ec_item_code'].='-'.$this_ec_item_info['ec_item_id'].'-'.$this_ec_item_info['ec_item_lang'];
+// prn($input_vars);
+$ec_item_code_duplicate = db_getonerow($query);
+if ($ec_item_code_duplicate) {
+    $this_ec_item_info['ec_item_code'].='-' . $this_ec_item_info['ec_item_id'] . '-' . $this_ec_item_info['ec_item_lang'];
 }
 
 // check ec_item_variants
@@ -146,19 +144,90 @@ $this_ec_item_info['ec_item_variants'] = $input_vars['ec_item_variants'];
 //----------------- check values - end -----------------------------------------
 //----------------- save - begin -----------------------------------------------
 if ($all_is_ok) {
+
+    // ----------------- resizing image to create small image - begin ----------
+    /**
+     * $type="resample"|"inscribe"|"circumscribe"
+     */
+    function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resample", $backgroundColor = 0xFFFFFF, $quality = 100) {
+        if (!file_exists($inputfile)) {
+            return false;
+        }
+        $size = getimagesize($inputfile);
+        if ($size === false) {
+            return false;
+        }
+
+        $format = strtolower(substr($size['mime'], strpos($size['mime'], '/') + 1));
+        $icfunc = "imagecreatefrom" . $format;
+        if (!function_exists($icfunc)) {
+            return false;
+        }
+
+        switch ($type) {
+            case "inscribe":
+                $ratio = $width / $size[0];
+                $new_width = floor($size[0] * $ratio);
+                $new_height = floor($size[1] * $ratio);
+                if ($new_height > $height) {
+                    $ratio = $height / $size[1];
+                    $new_width = floor($size[0] * $ratio);
+                    $new_height = floor($size[1] * $ratio);
+                }
+                break;
+            case "circumscribe":
+                $ratio = $width / $size[0];
+                $new_width = floor($size[0] * $ratio);
+                $new_height = floor($size[1] * $ratio);
+                if ($new_height < $height) {
+                    $ratio = $height / $size[1];
+                    $new_width = floor($size[0] * $ratio);
+                    $new_height = floor($size[1] * $ratio);
+                }
+                break;
+            default:
+                $ratio = $width / $size[0];
+                $new_width = floor($size[0] * $ratio);
+                $new_height = floor($size[1] * $ratio);
+                if ($new_height > $height) {
+                    $ratio = $height / $size[1];
+                    $new_width = floor($size[0] * $ratio);
+                    $new_height = floor($size[1] * $ratio);
+                }
+                $width=$new_width;
+                $height=$new_height;
+                break;
+        }
+        $new_left = floor(($width - $new_width) / 2);
+        $new_top = floor(($height - $new_height) / 2);
+
+        $bigimg = $icfunc($inputfile);
+        $trumbalis = imagecreatetruecolor($width, $height);
+
+        imagefill($trumbalis, 0, 0, $backgroundColor);
+        imagecopyresampled($trumbalis, $bigimg, $new_left, $new_top, 0, 0, $new_width, $new_height, $size[0], $size[1]);
+        imagejpeg($trumbalis, $outputfile, $quality);
+
+        imagedestroy($bigimg);
+        imagedestroy($trumbalis);
+        return true;
+    }
+
+    // ----------------- resizing image to create small image - end ------------
+
     $message.="<font color=green>{$text['Page_saved_successfully']}</font><br>\n";
 
     # ---------------- do file upload - begin -------------------------------
     $data = date('Y-m-d-h-i-s');
     //prn($this_ec_item_info["ec_item_img"]); die();
-    for ($qq = 1; $qq <= 3; $qq++) {
+    for ($qq = 1; $qq <= 6; $qq++) {
         if (isset($_FILES["ec_item_img$qq"])) {
             $photos = $_FILES["ec_item_img$qq"];
             if ($photos['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/", $photos['name'], $regs)) {
                 # get file extension
                 $file_extension = ".{$regs[1]}";
                 # create file name
-                $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-" . encode_file_name($photos['name']);
+                
 
                 # create directory
                 $relative_dir = date('Y') . '/' . date('m');
@@ -166,9 +235,17 @@ if ($all_is_ok) {
                 path_create($site_root_dir, "/gallery/$relative_dir/");
 
                 # copy uploaded file
-                copy($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$big_image_file_name");
+                //copy($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$big_image_file_name");
 
-                $this_ec_item_info["ec_item_img"][] = "gallery/$relative_dir/$big_image_file_name";
+                $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-big-" . encode_file_name($photos['name']);
+                $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
+                ec_img_resize($photos['tmp_name'], $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
+
+                $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . encode_file_name($photos['name']);
+                $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
+                ec_img_resize($photos['tmp_name'], $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
+
+                $this_ec_item_info["ec_item_img"][] = Array("gallery/$relative_dir/$small_image_file_name","gallery/$relative_dir/$big_image_file_name");
             }
         }
     }
@@ -176,13 +253,19 @@ if ($all_is_ok) {
     # ---------------- do file upload - end ---------------------------------
     # ---------------- delete files - begin ------------------------------------
     $site_root_dir = sites_root . '/' . $this_site_info['dir'];
-    //prn($input_vars);
     foreach ($input_vars as $key => $val) {
         if (preg_match('/^ec_item_imgdelete/', $key)) {
             $nimage = str_replace('ec_item_imgdelete', '', $key);
-            $path = $site_root_dir . '/' . $this_ec_item_info["ec_item_img"][$nimage];
-            if (is_file($path))
+            
+
+            $path = $site_root_dir . '/' . $this_ec_item_info["ec_item_img"][$nimage]['small'];
+            if (is_file($path)) {
                 unlink($path);
+            }
+            $path = $site_root_dir . '/' . $this_ec_item_info["ec_item_img"][$nimage]['big'];
+            if (is_file($path)) {
+                unlink($path);
+            }
             unset($this_ec_item_info["ec_item_img"][$nimage]);
         }
     }
@@ -213,6 +296,14 @@ if ($all_is_ok) {
     # ---------------- reorder images begin - end ------------------------------
 
     if ($this_ec_item_info['ec_item_id'] > 0) {
+
+        $ec_item_img=$this_ec_item_info['ec_item_img'];
+        $cnt=count($ec_item_img);
+        for($i=0;$i<$cnt;$i++){
+            $ec_item_img[$i]=join("\t",$ec_item_img[$i]);
+        }
+        $ec_item_img=join("\n",$ec_item_img);
+        
         $query = "UPDATE {$table_prefix}ec_item
                    SET
                       ec_item_lang='{$lng}',
@@ -234,13 +325,13 @@ if ($all_is_ok) {
                       ec_item_material='" . DbStr($this_ec_item_info['ec_item_material']) . "',
                       ec_item_size='{$this_ec_item_info['ec_item_size'][0]}x{$this_ec_item_info['ec_item_size'][1]}x{$this_ec_item_info['ec_item_size'][2]} {$this_ec_item_info['ec_item_size'][3]}',
                       ec_item_weight='{$this_ec_item_info['ec_item_weight'][0]} {$this_ec_item_info['ec_item_weight'][1]}',
-                      ec_item_img='" . DbStr(join("\n", $this_ec_item_info['ec_item_img'])) . "',
+                      ec_item_img='" . DbStr($ec_item_img) . "',
                       cache_datetime='2001-01-01 00:00:00',
                       ec_item_variants='" . DbStr($this_ec_item_info['ec_item_variants']) . "',
                       ec_item_ordering={$this_ec_item_info['ec_item_ordering']}
 
            WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
-           //prn(htmlspecialchars($query));
+        //prn(htmlspecialchars($query));
         //
         db_execute($query);
 
@@ -260,14 +351,14 @@ if ($all_is_ok) {
         }
         // ------------- update language in related tables - end ---------------
         $this_ec_item_info['ec_item_lang'] = $lng;
-
     } else {
         $query = "SELECT max(ec_item_id) as newid FROM {$table_prefix}ec_item";
         $newid = db_getonerow($query);
         //prn($newid);
         $this_ec_item_info['ec_item_id'] = $newid['newid'] + 1;
-        if (!isset($this_ec_item_info['ec_item_img']))
+        if (!isset($this_ec_item_info['ec_item_img'])) {
             $this_ec_item_info['ec_item_img'] = Array();
+        }
 
         $query = "insert into {$table_prefix}ec_item (
                         ec_item_id,
@@ -333,8 +424,9 @@ if ($all_is_ok) {
     $query = Array();
     foreach ($tmp as $tag) {
         $tag = trim($tag);
-        if (strlen($tag) > 0)
+        if (strlen($tag) > 0) {
             $query[] = "({$this_ec_item_info['ec_item_id']},'" . DbStr($tag) . "',{$this_ec_item_info['site_id']})";
+        }
     }
     if (count($query) > 0) {
         $query = "INSERT INTO {$table_prefix}ec_item_tags(ec_item_id,ec_item_tag,site_id) values " . join(',', $query);
@@ -343,7 +435,7 @@ if ($all_is_ok) {
     # ---------------- update tags - end ---------------------------------------
     # ---------------- save variants - begin -----------------------------------
     $ec_item_variants = Array();
-    if(strlen(trim($this_ec_item_info['ec_item_variants']))>0){
+    if (strlen(trim($this_ec_item_info['ec_item_variants'])) > 0) {
         # parse variants
         // split strings
         // for each string get
@@ -438,7 +530,7 @@ if ($all_is_ok) {
     // insert updated variants
     for ($i = 0, $cnt = count($ec_item_variants); $i < $cnt; $i++) {
         $val = $ec_item_variants[$i];
-        $query="INSERT INTO {$table_prefix}ec_item_variant(
+        $query = "INSERT INTO {$table_prefix}ec_item_variant(
             ec_item_variant_ordering,
             ec_item_variant_indent,
             ec_item_variant_code,
@@ -448,20 +540,19 @@ if ($all_is_ok) {
             ec_item_id,
             ec_item_lang
         ) VALUES(
-            ".abs((int)$val['ec_item_variant_ordering']).",
-            ".abs((int)$val['ec_item_variant_indent']).",
-            '".DbStr($val['ec_item_variant_code'])."',
-            '".DbStr($val['ec_item_variant_price_correction'])."',
-            '".DbStr($val['ec_item_variant_description'])."',
-            ".abs((int)$val['ec_item_variant_id']).",
-            ".abs((int)$val['ec_item_id']).",
-            '".DbStr($val['ec_item_lang'])."'
+            " . abs((int) $val['ec_item_variant_ordering']) . ",
+            " . abs((int) $val['ec_item_variant_indent']) . ",
+            '" . DbStr($val['ec_item_variant_code']) . "',
+            '" . DbStr($val['ec_item_variant_price_correction']) . "',
+            '" . DbStr($val['ec_item_variant_description']) . "',
+            " . abs((int) $val['ec_item_variant_id']) . ",
+            " . abs((int) $val['ec_item_id']) . ",
+            '" . DbStr($val['ec_item_lang']) . "'
         )";
         db_execute($query);
     }
-    $this_ec_item_info['ec_item_variant']=$ec_item_variants;
+    $this_ec_item_info['ec_item_variant'] = $ec_item_variants;
     # ---------------- save variants - end -------------------------------------
-
     # ---------------- save additional fields - begin --------------------------
     db_execute("DELETE FROM {$table_prefix}ec_category_item_field_value
                 WHERE ec_item_id={$this_ec_item_info['ec_item_id']}
