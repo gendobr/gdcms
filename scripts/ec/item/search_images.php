@@ -51,48 +51,50 @@ $input_vars['h']=isset($input_vars['h'])?((int)$input_vars['h']):400;
 $report='';
 if(isset($input_vars['imh']) && is_array($input_vars['imh'])) {
     //prn($input_vars['imh']);
-    function ec_img_resize($photos, $imagefile, $width, $height, $rgb=0xFFFFFF, $quality=100) {
-        if (!file_exists($photos)) return false;
-        $size = getimagesize($photos);
-        if ($size === false) return false;
-
-        $format = strtolower(substr($size['mime'], strpos($size['mime'], '/')+1));
-        $icfunc = "imagecreatefrom" . $format;
-        if (!function_exists($icfunc)) return false;
-
-
-        $x_ratio = $width / $size[0];
-        $y_ratio = $height / $size[1];
-
-        $ratio       = min($x_ratio, $y_ratio);
-        if($ratio>1) {
-           //prn("don't enlarge image") ;
-           if($photos!=$imagefile) copy($photos, $imagefile);
-           return true;
-        }
-
-        //prn("resizing $photos > $imagefile");
-        $use_x_ratio = ($x_ratio == $ratio);
-
-        $new_width   = $use_x_ratio  ? $width  : floor($size[0] * $ratio);
-        $new_height  = !$use_x_ratio ? $height : floor($size[1] * $ratio);
-        $new_left    = $use_x_ratio  ? 0 : floor(($width - $new_width) / 2);
-        $new_top     = !$use_x_ratio ? 0 : floor(($height - $new_height) / 2);
-
-
-
-        $bigimg = $icfunc($photos);
-        $trumbalis = imagecreatetruecolor($width, $height);
-
-        imagefill($trumbalis, 0, 0, $rgb);
-        imagecopyresampled($trumbalis, $bigimg, $new_left, $new_top, 0, 0, $new_width, $new_height, $size[0], $size[1]);
-
-        imagejpeg($trumbalis, $imagefile, $quality);
-
-        imagedestroy($bigimg);
-        imagedestroy($trumbalis);
-        return true;
-    }
+    
+//    
+//    function ec_img_resize($photos, $imagefile, $width, $height, $rgb=0xFFFFFF, $quality=100) {
+//        if (!file_exists($photos)) return false;
+//        $size = getimagesize($photos);
+//        if ($size === false) return false;
+//
+//        $format = strtolower(substr($size['mime'], strpos($size['mime'], '/')+1));
+//        $icfunc = "imagecreatefrom" . $format;
+//        if (!function_exists($icfunc)) return false;
+//
+//
+//        $x_ratio = $width / $size[0];
+//        $y_ratio = $height / $size[1];
+//
+//        $ratio       = min($x_ratio, $y_ratio);
+//        if($ratio>1) {
+//           //prn("don't enlarge image") ;
+//           if($photos!=$imagefile) copy($photos, $imagefile);
+//           return true;
+//        }
+//
+//        //prn("resizing $photos > $imagefile");
+//        $use_x_ratio = ($x_ratio == $ratio);
+//
+//        $new_width   = $use_x_ratio  ? $width  : floor($size[0] * $ratio);
+//        $new_height  = !$use_x_ratio ? $height : floor($size[1] * $ratio);
+//        $new_left    = $use_x_ratio  ? 0 : floor(($width - $new_width) / 2);
+//        $new_top     = !$use_x_ratio ? 0 : floor(($height - $new_height) / 2);
+//
+//
+//
+//        $bigimg = $icfunc($photos);
+//        $trumbalis = imagecreatetruecolor($width, $height);
+//
+//        imagefill($trumbalis, 0, 0, $rgb);
+//        imagecopyresampled($trumbalis, $bigimg, $new_left, $new_top, 0, 0, $new_width, $new_height, $size[0], $size[1]);
+//
+//        imagejpeg($trumbalis, $imagefile, $quality);
+//
+//        imagedestroy($bigimg);
+//        imagedestroy($trumbalis);
+//        return true;
+//    }
 
     # create directory
     $relative_dir=date('Y').'/'.date('m');
@@ -109,11 +111,22 @@ if(isset($input_vars['imh']) && is_array($input_vars['imh'])) {
             $file_path = "{$prefix}/{$fname}";
             file_put_contents($file_path, $response['body']);
 
+            //$newfname  = time()."-{$imid}.jpg";
+            //if(ec_img_resize($file_path, "{$prefix}/{$newfname}", $input_vars['w'], $input_vars['h'])) {
+            //    $report.="\ngallery/$relative_dir/{$newfname}";
+            //}
+            
             $newfname  = time()."-{$imid}.jpg";
-            if(ec_img_resize($file_path, "{$prefix}/{$newfname}", $input_vars['w'], $input_vars['h'])) {
-                $report.="\ngallery/$relative_dir/{$newfname}";
-            }
-            if($newfname!=$fname) unlink($file_path);
+            
+            $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-big-" . $newfname;
+            $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
+            ec_img_resize($file_path, $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
+
+            $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . $newfname;
+            $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
+            ec_img_resize($file_path, $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
+
+            unlink($file_path);
         }
     }
     if(strlen($report)>0) {
@@ -229,7 +242,7 @@ if($json->responseData->results) {
         <br/>
                 {$result->titleNoFormatting}<br/>
                 {$result->width}px &times; {$result->height}px<br>
-            <a href=\"{$result->url}\" target=_blank>увеличить</a>
+            <a href=\"{$result->url}\" target=_blank>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</a>
         </span>
                 ";
     }
