@@ -129,4 +129,9 @@ define('url_prefix_news_list', sites_root_URL . "/news.php?");
 define('url_prefix_guestbook', "/cms/index.php?action=gb/guestbook&");
 define('url_prefix_search', sites_root_URL . "/search.php?");
 # ----------------------------- urls using mod_rewrite in apache - end ---------------------
+
+
+
+define('gallery_big_image_width', 800);
+define('gallery_big_image_height', 800);
 ?>
