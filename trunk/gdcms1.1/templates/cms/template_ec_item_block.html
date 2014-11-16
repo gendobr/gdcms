@@ -21,7 +21,7 @@
 <span class="itemlist">
     {foreach from=$ec_items item=item}
     <span class="oneitem">
-       {if $item.ec_main_image}<div class="r1"><a href="{$item.url_details}"><img src="{$site.url}{$item.ec_main_image}" width="212px" border="0px"></a></div>{/if}
+       {if $item.ec_main_image}<div class="r1"><a href="{$item.url_details}"><img src="{$site.url}{$item.ec_main_image.small}" width="212px" border="0px"></a></div>{/if}
        <b><a href="{$item.url_details}">{$item.ec_item_title}</a></b>
        <div class="sml">
            <div class="flt_l">{$item.ec_item_price}{$item.ec_curency_title}</div>

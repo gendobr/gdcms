@@ -10,7 +10,7 @@
     </a><br/>
     {foreach name=top from=$ec_item.ec_item_img item=curr_img_src}
        {if $smarty.foreach.top.first}
-        <br/><img src="{$site.url}{$curr_img_src}"><br>
+        <br/><a href="{$site.url}{$curr_img_src.big}" target="_blank"><img src="{$site.url}{$curr_img_src.small}"></a><br>
        {/if}
     {/foreach}
 </div>
@@ -91,10 +91,11 @@
 
    <div style="clear:right;">&nbsp;</div>
    <p>{$ec_item.ec_item_content}</p>
+   
    {foreach name=top from=$ec_item.ec_item_img item=curr_img_src}
 	  {if $smarty.foreach.top.first}
 	  {else}
-      <br/><img src="{$site.url}{$curr_img_src}" width="100%"><br>
+              <a href="{$site.url}{$curr_img_src.big}"><img src="{$site.url}{$curr_img_src.small}"></a>
 	  {/if}
    {/foreach}
 
