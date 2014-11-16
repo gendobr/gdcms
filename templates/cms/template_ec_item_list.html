@@ -47,7 +47,7 @@
       {*<!--  {if $item.ec_item_mark neq ''}<div style="text-align:center;position:relative;top:0px;left:40pt;width:100pt;border:2pt dotted silver;">{$item.ec_item_mark}</div>{/if} -->*}
        <a href="{$item.url_details}">{$item.ec_item_title}</a>
    </div>
-   {if $item.ec_main_image}<div class="r1"><a href="{$item.url_details}"><img src="{$site.url}{$item.ec_main_image}"></a></div>{/if}
+   {if $item.ec_main_image}<div class="r1"><a href="{$item.url_details}"><img src="{$site.url}{$item.ec_main_image.small}"></a></div>{/if}
    </div>
    <div class="sml">
        <div class="flt_l">{if $item.ec_item_sell eq 1}{$item.ec_item_price}{$item.ec_curency_title}{/if}</div>
