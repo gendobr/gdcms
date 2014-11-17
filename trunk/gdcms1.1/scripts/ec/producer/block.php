@@ -41,6 +41,7 @@ run('site/menu');
   $query="SELECT ec_producer.ec_producer_id,
                  ec_producer.ec_producer_title,
                  ec_producer.ec_producer_img,
+                 ec_producer.ec_producer_logo,
                  ec_producer.ec_producer_abstract,
                  count(ec_item.ec_item_id) as n_items
           FROM {$table_prefix}ec_producer as ec_producer
