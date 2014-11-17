@@ -4,21 +4,22 @@
  * Browse ec_item categories
  *   argments are
  *    $category_id - identifier of category
- *
- *
- *
  */
 run('ec/item/functions');
 run('site/menu');
 # -------------------- set interface language - begin ---------------------------
 $debug = false;
-if (isset($input_vars['interface_lang']))
-    if ($input_vars['interface_lang'])
+if (isset($input_vars['interface_lang'])) {
+    if ($input_vars['interface_lang']) {
         $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
+    }
+}
+if (!isset($input_vars['lang'])) {
     $input_vars['lang'] = default_language;
-if (strlen($input_vars['lang']) == 0)
+}
+if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = default_language;
+}
 // $lang=$input_vars['lang'];
 $lang = get_language('lang');
 # -------------------- set interface language - end -----------------------------
@@ -29,33 +30,24 @@ $txt = load_msg($lang);
 # ------------------- get site info - begin ------------------------------------
 $site_id = checkInt($input_vars['site_id']);
 $this_site_info = get_site_info($site_id);
-if (!$this_site_info)
+if (!$this_site_info) {
     die($txt['Site_not_found']);
+}
 $this_site_info['title'] = get_langstring($this_site_info['title'], $lang);
 //prn($this_site_info);
 //prn($input_vars);
 # ------------------- get site info - end --------------------------------------
 # --------------------------- get site template - begin ------------------------
 $custom_page_template = sites_root . '/' . $this_site_info['dir'] . '/template_index.html';
-if (is_file($custom_page_template))
+if (is_file($custom_page_template)) {
     $this_site_info['template'] = $custom_page_template;
+}
 # --------------------------- get site template - end --------------------------
 # --------------------------- get list of producers - begin --------------------
-//$query = "SELECT ec_producer.ec_producer_id,
-//                 ec_producer.ec_producer_title,
-//                 ec_producer.ec_producer_img,
-//                 count(ec_item.ec_item_id) as n_items
-//          FROM {$table_prefix}ec_producer as ec_producer,
-//               {$table_prefix}ec_item as ec_item
-//          WHERE ec_producer.ec_producer_id=ec_item.ec_producer_id
-//               AND ec_item.ec_item_lang='{$lang}'
-//			   AND ec_item.site_id={$site_id}
-//			   AND ec_producer.site_id={$site_id}
-//          GROUP BY ec_producer.ec_producer_id
-//          ORDER BY ec_producer.ec_producer_title ASC";
 $query = "SELECT ec_producer.ec_producer_id,
                  ec_producer.ec_producer_title,
                  ec_producer.ec_producer_img,
+                 ec_producer.ec_producer_logo,
                  count(ec_item.ec_item_id) as n_items
           FROM {$table_prefix}ec_producer as ec_producer
                left join {$table_prefix}ec_item as ec_item
