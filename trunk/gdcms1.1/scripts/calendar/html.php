@@ -1,6 +1,6 @@
 <?php
 /*
- * Сторінка для формування html коду для вставки календаря в інші сторінки
+ * 
  */
 //------------------- site info - begin ----------------------------------------
 run('site/menu');
@@ -55,24 +55,32 @@ function set_span_value(span_id,val)
   ".text('Calendar_widget_template_file').":
   <input type=text id=s_template_fld onchange=\"set_span_value('s_template',this.value)\"><input type=button value=\"OK\"><br />
 
-  <h3>".text('Calendar_widget_current_events')."</h3>
-  <pre style='padding:10px;width:500pt; height:150pt;overflow:scroll;'>
-    &lt;div id=calendar$uid&gt;&nbsp;&lt;/div&gt;
-      &lt;iframe style='width:1px;height:1px;border:none;' src='"
-     .site_root_URL
-     ."/index.php?action=calendar/get_by_date"
-     ."&amp;site_id={$site_id}"
-     ."&amp;lang=<span id=s_lang>{$_SESSION['lang']}</span>"
-     ."&amp;rows=<span id=s_rows>10</span>"
-     ."&amp;template=<span id=s_template0></span>"
-     ."&amp;element=calendar$uid"
-     ."'&gt;&lt;/iframe&gt;
 
+
+
+
+  <h3>".text('Calendar_widget_current_events')."</h3>
+  <pre style='padding:10px;width:100%; height:150pt;overflow:scroll;'>
+&lt;script type=\"text/javascript\" src=\"".site_root_URL."/cms/scripts/lib/ajax_loadblock.js\"&gt;&lt;/script&gt;
+&lt;div id=calendar$uid&gt;&nbsp;&lt;/div&gt;
+&lt;script type=\"text/javascript\"&gt;
+ajax_loadblock('calendar$uid','"
+ .site_root_URL
+ ."/index.php?action=calendar/get_by_date"
+ ."&amp;site_id={$site_id}"
+ ."&amp;lang=<span id=s_lang>{$_SESSION['lang']}</span>"
+ ."&amp;rows=<span id=s_rows>10</span>"
+ ."&amp;template=<span id=s_template0></span>"
+ ."&amp;element=calendar$uid"
+ ."',null);
+&lt;/script&gt;
   </pre>
   <h3>".text('Calendar_widget_today_events')."</h3>
   <pre style='padding:10px;width:500pt; height:150pt;overflow:scroll;'>
-    &lt;div id=calendar$uid&gt;&nbsp;&lt;/div&gt;
-      &lt;iframe style='width:1px;height:1px;border:none;' src='"
+&lt;script type=\"text/javascript\" src=\"".site_root_URL."/cms/scripts/lib/ajax_loadblock.js\"&gt;&lt;/script&gt;
+&lt;div id=calendar$uid&gt;&nbsp;&lt;/div&gt;
+&lt;script type=\"text/javascript\"&gt;
+ajax_loadblock('calendar$uid','"
      .site_root_URL
      ."/index.php?action=calendar/get_by_date"
      ."&amp;site_id={$site_id}"
@@ -82,11 +90,12 @@ function set_span_value(span_id,val)
      ."&amp;element=calendar$uid"
      ."&amp;h=-1"
      ."&amp;i=-1"
-     ."'&gt;&lt;/iframe&gt;
+     ."',null);
+&lt;/script&gt;
   </pre>
 
   <h3>".text('Calendar_widget_month')."</h3>
-  <div>".site_root_URL."/index.php?action=calendar/month_block&site_id=69&interface_lang=rus</div>
+  <div>".site_root_URL."/index.php?action=calendar/month_block&site_id={$site_id}&interface_lang=rus</div>
 
 ";
 # ------------------------------------------------------------------------------

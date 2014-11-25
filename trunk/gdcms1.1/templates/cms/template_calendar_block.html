@@ -32,32 +32,25 @@
 
 
 
-<table>
+<table class="calendar_month_table">
 <tr>
-<td colspan=4 
-    align=left 
-    valign=middle><a href="{$month_table.prev_month_link}" class="larr"></a>{$month_table.month_name}<a href="{$month_table.next_month_link}" class="rarr"></a></td>
-<td colspan=3 align=right valign=middle><a href="{$month_table.prev_year_link}" class="larr"></a>{$month_table.year}<a href="{$month_table.next_year_link}" class="rarr"></a></td>
+<td colspan=4 align=left valign=middle class="calendar_month"><a href="{$month_table.prev_month_link}" class="larr calendar_prev_month"></a>{$month_table.month_name}<a href="{$month_table.next_month_link}" class="rarr  calendar_next_month"></a></td>
+<td colspan=3 align=right valign=middle class="calendar_year"><a href="{$month_table.prev_year_link}" class="larr calendar_prev_year"></a>{$month_table.year}<a href="{$month_table.next_year_link}" class="rarr calendar_next_year"></a></td>
 </tr>
 
-
-<tr>
-{foreach from=$month_table.weekdays item=weekday}
-<td>{$weekday}</td>
-{/foreach}
-</tr>
+<tr>{foreach from=$month_table.weekdays item=weekday}<td class="calendar_weekday">{$weekday}</td>{/foreach}</tr>
 
 {foreach from=$month_table.days item=row}
 <tr>
-{foreach from=$row item=cell}
-<td>
-{if $cell.href}
-<a href="{$cell.href}">{$cell.innerHTML}</a>
-{else}
-{$cell.innerHTML}
-{/if}
-</td>
-{/foreach}
+  {foreach from=$row item=cell}
+    <td class="calendar_day">
+        {if $cell.href}
+            <a href="{$cell.href}">{$cell.innerHTML}</a>
+        {else}
+            {$cell.innerHTML}
+        {/if}
+    </td>
+  {/foreach}
 </tr>
 {/foreach}
 
