@@ -1,7 +1,7 @@
 <?php
 
 /**
-  <h2>Зміна події</h2>
+  <h2>пїЅпїЅпїЅпїЅ пїЅпїЅдії</h2>
  */
 //------------------- site info - begin ----------------------------------------
 run('site/menu');
@@ -42,7 +42,7 @@ run('calendar/functions');
 
 
 if (isset($input_vars['upd'])) {
-    #---------------------------- Перевірка змінних - початок ------------------
+    #---------------------------- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ------------------
     $nazva1 = $input_vars['nazva1'];
     $adresa1 = $input_vars['adresa1'];
     $kartynka1 = $input_vars['kartynka1'];
@@ -64,7 +64,7 @@ if (isset($input_vars['upd'])) {
     $kinhv1 = $input_vars['kinhv1'];
     $vis1 = $input_vars['vis1'];
     $description = $input_vars['description'];
-    #---------------------------- Перевірка змінних - кінець--------------------
+    #---------------------------- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅ--------------------
 
     if ($nazva1) {
         $query = "UPDATE {$table_prefix}calendar
@@ -110,8 +110,8 @@ if (isset($input_vars['upd'])) {
         header("Location:index.php?action=calendar/edit&site_id={$site_id}&event_id={$event_id}");
         exit();
         // redirect to event editor
-        //        echo "<p class=gotovo>Інформацію успішно змінено.</p><p><a href=spysok.php>Повернутися до списку статей</a></p>";
-        //        echo "<p><a href=index.php>Додати статтю</a></p>";
+        //        echo "<p class=gotovo>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.</p><p><a href=spysok.php>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ</a></p>";
+        //        echo "<p><a href=index.php>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ</a></p>";
         //        $this_event_info = GetOneRow(Execute($db, "SELECT * FROM {$table_prefix}calendar WHERE id = '$event_id'"));
     }
 }
@@ -148,8 +148,9 @@ $calendar_hv = calendar_minutes();
 $query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
 $tmp = db_getrows($query);
 $list_of_categories = Array();
-foreach ($tmp as $tm)
+foreach ($tmp as $tm) {
     $list_of_categories[$tm['category_id']] = str_repeat(' + ', $tm['deep']) . get_langstring($tm['category_title']);
+}
 unset($tmp, $tm);
 //prn($list_of_categories);
 
@@ -273,7 +274,7 @@ $input_vars['page_content'].= "
           <INPUT type=text name=adresa1  value=\"{$this_event_info['adresa']}\"  SIZE=50></p>
 
           <p>" . text('Calendar_event_is_visible') . "<br />
-          <SELECT  NAME=vis1>" . draw_options($this_event_info['vis'], Array(1 => 'Так', 0 => 'Ні')) . "</SELECT></p>
+          <SELECT  NAME=vis1>" . draw_options($this_event_info['vis'], Array(1 => text('positive_answer'), 0 => text('negative_answer'))) . "</SELECT></p>
 
           <table><tr><td width=50%>
           <h4>" . text('Calendar_event_start_time') . "</h4>
@@ -332,7 +333,7 @@ $input_vars['page_content'].= "
 
 // --------------------- draw - end --------------------------------------------
 //# category context menu
-//  $input_vars['page_menu']['category']=Array('title'=>"Категория",'items'=>Array());
+//  $input_vars['page_menu']['category']=Array('title'=>"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",'items'=>Array());
 //  $input_vars['page_menu']['category']['items']=menu_category($this_category->info);
 //  //prn($input_vars['page_menu']['category']);
 # site context menu

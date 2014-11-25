@@ -11,7 +11,7 @@ $this_site_info = get_site_info($site_id);
 
 //var_dump($this_site_info);
 if (!$this_site_info) {
-    die($txt['Site_not_found']);
+    die(text('Site_not_found'));
 }
 //------------------- get site info - end --------------------------------------
 
@@ -26,13 +26,15 @@ run('calendar/functions');
 run('site/page/page_view_functions');
 
 //-------------------------- load messages - begin -----------------------------
-if (isset($input_vars['interface_lang']))
-    if ($input_vars['interface_lang'])
+if (isset($input_vars['interface_lang']) && $input_vars['interface_lang']) {
         $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
+}
+if (!isset($input_vars['lang'])) {
     $input_vars['lang'] = default_language;
-if (strlen($input_vars['lang']) == 0)
+}
+if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = default_language;
+}
 $lang=$input_vars['lang'] = get_language('lang');
 $txt = load_msg($input_vars['lang']);
 //-------------------------- load messages - end -------------------------------
@@ -55,8 +57,9 @@ $year = (int) date('Y', $first_timestamp);
 $shift = date('w', $timestamps[0]);
 //prn($shift);
 $days = Array();
-for ($i = 0; $i < $shift; $i++)
+for ($i = 0; $i < $shift; $i++) {
     $days[] = '';
+}
 foreach ($timestamps as $tms) {
     if (date('m', $tms) == $month) {
         $days[] = date('d', $tms);
@@ -89,36 +92,38 @@ $calendar = array_chunk($days, 7);
 
 $month_table=Array();
 
+$month_table['view_day_events_url_template']=site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month_block&year={year}&month={month}&day={day}";
+$month_table['other_month_url_template']=site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month_block&month={month}&year={year}";
+
 // draw navigator
-$month_prefix = site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month&year={$year}&month=";
-$month_next = $month_prefix . ($month + 1);
-$month_prev = $month_prefix . ($month - 1);
-$year_prefix = site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month&month={$month}&year=";
-$year_next = $year_prefix . ($year + 1);
-$year_prev = $year_prefix . ($year - 1);
+$month_table['next_month_link'] = str_replace(Array('{year}','{month}'),Array($year,$month+1),$month_table['other_month_url_template']);
+$month_table['prev_month_link'] = str_replace(Array('{year}','{month}'),Array($year,$month-1),$month_table['other_month_url_template']);
+
+$month_table['next_year_link'] = str_replace(Array('{year}','{month}'),Array(($year + 1),$month),$month_table['other_month_url_template']); 
+$month_table['prev_year_link'] = str_replace(Array('{year}','{month}'),Array(($year - 1),$month),$month_table['other_month_url_template']); 
 
 
-$month_table['prev_month_link']=$month_prev;
+
 $month_table['month_name']=$month_names[$month];
-$month_table['next_month_link']=$month_next;
-$month_table['prev_year_link']=$year_prev;
-$month_table['next_year_link']=$year_next;
+$month_table['month']=$month;
 $month_table['year']=$year;
 $month_table['weekdays']=$weekday_names;
-//prn($month_table['weekdays']);
 unset($month_table['weekdays'][-1]);
+
+
 
 $month_table['days']=Array();
 
-$view_day_events_url_prefix = site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month&year={$year}&month={$month}&day=";
+
+
 foreach ($calendar as $row) {
     $tr = Array();
     foreach ($row as $day) {
         if (events_exist($year, $month, $day, $this_site_info)) {
-            $view_day_events_url = $view_day_events_url_prefix . $day;
-            $tr[]=Array('innerHTML'=>$day,'href'=>$view_day_events_url);
+            $view_day_events_url = str_replace(Array('{year}','{month}','{day}'),Array($year,$month,$day),$month_table['view_day_events_url_template']);
+            $tr[]=Array('innerHTML'=>$day,'href'=>$view_day_events_url, 'year'=>$year, 'month'=>$month, 'day'=>$day);
         } else {
-            $tr[]=Array('innerHTML'=>$day,'href'=>'');
+            $tr[]=Array('innerHTML'=>$day,'href'=>'', 'year'=>$year, 'month'=>$month, 'day'=>$day);
         }
     }
     for ($i = count($row); $i < 7; $i++) {
@@ -131,7 +136,9 @@ foreach ($calendar as $row) {
 
 
 ////------------------------ draw using SMARTY template - begin ----------------
-
+if(isset($input_vars['verbose'])){
+    prn($month_table);
+}
 // draw main
 $_template = site_get_template($this_site_info, 'template_calendar_block');
 $vyvid = process_template($_template
@@ -140,11 +147,11 @@ $vyvid = process_template($_template
                     , 'text' => $txt
                 )
 );
-if(isset($input_vars['element'])){
-echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
+if (isset($input_vars['element'])) {
+    echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
 <html>
   <head>
-    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=".site_charset."\">
+    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=" . site_charset . "\">
   </head>
   <body>
   <div id=toinsert>$vyvid</div>
@@ -173,5 +180,7 @@ echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
     </body>
 </html>
 ";
-}else echo $vyvid;
+} else {
+    echo $vyvid;
+}
 ?>

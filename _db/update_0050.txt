@@ -1,0 +1,4 @@
+ALTER TABLE `cms_calendar` 
+CHANGE `adresa` `adresa` VARCHAR(1024) CHARSET utf8  NULL COMMENT 'адреса сторінки з описом події', 
+CHANGE `kartynka` `kartynka` VARCHAR(1024) CHARSET utf8 NULL COMMENT 'адреса іконки події', 
+ADD COLUMN `tags` TEXT NULL AFTER `description`; 

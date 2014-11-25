@@ -41,9 +41,9 @@ a.bl{color:blue;}
 .textblok,td.b { background-color: #ffffff; border:none; }
 td.c { background-color: #8BA0AC; border:none; }
 
-th {border: solid 1pt; color: #284351; background-color: #D1DFE0; text-align: center; font-weight: bold; FONT-SIZE: 10pt; FONT-FAMILY: Tahoma; border-color: #8BA0AC;
+th {border: solid 1pt; color: #284351; background-color: #D1DFE0; text-align: center; font-weight: bold; FONT-FAMILY: Tahoma; border-color: #8BA0AC;
 }
-td {border: solid 1pt #8BA0AC; color: #000000; background-color: #ffffff; FONT-SIZE: 8pt; border-color: #8BA0AC;
+td {border: solid 1pt #8BA0AC; color: #000000; background-color: #ffffff; border-color: #8BA0AC;
 }
 
 .white {

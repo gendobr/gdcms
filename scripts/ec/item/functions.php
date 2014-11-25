@@ -777,7 +777,7 @@ function onnullamount_none($ec_item_id) {
 /**
  * $type="resample"|"inscribe"|"circumscribe"
  */
-function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resample", $backgroundColor = 0xFFFFFF, $quality = 100) {
+function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resample", $backgroundColor = 0xFFFFFF, $quality = 70) {
     if (!file_exists($inputfile)) {
         return false;
     }
@@ -799,6 +799,9 @@ function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resamp
             $new_height = floor($size[1] * $ratio);
             if ($new_height > $height) {
                 $ratio = $height / $size[1];
+                if($ratio>1){
+                    $ratio=1;
+                }
                 $new_width = floor($size[0] * $ratio);
                 $new_height = floor($size[1] * $ratio);
             }
@@ -809,6 +812,9 @@ function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resamp
             $new_height = floor($size[1] * $ratio);
             if ($new_height < $height) {
                 $ratio = $height / $size[1];
+                if($ratio>1){
+                    $ratio=1;
+                }
                 $new_width = floor($size[0] * $ratio);
                 $new_height = floor($size[1] * $ratio);
             }
@@ -819,8 +825,11 @@ function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resamp
             $new_height = floor($size[1] * $ratio);
             if ($new_height > $height) {
                 $ratio = $height / $size[1];
+                if($ratio>1){
+                    $ratio=1;
+                }
                 $new_width = floor($size[0] * $ratio);
-                $new_height = floor($size[1] * $ratio);
+                $new_height = floor($size[1] * $ratio);                    
             }
             $width=$new_width;
             $height=$new_height;
@@ -846,4 +855,3 @@ function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resamp
 
 
 
-?>

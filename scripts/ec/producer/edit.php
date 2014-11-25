@@ -109,6 +109,7 @@ $success = $rep->process();
 
 if ($success) {
     run('lib/file_functions');
+    run('ec/item/functions');
     //prn($_FILES);
     # -------------------- upload image - begin ----------------------------------
     if (isset($_FILES["ec_producer_img"])) {
@@ -118,22 +119,27 @@ if ($success) {
             # get file extension
             $file_extension = ".{$regs[1]}";
             # create file name
-            $big_image_file_name = "{$site_id}-{$data}-" . encode_file_name($photos['name']);
+            $orig_image_file_name = "{$site_id}-{$data}-" . encode_file_name($photos['name']);
 
             # create directory
             $relative_dir = date('Y') . '/' . date('m');
             $site_root_dir = sites_root . '/' . $this_site_info['dir'];
             path_create($site_root_dir, "/gallery/$relative_dir/");
-            //prn($site_root_dir,"/gallery/$relative_dir/");
+            
             # copy uploaded file
-            //prn($photos['tmp_name'],is_file($photos['tmp_name']),filesize($photos['tmp_name']),"$site_root_dir/gallery/$relative_dir/$big_image_file_name");
-            $suc = move_uploaded_file($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$big_image_file_name");
-            //prn("<img src="."{$this_site_info['url']}gallery/$relative_dir/$big_image_file_name".">");
-            //if($suc) prn('OK'); else prn('Error');
+            $suc = move_uploaded_file($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$orig_image_file_name");
+            
+            // resize image file
+            $big_image_file_name = "{$site_id}-{$data}-{$data}-big-" . encode_file_name($photos['name']);
+            $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
+            ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
+            // echo ($big_file_path); exit();
+
+            //    $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . encode_file_name($photos['name']);
+            //    $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
+            //    ec_img_resize($photos['tmp_name'], $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
             $ec_producer_img = "gallery/$relative_dir/$big_image_file_name";
-            //prn($this_producer_info["ec_producer_img"]);
             $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_img='" . DbStr($ec_producer_img) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
-            //prn($query);
             db_execute($query);
             //phpinfo();
         }
@@ -147,7 +153,7 @@ if ($success) {
             # get file extension
             $file_extension = ".{$regs[1]}";
             # create file name
-            $big_image_file_name = "{$site_id}-{$data}-" . encode_file_name($photos['name']);
+            $orig_image_file_name = "{$site_id}-{$data}-" . encode_file_name($photos['name']);
 
             # create directory
             $relative_dir = date('Y') . '/' . date('m');
@@ -156,9 +162,16 @@ if ($success) {
             //prn($site_root_dir,"/gallery/$relative_dir/");
             # copy uploaded file
             //prn($photos['tmp_name'],is_file($photos['tmp_name']),filesize($photos['tmp_name']),"$site_root_dir/gallery/$relative_dir/$big_image_file_name");
-            $suc = move_uploaded_file($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$big_image_file_name");
+            $suc = move_uploaded_file($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$orig_image_file_name");
             //prn("<img src="."{$this_site_info['url']}gallery/$relative_dir/$big_image_file_name".">");
             //if($suc) prn('OK'); else prn('Error');
+            
+            $big_image_file_name = "{$site_id}-{$data}-big-logo" . encode_file_name($photos['name']);
+            $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
+            ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
+
+            // echo "$big_image_file_name";exit();
+            
             $ec_producer_logo = "gallery/$relative_dir/$big_image_file_name";
             //prn($this_producer_info["ec_producer_logo"]);
             $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_logo='" . DbStr($ec_producer_logo) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
@@ -195,7 +208,7 @@ $form['elements']['ec_producer_logo'] = Array(
     'label' => text('ec_producer_logo'),
     'type' => 'custom',
     'primary_key' => 0,
-    'form_element_html' => ( (strlen($this_producer_info['ec_producer_logo']) == 0) ? "<input type=file name=ec_producer_logo>" : "<img src=\"{$this_site_info['url']}{$this_producer_info['ec_producer_logo']}\" width=200pt><br><a href=\"index.php?action=ec/producer/edit&ec_producer_id={$rep->id}&site_id={$site_id}&ec_producer_logo_delete=1\">{$text['Delete']}</a><br><br>")
+    'form_element_html' => ( (!isset($this_producer_info['ec_producer_logo']) || strlen($this_producer_info['ec_producer_logo']) == 0) ? "<input type=file name=ec_producer_logo>" : "<img src=\"{$this_site_info['url']}{$this_producer_info['ec_producer_logo']}\" width=200pt><br><a href=\"index.php?action=ec/producer/edit&ec_producer_id={$rep->id}&site_id={$site_id}&ec_producer_logo_delete=1\">{$text['Delete']}</a><br><br>")
 );
 
     

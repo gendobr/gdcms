@@ -1,10 +1,6 @@
 <?php
 
-/**
- * Перелік подій
- * перехід до редагування
- * доступно лише редактору сайта
- */
+
 //------------------- site info - begin ----------------------------------------
 run('site/menu');
 $site_id = isset($input_vars['site_id']) ? ((int) $input_vars['site_id']) : 0;
@@ -37,26 +33,25 @@ if (isset($input_vars['event_delete']) && isset($input_vars['event'])) {
     $ids = join(',', array_map('toint', $input_vars['event']));
     db_execute("DELETE FROM {$table_prefix}calendar WHERE id in($ids)");
     db_execute("DELETE FROM {$table_prefix}calendar_category WHERE event_id in($ids)");
-    // echo "<p>Видалено: {$delit}</p>";
+    // echo "<p>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {$delit}</p>";
 }
 // --------------------- delete - end ------------------------------------------
 #---------------------------- hide - begin -------------------------------------
 if (isset($input_vars['event_hide']) && isset($input_vars['event'])) {
     $ids = join(',', array_map('toint', $input_vars['event']));
     Execute($db, "UPDATE {$table_prefix}calendar SET vis=0 WHERE id in($ids) AND site_id={$site_id}");
-    // echo "<p>Видалено: {$delit}</p>";
+    // echo "<p>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {$delit}</p>";
 }
 #---------------------------- hide - end ---------------------------------------
 #---------------------------- show - begin -------------------------------------
 if (isset($input_vars['event_show']) && isset($input_vars['event'])) {
     $ids = join(',', array_map('toint', $input_vars['event']));
     Execute($db, "UPDATE {$table_prefix}calendar SET vis=1 WHERE id in($ids) AND site_id={$site_id}");
-    // echo "<p>Видалено: {$delit}</p>";
+    // echo "<p>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {$delit}</p>";
 }
 #---------------------------- show - end ---------------------------------------
 // ------------------ process search form parameters - begin -------------------
 $where = Array();
-
 
 $calendar_misyaci = calendar_misyaci();
 

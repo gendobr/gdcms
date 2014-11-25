@@ -1,0 +1,130 @@
+<html>
+<head>
+<META content="text/html; charset=UTF-8" http-equiv=Content-Type>
+</head>
+<body leftmargin="5" topmargin="5">
+
+<form action=http://127.0.0.1/cms/index.php method=post>
+api_key=
+<input type=text name="api_key" value="1234567"><br>
+
+
+action=
+<select name="action">
+    <option value="calendar/api/update">calendar/api/update</option>
+    <option value="calendar/api/create">calendar/api/create</option>
+</select>
+<br>
+
+
+
+id=
+<input type=text name="id" value="59"><br>
+
+site_id=    <br><input type=text name="site_id" value="62"><br>
+nazva=      <br><input type=text name="nazva" value="нова новина"><br>
+description=<br><input type=text name="description" value="текст нової новини"><br>
+vis=        <br><input type=text name="vis" value="1"><br>
+<!-- tags=       <br><input type=text name="tags" value="slovo1, slovo2"><br> -->
+
+categories= <input type=text name="categories" value="slovo1, slovo2"><br>
+
+
+<h3>початок події</h3>
+pochrik (рік або -1 для будь-якого року)
+<br><input type=text name="pochrik" value="-1"><br>
+
+
+pochmis (місяць (1,2,3, ... 12) або -1 для будь-якого місяця )
+<br>
+<select name="pochmis">
+    <option value="-1">Any</option>
+    <option value="1">jan</option>
+    <option value="2">feb</option>
+    <option value="3">mar</option>
+    <option value="4">apr</option>
+    <option value="5">may</option>
+    <option value="6">jun</option>
+    <option value="7">jul</option>
+    <option value="8">aug</option>
+    <option value="9">sep</option>
+    <option value="10">oct</option>
+    <option value="11">nov</option>
+    <option value="12">dec</option>
+</select>
+<br>
+
+pochtyzh (день тижня або -1 для будь-якого для тижня)
+<br>
+<select name="pochtyzh">
+    <option value="-1">Any</option>
+    <option value="0">sunday</option>
+    <option value="1">monday</option>
+    <option value="2">tuesday</option>
+    <option value="3">wednesday</option>
+    <option value="4">thursday</option>
+    <option value="5">friday</option>
+    <option value="6">saturday</option>
+</select>
+<br>
+
+pochday        день місяця або -1 для будь-якого дня місяця
+<br><input type=text name="pochday" value="-1"><br>
+
+pochgod        година або -1 для будь-якої години
+<br><input type=text name="pochgod" value="-1"><br>
+
+pochhv       хвилина або -1 для будь-якої хвилини
+<br><input type=text name="pochhv" value="-1"><br>
+
+<h3>Кінець події</h3>
+kinrik         рік або -1 для будь-якого року
+<br><input type=text name="kinrik" value="-1"><br>
+
+kinmis         місяць або -1 для будь-якого місяця
+<br>
+<select name="kinmis">
+    <option value="-1">Any</option>
+    <option value="1">jan</option>
+    <option value="2">feb</option>
+    <option value="3">mar</option>
+    <option value="4">apr</option>
+    <option value="5">may</option>
+    <option value="6">jun</option>
+    <option value="7">jul</option>
+    <option value="8">aug</option>
+    <option value="9">sep</option>
+    <option value="10">oct</option>
+    <option value="11">nov</option>
+    <option value="12">dec</option>
+</select>
+<br>
+
+kintyzh        день тижня  кінця події або -1 для будь-якого дня тижня
+<br>
+<select name="kintyzh">
+    <option value="-1">Any</option>
+    <option value="0">sunday</option>
+    <option value="1">monday</option>
+    <option value="2">tuesday</option>
+    <option value="3">wednesday</option>
+    <option value="4">thursday</option>
+    <option value="5">friday</option>
+    <option value="6">saturday</option>
+</select>
+<br>
+
+kinday         день місяця  або -1 для будь-якого дня місяця
+<br><input type=text name="kinday" value="-1"><br>
+
+
+kingod         година  або -1 для будь-якої години
+<br><input type=text name="kingod" value="-1"><br>
+
+kinhv          хвилина  або -1 для будь-якої хвилини
+<br><input type=text name="kinhv" value="-1"><br>
+
+<br><input type=submit><br>
+</form>
+</body>
+</html>
