@@ -182,6 +182,8 @@ $imagelist = '
          background-color:silver;
       }
     </style>
+    
+<div id=imgcontainer>
     ';
 if (isset($this_ec_item_info['ec_item_img']) && count($this_ec_item_info['ec_item_img']) > 0) {
     // prn($this_ec_item_info['ec_item_img']);
@@ -196,16 +198,46 @@ if (isset($this_ec_item_info['ec_item_img']) && count($this_ec_item_info['ec_ite
     }
 }
 $imagelist.="
-<div>
-<input type=file name=ec_item_img1>
-<input type=file name=ec_item_img2>
-<input type=file name=ec_item_img3><br>
-<input type=file name=ec_item_img4>
-<input type=file name=ec_item_img5>
-<input type=file name=ec_item_img6>
-<br>
-<input type=submit value=\"".text('Upload')."\">
-</div>";
+</div>
+";
+
+if ($ec_item_id > 0){
+    $imagelist.="
+    <div>".text('You_can_choose_multiple_files')."</div>
+    <div><input type=file name=ec_item_img id=ec_item_img data-url=\"index.php\" multiple></div>
+
+    <div id=\"upload_progress\" style=\"font-size:150%; color:green; font-weight:bold;\"></div>
+
+    <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/jquery.iframe-transport.js\"></script>
+    <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/jquery.fileupload.js\"></script>
+    <script type=\"text/javascript\" charset=\"utf-8\">
+    $(document).ready(function(){
+        $('#ec_item_img').fileupload({
+            dataType: 'json',
+            formData:[{name:'action',value:'ec/item/imgreceiver'},{name:'ec_item_id',value:'{$ec_item_id}'},{name:'ec_item_lang',value:'{$ec_item_lang}'}],
+            done: function (e, data) {
+                //console.log(data);
+                if(data.result.status=='success'){
+
+                }
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                //$('#progress .progress-bar').css('width',progress + '%');
+                //console.log(progress + '%');
+                \$('#upload_progress').html(progress + '%');
+                if(progress==100){
+                   \$('#upload_progress').html(progress + '%');
+                   \$('#editform').submit();
+                }
+            } 
+        });
+    });
+    </script>
+    ";
+}else{
+    $imagelist.="<div>".text('You_should_create_item_to_enable_image_upload')."</div>";
+}
 # ------------------------ list of images - end -------------------------------
 # ------------------------ list of additional fields - begin ------------------
 # category_id should be set
