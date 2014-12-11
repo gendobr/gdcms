@@ -15,13 +15,17 @@ if (!$this_site_info['id']) {
 $input_vars['site_id'] = $this_site_info['id'];
 //------------------- site info - end ------------------------------------------
 // ------------------ get language - begin -------------------------------------
-if (isset($input_vars['interface_lang']))
-    if ($input_vars['interface_lang'])
+if (isset($input_vars['interface_lang'])) {
+    if ($input_vars['interface_lang']) {
         $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
+    }
+}
+if (!isset($input_vars['lang'])) {
     $input_vars['lang'] = default_language;
-if (strlen($input_vars['lang']) == 0)
+}
+if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = default_language;
+}
 global $txt;
 $txt = load_msg($input_vars['lang']);
 $input_vars['lang'] = $lang = get_language('lang');
@@ -50,8 +54,9 @@ if (count($where) == 0) {
 $where[1] = 'site_id=' . $site_id;
 $where[2] = 'is_visible =1';
 $query = "SELECT * FROM {$table_prefix}category WHERE " . join(' AND ', $where);
-if (isset($_REQUEST['debug']))
-    prn($query);
+//if (isset($_REQUEST['debug'])) {
+//    prn($query);
+//}
 $this_category_info = db_getonerow($query);
 if (!$this_category_info) {
     die('Category not found');
@@ -308,7 +313,6 @@ class CategoryEvents {
     }
 
     private function init() {
-
         $site_id = $this->this_site_info['id'];
         $category_id = $this->category_info['category_id'];
 
@@ -351,7 +355,7 @@ class CategoryEvents {
         # --------------------------- list of pages - end ----------------------------
 
         $this->_list = get_view($this->_list, $this->lang);
-        // prn('Call init():', $this);
+        //prn('Call init():', $this);
         //prn('Call init():');
         return '';
     }
@@ -447,7 +451,7 @@ if (isset($UP['query'])) {
 $urls[] = $UP;
 
 function category_url_is_similar($url_pattern, $url) {
-    // разобрать оба адреса
+
     $U = parse_url($url);
     if (!isset($U['path'])){
         $U['path']='';

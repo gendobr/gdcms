@@ -1,0 +1,37 @@
+CREATE TABLE `cms_calendar_date` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'номер запису',
+  `site_id` INT(11) NOT NULL COMMENT 'номер сайта',
+  `calendar_id` INT(11) NOT NULL COMMENT 'номер події в календарі',
+  `pochrik` INT(11) NOT NULL COMMENT 'рік початку події',
+  `pochmis` INT(11) NOT NULL COMMENT 'місяць  початку події',
+  `pochtyzh` INT(11) NOT NULL COMMENT 'день тижня  початку події',
+  `pochday` INT(11) NOT NULL COMMENT 'день  початку події',
+  `pochgod` INT(11) NOT NULL COMMENT 'година  початку події',
+  `pochhv` INT(11) NOT NULL COMMENT 'хвилина  початку події',
+  `kinrik` INT(11) NOT NULL COMMENT 'рік кінця події',
+  `kinmis` INT(11) NOT NULL COMMENT 'місяць кінця події',
+  `kintyzh` INT(11) NOT NULL COMMENT 'день тижня  кінця події',
+  `kinday` INT(11) NOT NULL COMMENT 'день  кінця події',
+  `kingod` INT(11) NOT NULL COMMENT 'година кінця події',
+  `kinhv` INT(11) NOT NULL COMMENT 'хвилина  кінця події',
+  PRIMARY KEY (`id`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `cms_calendar` 
+   CHANGE `adresa` `adresa` VARCHAR(4096) CHARSET utf8 COLLATE utf8_general_ci NULL COMMENT 'адреса сторінки з описом події', 
+   CHANGE `kartynka` `kartynka` VARCHAR(4096) CHARSET utf8 COLLATE utf8_general_ci NULL COMMENT 'адреса іконки події'; 
+
+
+ALTER TABLE `cms_calendar` 
+   DROP COLUMN `pochrik`, 
+   DROP COLUMN `pochmis`, 
+   DROP COLUMN `pochtyzh`, 
+   DROP COLUMN `pochday`, 
+   DROP COLUMN `pochgod`, 
+   DROP COLUMN `pochhv`, 
+   DROP COLUMN `kinrik`, 
+   DROP COLUMN `kinmis`, 
+   DROP COLUMN `kintyzh`, 
+   DROP COLUMN `kinday`, 
+   DROP COLUMN `kingod`, 
+   DROP COLUMN `kinhv`; 

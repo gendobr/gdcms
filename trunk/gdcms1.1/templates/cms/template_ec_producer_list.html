@@ -72,7 +72,7 @@
    <h4>
        <a href="{$url_prefix_producer_details}{$item.ec_producer_id}">{$item.ec_producer_title}</a>
    </h4>
-   {if $item.ec_producer_img}<a href="{$url_prefix_producer_details}{$item.ec_producer_id}"><img src="{$site.url}{$item.ec_producer_logo}" width="200pt"></a><br>{/if}
+   {if $item.ec_producer_logo}<a href="{$url_prefix_producer_details}{$item.ec_producer_id}"><img src="{$site.url}{$item.ec_producer_logo}" width="200pt"></a>{/if}
    </div>
 <div class="min"></div>
 </div>
@@ -94,3 +94,5 @@
 </p>
 {/if}
 *}
+
+...

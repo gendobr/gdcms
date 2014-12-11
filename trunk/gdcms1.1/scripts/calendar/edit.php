@@ -1,7 +1,7 @@
 <?php
 
 /**
-  <h2>���� ��䳿</h2>
+
  */
 //------------------- site info - begin ----------------------------------------
 run('site/menu');
@@ -9,29 +9,30 @@ $site_id = isset($input_vars['site_id']) ? ((int) $input_vars['site_id']) : 0;
 $this_site_info = get_site_info($site_id);
 //prn($this_site_info);
 if (!$this_site_info['id']) {
-    $input_vars['page_title'] =
-            $input_vars['page_header'] =
-            $input_vars['page_content'] = $text['Site_not_found'];
+    $input_vars['page_title'] = $input_vars['page_header'] = $input_vars['page_content'] = $text['Site_not_found'];
     return 0;
 }
 //------------------- site info - end ------------------------------------------
 //------------------- check permission - begin ---------------------------------
 if (get_level($site_id) == 0) {
-    $input_vars['page_title'] =
-            $input_vars['page_header'] =
-            $input_vars['page_content'] = $text['Access_denied'];
+    $input_vars['page_title'] = $input_vars['page_header'] = $input_vars['page_content'] = $text['Access_denied'];
     return 0;
 }
 //------------------- check permission - end -----------------------------------
 // ------------------ get event info - begin -----------------------------------
 $event_id = isset($input_vars['event_id']) ? ((int) $input_vars['event_id']) : 0;
-$this_event_info = GetOneRow(Execute($db, "SELECT * FROM {$table_prefix}calendar WHERE id = '$event_id'"));
+$this_event_info = GetOneRow(Execute($db, "SELECT * FROM {$table_prefix}calendar WHERE id = $event_id"));
 if (!$this_event_info['id']) {
-    $input_vars['page_title'] =
-            $input_vars['page_header'] =
-            $input_vars['page_content'] = text('Calendar_event_not_found');
+    $input_vars['page_title'] = $input_vars['page_header'] = $input_vars['page_content'] = text('Calendar_event_not_found');
     return 0;
 }
+// get event dates
+$tmp = db_getrows("SELECT * FROM {$table_prefix}calendar_date WHERE calendar_id=$event_id");
+$this_event_info['dates'] = Array();
+foreach ($tmp as $tm) {
+    $this_event_info['dates'][$tm['id']] = $tm;
+}
+
 // ------------------ get event info - end -------------------------------------
 if (!isset($input_vars['aed'])) {
     $input_vars['aed'] = 0;
@@ -41,30 +42,32 @@ run('calendar/functions');
 
 
 
+
+$new_pochrik = '';
+$new_pochmis = '';
+$new_pochday = '';
+$new_pochtyzh = '';
+$new_pochgod = '';
+$new_pochhv = '';
+
+$new_kinrik = '';
+$new_kinmis = '';
+$new_kinday = '';
+$new_kintyzh = '';
+$new_kingod = '';
+$new_kinhv = '';
+
 if (isset($input_vars['upd'])) {
-    #---------------------------- �������� ������ - ������� ------------------
+    //    prn('111');
+    //    prn($_REQUEST); exit();
+    //    prn($input_vars); exit();
+
     $nazva1 = $input_vars['nazva1'];
     $adresa1 = $input_vars['adresa1'];
     $kartynka1 = $input_vars['kartynka1'];
 
-    $pochrik1 = $input_vars['pochrik1'];
-    $pochmis1 = $input_vars['pochmis1'];
-    $pochday1 = $input_vars['pochday1'];
-    $pochtyzh1 = $input_vars['pochtyzh1'];
-    $pochgod1 = $input_vars['pochgod1'];
-    $pochhv1 = $input_vars['pochhv1'];
-
-
-    $kinrik1 = $input_vars['kinrik1'];
-    $kinmis1 = $input_vars['kinmis1'];
-    $kinday1 = $input_vars['kinday1'];
-    $kintyzh1 = $input_vars['kintyzh1'];
-    $kingod1 = $input_vars['kingod1'];
-    $pochday1 = $input_vars['pochday1'];
-    $kinhv1 = $input_vars['kinhv1'];
     $vis1 = $input_vars['vis1'];
     $description = $input_vars['description'];
-    #---------------------------- �������� ������ - �����--------------------
 
     if ($nazva1) {
         $query = "UPDATE {$table_prefix}calendar
@@ -72,25 +75,115 @@ if (isset($input_vars['upd'])) {
                       kartynka = '" . DbStr($kartynka1) . "',
                       adresa = '" . DbStr($adresa1) . "',
                       description = '" . DbStr($description) . "',
-                      pochrik = " . ( (int) $pochrik1) . ",
-                      kinrik = " . ( (int) $kinrik1) . ",
-                      pochmis = " . ( (int) $pochmis1) . ",
-                      kinmis = " . ( (int) $kinmis1) . ",
-                      pochday = " . ( (int) $pochday1) . ",
-                      kinday = " . ( (int) $kinday1) . ",
-                      pochtyzh = " . ( (int) $pochtyzh1) . ",
-                      kintyzh = " . ( (int) $kintyzh1) . ",
-                      pochgod = " . ( (int) $pochgod1) . ",
-                      kingod = " . ( (int) $kingod1) . ",
-                      pochhv = " . ( (int) $pochhv1) . ",
-                      kinhv = " . ( (int) $kinhv1) . ",
                       vis = " . ( (int) $vis1) . "
                   WHERE id = '$event_id' and site_id={$site_id}";
         //prn(checkStr($query));exit();
         db_execute($query);
 
+        // --------------- add new date - begin --------------------------------
+        $new_pochrik = $input_vars['dt'][0]['pochrik'];
+        $new_pochmis = $input_vars['dt'][0]['pochmis'];
+        $new_pochday = $input_vars['dt'][0]['pochday'];
+        $new_pochtyzh = $input_vars['dt'][0]['pochtyzh'];
+        $new_pochgod = $input_vars['dt'][0]['pochgod'];
+        $new_pochhv = $input_vars['dt'][0]['pochhv'];
 
+        $new_kinrik = $input_vars['dt'][0]['kinrik'];
+        $new_kinmis = $input_vars['dt'][0]['kinmis'];
+        $new_kinday = $input_vars['dt'][0]['kinday'];
+        $new_kintyzh = $input_vars['dt'][0]['kintyzh'];
+        $new_kingod = $input_vars['dt'][0]['kingod'];
+        $new_kinhv = $input_vars['dt'][0]['kinhv'];
+        if (   strlen($new_pochrik)>0 && strlen($new_pochmis)>0
+            && strlen($new_pochday)>0 && strlen($new_pochtyzh)>0
+            && strlen($new_pochgod)>0 && strlen($new_pochhv)>0
+            && strlen($new_kinrik)>0 && strlen($new_kinmis)>0
+            && strlen($new_kinday)>0 && strlen($new_kintyzh)>0
+            && strlen($new_kingod)>0 && strlen($new_kinhv)>0) {
+            $new_pochrik = (int) $input_vars['dt'][0]['pochrik'];
+            $new_pochmis = (int) $input_vars['dt'][0]['pochmis'];
+            $new_pochday = (int) $input_vars['dt'][0]['pochday'];
+            $new_pochtyzh = (int) $input_vars['dt'][0]['pochtyzh'];
+            $new_pochgod = (int) $input_vars['dt'][0]['pochgod'];
+            $new_pochhv = (int) $input_vars['dt'][0]['pochhv'];
 
+            $new_kinrik = (int) $input_vars['dt'][0]['kinrik'];
+            $new_kinmis = (int) $input_vars['dt'][0]['kinmis'];
+            $new_kinday = (int) $input_vars['dt'][0]['kinday'];
+            $new_kintyzh = (int) $input_vars['dt'][0]['kintyzh'];
+            $new_kingod = (int) $input_vars['dt'][0]['kingod'];
+            $new_kinhv = (int) $input_vars['dt'][0]['kinhv'];
+            
+            $query="
+                INSERT INTO {$table_prefix}calendar_date 
+                        ( site_id, calendar_id,      pochrik,      pochmis,      pochtyzh,      pochday,      pochgod,      pochhv,      kinrik,      kinmis,      kintyzh,      kinday,      kingod,     kinhv  )
+                VALUES  ( $site_id,  $event_id, $new_pochrik, $new_pochmis, $new_pochtyzh, $new_pochday, $new_pochgod, $new_pochhv, $new_kinrik, $new_kinmis, $new_kintyzh, $new_kinday, $new_kingod, $new_kinhv );
+                ";
+            // prn($query); exit();
+            db_execute($query);
+            
+            $new_pochrik = '';
+            $new_pochmis = '';
+            $new_pochday = '';
+            $new_pochtyzh = '';
+            $new_pochgod = '';
+            $new_pochhv = '';
+
+            $new_kinrik = '';
+            $new_kinmis = '';
+            $new_kinday = '';
+            $new_kintyzh = '';
+            $new_kingod = '';
+            $new_kinhv = '';
+        }
+        // --------------- add new date - end ----------------------------------
+        // 
+        // 
+        // --------------- delete - begin --------------------------------------
+        $toDelete=Array();
+        foreach($this_event_info['dates'] as $k=>$v){
+            if(!isset($input_vars['dt'][$k])){
+                $toDelete[]=(int)$k;
+            }
+        }
+        if(count($toDelete)>0){
+            $query="DELETE FROM {$table_prefix}calendar_date WHERE site_id=$site_id AND calendar_id=$event_id AND id IN(".join(',',$toDelete).")";
+            db_execute($query);
+        }
+        // --------------- delete - end ----------------------------------------
+        
+        // --------------- update dates - begin --------------------------------
+        
+        foreach($input_vars['dt'] as $id => $dt){
+            // prn($dt);
+            if($id==0){
+                continue;
+            }
+            $query="UPDATE {$table_prefix}calendar_date 
+                    SET
+                    pochrik = ".( (int)$dt['pochrik'] )." , 
+                    pochmis = ".( (int)$dt['pochmis'] ).", 
+                    pochtyzh = ".( (int)$dt['pochtyzh'] )." , 
+                    pochday = ".( (int)$dt['pochday'] )." , 
+                    pochgod = ".( (int)$dt['pochgod'] )." , 
+                    pochhv = ".( (int)$dt['pochhv'] )." , 
+                    kinrik =".( (int)$dt['kinrik'] )." , 
+                    kinmis = ".( (int)$dt['kinmis'] )." , 
+                    kintyzh = ".( (int)$dt['kintyzh'] )." , 
+                    kinday = ".( (int)$dt['kinday'] )." , 
+                    kingod = ".( (int)$dt['kingod'] )." , 
+                    kinhv = ".( (int)$dt['kinhv'] )."
+                    WHERE
+                       id = ".( (int)$id )."
+                       AND site_id = $site_id 
+                       AND calendar_id = $event_id
+                    ";
+            // prn($query);
+            db_execute($query);
+        }
+        // 
+        // --------------- update dates - end ----------------------------------
+        // 
         // save new categories
         if (isset($input_vars['event_category']) && is_array($input_vars['event_category'])) {
             $query = "DELETE FROM {$table_prefix}calendar_category WHERE event_id=$event_id";
@@ -98,8 +191,9 @@ if (isset($input_vars['upd'])) {
             $query = Array();
             foreach ($input_vars['event_category'] as $cat) {
                 $cat = (int) $cat;
-                if ($cat <= 0)
+                if ($cat <= 0) {
                     continue;
+                }
                 $query[] = "($event_id,$cat)";
             }
             if (count($query) > 0) {
@@ -107,12 +201,9 @@ if (isset($input_vars['upd'])) {
                 db_execute($query);
             }
         }
+        
         header("Location:index.php?action=calendar/edit&site_id={$site_id}&event_id={$event_id}");
         exit();
-        // redirect to event editor
-        //        echo "<p class=gotovo>���������� ������ ������.</p><p><a href=spysok.php>����������� �� ������ ������</a></p>";
-        //        echo "<p><a href=index.php>������ ������</a></p>";
-        //        $this_event_info = GetOneRow(Execute($db, "SELECT * FROM {$table_prefix}calendar WHERE id = '$event_id'"));
     }
 }
 
@@ -129,14 +220,13 @@ if (isset($input_vars['upd'])) {
 
     $this_event_info = GetOneRow(Execute($db, "SELECT * FROM {$table_prefix}calendar WHERE id = '$new'"));
     while ($row = mysql_fetch_array($result)) {
-
+        
     }
 }
 
 
 // --------------------- draw - begin ------------------------------------------
-$input_vars['page_title'] =
-        $input_vars['page_header'] = text('Calendar_event_edit') . $event_id;
+$input_vars['page_title'] = $input_vars['page_header'] = text('Calendar_event_edit') . $event_id;
 
 $calendar_dni = calendar_dni();
 $calendar_misyaci = calendar_misyaci();
@@ -262,6 +352,25 @@ if ($input_vars['aed'] == 1) {
 }
 
 $input_vars['page_content'].= "
+<style>
+<!--
+.fbl{
+   display:inline-block;
+   /*border-bottom:1px dotted gray;*/
+   margin-bottom:3pt;
+   margin-right:10px;
+}
+.lab{
+   /*width:100px;*/
+   display:inline-block;
+}
+.num{
+   width:50px;
+}
+ -->
+</style>
+
+    <div><a href=\"index.php?action=calendar/list&amp;site_id=62\">".text('Calendar_manage')."</a> / {$input_vars['page_title']}</div>
     <form method=post action=index.php?site_id={$site_id}&action=calendar/edit&event_id={$event_id}>
           <input type=hidden name='upd' value='1'>
           <p>" . text('Calendar_event_title') . "<br />
@@ -276,43 +385,82 @@ $input_vars['page_content'].= "
           <p>" . text('Calendar_event_is_visible') . "<br />
           <SELECT  NAME=vis1>" . draw_options($this_event_info['vis'], Array(1 => text('positive_answer'), 0 => text('negative_answer'))) . "</SELECT></p>
 
-          <table><tr><td width=50%>
-          <h4>" . text('Calendar_event_start_time') . "</h4>
-          <p>" . text('Calendar_event_year') . "<br />
-          <INPUT type=text name=pochrik1 value=\"{$this_event_info['pochrik']}\" SIZE=4 style='width:100%;'></p>
 
-          <p>" . text('Calendar_event_month') . "<br />
-          <SELECT  NAME=pochmis1 style='width:100%;'>" . draw_options($this_event_info['pochmis'], $calendar_misyaci) . "</SELECT></p>
+<h3>" . text('Calendar_event_dates') . "</h3>
+<style type=\"text/css\">
+.deleButtock{
+   text-decoration:none;
+   display:inline-block;
+   padding:1px 5px;
+   background-color:orange;
+   color:white;
+   font-size:15pt;
+}
+</style>
+<script type=\"application/javascript\">
+function delDate(domId){
+   $('#'+domId).remove();
+}
+</script>
+";
 
-          <p>" . text('Calendar_event_month_day') . "<br />
-          <SELECT  NAME=pochday1 style='width:100%;'>" . draw_options($this_event_info['pochday'], $calendar_dni) . "</SELECT></p>
 
-          <p>" . text('Calendar_event_week_day') . "<br />
-          <SELECT  NAME=pochtyzh1 style='width:100%;'>" . draw_options($this_event_info['pochtyzh'], $calendar_dnityzhnya) . "</SELECT></p>
+foreach ($this_event_info['dates'] as $dt) {
+    $input_vars['page_content'].= "
+    <div id=date{$dt['id']}>
+    <span class=fbl>
+    <b>" . text('Calendar_event_start') . ": </b><br>
+    <span class=fbl><span class=lab title='" . text('Calendar_event_year') . "'>" . text('Year') . "  </span><br><input type=text name='dt[{$dt['id']}][pochrik]' class=num value=\"{$dt['pochrik']}\"></span>
+    <span class=fbl><span class=lab>" . text('Month') . " </span><br><select name='dt[{$dt['id']}][pochmis]' class=num><option value=''></option>" . draw_options($dt['pochmis'], $calendar_misyaci) . "</select></span>
+    <span class=fbl><span class=lab>" . text('Day') . "   </span><br><select name='dt[{$dt['id']}][pochday]' class=num><option value=''></option>" . draw_options($dt['pochday'], $calendar_dni) . "</select></span>
+    <span class=fbl><span class=lab>" . text('weekday') . "  </span><br><select name='dt[{$dt['id']}][pochtyzh]' class=num><option value=''></option>" . draw_options($dt['pochtyzh'], $calendar_dnityzhnya) . "</select></span>
+    <span class=fbl><span class=lab>" . text('hour') . " </span><br><select name='dt[{$dt['id']}][pochgod]' class=num><option value=''></option>" . draw_options($dt['pochgod'], $calendar_god) . "</select></span>
+    <span class=fbl><span class=lab>" . text('minute') . " </span><br><select name='dt[{$dt['id']}][pochhv]' class=num><option value=''></option>" . draw_options($dt['pochhv'], $calendar_hv) . "</select></span>
+    </span>
 
-          <p>" . text('Calendar_event_daytime') . "<br />
-          <SELECT  NAME=pochgod1  style='width:45%;'>" . draw_options($this_event_info['pochgod'], $calendar_god) . "</SELECT><span  style='width:10%;display:inline-block;'>:</span><SELECT  NAME=pochhv1 style='width:45%;'>" . draw_options($this_event_info['pochhv'], $calendar_hv) . "</SELECT></p>
+    <span class=fbl>
+    <b>" . text('Calendar_event_finish') . " : </b><br>
+    <span class=fbl><span class=lab title='" . text('Calendar_event_year') . "'>" . text('Year') . "  </span><br><input type=text name='dt[{$dt['id']}][kinrik]' class=num value=\"{$dt['kinrik']}\"></span>
+    <span class=fbl><span class=lab>" . text('Month') . " </span><br><select name='dt[{$dt['id']}][kinmis]' class=num><option value=''></option>" . draw_options($dt['kinmis'], $calendar_misyaci) . "</select></span>
+    <span class=fbl><span class=lab>" . text('Day') . "   </span><br><select name='dt[{$dt['id']}][kinday]' class=num><option value=''></option>" . draw_options($dt['kinday'], $calendar_dni) . "</select></span>
+    <span class=fbl><span class=lab>" . text('weekday') . "  </span><br><select name='dt[{$dt['id']}][kintyzh]' class=num><option value=''></option>" . draw_options($dt['kintyzh'], $calendar_dnityzhnya) . "</select></span>
+    <span class=fbl><span class=lab>" . text('hour') . " </span><br><select name='dt[{$dt['id']}][kingod]' class=num><option value=''></option>" . draw_options($dt['kingod'], $calendar_god) . "</select></span>
+    <span class=fbl><span class=lab>" . text('minute') . " </span><br><select name='dt[{$dt['id']}][kinhv]' class=num><option value=''></option>" . draw_options($dt['kinhv'], $calendar_hv) . "</select></span>
+    </span>
+    <a href='javascript:void(delDate(\"date{$dt['id']}\"))' class='deleButtock'>&times;</a>
+    </div>
 
-          </td><td width=50%>
+    ";
+}
 
-          <h4>" . text('Calendar_event_finish_time') . "</h4>
+$input_vars['page_content'].= "
 
-          <p>" . text('Calendar_event_year') . "<br />
-          <INPUT type=text name=kinrik1 value=\"{$this_event_info['kinrik']}\" SIZE=4 style='width:100%;'></p>
+<div>
+    <span class=fbl>
+    <b>" . text('Calendar_event_start') . ": </b><br>
+    <span class=fbl><span class=lab title='" . text('Calendar_event_year') . "'>" . text('Year') . "  </span><br><input type=text name='dt[0][pochrik]' class=num value=\"{$new_pochrik}\"></span>
+    <span class=fbl><span class=lab>" . text('Month') . " </span><br><select name='dt[0][pochmis]' class=num><option value=''></option>" . draw_options($new_pochmis, $calendar_misyaci) . "</select></span>
+    <span class=fbl><span class=lab>" . text('Day') . "   </span><br><select name='dt[0][pochday]' class=num><option value=''></option>" . draw_options($new_pochday, $calendar_dni) . "</select></span>
+    <span class=fbl><span class=lab>" . text('weekday') . "  </span><br><select name='dt[0][pochtyzh]' class=num><option value=''></option>" . draw_options($new_pochtyzh, $calendar_dnityzhnya) . "</select></span>
+    <span class=fbl><span class=lab>" . text('hour') . " </span><br><select name='dt[0][pochgod]' class=num><option value=''></option>" . draw_options($new_pochgod, $calendar_god) . "</select></span>
+    <span class=fbl><span class=lab>" . text('minute') . " </span><br><select name='dt[0][pochhv]' class=num><option value=''></option>" . draw_options($new_pochhv, $calendar_hv) . "</select></span>
+    </span>
 
-          <p>" . text('Calendar_event_month') . "<br />
-          <SELECT  NAME=kinmis1 style='width:100%;'>" . draw_options($this_event_info['kinmis'], $calendar_misyaci) . "</SELECT></p>
+    <span class=fbl>
+    <b>" . text('Calendar_event_finish') . " : </b><br>
+    <span class=fbl><span class=lab title='" . text('Calendar_event_year') . "'>" . text('Year') . "  </span><br><input type=text name='dt[0][kinrik]' class=num value=\"{$new_kinrik}\"></span>
+    <span class=fbl><span class=lab>" . text('Month') . " </span><br><select name='dt[0][kinmis]' class=num><option value=''></option>" . draw_options($new_kinmis, $calendar_misyaci) . "</select></span>
+    <span class=fbl><span class=lab>" . text('Day') . "   </span><br><select name='dt[0][kinday]' class=num><option value=''></option>" . draw_options($new_kinday, $calendar_dni) . "</select></span>
+    <span class=fbl><span class=lab>" . text('weekday') . "  </span><br><select name='dt[0][kintyzh]' class=num><option value=''></option>" . draw_options($new_kintyzh, $calendar_dnityzhnya) . "</select></span>
+    <span class=fbl><span class=lab>" . text('hour') . " </span><br><select name='dt[0][kingod]' class=num><option value=''></option>" . draw_options($new_kingod, $calendar_god) . "</select></span>
+    <span class=fbl><span class=lab>" . text('minute') . " </span><br><select name='dt[0][kinhv]' class=num><option value=''></option>" . draw_options($new_kinhv, $calendar_hv) . "</select></span>
+    </span><br>
+</div>
+    ";
 
-          <p>" . text('Calendar_event_month_day') . "<br />
-          <SELECT  NAME=kinday1 style='width:100%;'>" . draw_options($this_event_info['kinday'], $calendar_dni) . "</SELECT></p>
 
-          <p>" . text('Calendar_event_week_day') . "<br />
-          <SELECT  NAME=kintyzh1 style='width:100%;'>" . draw_options($this_event_info['kintyzh'], $calendar_dnityzhnya) . "</SELECT></p>
+$input_vars['page_content'].= "
 
-          <p>" . text('Calendar_event_daytime') . "<br />
-          <SELECT  NAME=kingod1 style='width:45%;'>" . draw_options($this_event_info['kingod'], $calendar_god) . "</SELECT><span  style='width:10%;display:inline-block;'>:</span><SELECT  NAME=kinhv1 style='width:45%;'>" . draw_options($this_event_info['kinhv'], $calendar_hv) . "</SELECT></p>
-
-</td></tr></table>
 <div class=label>" . $text['Category'] . " : </div>
   <div id=categories_selector class='big' style='width:98%;'>
      $event_categories_selector
