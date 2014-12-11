@@ -60,8 +60,9 @@ $year = (int) date('Y', $first_timestamp);
 $shift = date('w', $timestamps[0]);
 //prn($shift);
 $days = Array();
-for ($i = 0; $i < $shift; $i++)
+for ($i = 0; $i < $shift; $i++) {
     $days[] = '';
+}
 foreach ($timestamps as $tms) {
     if (date('m', $tms) == $month) {
         $days[] = date('d', $tms);
@@ -126,11 +127,11 @@ foreach ($calendar as $row) {
         }
     }
     for ($i = count($row); $i < 7; $i++) {
-        $tr[]=Array('innerHTML'=>$day,'href'=>'');
+        $tr[]=Array('innerHTML'=>'','href'=>'');
     }
     $month_table['days'][]=$tr;
 }
-
+// prn($month_table);
 
 
 // if day is set ...
