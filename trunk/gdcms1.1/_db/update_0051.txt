@@ -21,6 +21,17 @@ ALTER TABLE `cms_calendar`
    CHANGE `adresa` `adresa` VARCHAR(4096) CHARSET utf8 COLLATE utf8_general_ci NULL COMMENT 'адреса сторінки з описом події', 
    CHANGE `kartynka` `kartynka` VARCHAR(4096) CHARSET utf8 COLLATE utf8_general_ci NULL COMMENT 'адреса іконки події'; 
 
+ALTER TABLE `cms_calendar` ADD COLUMN `tags` TEXT NULL AFTER `description`;
+
+
+INSERT INTO cms_calendar_date 
+(id, site_id, calendar_id, 
+ pochrik, pochmis, pochtyzh, pochday, pochgod, 	pochhv, 
+ kinrik, kinmis, kintyzh, kinday, kingod, kinhv	)
+SELECT 	NULL, site_id, id, 
+pochrik, pochmis, pochtyzh, pochday, pochgod, pochhv, 
+kinrik, kinmis, kintyzh, kinday, kingod, kinhv
+FROM cms_calendar;
 
 ALTER TABLE `cms_calendar` 
    DROP COLUMN `pochrik`, 
@@ -35,3 +46,6 @@ ALTER TABLE `cms_calendar`
    DROP COLUMN `kinday`, 
    DROP COLUMN `kingod`, 
    DROP COLUMN `kinhv`; 
+
+
+
