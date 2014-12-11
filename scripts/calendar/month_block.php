@@ -127,7 +127,7 @@ foreach ($calendar as $row) {
         }
     }
     for ($i = count($row); $i < 7; $i++) {
-        $tr[]=Array('innerHTML'=>$day,'href'=>'');
+        $tr[]=Array('innerHTML'=>'','href'=>'');
     }
     $month_table['days'][]=$tr;
 }
