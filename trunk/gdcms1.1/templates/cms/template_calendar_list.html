@@ -89,12 +89,13 @@
                 {/foreach}
 
             </span>
+     <div>
      {if $ev.adresa}<a href="{$ev.adresa}">{/if}
      {if $ev.kartynka}<img src="{$ev.kartynka}" align="left" border="0px">{/if}
-     <p><b>{$ev.nazva}</b><br>
+     <b>{$ev.nazva}</b><br>
      {if $ev.adresa}</a>{/if}
      {$ev.description}
-     </p>
+     </div>
             {if $ev.categories}
             {foreach from=$ev.categories item=_cat}
               <a href="{$_cat.URL}">{$_cat.category_title}</a>
