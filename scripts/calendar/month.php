@@ -27,13 +27,17 @@ run('calendar/functions');
 run('site/page/page_view_functions');
 
 //-------------------------- load messages - begin -----------------------------
-if (isset($input_vars['interface_lang']))
-    if ($input_vars['interface_lang'])
+if (isset($input_vars['interface_lang'])) {
+    if ($input_vars['interface_lang']) {
         $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
+    }
+}
+if (!isset($input_vars['lang'])) {
     $input_vars['lang'] = default_language;
-if (strlen($input_vars['lang']) == 0)
+}
+if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = default_language;
+}
 $lang=$input_vars['lang'] = get_language('lang');
 $txt = load_msg($input_vars['lang']);
 //-------------------------- load messages - end -------------------------------
@@ -135,6 +139,7 @@ $day = isset($input_vars['day']) ? ( (int) $input_vars['day'] ) : 0;
 if ($day > 0) {
     $events = get_view(event_get_by_date($this_site_info['id'], $year, $month, $day,-1, -1, false),$lang);
     //prn($events);
+    //exit();
 }else{
     $events=false;
 }

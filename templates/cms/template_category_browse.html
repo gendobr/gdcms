@@ -47,15 +47,16 @@
 {foreach from=$events->list item=_item}
 	    <div class="event">
             <span class="daty">
-                <nobr>{if $_item.pochtyzh_text}{$_item.pochtyzh_text},{/if}
-                {if $_item.pochmis_text}{$_item.pochmis_text},{/if}
-                {if $_item.pochday_text}{$_item.pochday_text},{/if}
-                {if $_item.pochrik_text}{$_item.pochrik_text},{/if}</nobr><br/>
- ... <br/>
-                <nobr>{if $_item.kintyzh_text}{$_item.kintyzh_text},{/if}
-                {if $_item.kinmis_text}{$_item.kinmis_text},{/if}
-                {if $_item.kinday_text}{$_item.kinday_text},{/if}
-                {if $_item.kinrik_text}{$_item.kinrik_text},{/if}</nobr><br/>
+                {foreach from=$_item.dates item=_dt}
+                {capture name=npt assign="poch_text"}{if $_dt.pochtyzh_text}{$_dt.pochtyzh_text},{/if} {if $_dt.pochmis_text}{$_dt.pochmis_text},{/if} {if $_dt.pochday_text}{$_dt.pochday_text},{/if} {if $_dt.pochrik_text}{$_dt.pochrik_text},{/if}{/capture}
+                {capture name=npt assign="kin_text"}{if $_dt.kintyzh_text}{$_dt.kintyzh_text},{/if} {if $_dt.kinmis_text}{$_dt.kinmis_text},{/if} {if $_dt.kinday_text}{$_dt.kinday_text},{/if} {if $_dt.kinrik_text}{$_dt.kinrik_text},{/if}{/capture}
+                <nobr>
+                  {$poch_text|regex_replace:"/, +$/":""}
+                  {if $poch_text neq $kin_text}
+                  -- {$kin_text|regex_replace:"/, +$/":""}
+                  {/if}
+                </nobr><br/>
+                {/foreach}
             </span>
 	    <div style='margin-bottom:0;'>
               {if $_item.kartynka}<img src="$_item.kartynka" align="right">{/if}

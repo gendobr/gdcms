@@ -77,15 +77,17 @@
 {foreach from=$events item=ev}
      <div class='oneevent'>
             <span class="daty">
-                <nobr>{if $ev.pochtyzh_text}{$ev.pochtyzh_text},{/if}
-                {if $ev.pochmis_text}{$ev.pochmis_text},{/if}
-                {if $ev.pochday_text}{$ev.pochday_text},{/if}
-                {if $ev.pochrik_text}{$ev.pochrik_text},{/if}</nobr><br/>
- ... <br/>
-                <nobr>{if $ev.kintyzh_text}{$_item.kintyzh_text},{/if}
-                {if $ev.kinmis_text}{$ev.kinmis_text},{/if}
-                {if $ev.kinday_text}{$ev.kinday_text},{/if}
-                {if $ev.kinrik_text}{$ev.kinrik_text},{/if}</nobr><br/>
+                {foreach from=$ev.dates item=_dt}
+                {capture name=npt assign="poch_text"}{if $_dt.pochtyzh_text}{$_dt.pochtyzh_text},{/if} {if $_dt.pochmis_text}{$_dt.pochmis_text},{/if} {if $_dt.pochday_text}{$_dt.pochday_text},{/if} {if $_dt.pochrik_text}{$_dt.pochrik_text},{/if}{/capture}
+                {capture name=npt assign="kin_text"}{if $_dt.kintyzh_text}{$_dt.kintyzh_text},{/if} {if $_dt.kinmis_text}{$_dt.kinmis_text},{/if} {if $_dt.kinday_text}{$_dt.kinday_text},{/if} {if $_dt.kinrik_text}{$_dt.kinrik_text},{/if}{/capture}
+                <nobr>
+                  {$poch_text|regex_replace:"/, +$/":""}
+                  {if $poch_text neq $kin_text}
+                  -- {$kin_text|regex_replace:"/, +$/":""}
+                  {/if}
+                </nobr><br/>
+                {/foreach}
+
             </span>
      {if $ev.adresa}<a href="{$ev.adresa}">{/if}
      {if $ev.kartynka}<img src="{$ev.kartynka}" align="left" border="0px">{/if}
@@ -99,6 +101,7 @@
             {/foreach}
             {/if}
 
+            {*
             {if $ev.nearest_dates}
             <div>
             {txt lang=$text.language_name variants="eng=nearest dates::rus=ближайшие даты::ukr=найближчі дати"}:
@@ -107,5 +110,6 @@
             {/foreach}
             </div>
             {/if}
+            *}
      </div>
 {/foreach}

@@ -135,7 +135,6 @@ if ($this_site_info['salt'] != $input_vars['api_key']) {
 // * nazva             varchar(1024)           
 $nazva = DbStr($input_vars['nazva']);
 
-
 //   description       text
 $description = DbStr($input_vars['description']);
 
@@ -160,6 +159,24 @@ if(isset($input_vars['tags'])){
     $tags = '';
 }
 // ----------------- clear tags - end --------------------------------------
+
+$adresa='';
+$kartynka='';
+
+$query = "
+UPDATE {$GLOBALS['table_prefix']}calendar 
+SET
+    `nazva`='{$nazva}',
+    `adresa`='{$adresa}',
+    `kartynka`='{$kartynka}',
+    `vis`={$vis},
+    `description`='{$description}',
+    `tags`='{$tags}'
+WHERE  `id`=$calendar_id
+";
+db_execute($query);
+$calendar_info = db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id=$calendar_id");
+
 
 
 
@@ -188,85 +205,69 @@ if(isset($input_vars['categories'])){
 // ----------------- re-create categories - end --------------------------------
 
 
-
-// pochrik        рік початку події  або -1 для будь-якого року
-$pochrik = (int) $input_vars['pochrik'];
-
-// * pochmis        місяць  початку події або -1 для будь-якого місяця
-$pochmis = (int) $input_vars['pochmis'];
-
-// * pochtyzh       день тижня  початку події або -1 для будь-якого для тижня
-$pochtyzh = (int) $input_vars['pochtyzh'];
-
-// * pochday        день місяця початку події  або -1 для будь-якого дня місяця
-$pochday = (int) $input_vars['pochday'];
-
-// * pochgod        година  початку події або -1 для будь-якої години
-$pochgod = (int) $input_vars['pochgod'];
-
-// * pochhv         хвилина  початку події або -1 для будь-якої хвилини
-$pochhv = (int) $input_vars['pochhv'];
-
-
-
-// kinrik        рік кінця події  або -1 для будь-якого року
-$kinrik = (int) $input_vars['kinrik'];
-
-// * kinmis        місяць  кінця події або -1 для будь-якого місяця
-$kinmis = (int) $input_vars['kinmis'];
-
-// * kintyzh       день тижня  кінця події або -1 для будь-якого для тижня
-$kintyzh = (int) $input_vars['kintyzh'];
-
-// * kinday        день місяця кінця події  або -1 для будь-якого дня місяця
-$kinday = (int) $input_vars['kinday'];
-
-// * kingod        година  кінця події або -1 для будь-якої години
-$kingod = (int) $input_vars['kingod'];
-
-// * kinhv         хвилина  кінця події або -1 для будь-якої хвилини
-$kinhv = (int) $input_vars['kinhv'];
-
-
-$adresa='';
-$kartynka='';
-
-
-
-
-
-
-$query = "
-UPDATE {$GLOBALS['table_prefix']}calendar 
-SET
-    `nazva`='{$nazva}',
-    `pochrik`={$pochrik},
-    `pochmis`={$pochmis},
-    `pochtyzh`={$pochtyzh},
-    `pochday`={$pochday},
-    `pochgod`={$pochgod},
-    `pochhv`={$pochhv},
-    `kinrik`={$kinrik},
-    `kinmis`={$kinmis},
-    `kintyzh`={$kintyzh},
-    `kinday`={$kinday},
-    `kingod`={$kingod},
-    `kinhv`={$kinhv},
-    `adresa`='{$adresa}',
-    `kartynka`='{$kartynka}',
-    `vis`={$vis},
-    `description`='{$description}',
-    `tags`='{$tags}'
-WHERE  `id`=$calendar_id
-";
+// ------------------ re-create dates - begin ----------------------------------
+$query="DELETE FROM {$table_prefix}calendar_date WHERE site_id=$site_id AND calendar_id={$calendar_info['id']}";
 db_execute($query);
+foreach($input_vars['dates'] as $dt){
+        $new_pochrik = $dt['pochrik'];
+        $new_pochmis = $dt['pochmis'];
+        $new_pochday = $dt['pochday'];
+        $new_pochtyzh = $dt['pochtyzh'];
+        $new_pochgod = $dt['pochgod'];
+        $new_pochhv = $dt['pochhv'];
 
-$calendar_info = db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id=$calendar_id");
+        $new_kinrik = $dt['kinrik'];
+        $new_kinmis = $dt['kinmis'];
+        $new_kinday = $dt['kinday'];
+        $new_kintyzh = $dt['kintyzh'];
+        $new_kingod = $dt['kingod'];
+        $new_kinhv = $dt['kinhv'];
+        if (   strlen($new_pochrik)>0 && strlen($new_pochmis)>0
+            && strlen($new_pochday)>0 && strlen($new_pochtyzh)>0
+            && strlen($new_pochgod)>0 && strlen($new_pochhv)>0
+            && strlen($new_kinrik)>0 && strlen($new_kinmis)>0
+            && strlen($new_kinday)>0 && strlen($new_kintyzh)>0
+            && strlen($new_kingod)>0 && strlen($new_kinhv)>0) {
+            $new_pochrik = (int) $dt['pochrik'];
+            $new_pochmis = (int) $dt['pochmis'];
+            $new_pochday = (int) $dt['pochday'];
+            $new_pochtyzh = (int) $dt['pochtyzh'];
+            $new_pochgod = (int) $dt['pochgod'];
+            $new_pochhv = (int) $dt['pochhv'];
 
-//$calendar_info['calendar_url'] = str_replace(
-//                Array('{news_id}','{lang}','{news_code}'),
-//                Array($news_info['id'],$lang,$news_info['news_code']),
-//                url_template_news_details);
+            $new_kinrik = (int) $dt['kinrik'];
+            $new_kinmis = (int) $dt['kinmis'];
+            $new_kinday = (int) $dt['kinday'];
+            $new_kintyzh = (int) $dt['kintyzh'];
+            $new_kingod = (int) $dt['kingod'];
+            $new_kinhv = (int) $dt['kinhv'];
+            
+            $query="
+                INSERT INTO {$table_prefix}calendar_date 
+                        ( site_id,   calendar_id          ,      pochrik,      pochmis,      pochtyzh,      pochday,      pochgod,      pochhv,      kinrik,      kinmis,      kintyzh,      kinday,      kingod,     kinhv  )
+                VALUES  ( $site_id, {$calendar_info['id']}, $new_pochrik, $new_pochmis, $new_pochtyzh, $new_pochday, $new_pochgod, $new_pochhv, $new_kinrik, $new_kinmis, $new_kintyzh, $new_kinday, $new_kingod, $new_kinhv );
+                ";
+            //prn($query); exit();
+            db_execute($query);
+        }else{
+            $feedback = Array(
+                'status' => 'error',
+                'message'=>'Fill-in all date fields'
+            );
+            return;
+        }
+        // --------------- add new date - end ----------------------------------
+}
+$tmp = db_getrows("SELECT * FROM {$table_prefix}calendar_date WHERE calendar_id={$calendar_info['id']}");
+$calendar_info['dates'] = Array();
+foreach ($tmp as $tm) {
+    $calendar_info['dates'][$tm['id']] = $tm;
+}
+// ------------------ re-create dates - end ------------------------------------
+
+
+$calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_id={$site_id}&month={month}&year={year}&day={day}";
+
 
 // clear cache 
 $query="DELETE FROM {$table_prefix}calendar_cache WHERE uid BETWEEN {$calendar_id}000000 AND {$calendar_id}999999";

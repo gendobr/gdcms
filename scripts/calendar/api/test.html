@@ -27,17 +27,17 @@ description=<br><input type=text name="description" value="текст нової
 vis=        <br><input type=text name="vis" value="1"><br>
 <!-- tags=       <br><input type=text name="tags" value="slovo1, slovo2"><br> -->
 
-categories= <input type=text name="categories" value="slovo1, slovo2"><br>
+categories= <br>
+<input type=text name="categories" value="slovo1, slovo2"><br><br>
 
 
 <h3>початок події</h3>
 pochrik (рік або -1 для будь-якого року)
-<br><input type=text name="pochrik" value="-1"><br>
-
+<br><input type=text name="dates[0][pochrik]" value="-1"><br><br>
 
 pochmis (місяць (1,2,3, ... 12) або -1 для будь-якого місяця )
 <br>
-<select name="pochmis">
+<select name="dates[0][pochmis]">
     <option value="-1">Any</option>
     <option value="1">jan</option>
     <option value="2">feb</option>
@@ -52,11 +52,11 @@ pochmis (місяць (1,2,3, ... 12) або -1 для будь-якого мі�
     <option value="11">nov</option>
     <option value="12">dec</option>
 </select>
-<br>
+<br><br>
 
 pochtyzh (день тижня або -1 для будь-якого для тижня)
 <br>
-<select name="pochtyzh">
+<select name="dates[0][pochtyzh]">
     <option value="-1">Any</option>
     <option value="0">sunday</option>
     <option value="1">monday</option>
@@ -66,24 +66,24 @@ pochtyzh (день тижня або -1 для будь-якого для тиж
     <option value="5">friday</option>
     <option value="6">saturday</option>
 </select>
-<br>
+<br><br>
 
 pochday        день місяця або -1 для будь-якого дня місяця
-<br><input type=text name="pochday" value="-1"><br>
+<br><input type=text name="dates[0][pochday]" value="-1"><br><br>
 
 pochgod        година або -1 для будь-якої години
-<br><input type=text name="pochgod" value="-1"><br>
+<br><input type=text name="dates[0][pochgod]" value="-1"><br><br>
 
 pochhv       хвилина або -1 для будь-якої хвилини
-<br><input type=text name="pochhv" value="-1"><br>
+<br><input type=text name="dates[0][pochhv]" value="-1"><br><br>
 
 <h3>Кінець події</h3>
 kinrik         рік або -1 для будь-якого року
-<br><input type=text name="kinrik" value="-1"><br>
+<br><input type=text name="dates[0][kinrik]" value="-1"><br><br>
 
 kinmis         місяць або -1 для будь-якого місяця
 <br>
-<select name="kinmis">
+<select name="dates[0][kinmis]">
     <option value="-1">Any</option>
     <option value="1">jan</option>
     <option value="2">feb</option>
@@ -98,11 +98,11 @@ kinmis         місяць або -1 для будь-якого місяця
     <option value="11">nov</option>
     <option value="12">dec</option>
 </select>
-<br>
+<br><br>
 
 kintyzh        день тижня  кінця події або -1 для будь-якого дня тижня
 <br>
-<select name="kintyzh">
+<select name="dates[0][kintyzh]">
     <option value="-1">Any</option>
     <option value="0">sunday</option>
     <option value="1">monday</option>
@@ -112,17 +112,17 @@ kintyzh        день тижня  кінця події або -1 для бу�
     <option value="5">friday</option>
     <option value="6">saturday</option>
 </select>
-<br>
+<br><br>
 
 kinday         день місяця  або -1 для будь-якого дня місяця
-<br><input type=text name="kinday" value="-1"><br>
+<br><input type=text name="dates[0][kinday]" value="-1"><br><br>
 
 
 kingod         година  або -1 для будь-якої години
-<br><input type=text name="kingod" value="-1"><br>
+<br><input type=text name="dates[0][kingod]" value="-1"><br><br>
 
 kinhv          хвилина  або -1 для будь-якої хвилини
-<br><input type=text name="kinhv" value="-1"><br>
+<br><input type=text name="dates[0][kinhv]" value="-1"><br><br>
 
 <br><input type=submit><br>
 </form>
