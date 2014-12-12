@@ -157,6 +157,7 @@ $calendar_info = db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id=la
 
 
 
+
 foreach($input_vars['dates'] as $dt){
         // --------------- add new date - begin --------------------------------
         $new_pochrik = $dt['pochrik'];
@@ -199,6 +200,8 @@ foreach($input_vars['dates'] as $dt){
                 ";
             //prn($query); exit();
             db_execute($query);
+            
+            
         }else{
             $feedback = Array(
                 'status' => 'error',
@@ -242,6 +245,9 @@ if(isset($input_vars['categories'])){
 }
 // ----------------- re-create categories - end --------------------------------
 
+// clear cache
+   $query="DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990";
+   db_execute($query);
 
 $calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_id={$site_id}&month={month}&year={year}&day={day}";
 
