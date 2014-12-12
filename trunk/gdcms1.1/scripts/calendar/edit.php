@@ -201,7 +201,10 @@ if (isset($input_vars['upd'])) {
                 db_execute($query);
             }
         }
-        
+        // clear cache 
+        $query = "DELETE FROM {$table_prefix}calendar_cache WHERE uid BETWEEN {$site_id}000000 AND {$site_id}999999";
+        db_execute($query);
+
         header("Location:index.php?action=calendar/edit&site_id={$site_id}&event_id={$event_id}");
         exit();
     }

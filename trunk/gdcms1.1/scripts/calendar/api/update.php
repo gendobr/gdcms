@@ -265,12 +265,10 @@ foreach ($tmp as $tm) {
 }
 // ------------------ re-create dates - end ------------------------------------
 
-
 $calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_id={$site_id}&month={month}&year={year}&day={day}";
 
-
 // clear cache 
-$query="DELETE FROM {$table_prefix}calendar_cache WHERE uid BETWEEN {$calendar_id}000000 AND {$calendar_id}999999";
+$query="DELETE FROM {$table_prefix}calendar_cache WHERE uid BETWEEN {$site_id}000000 AND {$site_id}999999";
 db_execute($query);
 
 $feedback = Array(
