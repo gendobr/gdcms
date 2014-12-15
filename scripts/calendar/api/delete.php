@@ -116,6 +116,10 @@ if(isset($input_vars['categories'])){
 }
 // ----------------- re-create categories - end --------------------------------
 
+// clear cache
+   $query="DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990";
+   db_execute($query);
+
 $feedback = Array(
     'status' => 'success'
 );
