@@ -110,8 +110,14 @@
 				{/if}
 			</span><!--
 			--><span class="rightcolumn">
-				<span class="slideshow">
-					<center><script type="text/javascript" src="http://www.znu.edu.ua/cms/index.php?action=banner%2Frotator&site_id=73&lang={$text.language_name}"></script></center>
+                                <script type="text/javascript" src="http://sites.znu.edu.ua/cms/scripts/lib/ajax_loadblock.js"></script>
+				<span class="slideshow1">
+                                    <div style="margin:0 20px;font-weight: bold; font-size:120%;">{txt lang=$text.language_name variants="eng=Events::rus=Календарь событий::ukr=Календар подій"}</div>
+                                    <div id=news1392722213 style="margin:0 20px;"> </div>
+                                    <script type="text/javascript">
+                                    ajax_loadblock('news1392722213','http://sites.znu.edu.ua/cms/index.php?site_id=89&interface_lang={$text.language_name}&action=calendar/month_block',null);
+                                    </script>
+				    <!-- <center><script type="text/javascript" src="http://www.znu.edu.ua/cms/index.php?action=banner%2Frotator&site_id=73&lang={$text.language_name}"></script></center> -->
 				</span><!--
 				--><span class="menu3">
 					{fragment place="rightmenu" lang=$text.language_name site_id=73}
@@ -122,11 +128,10 @@
 					</center>
 				</span><!--
 				--><span class="sociology">
-<script type="text/javascript" src="http://sites.znu.edu.ua/cms/scripts/lib/ajax_loadblock.js"></script>
-<div id=news1392722212> </div>
-<script type="text/javascript">
-ajax_loadblock('news1392722212','http://sites.znu.edu.ua/cms/index.php?action=poll/block&site_id=58&lang={$lang}&poll_id=0&template=template_poll_ask_block',null);
-</script>
+                                    <div id=news1392722212> </div>
+                                    <script type="text/javascript">
+                                    ajax_loadblock('news1392722212','http://sites.znu.edu.ua/cms/index.php?action=poll/block&site_id=58&lang={$lang}&poll_id=0&template=template_poll_ask_block',null);
+                                    </script>
 				</span>
 			</span>
 		</span>
