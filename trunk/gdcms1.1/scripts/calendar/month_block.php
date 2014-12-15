@@ -92,8 +92,9 @@ $calendar = array_chunk($days, 7);
 
 $month_table=Array();
 
-$month_table['view_day_events_url_template']=site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month_block&year={year}&month={month}&day={day}";
-$month_table['other_month_url_template']=site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month_block&month={month}&year={year}";
+$month_table['view_day_events_url_template']=site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month&year={year}&month={month}&day={day}";
+//$month_table['other_month_url_template']=site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month_block&month={month}&year={year}";
+$month_table['other_month_url_template']=site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month&month={month}&year={year}";
 
 // draw navigator
 $month_table['next_month_link'] = str_replace(Array('{year}','{month}'),Array($year,$month+1),$month_table['other_month_url_template']);
