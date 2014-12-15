@@ -75,7 +75,10 @@
 </span>
 {if $day}<h3>{$day}.{$month}.{$year}</h3>{/if}
 {foreach from=$events item=ev}
-     <div class='oneevent'>
+
+            
+     {capture name=ecclass assign="ecclass"}{if $ev.categories}{foreach from=$ev.categories item=_cat} {$_cat.category_code} {/foreach} {/if} {/capture}
+     <div class='oneevent {$ecclass}'>
             <span class="daty">
                 {foreach from=$ev.dates item=_dt}
                 {capture name=npt assign="poch_text"}{if $_dt.pochtyzh_text}{$_dt.pochtyzh_text},{/if} {if $_dt.pochmis_text}{$_dt.pochmis_text},{/if} {if $_dt.pochday_text}{$_dt.pochday_text},{/if} {if $_dt.pochrik_text}{$_dt.pochrik_text},{/if}{/capture}
