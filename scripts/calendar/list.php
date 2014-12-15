@@ -34,19 +34,21 @@ if (isset($input_vars['event_delete']) && isset($input_vars['event'])) {
     db_execute("DELETE FROM {$table_prefix}calendar WHERE id in($ids)");
     db_execute("DELETE FROM {$table_prefix}calendar_category WHERE event_id in($ids)");
     db_execute("DELETE FROM {$table_prefix}calendar_date WHERE calendar_id in($ids)");
-
+    db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
 }
 // --------------------- delete - end ------------------------------------------
 #---------------------------- hide - begin -------------------------------------
 if (isset($input_vars['event_hide']) && isset($input_vars['event'])) {
     $ids = join(',', array_map('toint', $input_vars['event']));
-    Execute($db, "UPDATE {$table_prefix}calendar SET vis=0 WHERE id in($ids) AND site_id={$site_id}");
+    db_execute("UPDATE {$table_prefix}calendar SET vis=0 WHERE id in($ids) AND site_id={$site_id}");
+    db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
 }
 #---------------------------- hide - end ---------------------------------------
 #---------------------------- show - begin -------------------------------------
 if (isset($input_vars['event_show']) && isset($input_vars['event'])) {
     $ids = join(',', array_map('toint', $input_vars['event']));
-    Execute($db, "UPDATE {$table_prefix}calendar SET vis=1 WHERE id in($ids) AND site_id={$site_id}");
+    db_execute("UPDATE {$table_prefix}calendar SET vis=1 WHERE id in($ids) AND site_id={$site_id}");
+    db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
 }
 #---------------------------- show - end ---------------------------------------
 // ------------------ process search form parameters - begin -------------------
