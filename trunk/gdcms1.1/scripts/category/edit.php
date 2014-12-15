@@ -121,7 +121,7 @@ $rep->field['category_id'] = new db_record_editor_field_integer(
 $rep->field['category_code'] = new db_record_editor_field_string(
                 'category_code'
                 , 'category_code'
-                , 'string:maxlength=50&required=no&html_denied=yes'
+                , 'string:maxlength=500&required=no&html_denied=yes'
                 , text('Category_code'));
 
 # category_title        varchar(255)

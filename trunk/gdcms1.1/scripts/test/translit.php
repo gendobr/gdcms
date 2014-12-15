@@ -3,12 +3,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-$str="34 - ����� ���������� - ������";
-echo $str.';<br>';
-echo iconv('cp1251', "ascii//IGNORE", $str)."<br>";
-//echo iconv('cp1251', "ascii//TRANSLIT", $str)."<br>"; // error
-//echo iconv('cp1251', "UTF-8//TRANSLIT", $str); // error
-//echo iconv('UTF-8','cp1252//TRANSLIT',iconv('cp1251', "UTF-8", $str)); // error
-echo transliterate($str);
-die();
+run('lib/file_functions');
+
+$a=[
+'Прийом гостей',
+'Прийом іноземних гостей',
+'Наукові',
+'Виховні',
+'Культурно-масові',
+'Спортивні',
+'Студентське самоврядування',
+'--',
+'Загальноуніверситетські',
+'Факультетські',
+'Регіональні',
+'Всеукраїнські',
+'Міжнародні'
+        ];
+
+foreach($a as $b){
+    prn(encode_dir_name($b));
+}
 ?>
