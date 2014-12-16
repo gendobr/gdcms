@@ -10,6 +10,7 @@
   lang - interface language
  */
 
+header('Access-Control-Allow-Origin: *');
 
 global $main_template_name;
 $main_template_name = '';
