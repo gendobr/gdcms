@@ -3,6 +3,11 @@
 /*
  * View month calendar
  */
+
+
+// на сколько лет вперёд показывать календарь
+define('max_forward_years', 2);
+
 //------------------- get site info - begin ------------------------------------
 run('site/menu');
 $site_id = checkInt($input_vars['site_id']);
@@ -20,6 +25,14 @@ global $main_template_name;
 $main_template_name = '';
 $month = isset($input_vars['month']) ? ( (int) $input_vars['month'] ) : ( (int) date('m') );
 $year = isset($input_vars['year']) ? ( (int) $input_vars['year'] ) : ( (int) date('Y') );
+
+$current_year=date('Y');
+if($year-$current_year>max_forward_years){
+   $year=$current_year+max_forward_years;
+}
+if($current_year-$year>max_forward_years){
+    $year=$current_year-max_forward_years;
+}
 
 
 run('calendar/functions');

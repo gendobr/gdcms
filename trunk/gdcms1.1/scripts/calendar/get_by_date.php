@@ -9,6 +9,7 @@
 // /index.php?action=calendar/get_by_date&site_id=1&y=2011&m=03&d=26&h=00&i=10 => 19
 // /index.php?action=calendar/get_by_date&site_id=12&y=2011&m=03&d=28
 
+header('Access-Control-Allow-Origin: *');
 
 global $main_template_name;
 $main_template_name = '';
@@ -40,8 +41,6 @@ if (!$this_site_info){
 run('site/page/page_view_functions');
 run('calendar/functions');
 
-
-
 $y = isset($input_vars['y']) ? (int) $input_vars['y'] : date('Y'); // year
 $m = isset($input_vars['m']) ? (int) $input_vars['m'] : date('m'); // month
 $d = isset($input_vars['d']) ? (int) $input_vars['d'] : date('d'); // day of month
@@ -51,10 +50,45 @@ $i = isset($input_vars['i']) ? (int) $input_vars['i'] : date('i');// -1; // minu
 //echo "event_get_by_date($site_id, $y, $m, $d, $h, $i)";
 $event_list = event_get_by_date($site_id, $y, $m, $d, $h, $i,$verbose=isset($input_vars['verbose']));
 
+
+//prn($event_list);
+// restrict by category
+if(count($event_list)>0 &&  isset($input_vars['category_id'])){
+    // get categories for events
+    $ids=Array();
+    foreach($event_list as $event){
+        $ids[]=$event['id'];
+    }
+    //prn($ids);
+    $query="SELECT event_id
+            FROM {$GLOBALS['table_prefix']}calendar_category AS cc
+            WHERE category_id IN(
+                    SELECT ch.category_id
+                    FROM  {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
+                    WHERE pa.site_id={$site_id}
+                      AND ch.site_id={$site_id}
+                      AND pa.category_id=".( (int)$input_vars['category_id'] )."
+                      AND pa.start <= ch.start AND ch.finish <= pa.finish
+            )
+            AND event_id IN(".join(',',$ids).");";
+    $tmp = db_getrows($query);
+    $checked_id=Array();
+    foreach($tmp as $tm){
+        $checked_id[$tm['event_id']]=$tm['event_id'];
+    }
+    $cnt=count($event_list);
+    for($i=0; $i<$cnt; $i++){
+        if(!isset($checked_id[$event_list[$i]['id']])){
+            unset($event_list[$i]);
+        }
+    }
+    $event_list=array_values($event_list);
+}
+
 //prn('event_list=', $event_list);
 # check if template name is posted
 $subtemplate=false;
-if (isset($_REQUEST['template'])) {
+if (isset($input_vars['template'])) {
     $subtemplate=site_get_template($this_site_info,$_REQUEST['template']);
 }
 if(!$subtemplate){
@@ -106,9 +140,9 @@ if (isset($input_vars['element'])) {
     </script>
     "
     ;
-}
-else
+} else {
     echo $vyvid;
+}
 
 echo '
     </body>
@@ -116,4 +150,3 @@ echo '
 ';
 // remove from history
 nohistory($input_vars['action']);
-?>

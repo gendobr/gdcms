@@ -32,23 +32,22 @@ $input_vars['page_header'] =text('Calendar_widget_html_code');
 $input_vars['page_content'] = "
 <script type=\"text/javascript\">
 <!--
-function set_span_value(span_id,val)
-{
-  var sp
-  sp=document.getElementById(span_id+'0');
-  if(sp) sp.innerHTML=val;
+function set_span_value(span_id,val) {
+    var sp
+    sp=document.getElementById(span_id+'0');
+    if(sp) sp.innerHTML=val;
 
-  sp=document.getElementById(span_id+'1');
-  if(sp) sp.innerHTML=val;
-//
-//  sp=document.getElementById(span_id+'2');
-//  if(sp) sp.innerHTML=val;
-//
-//  sp=document.getElementById(span_id+'3');
-//  if(sp) sp.innerHTML=val;
-//
-//  sp=document.getElementById(span_id+'4');
-//  if(sp) sp.innerHTML=val;
+    sp=document.getElementById(span_id+'1');
+    if(sp) sp.innerHTML=val;
+    //
+    //  sp=document.getElementById(span_id+'2');
+    //  if(sp) sp.innerHTML=val;
+    //
+    //  sp=document.getElementById(span_id+'3');
+    //  if(sp) sp.innerHTML=val;
+    //
+    //  sp=document.getElementById(span_id+'4');
+    //  if(sp) sp.innerHTML=val;
 }
 // -->
 </script>
@@ -71,7 +70,7 @@ ajax_loadblock('calendar$uid','"
  ."&amp;lang=<span id=s_lang>{$_SESSION['lang']}</span>"
  ."&amp;rows=<span id=s_rows>10</span>"
  ."&amp;template=<span id=s_template0></span>"
- ."&amp;element=calendar$uid"
+ ."&amp;category_id="
  ."',null);
 &lt;/script&gt;
   </pre>
@@ -87,7 +86,7 @@ ajax_loadblock('calendar$uid','"
      ."&amp;lang=<span id=s_lang>{$_SESSION['lang']}</span>"
      ."&amp;rows=<span id=s_rows>10</span>"
      ."&amp;template=<span id=s_template1></span>"
-     ."&amp;element=calendar$uid"
+     ."&amp;category_id="
      ."&amp;h=-1"
      ."&amp;i=-1"
      ."',null);
