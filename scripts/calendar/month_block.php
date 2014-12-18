@@ -3,6 +3,9 @@
 /*
  * View month calendar
  */
+
+header('Access-Control-Allow-Origin: *');
+
 //------------------- get site info - begin ------------------------------------
 run('site/menu');
 $site_id = checkInt($input_vars['site_id']);

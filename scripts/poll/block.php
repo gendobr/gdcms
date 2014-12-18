@@ -7,7 +7,7 @@
     $template=<template file name>, file name (extension is ".html"),
               template placed in site root directory.
 */
-
+header('Access-Control-Allow-Origin: *');
 global $main_template_name;
 $main_template_name='';
 
