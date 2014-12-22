@@ -36,6 +36,20 @@
     }
 </style>
 {/literal}
+
+
+
+{foreach from=$events->dateselector->parents item=dts}
+/ <a href="{$dts.URL}">{$dts.innerHTML}</a>
+{/foreach}
+{if $events->dateselector->current.innerHTML}/ {$events->dateselector->current.innerHTML}{/if}
+<div>
+{foreach from=$events->dateselector->children item=dts}
+<a href="{$dts.URL}">{$dts.innerHTML}</a>
+{/foreach}
+</div>
+
+
 	<div align=left><b>
 	{txt lang=$text.language_name variants="eng=Events::rus=События::ukr=Події"}
 	{$events->start}-{$events->finish}
