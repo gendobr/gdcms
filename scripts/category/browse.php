@@ -313,6 +313,11 @@ class CategoryEvents {
     }
 
     private function init() {
+        
+        if(!function_exists("event_get_inside")){
+            run('calendar/functions');
+        }
+        //
         $site_id = $this->this_site_info['id'];
         $category_id = $this->category_info['category_id'];
 
@@ -332,6 +337,41 @@ class CategoryEvents {
             $children[$i] = $children[$i]['category_id'];
         }
         // prn(join(',',$children)); exit('####');
+        // 
+        // ------------ restrict dates - begin ---------------------------------
+        if(isset($GLOBALS['input_vars']['day'])){
+            $day = (int)$GLOBALS['input_vars']['day'];
+            $month = (int)$GLOBALS['input_vars']['month'];
+            $year = (int)$GLOBALS['input_vars']['year'];
+            $timestamp_start= mktime(0, 0, 1, $month, $day, $year);
+            $timestamp_end=mktime(23, 59, 59, $month, $day, $year);
+            $event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose = false);
+        }elseif(isset($GLOBALS['input_vars']['month'])){
+            $month = (int)$GLOBALS['input_vars']['month'];
+            $year = (int)$GLOBALS['input_vars']['year'];
+            $timestamp_start= mktime(0, 0, 1, $month  , 1, $year);
+            $timestamp_end=mktime(23, 59, 59, $month+1, 0, $year);
+            $event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose = false);
+        }elseif(isset($GLOBALS['input_vars']['year'])){
+            $year = (int)$GLOBALS['input_vars']['year'];
+            $timestamp_start= mktime(0, 0, 1, 01  , 1 , $year);
+            $timestamp_end=mktime(23, 59, 59, 12  , 31, $year);
+            $event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose = false);
+        }
+        
+        if(isset($event_ids)){
+            if(count($event_ids)>0){
+                $date_where=" AND calendar.id in(".join(',',$event_ids).")";
+            }else{
+                $date_where=" AND calendar.id in(0)";
+            }
+        }else{
+            $date_where ='';
+        }
+        // ------------ restrict dates - end -----------------------------------
+        
+        
+        // 
         // get all the visible events attached to visible children
         $query = "SELECT SQL_CALC_FOUND_ROWS
                    calendar.*
@@ -339,6 +379,7 @@ class CategoryEvents {
                   WHERE calendar.site_id=$site_id
                     AND calendar.vis
                     AND calendar.id in(SELECT event_id FROM {$GLOBALS['table_prefix']}calendar_category WHERE category_id in(" . join(',', $children) . ") )
+                    {$date_where}
                   ORDER BY {$this->ordering}
                   LIMIT {$this->start},{$this->rows_per_page}";
         //AND lang='" . DbStr($this->lang) . "'
@@ -357,6 +398,113 @@ class CategoryEvents {
         $this->_list = get_view($this->_list, $this->lang);
         //prn('Call init():', $this);
         //prn('Call init():');
+        
+        
+        
+        
+        
+        
+        
+        // ------------- date selector links - begin ---------------------------
+        $this->dateselector=new stdClass();
+        $this->dateselector->parents=Array();
+        $this->dateselector->current=Array();
+        $this->dateselector->children=Array();
+
+        if(isset($GLOBALS['input_vars']['day'])){
+            $day = (int)$GLOBALS['input_vars']['day'];
+            $month = (int)$GLOBALS['input_vars']['month'];
+            $year = (int)$GLOBALS['input_vars']['year'];
+            $month_names=calendar_misyaci();
+
+            
+            $this->dateselector->parents[]=Array(
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")
+              ,'innerHTML'=> text('All_dates')
+            );
+            $this->dateselector->parents[]=Array(
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}" 
+              ,'innerHTML'=> $year
+            );
+            $this->dateselector->parents[]=Array(
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}&month={$month}" 
+              ,'innerHTML'=> $month_names[$month]
+            );
+            $this->dateselector->current=Array(
+                    'URL'=> ''// 
+                   ,'innerHTML'=> $day
+            );
+            
+        }elseif(isset($GLOBALS['input_vars']['month'])){
+            $month = (int)$GLOBALS['input_vars']['month'];
+            $year = (int)$GLOBALS['input_vars']['year'];
+            $month_names=calendar_misyaci();
+
+            $this->dateselector->parents[]=Array(
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")
+              ,'innerHTML'=> text('All_dates')
+            );
+            $this->dateselector->parents[]=Array(
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}" 
+              ,'innerHTML'=> $year
+            );
+            $this->dateselector->current=Array(
+                    'URL'=> ''// 
+                   ,'innerHTML'=> $month_names[$month]
+            );
+            
+            $timestamp_start= mktime(12, 0, 0, $month  , 1, $year);
+            $timestamp_end=mktime(12, 0, 0, $month+1, 0, $year);
+            for($i=$timestamp_start; $i<=$timestamp_end; $i+=86400){ // 86400 = seconds in day
+                $day=date('d',$i);
+                $this->dateselector->children[]=Array(
+                    'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}&month={$month}&day=".$day// 
+                   ,'innerHTML'=> $day
+                );
+            }
+
+            
+        }elseif(isset($GLOBALS['input_vars']['year'])){
+            
+            $year = (int)$GLOBALS['input_vars']['year'];
+            $month_names=calendar_misyaci();
+            
+            $this->dateselector->parents[]=Array(
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")
+              ,'innerHTML'=> text('All_dates')
+            );
+
+            $this->dateselector->current=Array(
+                    'URL'=> ''// 
+                   ,'innerHTML'=> $year
+            );
+
+            for($i=1; $i<=12; $i++){
+                $this->dateselector->children[]=Array(
+                    'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}&month={$i}"// 
+                   ,'innerHTML'=> $month_names[$i]
+                );
+            }
+            // prn($this->dateselector->children);
+        }else{
+            $current_year=(int)date('Y');
+            
+            $this->dateselector->current=Array(
+                    'URL'=> ''// 
+                   ,'innerHTML'=> text('All_dates')
+            );
+
+            for($i=-2; $i<=2; $i++){
+                $this->dateselector->children[]=Array(
+                    'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year=".($current_year+$i)// 
+                    ,'innerHTML'=> ($current_year+$i)
+                );
+            }
+            
+        }
+        // ------------- date selector links - end ---------------------------
+
+        
         return '';
     }
 
@@ -377,6 +525,9 @@ class CategoryEvents {
                 break;
             case 'start':
                 return $this->start + 1;
+                break;
+            case 'dateselector':
+                return $this->dateselector;
                 break;
             case 'finish':
                 return min($this->start + $this->rows_per_page, $this->items_found);
@@ -521,7 +672,7 @@ for ($i = 0; $i < $cnt; $i++) {
 $_template = site_get_template($this_site_info, 'template_category_browse');
 //echo $_template;
 
-$category_events = new CategoryEvents($lang, $this_site_info, $this_category_info, isset($input_vars['events_start']) ? ( (int) $input_vars['events_start']) : 0);
+$category_events = new CategoryEvents($lang, $this_site_info, $this_category_info, isset($input_vars['event_start']) ? ( (int) $input_vars['event_start']) : 0);
 //$category_events->init();
 $vyvid = process_template($_template
         , Array(
