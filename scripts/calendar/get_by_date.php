@@ -85,6 +85,10 @@ if(count($event_list)>0 &&  isset($input_vars['category_id'])){
     $event_list=array_values($event_list);
 }
 
+
+
+$event_list = get_view($event_list,$input_vars['lang']);
+
 //prn('event_list=', $event_list);
 # check if template name is posted
 $subtemplate=false;
