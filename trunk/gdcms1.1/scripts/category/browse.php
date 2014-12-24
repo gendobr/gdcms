@@ -419,15 +419,15 @@ class CategoryEvents {
 
             
             $this->dateselector->parents[]=Array(
-               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year|event_start/")
               ,'innerHTML'=> text('All_dates')
             );
             $this->dateselector->parents[]=Array(
-               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}" 
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year|event_start/")."&year={$year}" 
               ,'innerHTML'=> $year
             );
             $this->dateselector->parents[]=Array(
-               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}&month={$month}" 
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year|event_start/")."&year={$year}&month={$month}" 
               ,'innerHTML'=> $month_names[$month]
             );
             $this->dateselector->current=Array(
@@ -441,11 +441,11 @@ class CategoryEvents {
             $month_names=calendar_misyaci();
 
             $this->dateselector->parents[]=Array(
-               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year|event_start/")
               ,'innerHTML'=> text('All_dates')
             );
             $this->dateselector->parents[]=Array(
-               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}" 
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year|event_start/")."&year={$year}" 
               ,'innerHTML'=> $year
             );
             $this->dateselector->current=Array(
@@ -458,7 +458,7 @@ class CategoryEvents {
             for($i=$timestamp_start; $i<=$timestamp_end; $i+=86400){ // 86400 = seconds in day
                 $day=date('d',$i);
                 $this->dateselector->children[]=Array(
-                    'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}&month={$month}&day=".$day// 
+                    'URL'=> site_URL.'?'.preg_query_string("/day|month|year|event_start/")."&year={$year}&month={$month}&day=".$day// 
                    ,'innerHTML'=> $day
                 );
             }
@@ -470,7 +470,7 @@ class CategoryEvents {
             $month_names=calendar_misyaci();
             
             $this->dateselector->parents[]=Array(
-               'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")
+               'URL'=> site_URL.'?'.preg_query_string("/day|month|year|event_start/")
               ,'innerHTML'=> text('All_dates')
             );
 
@@ -481,7 +481,7 @@ class CategoryEvents {
 
             for($i=1; $i<=12; $i++){
                 $this->dateselector->children[]=Array(
-                    'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year={$year}&month={$i}"// 
+                    'URL'=> site_URL.'?'.preg_query_string("/day|month|year|event_start/")."&year={$year}&month={$i}"// 
                    ,'innerHTML'=> $month_names[$i]
                 );
             }
@@ -496,7 +496,7 @@ class CategoryEvents {
 
             for($i=-1; $i<=1; $i++){
                 $this->dateselector->children[]=Array(
-                    'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year=".($current_year+$i)// 
+                    'URL'=> site_URL.'?'.preg_query_string("/day|month|year|event_start/")."&year=".($current_year+$i)// 
                     ,'innerHTML'=> ($current_year+$i)
                 );
             }
