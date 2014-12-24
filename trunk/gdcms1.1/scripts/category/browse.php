@@ -494,7 +494,7 @@ class CategoryEvents {
                    ,'innerHTML'=> text('All_dates')
             );
 
-            for($i=-2; $i<=2; $i++){
+            for($i=-1; $i<=1; $i++){
                 $this->dateselector->children[]=Array(
                     'URL'=> site_URL.'?'.preg_query_string("/day|month|year/")."&year=".($current_year+$i)// 
                     ,'innerHTML'=> ($current_year+$i)
