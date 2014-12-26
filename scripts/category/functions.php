@@ -49,7 +49,7 @@ function menu_category($_info = false) {
             $menu[] = Array(
                 'url' => 'index.php?action=category/list&category_delete=yes&category[' . $_info['category_id'] . ']=' . $_info['category_id'] . "&site_id={$_info['site_id']}"
                 , 'html' => text('Delete')
-                , 'attributes' => ' style="color:red;margin-top:20px;" onclick="return confirm(\'Вы действительно хотите удалить категорию ' . checkStr(" {$_info['category_title']} ") . '\')" '
+                , 'attributes' => ' style="color:red;margin-top:20px;" onclick="return confirm(\'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ' . checkStr(" {$_info['category_title']} ") . '\')" '
             );
     }# ------------------------ selected menu - end -----------------------
 
@@ -78,19 +78,19 @@ function adjust($_info, $category_id) {
 
 
     // date_lang_update
-    $tmp=$tor['date_lang_update'];
-    $tmp=explode('<',$tmp);
-    $cnt=count($tmp);
-    if($cnt>1){
-       $date_lang_update=Array();
-       for($i=1;$i<$cnt; $i+=2){
-           $tmp[$i]=explode('>',$tmp[$i]);
-           $date_lang_update[$tmp[$i][0]]=$tmp[$i][1];
-       }
-    }else{
-       $date_lang_update=Array();
+    $tmp = $tor['date_lang_update'];
+    $tmp = explode('<', $tmp);
+    $cnt = count($tmp);
+    if ($cnt > 1) {
+        $date_lang_update = Array();
+        for ($i = 1; $i < $cnt; $i+=2) {
+            $tmp[$i] = explode('>', $tmp[$i]);
+            $date_lang_update[$tmp[$i][0]] = $tmp[$i][1];
+        }
+    } else {
+        $date_lang_update = Array();
     }
-    $tor['date_lang_update_array']=$date_lang_update;
+    $tor['date_lang_update_array'] = $date_lang_update;
     // prn('date_lang_update',$tor['date_lang_update_array']);
     # prn($query,$this_page_info);
     //prn('    tor= ',$tor);
@@ -110,7 +110,6 @@ function category_public_list($site_id, $lang) {
               order by  ch.start";
     $caterory_list = db_getrows($query);
     // ------------------ get list of categories - end -------------------------
-
     // ------------------ adjust list of categories - begin --------------------
     // $category_url_prefix = site_root_URL . "/index.php?action=category/browse&site_id={$site_id}&lang={$lang}&category_id=";
     $category_url_pattern = str_replace(Array('{site_id}', '{lang}'), Array((int) $site_id, $lang), url_pattern_category);
@@ -119,11 +118,10 @@ function category_public_list($site_id, $lang) {
         $caterory_list[$i]['category_title'] = get_langstring($caterory_list[$i]['category_title'], $lang);
         $caterory_list[$i]['category_description'] = get_langstring($caterory_list[$i]['category_description'], $lang);
         $caterory_list[$i]['URL'] = str_replace('{category_id}', $caterory_list[$i]['category_id'], $category_url_pattern);
-        $caterory_list[$i]['number_of_news']=0;
+        $caterory_list[$i]['number_of_news'] = 0;
     }
     // prn($caterory_list);
     // ------------------ adjust list of categories - end ----------------------
-
     // ------------------ get number of news - begin ---------------------------
     $category_ids = Array();
     $category_ids[] = 0;
@@ -136,18 +134,18 @@ function category_public_list($site_id, $lang) {
            WHERE category_id in({$category_ids}) GROUP BY category_id";
     $number_of_news = db_getrows($query);
 
-    foreach($number_of_news as $n_news){
+    foreach ($number_of_news as $n_news) {
         for ($i = 0; $i < $cnt; $i++) {
-            if($caterory_list[$i]['category_id'] == $n_news['category_id']){
-               $caterory_list[$i]['number_of_news']+=$n_news['n_news'];
-               $deep=$caterory_list[$i]['deep'];
-               for($j=$i-1;$j>=0; $j--){
-                   if($deep>$caterory_list[$j]['deep']){
-                       $caterory_list[$j]['number_of_news']+=$n_news['n_news'];
-                       $deep=$caterory_list[$j]['deep'];
-                   }
-               }
-               break;
+            if ($caterory_list[$i]['category_id'] == $n_news['category_id']) {
+                $caterory_list[$i]['number_of_news']+=$n_news['n_news'];
+                $deep = $caterory_list[$i]['deep'];
+                for ($j = $i - 1; $j >= 0; $j--) {
+                    if ($deep > $caterory_list[$j]['deep']) {
+                        $caterory_list[$j]['number_of_news']+=$n_news['n_news'];
+                        $deep = $caterory_list[$j]['deep'];
+                    }
+                }
+                break;
             }
         }
     }
@@ -156,4 +154,48 @@ function category_public_list($site_id, $lang) {
     return $caterory_list;
 }
 
-?>
+
+// ------------ get category info - begin --------------------------------------
+/*
+    $this_category_info=category_info([
+      'category_id'=> '...' | 'path' =>'...' | 'category_code'=''
+      'site_id'=>''
+      'lang'=>''
+    ]);
+ */
+function category_info($options) {
+    $where = Array();
+    if (isset($options['category_id'])) {
+        $where[0] = 'category_id=' . ( (int) $options['category_id'] );
+    }
+    if (isset($options['path'])) {
+        $options['path'] = preg_replace("/\\/+$|^\\/+/", '', $options['path']);
+        $where[0] = "path='" . DbStr($options['path']) . "'";
+    }
+    if (isset($options['category_code'])) {
+        $where[0] = "category_code='" . DbStr($options['category_code']) . "'";
+    }
+
+    if (count($where) == 0) {
+        $where[0] = 'start=0';
+    }
+    $where[1] = 'site_id=' . $options['site_id'];
+    $where[2] = 'is_visible =1';
+    $query = "SELECT * FROM {$GLOBALS['table_prefix']}category WHERE " . join(' AND ', $where);
+
+    $this_category_info = db_getonerow($query);
+    if (!$this_category_info) {
+        die('Category not found');
+    }
+
+    
+    $this_category_info['category_title'] = get_langstring($this_category_info['category_title'], $options['lang']);
+    $this_category_info['category_description'] = get_langstring($this_category_info['category_description'], $options['lang']);
+    $this_category_info['URL'] = str_replace( Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), Array($this_category_info['path'], $options['lang'], $options['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), url_pattern_category);
+    $this_category_info['date_lang_update'] = get_langstring($this_category_info['date_lang_update'], $options['lang']);
+    //prn($this_category_info);
+    
+    return $this_category_info;
+}
+// ------------ get category info - end ----------------------------------------
+
