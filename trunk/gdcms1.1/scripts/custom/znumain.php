@@ -116,22 +116,31 @@ $page['next']=Array();
   );
   }
 
-// holiday
+// events
   if ($lang == 'ukr') {
-    $reply = trim(get_cached_page('http://sites.znu.edu.ua:8000/holiday/index.php?action=events/block&rows_per_page=100&plus=' . rawurlencode(isset($_REQUEST['plus']) ? $_REQUEST['plus'] : '')));
-    $reply = iconv ( 'cp1251' , site_charset , $reply);
+    //    $reply = trim(get_cached_page('http://sites.znu.edu.ua:8000/holiday/index.php?action=events/block&rows_per_page=100&plus=' . rawurlencode(isset($_REQUEST['plus']) ? $_REQUEST['plus'] : '')));
+    //    $reply = iconv ( 'cp1251' , site_charset , $reply);
+    //    if (strlen($reply) > 0) {
+    //        $page['next'][] = Array(
+    //            'title' => "<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/holiday/index.php?action=main>Святковий календар</a>"
+    //            , 'content' => $reply
+    //            . "<br>
+    //            <div align=right>
+    //                <a href=http://sites.znu.edu.ua/holiday/index.php?action=events/search_results class=more_news_button>Всі свята</a>
+    //            </div>
+    //          "
+    //        );
+    //    }
+    $reply = trim(get_cached_page('http://sites.znu.edu.ua/cms/index.php?action=calendar/get_by_date&site_id=89&lang=ukr&rows=10&template=template_calendar_view_block_sv.html&category_id=1289&h=-1&i=-1'));
+    $reply.= trim(get_cached_page('http://sites.znu.edu.ua/cms/index.php?action=calendar/get_by_date&site_id=89&lang=ukr&rows=10&template=template_calendar_view_block_dn.html&category_id=1292&h=-1&i=-1'));
+    $reply.= trim(get_cached_page('http://sites.znu.edu.ua/cms/index.php?action=calendar/get_by_date&site_id=89&lang=ukr&rows=10&template=template_calendar_view_block_zh.html&category_id=1293&h=-1&i=-1'));
     if (strlen($reply) > 0) {
         $page['next'][] = Array(
-            'title' => "<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/holiday/index.php?action=main>Святковий календар</a>"
-            , 'content' => $reply
-            . "<br>
-            <div align=right>
-                <a href=http://sites.znu.edu.ua/holiday/index.php?action=events/search_results class=more_news_button>Всі свята</a>
-            </div>
-          "
+            'title' => "<a  style=\"color:#192666; font-family:georgia,serif;\" href='http://sites.znu.edu.ua/cms/index.php?action=category%2Fbrowse&site_id=89&lang=ukr'>Календар подій</a>"
+          , 'content' => $reply
         );
     }
-  }
+   }
 
 
 // invitations

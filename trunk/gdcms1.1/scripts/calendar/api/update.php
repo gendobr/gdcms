@@ -160,15 +160,15 @@ if(isset($input_vars['tags'])){
 }
 // ----------------- clear tags - end --------------------------------------
 
-$adresa='';
-$kartynka='';
-
+//$adresa='';
+//    `adresa`='{$adresa}',
+//$kartynka='';
+//`kartynka`='{$kartynka}',
+        
 $query = "
 UPDATE {$GLOBALS['table_prefix']}calendar 
 SET
-    `nazva`='{$nazva}',
-    `adresa`='{$adresa}',
-    `kartynka`='{$kartynka}',
+    `nazva`='{$nazva}',  
     `vis`={$vis},
     `description`='{$description}',
     `tags`='{$tags}'
