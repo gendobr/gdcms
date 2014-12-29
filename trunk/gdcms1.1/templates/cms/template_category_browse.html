@@ -20,6 +20,92 @@
 </span>
 
 
+
+
+{*  list attached events per child *}
+{*
+{literal}
+<style type="text/css">
+    span.daty{
+        display:inline-block;
+        float:left;
+        background-color: #e0e0e0;
+        padding:5px;
+        margin-right:10px;
+        margin-top:-5px;
+    }
+    div.event {
+        margin-top:15px;
+    }
+</style>
+{/literal}
+
+
+
+{foreach from=$events->dateselector->parents item=dts}
+/ <a href="{$dts.URL}">{$dts.innerHTML}</a>
+{/foreach}
+{if $events->dateselector->current.innerHTML}/ {$events->dateselector->current.innerHTML}{/if}
+<div>
+{foreach from=$events->dateselector->children item=dts}
+<a href="{$dts.URL}">{$dts.innerHTML}</a>
+{/foreach}
+</div>
+
+
+{if $category.children}
+  {foreach from=$category.children item=child}
+    {capture name=foo assign=foo}{literal}{$events->category_{/literal}{$child.category_id}{literal}}{/literal}{/capture}
+    {eval var=$foo}
+    <h4>{$child.category_title}</h4>
+    {if $child.category_description}<div>{$child.category_description}</div>{/if}
+    {foreach from=$events->list item=_item}
+          <div class="event">
+                <span class="daty">
+                    {foreach from=$_item.dates item=_dt}
+                    {capture name=npt assign="poch_text"}{if $_dt.pochtyzh_text}{$_dt.pochtyzh_text},{/if} {if $_dt.pochmis_text}{$_dt.pochmis_text},{/if} {if $_dt.pochday_text}{$_dt.pochday_text},{/if} {if $_dt.pochrik_text}{$_dt.pochrik_text},{/if}{/capture}
+                    {capture name=npt assign="kin_text"}{if $_dt.kintyzh_text}{$_dt.kintyzh_text},{/if} {if $_dt.kinmis_text}{$_dt.kinmis_text},{/if} {if $_dt.kinday_text}{$_dt.kinday_text},{/if} {if $_dt.kinrik_text}{$_dt.kinrik_text},{/if}{/capture}
+                    <nobr>
+                      {$poch_text|regex_replace:"/, +$/":""}
+                      {if $poch_text neq $kin_text}
+                      -- {$kin_text|regex_replace:"/, +$/":""}
+                      {/if}
+                    </nobr><br/>
+                    {/foreach}
+                </span>
+          <div style='margin-bottom:0;'>
+                  {if $_item.kartynka}<img src="$_item.kartynka" align="right">{/if}
+            {if $_item.adresa}
+              <a href="{$_item.adresa}">{$_item.nazva}</a>
+            {else}
+              <b>{$_item.nazva}</b>
+            {/if}
+          </div>
+                {if $_item.description}<div>{$_item.description}</div>{/if}
+                {if $_item.categories}
+                {foreach from=$_item.categories item=_cat}
+                  <a href="{$_cat.URL}">{$_cat.category_title}</a>
+                {/foreach}
+                {/if}
+
+                {if $_item.nearest_dates}
+                <div>
+                {txt lang=$text.language_name variants="eng=nearest dates::rus=ближайшие даты::ukr=найближчі дати"}:
+                {foreach from=$_item.nearest_dates item=dat}
+                  {$dat|date_format:"%d.%m.%Y"}
+                {/foreach}
+                </div>
+                {/if}
+          </div>
+        <div style="clear:left;"></div>
+
+    {/foreach}
+  {/foreach}
+{/if}
+
+*}
+
+{*
 {if $events->items_found gt 0}
 {literal}
 <style type="text/css">
@@ -114,9 +200,11 @@
 {/if}
 
 {/if}
+*}
+
 
 {* list of attached news *}
-
+{*
 {if $news->items_found gt 0}
 
 	<div align=left><b>
@@ -164,3 +252,4 @@
 	</div>
         {/if}
 {/if}
+ *}
