@@ -394,7 +394,14 @@ for ($i = 0; $i < $cnt; $i++) {
 //prn($lang_list);
 //clearstatcache();
 // if(isset($_REQUEST['v'])) phpinfo();,isset($_REQUEST['v'])
-$_template = site_get_template($this_site_info, 'template_category_browse');
+
+$template_name='template_category_browse';
+$_template = sites_root.'/'.$this_site_info['dir']."/{$template_name}_{$category_id}.html";
+if(!is_file($_template)){
+    $_template = site_get_template($this_site_info, $template_name);
+}
+
+
 //echo $_template;
 
 $category_events = new CategoryEvents($lang, $this_site_info, $this_category_info, isset($input_vars['event_start']) ? ( (int) $input_vars['event_start']) : 0);
