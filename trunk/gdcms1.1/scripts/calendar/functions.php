@@ -732,20 +732,23 @@ class CategoryEvents {
 
         
         if(isset($GLOBALS['input_vars']['year'])){
-            $this->year=$GLOBALS['input_vars']['year'];
+            $this->year=(int)$GLOBALS['input_vars']['year'];
         }
         
         if(isset($GLOBALS['input_vars']['month'])){
-            $this->month =$GLOBALS['input_vars']['month'];
+            $this->month =(int)$GLOBALS['input_vars']['month'];
             if(!isset($this->year)){
                 $this->year=(int)date('Y');
             }
         }
         
         if(isset($GLOBALS['input_vars']['day'])){
-            $this->day=$GLOBALS['input_vars']['day'];
+            $this->day=(int)$GLOBALS['input_vars']['day'];
             if(!isset($this->month)){
                 $this->month=(int)date('m');
+            }
+            if(!isset($this->year)){
+                $this->year=(int)date('Y');
             }
         }
         //$this->init();
