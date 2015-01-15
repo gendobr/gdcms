@@ -19,7 +19,7 @@ var showResponse=function (responseText, statusText)  {
     $('#loginoutput').html(data.message);
     //if(responseText=='OK'){
     if(data.status=='OK'){
-        if ($.browser.webkit) {
+        if ($ && $.browser && $.browser.webkit) {
             $('#page_content').html('<div style="font-size:300%;">'+data.message+'...</div>');
         }else{
             window.location.reload();
