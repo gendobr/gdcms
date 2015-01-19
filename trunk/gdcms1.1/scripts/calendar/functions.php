@@ -33,260 +33,64 @@ function menu_event($_info) {
     return $tor;
 }
 
-function event_get_by_date($site_id, $year, $month, $day, $hour = -1, $minute = -1, $verbose = false) {
-    //$verbose=true;
-    if($verbose) {
-        prn("event_get_by_date($site_id, $year, $month, $day, $hour = -1, $minute = -1, $verbose = false)");
-    }
-    
-    // ---------- create temporary tables - begin ------------------------------
-    static $tmp_tables_created;
-    if ($tmp_tables_created) {
-        $query = "delete from t0";
-        if ($verbose) {
-            prn($query);
-        }
-        Execute($GLOBALS['db'], $query);
-        $query = "delete from t1";
-        if ($verbose) {
-            prn($query);
-        }
-        Execute($GLOBALS['db'], $query);
-    } else {
-        // prn($near_dates);
-        // create temporary table for near dates
-        $query = "create temporary table t0(Y int(11), m int(11), d int(11), w int(11), H int(11), i int(11), t  int(11) ) engine=memory";
-        if ($verbose) {
-            prn($query);
-        }
-        Execute($GLOBALS['db'], $query);
-
-        $query = "create temporary table t1( id int(11), t  int(11) ) engine=memory";
-        if ($verbose) {
-            prn($query);
-        }
-        Execute($GLOBALS['db'], $query);
-
-        $tmp_tables_created = true;
-    }
-    // ---------- create temporary tables - end --------------------------------
-    
-    // --------------------- list of dates to check - begin --------------------
-    // get exact unix timestamp
-    $time = mktime($hour==-1?0:$hour, $minute==-1?0:$minute, $s = 1, $month, $day, $year);
-
-    $day_today = date_create(date('Y-m-d 23:59:59',$time));
-    $day_today_timestamp=$day_today->getTimestamp();
-
-    $near_dates = Array();
-    $t=date_add($day_today, date_interval_create_from_date_string('-365 days'));
-    $day_step = date_interval_create_from_date_string('1 day');
-
-    for ($i = 0; $i < 731; $i++) {
-        $near_dates[] = "(" . $t->format("Y,m,d,w,H,i") . ",".$t->getTimestamp().")";
-        $t->add($day_step);
-    }
-
-    // put near dates
-    $query = "insert into t0(y, m, d, w, H, i, t) values " . join(',', $near_dates);
-    if ($verbose) {
-        prn($query);
-    }
-    Execute($GLOBALS['db'], $query);
-    // prn(db_getrows("SELECT * FROM t0"));
-    // --------------------- list of dates to check - end ----------------------
-
-    // events which
-    //    - attached to site_id
-    //    - 
-    // for each event
-    // select dates from t0 
-    // - which match start date pattern
-    // - are less than current date
-    // - maximal one
-    $query = "insert into t1(id, t)
-              SELECT e.id, max(t0.t) as maxdate
-              FROM  {$GLOBALS['table_prefix']}calendar_date as e, t0
-              WHERE e.site_id=$site_id
-                 and t0.t<={$day_today_timestamp}
-                 and (e.pochrik=t0.y  OR e.pochrik=-1)
-                 and (e.pochmis=t0.m  OR e.pochmis=-1)
-                 and (e.pochday=t0.d  OR e.pochday=-1)
-                 and (e.pochtyzh=t0.w OR e.pochtyzh=-1)
-              group by e.id
-              ";
-    if ($verbose) {
-        prn($query);
-    }
-    db_execute($query);
-    if ($verbose) {
-        prn(db_getrows("SELECT * FROM t1"));
-    }
-
-    // debug output: nearest start dates in the past
-    if ($verbose) {
-        $tor = db_getrows("select * from t1");
-        $cnt = count($tor);
-        for ($i = 0; $i < $cnt; $i++) {
-            $tor[$i]['date-begin'] = date('Y-m-d H:i:s', $tor[$i]['t']);
-        }
-        prn('date-begin', $tor);
-    }
-
-
-    // get maximal time for current date i.e. end of day
-    $day_today_max = date_create(date('Y-m-d 00:00:01',$time));
-    $day_today_max_timestamp=$day_today_max->getTimestamp();
-
-    // for each event 
-    // - get dates from t0 which match event_end_date
-    //   and are greater than nearest event_start_date (saved in t1)
-    //   and then select minimal one
-    //   and then ensure that end date is greater or equal than current date 
-    $query = "
-        select e.*, t1.t as pochdate, min(t0.t) as kindate
-        from {$GLOBALS['table_prefix']}calendar_date as e, t0, t1
-        where t1.id=e.id
-          and t1.t<=t0.t
-          and (e.kinrik=t0.y  OR e.kinrik=-1)
-          and (e.kinmis=t0.m  OR e.kinmis=-1)
-          and (e.kinday=t0.d  OR e.kinday=-1)
-          and (e.kintyzh=t0.w OR e.kintyzh=-1)
-        group by e.id
-        having kindate>={$day_today_max_timestamp}
-        order by pochdate asc";
-    if ($verbose) {
-        prn($query);
-    }
-    $tor = db_getrows($query);
-    //prn($tor);
-
-    // filter events for a given day
-    $cnt = count($tor);
-    for ($i = 0; $i < $cnt; $i++) {
-        
-        // --------- format start date - begin ---------------------------------
-        $tor[$i]['date_begin'] = date('Y-m-d', $tor[$i]['pochdate']);
-
-        if ($tor[$i]['pochgod'] > 0) {
-            $god_begin = substr("0000" . $tor[$i]['pochgod'], -2);
-        } else {
-            $god_begin = '00';
-        }
-
-        if ($tor[$i]['pochhv'] > 0) {
-            $hv_begin = substr("0000" . $tor[$i]['pochhv'], -2);
-        } else {
-            $hv_begin = '00';
-        }
-
-        $tor[$i]['date_begin'].=" {$god_begin}:{$hv_begin}:00";
-        $tor[$i]['pochdate'] = strtotime($tor[$i]['date_begin']);
-        // --------- format start date - end -----------------------------------
-
-        // --------- format end date - begin -----------------------------------
-        $tor[$i]['date_end'] = date('Y-m-d', $tor[$i]['kindate']);
-        if ($tor[$i]['kingod'] > 0) {
-            $god_end = $tor[$i]['kingod'];
-        } else {
-            $god_end = '24';
-        }
-        if ($tor[$i]['kinhv'] > 0) {
-            $hv_end = $tor[$i]['kinhv'];
-        } else {
-            $hv_end = '00';
-        }
-        $tor[$i]['date_end'].=" {$god_end}:{$hv_end}:00";
-        $tor[$i]['kindate'] = strtotime($tor[$i]['date_end']);
-
-        if ($verbose) {
-            prn($tor[$i]);
-        }
-        // --------- format end date - end -------------------------------------
-
-        if ($hour >= 0 && $minute >= 0) {
-            if ($time < $tor[$i]['pochdate'] || $time > $tor[$i]['kindate']) {
-                unset($tor[$i]);
-            }
-        }
-    }
-    $tor = array_values($tor);
-    
-    
-    // ---------- extract event descriptions - begin ---------------------------
-    $ids=Array();
-    foreach($tor as $to){
-        $ids[]=(int)$to['calendar_id'];
-    }
-    if(count($ids)>0){
-        $query="select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$ids).")";
-        $tmp=db_getrows($query);
-        $events=Array();
-        foreach($tmp as $tm){
-            $events[$tm['id']]=$tm;
-        }
-        unset($tmp);
-        
-        $cnt=count($tor);
-        for($i=0; $i<$cnt; $i++){
-            if(isset($events[$tor[$i]['calendar_id']])){
-                $tor[$i]=array_merge($tor[$i],$events[$tor[$i]['calendar_id']]);
-                unset($events[$tor[$i]['calendar_id']]);
-            }else{
-                unset($tor[$i]);
-            }
-        }
-    }
-    // ---------- extract event descriptions - end -----------------------------
-    $tor=  array_values($tor);
-    usort($tor, function ($a, $b) {
-        if ($a['date_begin'] == $b['date_begin']) {
-            return 0;
-        }
-        return ($a['date_begin'] < $b['date_begin']) ? -1 : 1;
-    });
-    if ($verbose) {
-        prn($tor);
-    }
-    //prn($tor);
-    //exit();
-    return array_values($tor);
-}
 
 
 function event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose = false) {
     //$verbose=true;
     if($verbose) {
-        prn("event_get_by_month($site_id, $year, $month, verbose  = $verbose)");
+        prn("event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose = false)");
     }
 
     // ---------- create temporary tables - begin ------------------------------
-    // prn($near_dates);
+
+
+
+    // 
+    //     
+    //             // prn($near_dates);
     // create temporary table for near dates
-    $query = "create temporary table if not exists tt0(Y int(11), m int(11), d int(11), w int(11), H int(11), i int(11), t  int(11) ) engine=memory";
-    if ($verbose) {
-        prn($query);
-    }
-    Execute($GLOBALS['db'], $query);
+    //$query = "DROP TABLE tt0;";
+    //if ($verbose) { prn($query); }
+    //db_execute($query);
 
-    $query = "create temporary table  if not exists tt1( id int(11), t  int(11) ) engine=memory";
-    if ($verbose) {
-        prn($query);
-    }
+    $query = "CREATE TEMPORARY TABLE IF NOT EXISTS tt0(
+               Y INT(11), m INT(11), d INT(11), w INT(11), 
+               H INT(11), i INT(11), t  INT(11),
+               KEY `tmst` (`t`), KEY `tmstY` (`y`), KEY `tmstM` (`m`),
+               KEY `tmstW` (`w`), KEY `tmstD` (`d`) ) ENGINE=MEMORY";
+    if ($verbose) { prn($query); }
     db_execute($query);
-
-    $query = "delete from tt0";
-    if ($verbose) {
-        prn($query);
-    }
+    
+    $query = "DELETE FROM tt0;";
+    if ($verbose) { prn($query); }
+    db_execute($query);
+    
+    
+    
+    //$query = "DROP TABLE tt1";
+    //if ($verbose) { prn($query); }
+    //db_execute($query);
+    
+    $query = "CREATE TEMPORARY TABLE  IF NOT EXISTS tt1(id INT(11), t  INT(11),KEY `tmst1` (`t`) ) ENGINE=MEMORY";
+    if ($verbose) { prn($query); }
     db_execute($query);
 
     $query = "delete from tt1";
-    if ($verbose) {
-        prn($query);
-    }
+    if ($verbose) { prn($query); }
     db_execute($query);
     
+
+    //$query = "DROP TABLE tt2";
+    //if ($verbose) { prn($query); }
+    //db_execute($query);
+
+    $query = "CREATE TEMPORARY TABLE  IF NOT EXISTS tt2( id INT(11), t  INT(11),KEY `tmst2` (`t`),KEY `tmst2d` (`id`) ) ENGINE=MEMORY";
+    if ($verbose) { prn($query); }
+    db_execute($query);
+
+    $query = "DELETE FROM tt2";
+    if ($verbose) { prn($query); }
+    db_execute($query);
     // ---------- create temporary tables - end --------------------------------
     
     // --------------------- list of dates to check - begin --------------------
@@ -335,13 +139,9 @@ function event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose =
                  and (e.pochtyzh=t0.w OR e.pochtyzh=-1)
               group by e.id
               ";
-    if ($verbose) {
-        prn($query);
-    }
+    if ($verbose) { prn($query);  }
     db_execute($query);
-    if ($verbose) {
-        prn(db_getrows("SELECT * FROM tt1"));
-    }
+    if ($verbose) {  prn(db_getrows("SELECT * FROM tt1")); }
 
     // debug output: nearest start dates in the past
     if ($verbose) {
@@ -360,22 +160,46 @@ function event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose =
     $day_start_timestamp=$day_start->getTimestamp();
 
     // for each event 
+    //-- get dates from t0 which match event_end_date
+    $query="
+        INSERT INTO tt2(id, t)
+                SELECT e.id, t0.t AS kindate
+                FROM {$GLOBALS['table_prefix']}calendar_date AS e, tt0 t0
+                WHERE (e.kinrik=t0.y  OR e.kinrik=-1)
+                  AND (e.kinmis=t0.m  OR e.kinmis=-1)
+                  AND (e.kinday=t0.d  OR e.kinday=-1)
+                  AND (e.kintyzh=t0.w OR e.kintyzh=-1)
+        ";
+    if ($verbose) { prn($query);  }
+    db_execute($query);
+
+    
+    
     // - get dates from t0 which match event_end_date
     //   and are greater than nearest event_start_date (saved in t1)
     //   and then select minimal one
     //   and then ensure that end date is greater or equal than current date 
-    $query = "
-        select e.*, t1.t as pochdate, min(t0.t) as kindate
-        from {$GLOBALS['table_prefix']}calendar_date as e, tt0 t0, tt1 t1
-        where t1.id=e.id
-          and t1.t<=t0.t
-          and (e.kinrik=t0.y  OR e.kinrik=-1)
-          and (e.kinmis=t0.m  OR e.kinmis=-1)
-          and (e.kinday=t0.d  OR e.kinday=-1)
-          and (e.kintyzh=t0.w OR e.kintyzh=-1)
-        group by e.id
-        having kindate>={$day_start_timestamp}
-        order by pochdate asc";
+    
+    $query="SELECT e.*, t2.id, t1.t AS pochdate , MIN(t2.t) AS kindate
+    FROM tt2 t2, tt1 t1, {$GLOBALS['table_prefix']}calendar_date AS e 
+    WHERE t2.id=t1.id
+      AND e.site_id=$site_id
+      AND t2.id=e.id
+      AND t1.t<=t2.t
+    GROUP BY t2.id 
+    HAVING kindate>={$day_start_timestamp}";
+    //    $query = "
+    //        select e.*, t1.t as pochdate, min(t0.t) as kindate
+    //        from {$GLOBALS['table_prefix']}calendar_date as e, tt0 t0, tt1 t1
+    //        where t1.id=e.id
+    //          and t1.t<=t0.t
+    //          and (e.kinrik=t0.y  OR e.kinrik=-1)
+    //          and (e.kinmis=t0.m  OR e.kinmis=-1)
+    //          and (e.kinday=t0.d  OR e.kinday=-1)
+    //          and (e.kintyzh=t0.w OR e.kintyzh=-1)
+    //        group by e.id
+    //        having kindate>={$day_start_timestamp}
+    //        order by pochdate asc";
     if ($verbose) {
         prn($query);
     }
@@ -464,9 +288,14 @@ function events_exist($year, $month, $day, $site_info) {
                 if (date('m', $timestamp) - $month == 0) {
                     $d = date('d', $timestamp);
                     //prn("event_get_by_date({$site_info['id']}, $year, $month, $d);");
-                    $events = event_get_by_date($site_info['id'], $year, $month, $d);
+                    //$events = event_get_by_date($site_info['id'], $year, $month, $d);
+                    
+                    $timestamp_start= mktime(00, 00, 1, $month, $d, $year);
+                    $timestamp_end=mktime(23, 59, 59, $month, $d, $year);
+                    $event_ids=event_get_inside($site_info['id'], $timestamp_start, $timestamp_end, $verbose=isset($input_vars['verbose']));
+
                     //$events=Array(1);
-                    if (count($events) > 0) {
+                    if (count($event_ids) > 0) {
                         $cached_data[] = $d;
                     }
                 }
@@ -529,7 +358,7 @@ function get_view($event_list, $lang) {
         return Array();
     }
 
-    $site_id = $event_list[0]['site_id'];
+    
 
     
     // collect event ids
@@ -598,6 +427,7 @@ function get_view($event_list, $lang) {
     
     $ncat = count($tmp);
     $categories = Array();
+    $site_id = $event_list[0]['site_id'];
     $category_url_prefix = site_root_URL . "/index.php?action=category/browse&site_id={$site_id}&lang={$lang}&category_id=";
     for ($i = 0; $i < $ncat; $i++) {
         $categories[$tmp[$i]['category_id']]['category_title'] = get_langstring($tmp[$i]['category_title'], $lang);
@@ -1009,3 +839,231 @@ class CategoryEvents {
 }
 
 
+
+
+
+
+
+
+
+
+
+//function event_get_by_date($site_id, $year, $month, $day, $hour = -1, $minute = -1, $verbose = false) {
+//    //$verbose=true;
+//    if($verbose) {
+//        prn("event_get_by_date($site_id, $year, $month, $day, $hour = -1, $minute = -1, $verbose = false)");
+//    }
+//    
+//    // ---------- create temporary tables - begin ------------------------------
+//    static $tmp_tables_created;
+//    if ($tmp_tables_created) {
+//        $query = "delete from t0";
+//        if ($verbose) {
+//            prn($query);
+//        }
+//        Execute($GLOBALS['db'], $query);
+//        $query = "delete from t1";
+//        if ($verbose) {
+//            prn($query);
+//        }
+//        Execute($GLOBALS['db'], $query);
+//    } else {
+//        // prn($near_dates);
+//        // create temporary table for near dates
+//        $query = "create temporary table t0(Y int(11), m int(11), d int(11), w int(11), H int(11), i int(11), t  int(11) ) engine=memory";
+//        if ($verbose) {
+//            prn($query);
+//        }
+//        Execute($GLOBALS['db'], $query);
+//
+//        $query = "create temporary table t1( id int(11), t  int(11) ) engine=memory";
+//        if ($verbose) {
+//            prn($query);
+//        }
+//        Execute($GLOBALS['db'], $query);
+//
+//        $tmp_tables_created = true;
+//    }
+//    // ---------- create temporary tables - end --------------------------------
+//    
+//    // --------------------- list of dates to check - begin --------------------
+//    // get exact unix timestamp
+//    $time = mktime($hour==-1?0:$hour, $minute==-1?0:$minute, $s = 1, $month, $day, $year);
+//
+//    $day_today = date_create(date('Y-m-d 23:59:59',$time));
+//    $day_today_timestamp=$day_today->getTimestamp();
+//
+//    $near_dates = Array();
+//    $t=date_add($day_today, date_interval_create_from_date_string('-365 days'));
+//    $day_step = date_interval_create_from_date_string('1 day');
+//
+//    for ($i = 0; $i < 731; $i++) {
+//        $near_dates[] = "(" . $t->format("Y,m,d,w,H,i") . ",".$t->getTimestamp().")";
+//        $t->add($day_step);
+//    }
+//
+//    // put near dates
+//    $query = "insert into t0(y, m, d, w, H, i, t) values " . join(',', $near_dates);
+//    if ($verbose) {
+//        prn($query);
+//    }
+//    Execute($GLOBALS['db'], $query);
+//    // prn(db_getrows("SELECT * FROM t0"));
+//    // --------------------- list of dates to check - end ----------------------
+//
+//    // events which
+//    //    - attached to site_id
+//    //    - 
+//    // for each event
+//    // select dates from t0 
+//    // - which match start date pattern
+//    // - are less than current date
+//    // - maximal one
+//    $query = "insert into t1(id, t)
+//              SELECT e.id, max(t0.t) as maxdate
+//              FROM  {$GLOBALS['table_prefix']}calendar_date as e, t0
+//              WHERE e.site_id=$site_id
+//                 and t0.t<={$day_today_timestamp}
+//                 and (e.pochrik=t0.y  OR e.pochrik=-1)
+//                 and (e.pochmis=t0.m  OR e.pochmis=-1)
+//                 and (e.pochday=t0.d  OR e.pochday=-1)
+//                 and (e.pochtyzh=t0.w OR e.pochtyzh=-1)
+//              group by e.id
+//              ";
+//    if ($verbose) {
+//        prn($query);
+//    }
+//    db_execute($query);
+//    if ($verbose) {
+//        prn(db_getrows("SELECT * FROM t1"));
+//    }
+//
+//    // debug output: nearest start dates in the past
+//    if ($verbose) {
+//        $tor = db_getrows("select * from t1");
+//        $cnt = count($tor);
+//        for ($i = 0; $i < $cnt; $i++) {
+//            $tor[$i]['date-begin'] = date('Y-m-d H:i:s', $tor[$i]['t']);
+//        }
+//        prn('date-begin', $tor);
+//    }
+//
+//
+//    // get maximal time for current date i.e. end of day
+//    $day_today_max = date_create(date('Y-m-d 00:00:01',$time));
+//    $day_today_max_timestamp=$day_today_max->getTimestamp();
+//
+//    // for each event 
+//    // - get dates from t0 which match event_end_date
+//    //   and are greater than nearest event_start_date (saved in t1)
+//    //   and then select minimal one
+//    //   and then ensure that end date is greater or equal than current date 
+//    $query = "
+//        select e.*, t1.t as pochdate, min(t0.t) as kindate
+//        from {$GLOBALS['table_prefix']}calendar_date as e, t0, t1
+//        where t1.id=e.id
+//          and t1.t<=t0.t
+//          and (e.kinrik=t0.y  OR e.kinrik=-1)
+//          and (e.kinmis=t0.m  OR e.kinmis=-1)
+//          and (e.kinday=t0.d  OR e.kinday=-1)
+//          and (e.kintyzh=t0.w OR e.kintyzh=-1)
+//        group by e.id
+//        having kindate>={$day_today_max_timestamp}
+//        order by pochdate asc";
+//    if ($verbose) {
+//        prn($query);
+//    }
+//    $tor = db_getrows($query);
+//    //prn($tor);
+//
+//    // filter events for a given day
+//    $cnt = count($tor);
+//    for ($i = 0; $i < $cnt; $i++) {
+//        
+//        // --------- format start date - begin ---------------------------------
+//        $tor[$i]['date_begin'] = date('Y-m-d', $tor[$i]['pochdate']);
+//
+//        if ($tor[$i]['pochgod'] > 0) {
+//            $god_begin = substr("0000" . $tor[$i]['pochgod'], -2);
+//        } else {
+//            $god_begin = '00';
+//        }
+//
+//        if ($tor[$i]['pochhv'] > 0) {
+//            $hv_begin = substr("0000" . $tor[$i]['pochhv'], -2);
+//        } else {
+//            $hv_begin = '00';
+//        }
+//
+//        $tor[$i]['date_begin'].=" {$god_begin}:{$hv_begin}:00";
+//        $tor[$i]['pochdate'] = strtotime($tor[$i]['date_begin']);
+//        // --------- format start date - end -----------------------------------
+//
+//        // --------- format end date - begin -----------------------------------
+//        $tor[$i]['date_end'] = date('Y-m-d', $tor[$i]['kindate']);
+//        if ($tor[$i]['kingod'] > 0) {
+//            $god_end = $tor[$i]['kingod'];
+//        } else {
+//            $god_end = '24';
+//        }
+//        if ($tor[$i]['kinhv'] > 0) {
+//            $hv_end = $tor[$i]['kinhv'];
+//        } else {
+//            $hv_end = '00';
+//        }
+//        $tor[$i]['date_end'].=" {$god_end}:{$hv_end}:00";
+//        $tor[$i]['kindate'] = strtotime($tor[$i]['date_end']);
+//
+//        if ($verbose) {
+//            prn($tor[$i]);
+//        }
+//        // --------- format end date - end -------------------------------------
+//
+//        if ($hour >= 0 && $minute >= 0) {
+//            if ($time < $tor[$i]['pochdate'] || $time > $tor[$i]['kindate']) {
+//                unset($tor[$i]);
+//            }
+//        }
+//    }
+//    $tor = array_values($tor);
+//    
+//    
+//    // ---------- extract event descriptions - begin ---------------------------
+//    $ids=Array();
+//    foreach($tor as $to){
+//        $ids[]=(int)$to['calendar_id'];
+//    }
+//    if(count($ids)>0){
+//        $query="select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$ids).")";
+//        $tmp=db_getrows($query);
+//        $events=Array();
+//        foreach($tmp as $tm){
+//            $events[$tm['id']]=$tm;
+//        }
+//        unset($tmp);
+//        
+//        $cnt=count($tor);
+//        for($i=0; $i<$cnt; $i++){
+//            if(isset($events[$tor[$i]['calendar_id']])){
+//                $tor[$i]=array_merge($tor[$i],$events[$tor[$i]['calendar_id']]);
+//                unset($events[$tor[$i]['calendar_id']]);
+//            }else{
+//                unset($tor[$i]);
+//            }
+//        }
+//    }
+//    // ---------- extract event descriptions - end -----------------------------
+//    $tor=  array_values($tor);
+//    usort($tor, function ($a, $b) {
+//        if ($a['date_begin'] == $b['date_begin']) {
+//            return 0;
+//        }
+//        return ($a['date_begin'] < $b['date_begin']) ? -1 : 1;
+//    });
+//    if ($verbose) {
+//        prn($tor);
+//    }
+//    //prn($tor);
+//    //exit();
+//    return array_values($tor);
+//}

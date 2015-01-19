@@ -48,15 +48,18 @@ $h = isset($input_vars['h']) ? (int) $input_vars['h'] : date('H');// -1; // hour
 $i = isset($input_vars['i']) ? (int) $input_vars['i'] : date('i');// -1; // minutes
 
 //echo "event_get_by_date($site_id, $y, $m, $d, $h, $i)";
-$event_list = event_get_by_date($site_id, $y, $m, $d, $h, $i,$verbose=isset($input_vars['verbose']));
+//$event_list = event_get_by_date($site_id, $y, $m, $d, $h, $i,$verbose=isset($input_vars['verbose']));
+$timestamp_start= mktime($h, $i, 1, $m, $d, $y);
+$timestamp_end=mktime($h, $i, 59, $m, $d, $y);
+$event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose=isset($input_vars['verbose']));
 
 
 //prn($event_list);
 // restrict by category
-if(count($event_list)>0 &&  isset($input_vars['category_id'])){
+if(count($event_ids)>0 &&  isset($input_vars['category_id'])){
     // get categories for events
     $ids=Array();
-    foreach($event_list as $event){
+    foreach($event_ids as $event){
         $ids[]=$event['id'];
     }
     //prn($ids);
@@ -76,17 +79,21 @@ if(count($event_list)>0 &&  isset($input_vars['category_id'])){
     foreach($tmp as $tm){
         $checked_id[$tm['event_id']]=$tm['event_id'];
     }
-    $cnt=count($event_list);
+    $cnt=count($event_ids);
     for($i=0; $i<$cnt; $i++){
-        if(!isset($checked_id[$event_list[$i]['id']])){
-            unset($event_list[$i]);
+        if(!isset($checked_id[$event_ids[$i]['id']])){
+            unset($event_ids[$i]);
         }
     }
-    $event_list=array_values($event_list);
+    $event_ids=array_values($event_ids);
 }
 
 
-
+if(count($event_ids)>0){
+    $event_list = db_getrows("select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$event_ids).")");
+}else{
+    $event_list=Array();
+}
 $event_list = get_view($event_list,$input_vars['lang']);
 
 //prn('event_list=', $event_list);
