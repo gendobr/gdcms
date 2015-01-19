@@ -14,16 +14,21 @@
 $site_id = checkInt($input_vars['site_id']);
 $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
 //prn($this_site_info);
-if (checkInt($this_site_info['id']) <= 0)
+if (checkInt($this_site_info['id']) <= 0){
     die();
+}
 //------------------- get site info - end --------------------------------------
-if (isset($input_vars['interface_lang']))
-    if ($input_vars['interface_lang'])
+if (isset($input_vars['interface_lang'])) {
+    if ($input_vars['interface_lang']) {
         $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
+    }
+}
+if (!isset($input_vars['lang'])) {
     $input_vars['lang'] = default_language;
-if (strlen($input_vars['lang']) == 0)
+}
+if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = default_language;
+}
 $input_vars['lang'] = get_language('lang');
 //-------------------------- load messages - begin -----------------------------
 $txt = load_msg($input_vars['lang']);
@@ -31,8 +36,9 @@ $txt = load_msg($input_vars['lang']);
 
 
 $banners_at_once = isset($input_vars['n']) ? (int) $input_vars['n'] : 1;
-if ($banners_at_once < 1)
+if ($banners_at_once < 1) {
     $banners_at_once = 1;
+}
 
 global $main_template_name;
 $main_template_name = '';
@@ -58,8 +64,9 @@ $files = array_values($files);
 
 srand((float) microtime() * 10000000);
 $rand_keys = array_rand($files, $banners_at_once);
-if (!is_array($rand_keys))
+if (!is_array($rand_keys)) {
     $rand_keys = Array($rand_keys);
+}
 //prn($rand_keys);
 
 
