@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   draw menu for news
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com
@@ -73,23 +73,19 @@ function GetHeaders() {
 
 
 function enhanced_security_scripts($md5_headers){
+
+
     return "
         <script src=\"scripts/lib/jquery-1.4.2.min.js\" type=\"text/javascript\"></script>
         <script src=\"scripts/poll/plugin-detect-0.6.3.js\" type=\"text/javascript\"></script>
-        <script src=\"scripts/poll/appletinfo.js\" type=\"text/javascript\"></script>
         <script src=\"scripts/poll/jquery.flash.js\" type=\"text/javascript\"></script>
         <STYLE>
         .userData {behavior:url(#default#userdata);}
         </STYLE>
         <ELEMENT CLASS=\"userData\" ID=\"oPersistElement\">
-        <script type=\"text/javascript\">
-        var attributes = {codebase: \"java\", code: \"fonts.class\", id: \"javafontshelper\", name: \"javafontshelper\", \"mayscript\": \"true\", width: 1, height: 1};
-        if (deployJava.versionCheck('1.1+')) deployJava.writeAppletTag(attributes);
-        </script>
         <div id=\"flashcontent\"></div>
         <div id=\"oPersistDiv\" class=\"userData\"></div>
         <script src=\"scripts/poll/fetch_whorls.js\" type=\"text/javascript\"></script>
-        <APPLET class=\"userData\" id=\"info_applet\" codebase=\"scripts/poll\" code=\"info.class\" width=1 height=1></APPLET>
         <script type=\"text/javascript\">
         $(document).ready(function(){
         setTimeout(
@@ -102,5 +98,36 @@ function enhanced_security_scripts($md5_headers){
         });
         </script>
     ";
+
+
+    //    return "
+    //        <script src=\"scripts/lib/jquery-1.4.2.min.js\" type=\"text/javascript\"></script>
+    //        <script src=\"scripts/poll/plugin-detect-0.6.3.js\" type=\"text/javascript\"></script>
+    //        <script src=\"scripts/poll/appletinfo.js\" type=\"text/javascript\"></script>
+    //        <script src=\"scripts/poll/jquery.flash.js\" type=\"text/javascript\"></script>
+    //        <STYLE>
+    //        .userData {behavior:url(#default#userdata);}
+    //        </STYLE>
+    //        <ELEMENT CLASS=\"userData\" ID=\"oPersistElement\">
+    //        <script type=\"text/javascript\">
+    //        var attributes = {codebase: \"java\", code: \"fonts.class\", id: \"javafontshelper\", name: \"javafontshelper\", \"mayscript\": \"true\", width: 1, height: 1};
+    //        if (deployJava.versionCheck('1.1+')) deployJava.writeAppletTag(attributes);
+    //        </script>
+    //        <div id=\"flashcontent\"></div>
+    //        <div id=\"oPersistDiv\" class=\"userData\"></div>
+    //        <script src=\"scripts/poll/fetch_whorls.js\" type=\"text/javascript\"></script>
+    //        <APPLET class=\"userData\" id=\"info_applet\" codebase=\"scripts/poll\" code=\"info.class\" width=1 height=1></APPLET>
+    //        <script type=\"text/javascript\">
+    //        $(document).ready(function(){
+    //        setTimeout(
+    //            function(){
+    //               var form=$('#poll_ask_form_id');
+    //               $('#{$md5_headers}').attr('value',result).appendTo(form);
+    //               //alert(result);
+    //            }
+    //            ,retries*530);
+    //        });
+    //        </script>
+    //    ";
 }
 ?>

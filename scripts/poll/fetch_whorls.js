@@ -84,12 +84,13 @@ function get_fonts() {
         fonts = obj.GetVariable("/:user_fonts");
         fonts = fonts.replace(/,/g,", ");
         fonts += " (via Flash)";
-    } else {
-        // Try java fonts
-        try {
-            fonts =getJavaFonts()+" (via Java)";
-        } catch (ex) {}
     }
+    //else {
+    //    // Try java fonts
+    //    try {
+    //        fonts =getJavaFonts()+" (via Java)";
+    //    } catch (ex) {}
+    //}
     if ("" == fonts){
         fonts = "No Flash or Java fonts detected";
     }
@@ -430,7 +431,8 @@ function fetch_client_whorls(){
 
     whorls['supercookies'] = test_dom_storage() + test_ie_userdata();
 
-    whorls['mac'] = getJavaMac();
+    // whorls['mac'] = getJavaMac();
+    whorls['mac'] = '';
 
     // send to server for logging / calculating
     // and fetch results

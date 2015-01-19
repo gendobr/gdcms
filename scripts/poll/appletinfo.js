@@ -1,5 +1,9 @@
 
 function getMacSimple() {
+    
+    return false;
+    
+    
     if (!window.java) return false
 
     try {
@@ -22,6 +26,7 @@ function getMacSimple() {
 }
 
 function getMacJava() {
+    return;
     if (!navigator.javaEnabled) return;
     var applet = document.getElementById('info_applet');
     var ipmac=null;
@@ -34,6 +39,7 @@ function getMacJava() {
 }
 
 function getJavaMac(){
+    return null;
     var mac;
     mac= getMacSimple();
     if (! mac) {
@@ -43,6 +49,7 @@ function getJavaMac(){
 }
 
 function getJavaFonts(){
+    return null;
     if (!navigator.javaEnabled) return;
     var applet = document.getElementById('info_applet');
     var fonts=null;
