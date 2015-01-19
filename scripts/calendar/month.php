@@ -151,7 +151,20 @@ foreach ($calendar as $row) {
 $day = isset($input_vars['day']) ? ( (int) $input_vars['day'] ) : 0;
 
 if ($day > 0) {
-    $events = get_view(event_get_by_date($this_site_info['id'], $year, $month, $day,-1, -1, false),$lang);
+    // $events = get_view(event_get_by_date($this_site_info['id'], $year, $month, $day,-1, -1, false),$lang);
+    
+    $timestamp_start= mktime(00, 00, 1, $month, $day, $year);
+    $timestamp_end=mktime(23, 59, 59, $month, $day, $year);
+    $event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose=isset($input_vars['verbose']));
+    if(count($event_ids)>0){
+        $event_list = db_getrows("select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$event_ids).")");
+    }else{
+        $event_list=Array();
+    }
+    $events = get_view($event_list,$lang);
+    
+
+    
     //prn($events);
     //exit();
 }else{
