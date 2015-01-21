@@ -1,0 +1,15 @@
+ALTER TABLE `cms8_calendar_date` 
+   ADD INDEX `st1` (`site_id`),
+   ADD INDEX `cl1` (`calendar_id`),
+   ADD INDEX `pr1` (`pochrik`), 
+   ADD INDEX `pm1` (`pochmis`), 
+   ADD INDEX `pwd1` (`pochtyzh`), 
+   ADD INDEX `pd1` (`pochday`),
+   ADD INDEX `ph1` (`pochgod`), 
+   ADD INDEX `pi1` (`pochhv`), 
+   ADD INDEX `kr1` (`kinrik`),
+   ADD INDEX `km1` (`kinmis`),
+   ADD INDEX `kwd1` (`kintyzh`),
+   ADD INDEX `kd1` (`kinday`),
+   ADD INDEX `kh1` (`kingod`),
+   ADD INDEX `ki1` (`kinhv`); 
