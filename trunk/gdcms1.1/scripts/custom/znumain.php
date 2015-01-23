@@ -122,9 +122,9 @@ $page['next']=Array();
     //$reply.= trim(get_cached_page('http://sites.znu.edu.ua/cms/index.php?action=calendar/get_by_date&site_id=89&lang=ukr&rows=10&template=template_calendar_view_block_dn.html&category_id=1292&h=-1&i=-1'));
     //$reply.= trim(get_cached_page('http://sites.znu.edu.ua/cms/index.php?action=calendar/get_by_date&site_id=89&lang=ukr&rows=10&template=template_calendar_view_block_zh.html&category_id=1293&h=-1&i=-1'));
     $reply="
-        <a href='http://sites.znu.edu.ua/cms/index.php?action=category%2Fbrowse&site_id=89&lang=ukr&category_id=1289&year=".date('Y')."'>Свята</a>
-        <a href='http://sites.znu.edu.ua/cms/index.php?action=category%2Fbrowse&site_id=89&lang=ukr&category_id=1292&year=".date('Y')."'>Вітання</a>
-        <a href='http://sites.znu.edu.ua/cms/index.php?action=category%2Fbrowse&site_id=89&lang=ukr&category_id=1293&year=".date('Y')."'>Заходи</a>
+        <a href='http://sites.znu.edu.ua/cms/index.php?action=category%2Fbrowse&site_id=89&lang=ukr&category_id=1289&year=".date('Y')."&month=".(1*date('m'))."&day=".date('d')."'>Свята</a>
+        <a href='http://sites.znu.edu.ua/cms/index.php?action=category%2Fbrowse&site_id=89&lang=ukr&category_id=1292&year=".date('Y')."&month=".(1*date('m'))."&day=".date('d')."'>Вітання</a>
+        <a href='http://sites.znu.edu.ua/cms/index.php?action=category%2Fbrowse&site_id=89&lang=ukr&category_id=1293&year=".date('Y')."&month=".(1*date('m'))."&day=".date('d')."'>Заходи</a>
     ";
     if (strlen($reply) > 0) {
         $page['next'][] = Array(
