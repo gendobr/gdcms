@@ -51,7 +51,7 @@ define('db_encoding', "utf8");
   define('mail_SMTPhost','10.1.100.153');
   define('mail_SMTPAuth',false);
   define('mail_SMTPAuth_Username','gen');
-  define('mail_SMTPAuth_Password','d0br0d0br0');
+  define('mail_SMTPAuth_Password','');
   define('mail_FromAddress','gen@zsu.zp.ua');
   define('mail_FromName','Site Admin');
  */
@@ -60,11 +60,11 @@ define('IsHTML', true);
 define('mail_IsMail', false);
 define('mail_IsSendMail', false);
 define('mail_IsSMTP', true);
-define('mail_SMTPhost', 'localhost');
+define('mail_SMTPhost', '10.1.100.153');
 define('mail_SMTPAuth', false);
 define('mail_SMTPAuth_Username', 'gen');
-define('mail_SMTPAuth_Password', 'gen');
-define('mail_FromAddress', 'gen@127.0.0.1');
+define('mail_SMTPAuth_Password', '*****');
+define('mail_FromAddress', 'gen@znu.edu.ua');
 define('mail_FromName', 'Site Admin');
 
 // ---------------------------- mailer options -- end --------------------------
