@@ -16,14 +16,17 @@ global $main_template_name;
 $main_template_name = '';
 
 run('site/page/page_view_functions');
-
+run('site/menu');
 // ----------------- set interface language - begin ----------------------------
-if (isset($input_vars['interface_lang']) && $input_vars['interface_lang'])
+if (isset($input_vars['interface_lang']) && $input_vars['interface_lang']) {
     $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
+}
+if (!isset($input_vars['lang'])) {
     $input_vars['lang'] = default_language;
-if (strlen($input_vars['lang']) == 0)
+}
+if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = default_language;
+}
 $input_vars['lang'] = get_language('lang');
 // ----------------- set interface language - end ------------------------------
 
@@ -33,21 +36,13 @@ $txt = load_msg($input_vars['lang']);
 
 # ------------------- get site info - begin ------------------------------------
 $site_id = checkInt($input_vars['site_id']);
-$this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
-// prn($this_site_info);
-// prn($input_vars);
-if (!$this_site_info)
+$this_site_info = get_site_info($site_id);
+if (!$this_site_info) {
     die($txt['Site_not_found']);
+}
 $this_site_info['title'] = get_langstring($this_site_info['title'], $input_vars['lang']);
 $this_site_info['URL_to_view_news'] = url_prefix_news_list . "site_id={$this_site_info['id']}&lang={$input_vars['lang']}";
 # ------------------- get site info - end --------------------------------------
-
-# --------------------------- get site template - begin ------------------------
-$custom_page_template = sites_root . '/' . $this_site_info['dir'] . '/template_index.html';
-//prn('$news_template',$news_template);
-if (is_file($custom_page_template))
-    $this_site_info['template'] = $custom_page_template;
-# --------------------------- get site template - end --------------------------
 
 // load form file
 if (is_array($input_vars['form'])) {
@@ -64,15 +59,12 @@ if (is_array($input_vars['form'])) {
         $form_file = $form_file[0];
         $form_file = realpath(sites_root . '/' . $this_site_info['dir'] . '/' . $form_file);
     }
-}
-else{
+}else{
     $form_file = realpath(sites_root . '/' . $this_site_info['dir'] . '/' . $input_vars['form']);
 }
 
 // prn($this_site_info);
-$site_root_dir=preg_replace("/\\/+$/","",sites_root). '/' . $this_site_info['dir'];
-$site_root_dir=preg_replace("/\\/+$/","",$site_root_dir);
-if (strlen(dirname($form_file)) < strlen($site_root_dir)){
+if (strlen(dirname($form_file)) < strlen($this_site_info['site_root_dir'])){
     die('File not found');
 }
 
@@ -98,8 +90,9 @@ function get_tag($tagname, $html) {
     /* $pattern="/<".preg_quote($tagname)."(?:[ \r\n\t]+\w+=(?:\"[^\"]*\"|'[^']*'|\w*))*\/?>/i"; */
     $pattern = "/<" . preg_quote($tagname, '/') . "(?:[ \r\n\t\w=]+|\"[^\"]*\"|'[^']*'|\w*)*\/?" . ">/i";
     //prn('$pattern='.$pattern);
-    if (!preg_match_all($pattern, $html, $matches, PREG_OFFSET_CAPTURE))
+    if (!preg_match_all($pattern, $html, $matches, PREG_OFFSET_CAPTURE)) {
         return Array();
+    }
     //prn($matches);
     return $matches[0];
 }
@@ -108,8 +101,9 @@ function get_end_tag($tagname, $html) {
     /* $pattern="/<".preg_quote($tagname)."(?:[ \r\n\t]+\w+=(?:\"[^\"]*\"|'[^']*'|\w*))*\/?>/i"; */
     $pattern = "/<" . preg_quote($tagname, '/') . ">/i";
     //prn('$pattern='.$pattern);
-    if (!preg_match_all($pattern, $html, $matches, PREG_OFFSET_CAPTURE))
+    if (!preg_match_all($pattern, $html, $matches, PREG_OFFSET_CAPTURE)) {
         return Array();
+    }
     //prn($matches);
     return $matches[0];
 }
@@ -118,17 +112,19 @@ function get_attributes($html) {
     //prn(checkStr($html));
     /* $pattern="/<(?:[-_:\w]+)([ \r\n\t]+\w+=(?:\"[^\"]*\"|'[^']*'|\w*))*\/?>/i"; */
     $pattern = "/[ \r\n\t]+\w+(?:=\"[^\"]*\"|='[^']*'|=\w*)?/i";
-    if (!preg_match_all($pattern, $html, $matches))
+    if (!preg_match_all($pattern, $html, $matches)) {
         return Array();
+    }
     $tor = Array();
     foreach ($matches[0] as $mt) {
         $mt = explode('=', $mt);
         $nm = strtolower(trim($mt[0]));
         //if(isset($mt[1])) $vl=ereg_replace("^[\"']|[\"']$",'',$mt[1]);
-        if (isset($mt[1]))
+        if (isset($mt[1])) {
             $vl = preg_replace("/^[\"']|[\"']$/", '', $mt[1]);
-        else
+        } else {
             $vl = '';
+        }
         $tor[$nm] = $vl;
     }
     return $tor;
@@ -147,28 +143,32 @@ $form_can_be_accepted = false;
 // if form is submitted
 $form_is_submitted = $form_data_posted && isset($input_vars['formdata']['code']);
 
-
-
+// ------------------- post data - begin ---------------------------------------
 if ($form_data_posted) {
 
     $form_can_be_accepted = $form_is_submitted;
     $vyvid = $form_html;
 
-    //prn('formdata=',$input_vars['formdata']);
+    // prn('formdata=',$input_vars['formdata']);
 
+    // prn($_FILES);
+    
     // ------------- process <input> elements - begin --------------------------
     $inputs = get_tag('input', $vyvid);
     $cnt = count($inputs);
+    $posted_files=Array();
     for ($i = $cnt - 1; $i >= 0; $i--) {
         $new_tag = ' ';
 
         $attributes = get_attributes($inputs[$i][0]);
 
-        if (!isset($attributes['type']))
+        if (!isset($attributes['type'])) {
             $attributes['type'] = 'text';
+        }
 
-        if (!isset($attributes['name']))
+        if (!isset($attributes['name'])) {
             $attributes['name'] = 'element' . $i;
+        }
 
         switch (strtolower($attributes['type'])) {
             case 'submit':
@@ -188,19 +188,22 @@ if ($form_data_posted) {
                 break;
 
             case 'checkbox':
-                if (isset($input_vars['formdata'][$attributes['name']]))
+                if (isset($input_vars['formdata'][$attributes['name']])) {
                     $new_tag = '<input type=checkbox checked>';
-                else
+                } else {
                     $new_tag = '<input type=checkbox>';
+                }
                 break;
 
             case 'radio':
-                if (!isset($attributes['value'])) $attributes['value'] = '';
-                if (   isset($input_vars['formdata'][$attributes['name']])
-                    && $input_vars['formdata'][$attributes['name']] == $attributes['value'])
+                if (!isset($attributes['value'])) {
+                    $attributes['value'] = '';
+                }
+                if (isset($input_vars['formdata'][$attributes['name']]) && $input_vars['formdata'][$attributes['name']] == $attributes['value']) {
                     $new_tag.="<input type=radio checked disabled=true>";
-                else
+                } else {
                     $new_tag.="<input type=radio disabled=true>";
+                }
                 # --------------------------- check data types - begin -----------------------
                 $msg = '';
                 if (isset($attributes['class'])) {
@@ -210,16 +213,19 @@ if ($form_data_posted) {
                         $msg.="<div style='color:red;'>Fill-in the field</div> ";
                     }
                 }
-                if (strlen($msg) > 0)
+                if (strlen($msg) > 0) {
                     $messages[$attributes['name']] = $msg;
+                }
                 # --------------------------- check data types - end -------------------------
                 break;
 
             case 'text':
-                if (!isset($attributes['value']))
+                if (!isset($attributes['value'])) {
                     $attributes['value'] = '';
-                if (isset($input_vars['formdata'][$attributes['name']]))
-                    $attributes['value'] = trim($input_vars['formdata'][$attributes['name']]);
+                }
+                if (isset($input_vars['formdata'][$attributes['name']])) {
+                    $attributes['value'] = $input_vars['formdata'][$attributes['name']];
+                }
                 # --------------------------- check data types - begin -----------------------
                 $msg = '';
                 if (isset($attributes['class'])) {
@@ -248,12 +254,34 @@ if ($form_data_posted) {
                             $from_name = $attributes['value'];
                         }                    }
                 }
-                if (strlen($msg) > 0)
+                if (strlen($msg) > 0) {
                     $messages[$attributes['name']] = $msg;
+                }
                 # --------------------------- check data types - end -------------------------
 
-                $new_tag = checkStr($attributes['value']);
+                $new_tag = trim(strip_tags($attributes['value']));
                 break;
+            // ----------------- process posted file - begin -------------------
+            case 'file':
+                
+                
+                if (isset($_FILES['formdata'])) {
+                //if (isset($_FILES[$attributes['name']])) {
+                    foreach($_FILES['formdata']['name'] as $key=>$val){
+                        $posted_files[$key]=Array(
+                            'name'=>$_FILES['formdata']['name'][$key],
+                            'type'=>$_FILES['formdata']['type'][$key],
+                            'tmp_name'=>$_FILES['formdata']['tmp_name'][$key],
+                            'error'=>$_FILES['formdata']['error'][$key],
+                            'size'=>$_FILES['formdata']['size'][$key]
+                        );
+                    }
+                    $new_tag = $posted_files[$attributes['name']]['name'];
+                } else {
+                    $new_tag = '----------';
+                }
+                break;
+            // ----------------- process posted file - end ---------------------
         }
         //prn("  {$inputs[$i][1]} {$attributes['type']} new_tag[{$attributes['name']}]=".$new_tag);
         $vyvid = substr_replace($vyvid, $new_tag, $inputs[$i][1], strlen($inputs[$i][0]));
@@ -270,14 +298,16 @@ if ($form_data_posted) {
     for ($i = $cnt - 1; $i >= 0; $i--) {
         $new_tag = '';
         $attributes = get_attributes($textarea_start[$i][0]);
-        if (!isset($attributes['name']))
+        if (!isset($attributes['name'])) {
             $attributes['name'] = 'textarea' . $i;
+        }
 
-        if (!isset($value))
+        if (!isset($value)) {
             $value = '';
-        if (isset($input_vars['formdata'][$attributes['name']]))
+        }
+        if (isset($input_vars['formdata'][$attributes['name']])) {
             $value = $input_vars['formdata'][$attributes['name']];
-
+        }
         # --------------------------- check data types - begin -----------------------
         $msg = '';
         if (isset($attributes['class'])) {
@@ -287,12 +317,13 @@ if ($form_data_posted) {
                 $msg.="<div style='color:red;'>" . $txt['Fill_in_the_field'] . "</div> ";
             }
         }
-        if (strlen($msg) > 0)
+        if (strlen($msg) > 0) {
             $messages[$attributes['name']] = $msg;
+        }
         # --------------------------- check data types - end -------------------------
 
         unset($attributes['name']);
-        $new_tag.=checkStr($value) . ' ';
+        $new_tag.=trim(strip_tags($value)) . ' ';
         $vyvid = substr_replace($vyvid, $new_tag, $textarea_start[$i][1], $textarea_finish[$i][1] - $textarea_start[$i][1] + strlen($textarea_finish[$i][0]));
     }
     // ------------- textarea - end -------------------------------
@@ -309,14 +340,17 @@ if ($form_data_posted) {
         $new_tag = " ";
 
         $attributes = get_attributes($select_start[$i][0]);
-        if (!isset($attributes['name']) || strlen($attributes['name']) == 0)
+        if (!isset($attributes['name']) || strlen($attributes['name']) == 0) {
             $attributes['name'] = 'select' . $i;
+        }
         //$new_tag.=" name=\"formdata[{$attributes['name']}]\" ";
 
-        if (!isset($value))
+        if (!isset($value)) {
             $value = '';
-        if (isset($input_vars['formdata'][$attributes['name']]))
+        }
+        if (isset($input_vars['formdata'][$attributes['name']])) {
             $value = $input_vars['formdata'][$attributes['name']];
+        }
 
 
 
@@ -346,15 +380,18 @@ if ($form_data_posted) {
             $form_can_be_accepted = false;
             $msg.="<div style='color:red;'>" . $txt['Forbidden_value_of_field'] . "</div> ";
         }
-        if (strlen($msg) > 0)
+        if (strlen($msg) > 0) {
             $messages[$attributes['name']] = $msg;
+        }
         # --------------------------- check data types - end -------------------------
 
-        $new_tag.=isset($options[$value])?$options[$value]:'';
+        $new_tag.=isset($options[$value])?trim(strip_tags($options[$value])):'';
 
         $vyvid = substr_replace($vyvid, $new_tag, $select_start[$i][1], $select_finish[$i][1] - $select_start[$i][1] + strlen($select_finish[$i][0]));
     }
     // ------------- select - end ---------------------------------
+    // 
+    // 
     // найти начало формы
     $form_tag = get_tag('form', $vyvid);
     // достать атрибуты
@@ -368,6 +405,8 @@ if ($form_data_posted) {
     $new_form_tag = " ";
     $vyvid = substr_replace($vyvid, $new_form_tag, $form_tag[0][1], strlen($form_tag[0][0]));
 
+    $vyvid = str_replace('{captcha}','',$vyvid);
+
 
     // --------------- send email if all is OK - begin --------------------------
     if ($form_can_be_accepted) {
@@ -376,8 +415,9 @@ if ($form_data_posted) {
         $emails = Array();
         if (isset($form_attributes['action'])) {
             $tmp = trim(preg_replace('/mailto:/', '', $form_attributes['action']));
-            if (is_valid_email($tmp))
+            if (is_valid_email($tmp)) {
                 $emails[] = $tmp;
+            }
         }
 
         if (count($emails) == 0) {
@@ -390,10 +430,12 @@ if ($form_data_posted) {
             $this_site_info['managers'] = Array();
             foreach ($tmp as $tm) {
                 $tmp = trim($tm['email']);
-                if (eregi('@127\.0\.0\.1$', $tmp))
+                if (eregi('@127\.0\.0\.1$', $tmp)) {
                     continue;
-                if (is_valid_email($tmp))
+                }
+                if (is_valid_email($tmp)) {
                     $emails[] = $tmp;
+                }
             }
             unset($tm, $tmp);
             # ------------- list of site managers - end ------------------------
@@ -415,9 +457,69 @@ if ($form_data_posted) {
 
             //
             foreach ($emails as $mng) {
-                if (IsHTML != '1')
+                if (IsHTML != '1') {
                     $vyvid = wordwrap(strip_tags(eregi_replace('<br/?>', "\n", $vyvid)), 80, "\n");
-                    my_mail($mng, $this_site_info['title'] . ' : Submitted form ', $vyvid, $my_mail_options);
+                }
+
+                // ---------------- do mailing - begin -------------------------
+                $mail = new phpmailer();
+                $mail->Timeout=120;
+                $mail->PluginDir=script_root."/lib/";
+
+                if (mail_IsSMTP)  {
+                  $mail->IsSMTP();
+                  $mail->Host = mail_SMTPhost;
+                }elseif(mail_IsSendMail) {
+                  $mail->IsSendmail();
+                }elseif(defined('mail_IsMail') && mail_IsMail){
+                    $mail->IsMail();
+                }
+                $mail->CharSet  = site_charset;
+                $mail->SMTPAuth = mail_SMTPAuth;
+                $mail->Username = mail_SMTPAuth_Username;
+                $mail->Password = mail_SMTPAuth_Password;
+
+                $mail->From = mail_FromAddress;
+                
+                if(isset($my_mail_options['FromName'])){
+                    $mail->FromName = $my_mail_options['FromName'];
+                }else{
+                    $mail->FromName = mail_FromName;
+                }
+                
+                $mail->AddAddress($mng);
+                        
+                if(isset($my_mail_options['ReplyTo'])){
+                    $mail->AddReplyTo($my_mail_options['ReplyTo']);
+                }else{
+                    $mail->AddReplyTo(mail_FromAddress);
+                }
+                //$mail->WordWrap = word_wrap; // set word wrap to 50 characters
+                $mail->IsHTML(true);
+
+                $mail->Subject = $this_site_info['title'] . ' : Submitted form ';
+                $mail->Body    = $vyvid;
+                //prn('sending email',$mail);
+
+                foreach ($posted_files as $fl) {
+                    if ($fl['error'] == UPLOAD_ERR_OK) {
+                        //prn($fl);
+                        //echo "attaching to {$fl['tmp_name']}, {$fl['name']}";
+                        $mail->AddAttachment($fl['tmp_name'], $fl['name']);
+                    }
+                }
+                // echo "mailing to $mng";
+                $success=$mail->Send();
+                if ($success) {
+                    // echo "Message sent.";
+                }else{
+                    echo "Message could not be sent. <br>";
+                    echo "Mailer Error: " . $mail->ErrorInfo;
+                    //exit;
+                }
+                // ---------------- do mailing - end ---------------------------
+                
+                // my_mail($mng, $this_site_info['title'] . ' : Submitted form ', $vyvid, $my_mail_options);
             }
             $vyvid = "<div style='color:green;font-weight:bold;'>" . $txt['Email_is_sent'] . "</div>" . $vyvid;
             $_SESSION['code'] = '';
@@ -428,7 +530,7 @@ if ($form_data_posted) {
     //prn(checkStr($vyvid));
     //prn($vyvid);
 }
-# ------------------- process posted data - end --------------------------------
+// ------------------- post data - end -----------------------------------------
 
 
 
@@ -437,64 +539,77 @@ if ($form_data_posted) {
 // ------------------- draw form - begin ----------------------
 if (!$form_can_be_accepted) {
     $vyvid = $form_html;
-    if (!isset($input_vars['formdata']['code']))
+    if (!isset($input_vars['formdata']['code'])) {
         $messages = Array();
+    }
     //if(isset($input_vars['formdata'])) prn('formdata=',$input_vars['formdata']);
 
+    // check if capcha placeholder exists
+    $captcha_placeholder_exists=(strpos($form_html , '{captcha}')!==false);
+    $captcha_html='<span class="captcha">'
+                 . '<span class="captcha_label">'
+                 . $txt['Retype_the_code']
+                 . '</span>'
+                 . '<span class="captcha_img"><img id=code src="'.site_root_URL.'/index.php?action=form/code" align="absmiddle" style="margin:0px;border:1px dotted silver;"></span>'
+                 . '<span class="captcha_input"><input type=text name=formdata[code] size=5></span>'
+                 . '<a class="captcha_refresh_button" href="javascript:void(document.getElementById(\'code\').src=\''.site_root_URL.'/index.php?action=form/code&t=\'+Math.random())">'.$txt['Reload_code'].'</a>'
+                 . '</span>';
+    //prn(htmlspecialchars($captcha_html));
+    
     $inputs = get_tag('input', $vyvid);
+    //prn($inputs);
+
     $cnt = count($inputs);
     for ($i = $cnt - 1; $i >= 0; $i--) {
         $new_tag = '<input ';
         $attributes = get_attributes($inputs[$i][0]);
-
-        if (!isset($attributes['type']))
+        // prn(htmlspecialchars($inputs[$i][0]),$attributes);
+        
+        if (!isset($attributes['type'])) {
             $attributes['type'] = 'text';
+        }
         $new_tag.=" type=\"{$attributes['type']}\" ";
 
-        if (!isset($attributes['name']))
+        if (!isset($attributes['name'])) {
             $attributes['name'] = 'element' . $i;
+        }
         $new_tag.=" name=\"formdata[{$attributes['name']}]\" ";
 
 
         switch (strtolower($attributes['type'])) {
             case 'submit':
-                if (!isset($_SESSION['code']))
+                if (!isset($_SESSION['code'])) {
                     $_SESSION['code'] = '';
-                //                if (strlen($_SESSION['code']) == 0) {
-                //                    srand((float) microtime() * 1000000);
-                //                    $chars = explode(',', '1,2,3,4,5,6,7,8,9,0');
-                //                    shuffle($chars);
-                //                    $chars = join('', $chars);
-                //                    $chars = substr($chars, 0, 4);
-                //                    $_SESSION['code'] = $chars;
-                //                }
-                $new_tag = '<div>' . $txt['Retype_the_code']
-                    . ' <br><img id=code src='.site_root_URL.'/index.php?action=form/code align=absmiddle style="margin:0px;border:1px dotted silver;">
-                    <input type=text name=formdata[code] size=5><br>
-                    <a href="javascript:void(document.getElementById(\'code\').src=\''.site_root_URL.'/index.php?action=form/code&t=\'+Math.random())">'.$txt['Reload_code'].'</a>
-                    </div><br>' . $new_tag;
+                }
+                if(!$captcha_placeholder_exists){
+                    $new_tag = $captcha_html. $new_tag;
+                }
                 break;
 
             case 'checkbox':
-                if (!isset($attributes['value']))
+                if (!isset($attributes['value'])) {
                     $attributes['value'] = 'ON';
-                if (isset($input_vars['formdata'][$attributes['name']]))
+                }
+                if (isset($input_vars['formdata'][$attributes['name']])) {
                     $new_tag.=" checked=\"true\" ";
+                }
                 unset($attributes['checked']);
                 break;
 
             case 'radio':
-                if (!isset($attributes['value']))
+                if (!isset($attributes['value'])) {
                     $attributes['value'] = '';
-                if (isset($input_vars['formdata'][$attributes['name']])
-                        && $input_vars['formdata'][$attributes['name']] == $attributes['value'])
+                }
+                if (isset($input_vars['formdata'][$attributes['name']]) && $input_vars['formdata'][$attributes['name']] == $attributes['value']) {
                     $new_tag.=" checked=\"true\" ";
+                }
                 unset($attributes['checked']);
                 break;
 
             case 'text':
-                if (!isset($attributes['value']))
+                if (!isset($attributes['value'])) {
                     $attributes['value'] = '';
+                }
                 if (isset($input_vars['formdata'][$attributes['name']])) {
                     $attributes['value'] = $input_vars['formdata'][$attributes['name']];
                 } elseif (isset($input_vars[$attributes['name']])) {
@@ -504,16 +619,19 @@ if (!$form_can_be_accepted) {
         }
         unset($attributes['type']);
 
-        foreach ($attributes as $nm => $vl)
-            if ($nm != 'name')
+        foreach ($attributes as $nm => $vl) {
+            if ($nm != 'name') {
                 $new_tag.=" $nm=\"" . checkStr($vl) . "\" ";
+            }
+        }
         $new_tag.='>';
         if (isset($messages[$attributes['name']])) {
             $new_tag.=$messages[$attributes['name']];
             unset($messages[$attributes['name']]);
         }
-
+        // prn(htmlspecialchars($inputs[$i][0]),  htmlspecialchars($new_tag));
         $vyvid = substr_replace($vyvid, $new_tag, $inputs[$i][1], strlen($inputs[$i][0]));
+
     }
     // prn(checkStr($vyvid));
     // ------------- textarea - begin -----------------------------
@@ -525,8 +643,9 @@ if (!$form_can_be_accepted) {
     for ($i = $cnt - 1; $i >= 0; $i--) {
         $new_tag = '<textarea ';
         $attributes = get_attributes($textarea_start[$i][0]);
-        if (!isset($attributes['name']))
+        if (!isset($attributes['name'])) {
             $attributes['name'] = 'textarea' . $i;
+        }
         $new_tag.=" name=\"formdata[{$attributes['name']}]\" ";
 
         $value = '';
@@ -536,9 +655,11 @@ if (!$form_can_be_accepted) {
             $value = $input_vars[$attributes['name']];
         }
 
-        foreach ($attributes as $nm => $vl)
-            if ($nm != 'name')
+        foreach ($attributes as $nm => $vl) {
+            if ($nm != 'name') {
                 $new_tag.=" $nm=\"" . checkStr($vl) . "\" ";
+            }
+        }
         $new_tag.='>';
 
         $new_tag.=checkStr($value) . '</textarea>';
@@ -562,17 +683,21 @@ if (!$form_can_be_accepted) {
         $new_tag = "<select ";
 
         $attributes = get_attributes($select_start[$i][0]);
-        if (!isset($attributes['name']) || strlen($attributes['name']) == 0)
+        if (!isset($attributes['name']) || strlen($attributes['name']) == 0) {
             $attributes['name'] = 'select' . $i;
+        }
         $new_tag.=" name=\"formdata[{$attributes['name']}]\" ";
 
         $value = '';
-        if (isset($input_vars['formdata'][$attributes['name']]))
+        if (isset($input_vars['formdata'][$attributes['name']])) {
             $value = $input_vars['formdata'][$attributes['name']];
+        }
 
-        foreach ($attributes as $nm => $vl)
-            if ($nm != 'name')
+        foreach ($attributes as $nm => $vl) {
+            if ($nm != 'name') {
                 $new_tag.=" $nm=\"" . checkStr($vl) . "\" ";
+            }
+        }
         $new_tag.='>';
 
         $tmp_start = $select_start[$i][1];
@@ -605,7 +730,7 @@ if (!$form_can_be_accepted) {
     // достать атрибуты
     $form_attributes = get_attributes($form_tag[0][0]);
     // составить замену
-    $new_form_tag = "<form action=".site_URL." method=post>
+    $new_form_tag = "<form action=".site_URL." method=\"post\" enctype=\"multipart/form-data\">
        <input type=hidden name=action value='form/view'>
        <input type=hidden name=site_id value='$site_id'>
        <input type=hidden name=lang value='{$input_vars['lang']}'>
@@ -621,9 +746,16 @@ if (!$form_can_be_accepted) {
     $vyvid = substr_replace($vyvid, $new_form_tag, $form_tag[0][1], strlen($form_tag[0][0]));
 
 
-    if (isset($input_vars['formdata']['code']))
+    if (isset($input_vars['formdata']['code'])) {
         $vyvid = "<div style='color:red;font-weight:bold;'>" . $txt['ERROR'] . "</div>" . $vyvid;
+    }
 
+    
+        
+        
+    if($captcha_placeholder_exists){
+      $vyvid = str_replace('{captcha}',$captcha_html,$vyvid);
+    }
     //prn(checkStr($vyvid));
 }
 // ------------------- draw form - end ------------------------
@@ -663,6 +795,5 @@ if (isset($input_vars['widget'])) {
     //------------------------ draw using SMARTY template - end ----------------
     echo $file_content;
 }
-global $main_template_name;
-$main_template_name = '';
+
 ?>
