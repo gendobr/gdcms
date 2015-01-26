@@ -96,20 +96,35 @@ if(isset($input_vars['news_subscriber_email']) && strlen($input_vars['news_subsc
 }
 // -------------------------- do subscription - end ----------------------------
 
-
-// -------------------------- draw page content - begin ------------------------
-$page_content=$message;
-if(!isset($input_vars['code']) && !isset($input_vars['news_subscriber_email'])){
-    $page_content.="
-    <form action=index.php method=POST>
-    <input type=hidden name=action value=\"news_subscription/unsubscribe\">
-    <input type=hidden name=site_id value=\"{$site_id}\">
-    <div>{$txt['News_subscriber_email']}</div>
-    <input type=\"text\" name=\"news_subscriber_email\" value=\"".(isset($input_vars['news_subscriber_email'])?checkStr($input_vars['news_subscriber_email']):'')."\"><br><br>
-    <input type=submit value=\"{$txt['Unsubscribe_mailing_list']}\">
-    </form>
-    ";
+if (!function_exists('db_get_template')){
+    run('site/page/page_view_functions');
 }
+// -------------------------- draw page content - begin ------------------------
+//$page_content=$message;
+//if(!isset($input_vars['code']) && !isset($input_vars['news_subscriber_email'])){
+//    $page_content.="
+//    <form action=index.php method=POST>
+//    <input type=hidden name=action value=\"news_subscription/unsubscribe\">
+//    <input type=hidden name=site_id value=\"{$site_id}\">
+//    <div>{$txt['News_subscriber_email']}</div>
+//    <input type=\"text\" name=\"news_subscriber_email\" value=\"".(isset($input_vars['news_subscriber_email'])?checkStr($input_vars['news_subscriber_email']):'')."\"><br><br>
+//    <input type=submit value=\"{$txt['Unsubscribe_mailing_list']}\">
+//    </form>
+//    ";
+//}
+$_template = site_get_template($this_site_info, 'template_news_unsubscribe');
+
+$page_content=process_template($_template
+        , Array(
+                'site' => $this_site_info
+              , 'site_root_url' => site_root_URL
+              , 'data_is_correct' => $data_is_correct
+              , 'text' => $txt
+              , 'message' => $message
+              , 'news_subscriber_email' => (isset($input_vars['news_subscriber_email'])?checkStr($input_vars['news_subscriber_email']):'')
+        )
+        // , Array('show_related_news', 'show_news_categories')
+);
 // -------------------------- draw page content - end --------------------------
 
 //------------------------ get list of languages - begin -----------------------
@@ -124,9 +139,7 @@ $lang_list = array_values($lang_list);
 // prn($lang_list);
 //------------------------ get list of languages - end -------------------------
 
-if (!function_exists('db_get_template')){
-    run('site/page/page_view_functions');
-}
+
 $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 
 //------------------------ draw using SMARTY template - begin ------------------
@@ -148,4 +161,3 @@ $file_content=process_template($this_site_info['template']
 echo $file_content;
 
 global $main_template_name; $main_template_name='';
-?>

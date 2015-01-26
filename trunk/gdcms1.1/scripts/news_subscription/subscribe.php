@@ -130,23 +130,44 @@ if(isset($input_vars['success'])){
 }
 // -------------------------- show success message - end -----------------------
 
-// -------------------------- draw page content - begin ------------------------
-$page_content=$message;
-if(!$data_is_correct){
-    $page_content.="
-    <form action=index.php method=POST>
-    <input type=hidden name=action value=\"news_subscription/subscribe\">
-    <input type=hidden name=site_id value=\"{$site_id}\">
 
-    <div>{$txt['News_subscriber_name']}</div>
-    <input type=\"text\" name=\"news_subscriber_name\" value=\"".(isset($input_vars['news_subscriber_name'])?checkStr($input_vars['news_subscriber_name']):'')."\"><br>
-
-    <div>{$txt['News_subscriber_email']}</div>
-    <input type=\"text\" name=\"news_subscriber_email\" value=\"".(isset($input_vars['news_subscriber_email'])?checkStr($input_vars['news_subscriber_email']):'')."\"><br><br>
-    <input type=submit value=\"{$txt['Subscribe_mailing_list']}\">
-    </form>
-    ";
+if (!function_exists('db_get_template')){
+    run('site/page/page_view_functions');
 }
+
+// -------------------------- draw page content - begin ------------------------
+
+
+$_template = site_get_template($this_site_info, 'template_news_subscribe');
+
+$page_content=process_template($_template
+        , Array(
+                'site' => $this_site_info
+              , 'site_root_url' => site_root_URL
+              , 'data_is_correct' => $data_is_correct
+              , 'text' => $txt
+              , 'message' => $message
+              , 'news_subscriber_name' => (isset($input_vars['news_subscriber_name'])?checkStr($input_vars['news_subscriber_name']):'')
+              , 'news_subscriber_email' => (isset($input_vars['news_subscriber_email'])?checkStr($input_vars['news_subscriber_email']):'')
+        )
+        // , Array('show_related_news', 'show_news_categories')
+);
+// $page_content=$message;
+// if(!$data_is_correct){
+//    $page_content.="
+//    <form action=index.php method=POST>
+//    <input type=hidden name=action value=\"news_subscription/subscribe\">
+//    <input type=hidden name=site_id value=\"{$site_id}\">
+//
+//    <div>{$txt['News_subscriber_name']}</div>
+//    <input type=\"text\" name=\"news_subscriber_name\" value=\"".(isset($input_vars['news_subscriber_name'])?checkStr($input_vars['news_subscriber_name']):'')."\"><br>
+//
+//    <div>{$txt['News_subscriber_email']}</div>
+//    <input type=\"text\" name=\"news_subscriber_email\" value=\"".(isset($input_vars['news_subscriber_email'])?checkStr($input_vars['news_subscriber_email']):'')."\"><br><br>
+//    <input type=submit value=\"{$txt['Subscribe_mailing_list']}\">
+//    </form>
+//    ";
+// }
 // -------------------------- draw page content - end --------------------------
 
 
@@ -170,9 +191,7 @@ $lang_list = array_values($lang_list);
 // prn($lang_list);
 //------------------------ get list of languages - end -------------------------
 
-if (!function_exists('db_get_template')){
-    run('site/page/page_view_functions');
-}
+
 $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 
 //------------------------ draw using SMARTY template - begin ------------------
@@ -194,4 +213,3 @@ $file_content=process_template($this_site_info['template']
 echo $file_content;
 
 global $main_template_name; $main_template_name='';
-?>
