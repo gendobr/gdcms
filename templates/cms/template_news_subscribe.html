@@ -1,0 +1,15 @@
+<div class="message">{$message}</div>
+{if !$data_is_correct}
+<form action=index.php method=POST>
+    <input type=hidden name=action value="news_subscription/subscribe">
+    <input type=hidden name=site_id value="{$site.id}">
+
+    <div>{$text.News_subscriber_name}</div>
+    <input type="text" name="news_subscriber_name" value="{$news_subscriber_name}"><br>
+
+    <div>{$text.News_subscriber_email}</div>
+    <input type="text" name="news_subscriber_email" value="{$news_subscriber_email}"><br><br>
+    <input type=submit value="{$text.Subscribe_mailing_list}">
+    </form>
+
+{/if}
