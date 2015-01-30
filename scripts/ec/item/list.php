@@ -99,7 +99,7 @@ if($user_cense_level==0)
                  ,$_group_operation=false);
 
   //---------------- list of languages - begin ---------------------------------
-    $LL = join('&',GetAssociatedArray(db_execute("SELECT ec_item_lang,CONCAT(ec_item_lang,'=',ec_item_lang) FROM {$table_prefix}ec_item WHERE site_id={$site_id}")));
+    $LL = join('&',db_get_associated_array("SELECT ec_item_lang,CONCAT(ec_item_lang,'=',ec_item_lang) FROM {$table_prefix}ec_item WHERE site_id={$site_id}"));
     $re->add_field( $field='ec_item.ec_item_lang'
                    ,$alias='ec_item_lang'
                    ,$type ='enum:'.$LL

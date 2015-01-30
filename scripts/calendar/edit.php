@@ -21,7 +21,7 @@ if (get_level($site_id) == 0) {
 //------------------- check permission - end -----------------------------------
 // ------------------ get event info - begin -----------------------------------
 $event_id = isset($input_vars['event_id']) ? ((int) $input_vars['event_id']) : 0;
-$this_event_info = GetOneRow(Execute($db, "SELECT * FROM {$table_prefix}calendar WHERE id = $event_id"));
+$this_event_info = db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id = $event_id");
 if (!$this_event_info['id']) {
     $input_vars['page_title'] = $input_vars['page_header'] = $input_vars['page_content'] = text('Calendar_event_not_found');
     return 0;
@@ -205,6 +205,9 @@ if (isset($input_vars['upd'])) {
         $query = "DELETE FROM {$table_prefix}calendar_cache WHERE uid BETWEEN {$site_id}000000 AND {$site_id}999999";
         db_execute($query);
 
+        
+        event_recache_days($event_id);
+        
         header("Location:index.php?action=calendar/edit&site_id={$site_id}&event_id={$event_id}");
         exit();
     }
@@ -221,7 +224,7 @@ if (isset($input_vars['upd'])) {
 
 if (isset($input_vars['upd'])) {
 
-    $this_event_info = GetOneRow(Execute($db, "SELECT * FROM {$table_prefix}calendar WHERE id = '$new'"));
+    $this_event_info = db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id = '$new'");
     while ($row = mysql_fetch_array($result)) {
         
     }
@@ -492,4 +495,5 @@ $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
 $Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
-?>
+
+

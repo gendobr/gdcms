@@ -32,7 +32,7 @@ class tree {
         $cid = (int) $category_id;
         if ($cid > 0) {
             $query = "SELECT * FROM {$this->name_table} WHERE {$this->name_id}=$cid";
-            $destination_info = $this->GetOneRow($this->Execute($this->db, $query));
+            $destination_info = db_getonerow($query);
         }
         else{
             $destination_info=false;
@@ -60,21 +60,21 @@ class tree {
         }
 
         #prn('$this->info',$this->info);
-        $this->Execute($this->db, 'BEGIN;');
+        db_execute('BEGIN;');
         // ---------------------- prepare new place - begin -------------------------
         $shift = $this->info['finish'] - $this->info['start'] + 1;
         $query = "UPDATE {$this->name_table} "
                . "SET {$this->name_start}={$this->name_start}+({$shift}) "
                . "WHERE {$this->name_start}>{$destination_info[$this->name_start]}";
         #prn('prepare new place',htmlencode($query));
-        $this->Execute($this->db, $query);
+        db_execute($query);
         #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
 
         $query = "UPDATE {$this->name_table} "
                . "SET {$this->name_finish}={$this->name_finish}+({$shift}) "
                . "WHERE {$this->name_finish}>{$destination_info[$this->name_start]}";
         #prn('prepare new place',htmlencode($query));
-        $this->Execute($this->db, $query);
+        db_execute($query);
         #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
 
 
@@ -94,7 +94,7 @@ class tree {
                   WHERE  {$this->info[$this->name_start]}<={$this->name_start}
                      AND {$this->name_finish}<={$this->info[$this->name_finish]}";
         #prn('move',htmlencode($query));
-        $this->Execute($this->db, $query);
+        db_execute($query);
         #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
         // ---------------------- move - end ----------------------------------------
         // ---------------------- clear previous place - begin ----------------------
@@ -102,17 +102,17 @@ class tree {
                   SET {$this->name_finish}={$this->name_finish}-({$shift})
                   WHERE {$this->name_finish}>{$this->info[$this->name_finish]}";
         #prn(htmlencode($query));
-        $this->Execute($this->db, $query);
+        db_execute($query);
         #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
 
         $query = "UPDATE {$this->name_table}
                   SET {$this->name_start}={$this->name_start}-({$shift})
                   WHERE {$this->name_start}>{$this->info[$this->name_finish]}";
         #prn(htmlencode($query));
-        $this->Execute($this->db, $query);
+        db_execute($query);
         #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
         // ---------------------- clear previous place - end ------------------------
-        $this->Execute($this->db, 'COMMIT;');
+        db_execute('COMMIT;');
         $this->info[$this->name_start]+=$diff;
         $this->info[$this->name_finish]+=$diff;
         return true;
@@ -126,7 +126,7 @@ class tree {
             $cid=(int) $category_id;
 
         # get category info
-        $category_info = $this->GetOneRow($this->Execute($this->db,"SELECT * FROM {$this->name_table} WHERE {$this->name_id}={$cid} " . $this->sql_where() ));
+        $category_info = db_getonerow("SELECT * FROM {$this->name_table} WHERE {$this->name_id}={$cid} " . $this->sql_where() );
         if (!$category_info)
             return false;
 
@@ -139,7 +139,7 @@ class tree {
                    " . $this->sql_where() . "
                  ORDER BY {$this->name_start} DESC
                  LIMIT 0,1";
-        $parent_info = $this->GetOneRow($this->Execute($this->db, $query));
+        $parent_info = db_getonerow($query);
         if (!$parent_info)
             return false;
 
@@ -152,7 +152,7 @@ class tree {
                      AND ch.{$this->name_deep}=" . ($parent_info[$this->name_deep] + 1) . "
                      " . $this->sql_where('ch') . "
                  ORDER BY ch.{$this->name_start}";
-        $children = $this->GetRows($this->Execute($this->db, $query));
+        $children = db_getrows($query);
 
         # get nearest sibling
         $sibling = Array();
@@ -165,7 +165,7 @@ class tree {
         if (count($sibling) == 0)
             return false;
 
-        $this->Execute($this->db, 'BEGIN;');
+        db_execute('BEGIN;');
         # prn('$sibling',$sibling);
 
         $dt = $sibling[$this->name_finish] - $category_info[$this->name_finish];
@@ -176,7 +176,7 @@ class tree {
                     AND {$this->name_finish}<={$sibling[$this->name_finish]}
                     " . $this->sql_where();
         # prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
 
         $query ="UPDATE {$this->name_table}
                  SET {$this->name_start}={$this->name_start}+{$dt},
@@ -185,7 +185,7 @@ class tree {
                    AND {$this->name_finish}<={$category_info[$this->name_finish]}
                    " . $this->sql_where();
         # prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
 
         $dt = -($category_info[$this->name_start] + $dt - $sibling[$this->name_finish] - 1);
         $query ="UPDATE {$this->name_table}
@@ -194,10 +194,10 @@ class tree {
                  WHERE {$this->name_start}<0 AND {$this->name_finish}<0
                  " . $this->sql_where();
         # prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
 
 
-        $this->Execute($this->db, 'COMMIT;');
+        db_execute('COMMIT;');
     }
 
     # ---------------------- move down - end ------------------------------------
@@ -209,7 +209,7 @@ class tree {
             $cid=(int) $category_id;
 
         # get category info
-        $category_info = $this->GetOneRow($this->Execute($this->db,"SELECT * FROM {$this->name_table} WHERE {$this->name_id}={$cid} " . $this->sql_where()));
+        $category_info = db_getonerow("SELECT * FROM {$this->name_table} WHERE {$this->name_id}={$cid} " . $this->sql_where());
         if (!$category_info)
             return false;
         //prn('category',$category_info['category_id'],$category_info['start'],$category_info['finish']);
@@ -222,7 +222,7 @@ class tree {
                   ORDER BY {$this->name_start} DESC
                   LIMIT 0,1";
         //prn(htmlspecialchars($query));
-        $parent_info = $this->GetOneRow($this->Execute($this->db, $query));
+        $parent_info = db_getonerow($query);
         if (!$parent_info)
             return false;
         //prn('parent',$parent_info['category_id'],$parent_info['start'],$parent_info['finish']);
@@ -236,7 +236,7 @@ class tree {
                      AND ch.{$this->name_deep}=" . ($parent_info[$this->name_deep] + 1) . "
                      " . $this->sql_where('ch') . "
                  ORDER BY ch.{$this->name_start}";
-        $children = array_reverse($this->GetRows($this->Execute($this->db, $query)));
+        $children = array_reverse(db_getrows($query));
 
         # get nearest sibling
         $sibling = Array();
@@ -252,7 +252,7 @@ class tree {
         //prn('sibling',$sibling['category_id'],$sibling['start'],$sibling['finish']);
 
         # prn('$sibling',$sibling);
-        $this->Execute($this->db, 'BEGIN;');
+        db_execute('BEGIN;');
         $dt = $category_info[$this->name_start] - $sibling[$this->name_start];
         $query ="UPDATE {$this->name_table}
                  SET {$this->name_start}=-{$this->name_start}
@@ -261,7 +261,7 @@ class tree {
                    AND {$this->name_finish}<={$sibling[$this->name_finish]}
                    " . $this->sql_where();
         //prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
 
         $query ="UPDATE {$this->name_table}
                  SET {$this->name_start}={$this->name_start}-{$dt},
@@ -270,7 +270,7 @@ class tree {
                    AND {$this->name_finish}<={$category_info[$this->name_finish]}
                    " . $this->sql_where();
         //prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
 
         $dt = $category_info[$this->name_finish] - $dt + 1 - $sibling['start'];
         $query ="UPDATE {$this->name_table}
@@ -279,8 +279,8 @@ class tree {
                  WHERE {$this->name_start}<0 AND {$this->name_finish}<0
                  " . $this->sql_where();
         //prn($query);
-        $this->Execute($this->db, $query);
-        $this->Execute($this->db, 'COMMIT;');
+        db_execute($query);
+        db_execute('COMMIT;');
     }
 
     # ---------------------- move up - end --------------------------------------
@@ -294,7 +294,7 @@ class tree {
                  FROM {$this->name_table}
                  WHERE {$this->name_id}=$cid
                       " . $this->sql_where();
-            $_info = $this->GetOneRow($this->Execute($this->db, $query));
+            $_info = db_getonerow($query);
         }
         else
             $_info=false;
@@ -308,20 +308,20 @@ class tree {
               WHERE {$_info[$this->name_start]}<={$this->name_start}
                 AND {$this->name_finish}<={$_info[$this->name_finish]}
                 " . $this->sql_where();
-        $deleted_ids = $this->GetRows($this->Execute($this->db, $query));
+        $deleted_ids = db_getrows($query);
         $cnt = count($deleted_ids);
         for ($i = 0; $i < $cnt; $i++)
             $deleted_ids[$i] = $deleted_ids[$i]['id'];
         //prn($query,$deleted_ids);
         // ----------------------- get deleted ids - end ----------------------------
-        $this->Execute($this->db, 'BEGIN;');
+        db_execute('BEGIN;');
         // ----------------------- delete branch - begin ----------------------------
         $query = "DELETE FROM {$this->name_table}
               WHERE {$_info[$this->name_start]}<={$this->name_start}
                 AND {$this->name_finish}<={$_info[$this->name_finish]}
                 " . $this->sql_where();
         //prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
         // ----------------------- delete branch - end ------------------------------
         // ----------------------- update start fields - begin ----------------------
         $diff = $_info[$this->name_finish] - $_info[$this->name_start] + 1;
@@ -330,7 +330,7 @@ class tree {
               WHERE {$this->name_start}>{$_info[$this->name_start]}
                   " . $this->sql_where();
         //prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
         // ----------------------- update start fields - end ------------------------
         // ----------------------- update finish fields - begin ---------------------
         $query = "UPDATE {$this->name_table}
@@ -338,9 +338,9 @@ class tree {
               WHERE {$this->name_finish}>{$_info[$this->name_start]}
                   " . $this->sql_where();
         //prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
         // ----------------------- update finish fields - end -----------------------
-        $this->Execute($this->db, 'COMMIT;');
+        db_execute('COMMIT;');
         return $deleted_ids;
     }
 
@@ -354,27 +354,27 @@ class tree {
             $query = "SELECT * FROM {$this->name_table}
                  WHERE {$this->name_id}=$cid
                       " . $this->sql_where();
-            $_info = $this->GetOneRow($this->Execute($this->db, $query));
+            $_info = db_getonerow($query);
         }
         else
             $_info=false;
         if (!$_info)
             return false;
 
-        $this->Execute($this->db, 'BEGIN;');
+        db_execute('BEGIN;');
         $query = "UPDATE {$this->name_table}
               SET {$this->name_finish}={$this->name_finish}+2
               WHERE {$this->name_finish}>={$_info[$this->name_finish]}
                    " . $this->sql_where();
         // prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
 
         $query = "UPDATE {$this->name_table}
               SET {$this->name_start} ={$this->name_start}+2
               WHERE {$this->name_start}>={$_info[$this->name_finish]}
                    " . $this->sql_where();
         // prn($query);
-        $this->Execute($this->db, $query);
+        db_execute($query);
 
         $new_start = $_info[$this->name_finish];
         $new_finish = $_info[$this->name_finish] + 1;
@@ -382,11 +382,11 @@ class tree {
         $query = "INSERT INTO {$this->name_table}(start, finish, deep)
                     values( $new_start, $new_finish, {$new_deep} );";
         // prn($query);
-        $this->Execute($this->db, $query);
-        $this->Execute($this->db, 'COMMIT;');
+        db_execute($query);
+        db_execute('COMMIT;');
 
         $query = "SELECT LAST_INSERT_ID() AS newid;";
-        $newid = $this->GetOneRow($this->Execute($this->db, $query));
+        $newid = db_getonerow($query);
 
         return $newid['newid'];
     }
@@ -404,7 +404,7 @@ class tree {
                  {$cond}
              ORDER BY ch.{$this->name_start}";
         //if(isset($_REQUEST['debug'])) prn($this,checkStr($query));
-        $this->parents = $this->GetRows($this->Execute($this->db, $query));
+        $this->parents = db_getrows($query);
         //if(isset($_REQUEST['debug'])) prn($this->parents);
         return $this->parents;
     }
@@ -425,7 +425,7 @@ class tree {
                  {$cond}
              ORDER BY ch.{$this->name_start}";
         //if(isset($_REQUEST['debug'])) prn(checkStr($query));
-        $this->children = $this->GetRows($this->Execute($this->db, $query));
+        $this->children = db_getrows($query);
         //if(isset($_REQUEST['debug'])) prn($this->children);
         return $this->children;
     }
@@ -443,7 +443,7 @@ class tree {
         if ($cid > 0) {
             $query = "SELECT * FROM {$this->name_table} WHERE {$this->name_id}=$cid {$cond} " . $this->sql_where();
             //prn($query);
-            $this->info = $this->GetOneRow($this->Execute($this->db, $query));
+            $this->info = db_getonerow($query);
         }
         else
             $this->info = false;
@@ -451,7 +451,7 @@ class tree {
         if (!$this->info) {
             $query = "SELECT * FROM {$this->name_table} WHERE {$this->name_start}=0 " . $this->sql_where();
             //prn($query);
-            $this->info = $this->GetOneRow($this->Execute($this->db, $query));
+            $this->info = db_getonerow($query);
         }
 
         if ($this->info)
@@ -465,45 +465,8 @@ class tree {
     //----------------------- database interface -- begin -----------------------
     // MySQL functions
     //
-    function DbStr($ffff) {
-        return mysql_escape_string($ffff);
-    }
 
-    function Execute($dblink, $query) {
-        if ($this->debug)
-            $this->prn("<b><font color=\"red\">$query</font></b>"); $result_id = mysql_query(trim($query), $dblink);
-        if (!$result_id) {
-            $this->prn($query . '<br>' . mysql_error());
-        } return $result_id;
-    }
 
-    function GetRows($result_id) {
-        $tor = Array();
-        while ($row = mysql_fetch_array($result_id, MYSQL_ASSOC))
-            $tor[] = $row; mysql_free_result($result_id);
-        return $tor;
-    }
-
-    function GetOneRow($result_id) {
-        return mysql_fetch_array($result_id, MYSQL_ASSOC);
-    }
-
-    function SelectLimit($dblink, $query, $start, $rows) {
-        $limit_query = ereg_replace(';?( |' . "\n" . '|' . "\r" . ')*$', '', $query . '  LIMIT ' . checkInt($start) . ',' . checkInt($rows) . ';');
-        return GetRows(Execute($dblink, $limit_query));
-    }
-
-    function GetNumRows($result_id) {
-        return mysql_num_rows($result_id);
-    }
-
-    function GetAssociatedArray($result_id) {
-        $tor = Array();
-        $tmp = GetRows($result_id);
-        if (!isset($tmp[0]['id']))
-            return $tor; foreach ($tmp as $tm)
-            $tor[$tm['id']] = $tm['val']; return $tor;
-    }
 
     //----------------------- database interface -- end -------------------------
     //------------------------- print debug info -- begin -----------------------

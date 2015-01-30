@@ -129,10 +129,14 @@ unset($month_table['weekdays'][-1]);
 $month_table['days']=Array();
 
 $view_day_events_url_prefix = site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month&year={$year}&month={$month}&day=";
+
+$query="SELECT DISTINCT d FROM {$GLOBALS['table_prefix']}calendar_days_cache WHERE Y=".( (int)$year )." AND m=".( (int) $month)." AND site_id={$this_site_info['id']} ";
+$existing_days=array_flip(array_map(function($in){return $in['d'];},db_getrows($query)));
+    
 foreach ($calendar as $row) {
     $tr = Array();
     foreach ($row as $day) {
-        if (events_exist($year, $month, $day, $this_site_info)) {
+        if (isset($existing_days[$day])) {
             $view_day_events_url = $view_day_events_url_prefix . $day;
             $tr[]=Array('innerHTML'=>$day,'href'=>$view_day_events_url);
         } else {
@@ -153,22 +157,41 @@ $day = isset($input_vars['day']) ? ( (int) $input_vars['day'] ) : 0;
 if ($day > 0) {
     // $events = get_view(event_get_by_date($this_site_info['id'], $year, $month, $day,-1, -1, false),$lang);
     
-    $timestamp_start= mktime(00, 00, 1, $month, $day, $year);
-    $timestamp_end=mktime(23, 59, 59, $month, $day, $year);
-    $event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose=isset($input_vars['verbose']));
+    // $timestamp_start= mktime(00, 00, 1, $month, $day, $year);
+    // $timestamp_end=mktime(23, 59, 59, $month, $day, $year);
+    // $event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose=isset($input_vars['verbose']));
+    $query="SELECT *
+            FROM {$GLOBALS['table_prefix']}calendar_days_cache 
+            WHERE Y=".( (int)$year )." AND m=".( (int) $month)." 
+              AND d=".( (int) $day)." AND site_id={$this_site_info['id']}
+            ORDER BY h ASC, i ASC;";
+    $event_days=db_getrows($query);
+
+    $event_ids=array_map(function($in){return $in['calendar_id'];},$event_days);
     if(count($event_ids)>0){
         $event_list = db_getrows("select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$event_ids).")");
     }else{
         $event_list=Array();
     }
     $events = get_view($event_list,$lang);
+    $map=Array();
+    foreach($events as $ev){
+        $map[$ev['id']]=$ev;
+    }
+    unset($events);
+    // prn($map);
     
-
+    $cnt=count($event_days);
+    for($i=0; $i<$cnt; $i++){
+        $event_days[$i]['event']=$map[$event_days[$i]['calendar_id']];
+        $event_days[$i]['startDate']="{$event_days[$i]['y']}-{$event_days[$i]['m']}-{$event_days[$i]['d']} "
+            .($event_days[$i]['h']>=0?$event_days[$i]['h']:0).":".($event_days[$i]['i']>=0?$event_days[$i]['i']:0);
+    }
     
-    //prn($events);
+    //prn($event_days);
     //exit();
 }else{
-    $events=false;
+    $event_days=false;
 }
 
 ///exit('124');
@@ -178,7 +201,7 @@ if ($day > 0) {
 $_template = site_get_template($this_site_info, 'template_calendar_list');
 $vyvid = process_template($_template
                 , Array(
-                      'events' => $events
+                      'events' => $event_days
                     , 'text' => $txt
                     , 'year'=>$year
                     , 'month'=>$month
@@ -220,4 +243,3 @@ for ($i = 0; $i < $cnt; $i++) {
                                 ));
 //------------------------ draw using SMARTY template - end ------------------
 echo $file_content;
-?>

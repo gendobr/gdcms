@@ -179,19 +179,19 @@ foreach($input_vars['dates'] as $dt){
             && strlen($new_kinrik)>0 && strlen($new_kinmis)>0
             && strlen($new_kinday)>0 && strlen($new_kintyzh)>0
             && strlen($new_kingod)>0 && strlen($new_kinhv)>0) {
-            $new_pochrik = (int) $dt['pochrik'];
-            $new_pochmis = (int) $dt['pochmis'];
-            $new_pochday = (int) $dt['pochday'];
-            $new_pochtyzh = (int) $dt['pochtyzh'];
-            $new_pochgod = (int) $dt['pochgod'];
-            $new_pochhv = (int) $dt['pochhv'];
+            $new_pochrik  = (int) (is_numeric($dt['pochrik'])?$dt['pochrik']:-1);
+            $new_pochmis  = (int) (is_numeric($dt['pochmis'])?$dt['pochmis']:-1);
+            $new_pochday  = (int) (is_numeric($dt['pochday'])?$dt['pochday']:-1);
+            $new_pochtyzh = (int) (is_numeric($dt['pochtyzh'])?$dt['pochtyzh']:-1);
+            $new_pochgod  = (int) (is_numeric($dt['pochgod'])?$dt['pochgod']:-1);
+            $new_pochhv   = (int) (is_numeric($dt['pochhv'])?$dt['pochhv']:-1);
 
-            $new_kinrik = (int) $dt['kinrik'];
-            $new_kinmis = (int) $dt['kinmis'];
-            $new_kinday = (int) $dt['kinday'];
-            $new_kintyzh = (int) $dt['kintyzh'];
-            $new_kingod = (int) $dt['kingod'];
-            $new_kinhv = (int) $dt['kinhv'];
+            $new_kinrik = (int)  (is_numeric($dt['kinrik'])?$dt['kinrik']:-1);
+            $new_kinmis = (int)  (is_numeric($dt['kinmis'])?$dt['kinmis']:-1);
+            $new_kinday = (int)  (is_numeric($dt['kinday'])?$dt['kinday']:-1);
+            $new_kintyzh = (int) (is_numeric($dt['kintyzh'])?$dt['kintyzh']:-1);
+            $new_kingod = (int)  (is_numeric($dt['kingod'])?$dt['kingod']:-1);
+            $new_kinhv = (int)   (is_numeric($dt['kinhv'])?$dt['kinhv']:-1);
             
             $query="
                 INSERT INTO {$table_prefix}calendar_date 
@@ -251,6 +251,7 @@ if(isset($input_vars['categories'])){
 
 $calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_id={$site_id}&month={month}&year={year}&day={day}";
 
+event_recache_days($calendar_info['id']);
 
 $feedback = Array(
     'status' => 'success',

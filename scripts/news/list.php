@@ -51,7 +51,7 @@ $re->add_field($field = 'news.id'
         , $_group_operation = false);
 
 //---------------- list of languages - begin ---------------------------------
-$LL = join('&', GetAssociatedArray(db_execute("SELECT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}news WHERE site_id={$site_id}")));
+$LL = join('&', db_get_associated_array("SELECT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}news WHERE site_id={$site_id}"));
 $re->add_field($field = 'news.lang'
         , $alias = 'lang'
         , $type = 'enum:' . $LL

@@ -224,6 +224,10 @@ if ($all_is_ok) {
                 $this_ec_item_info["ec_item_img"][$pimage] = $tmp;
             }
         }
+        if (preg_match('/^ec_item_img_label_/', $key)) {
+            $nimage = str_replace('ec_item_img_label_', '', $key);
+            $this_ec_item_info["ec_item_img"][$nimage]['label']=$val;
+        }
     }
     # ---------------- reorder images begin - end ------------------------------
 

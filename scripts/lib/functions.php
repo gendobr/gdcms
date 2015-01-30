@@ -78,22 +78,7 @@ function db_connect($db_host,$db_user,$db_pass,$db_name) {
 function db_close($dblink) {
     mysql_close($dblink);
 }
-function Execute($dblink,$query) {
-    if(debug) prn("<b><font color=\"red\">$query</font></b>");
-    $result_id=mysql_query(trim($query),$dblink);
-    if(!$result_id) {
-        prn($query.'<br>'.mysql_error());
-    } return
-    $result_id;
-}
-function GetRows($result_id) {
-    $tor=Array(); while($row=mysql_fetch_array($result_id,MYSQL_ASSOC)) $tor[]=$row;
-    mysql_free_result($result_id);
-    return $tor;
-}
-function GetOneRow($result_id) {
-    return mysql_fetch_array($result_id, MYSQL_ASSOC);
-}
+
 
 // new versions
 function db_execute($query) {
@@ -117,7 +102,17 @@ function db_getonerow($query) {
     mysql_free_result($result_id);
     return $tor;
 }
-
+function db_get_associated_array($sql) {
+    $tor=Array();
+    $tmp=db_getrows($sql);
+    if(!$tmp) return $tor;
+    foreach($tmp as $tm) {
+        $tm=array_values($tm);
+        if(!isset($tm[1])) $tm[1]=$tm[0];
+        $tor[$tm[0]]=$tm[1];
+    }
+    return $tor;
+}
 
 function SelectLimit($dblink,$query,$start,$rows) {
     $limit_query=ereg_replace(';?( |'."\n".'|'."\r".')*$','',$query.'  LIMIT '.checkInt($start).','.checkInt($rows).';');
@@ -127,17 +122,7 @@ function SelectLimit($dblink,$query,$start,$rows) {
 function GetNumRows($result_id) {
     return mysql_num_rows ($result_id);
 }
-function GetAssociatedArray($result_id) {
-    $tor=Array();
-    $tmp=GetRows($result_id);
-    if(!$tmp) return $tor;
-    foreach($tmp as $tm) {
-        $tm=array_values($tm);
-        if(!isset($tm[1])) $tm[1]=$tm[0];
-        $tor[$tm[0]]=$tm[1];
-    }
-    return $tor;
-}
+
 // ---------------------- database interface -- end ----------------------------
 
 
@@ -535,13 +520,13 @@ function do_login($lg,$ps,$_prev_info=Array()){
             $tmp_user_info['is_logged']=true;
             //------------------- get user sites - begin ---------------------------
             if($tmp_user_info['id']==1) {
-                $tmp_user_info['sites']=GetAssociatedArray(db_execute(
+                $tmp_user_info['sites']=db_get_associated_array(
                         " SELECT id AS `key`, 1000 AS `value` FROM {$GLOBALS['table_prefix']}site
                            UNION
-                           SELECT dir AS `key`, 1000 AS `value` FROM {$GLOBALS['table_prefix']}site" ));
+                           SELECT dir AS `key`, 1000 AS `value` FROM {$GLOBALS['table_prefix']}site" );
             }
             else {
-                $tmp_user_info['sites']=GetAssociatedArray(db_execute(
+                $tmp_user_info['sites']=db_get_associated_array(
                         "SELECT site_id AS `key`, level AS `value`
                     FROM {$GLOBALS['table_prefix']}site_user
                     WHERE user_id='{$tmp_user_info['id']}'
@@ -552,7 +537,7 @@ function do_login($lg,$ps,$_prev_info=Array()){
                     FROM {$GLOBALS['table_prefix']}site_user AS site_user
                       ,{$GLOBALS['table_prefix']}site AS site
                     WHERE site.id=site_user.site_id
-                      AND user_id='{$tmp_user_info['id']}'"));
+                      AND user_id='{$tmp_user_info['id']}'");
             }
             // prn($tmp_user_info);
             //------------------- get user sites - end -----------------------------

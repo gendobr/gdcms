@@ -35,6 +35,7 @@ if (isset($input_vars['event_delete']) && isset($input_vars['event'])) {
     db_execute("DELETE FROM {$table_prefix}calendar_category WHERE event_id in($ids)");
     db_execute("DELETE FROM {$table_prefix}calendar_date WHERE calendar_id in($ids)");
     db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
+    db_execute("DELETE FROM {$table_prefix}calendar_days_cache WHERE calendar_id in($ids)");
 }
 // --------------------- delete - end ------------------------------------------
 #---------------------------- hide - begin -------------------------------------
@@ -246,7 +247,7 @@ if (isset($input_vars['start'])) {
 } else {
     $start = 0;
 }
-$num = GetOneRow(Execute($db, "SELECT count(*) as n FROM {$table_prefix}calendar WHERE site_id=$site_id $where"));
+$num = db_getonerow("SELECT count(*) as n FROM {$table_prefix}calendar WHERE site_id=$site_id $where");
 $num = $num['n'];
 
 $pages = '';
@@ -256,7 +257,7 @@ for ($i = 0; $i < $num; $i = $i + 10) {
 }
 
 
-$rows = GetRows(Execute($db, "SELECT * FROM {$table_prefix}calendar WHERE site_id='$site_id' $where ORDER BY `id` ASC LIMIT $start, 10"));
+$rows = db_getrows("SELECT * FROM {$table_prefix}calendar WHERE site_id='$site_id' $where ORDER BY `id` ASC LIMIT $start, 10");
 
 
 $input_vars['page_content'] = "

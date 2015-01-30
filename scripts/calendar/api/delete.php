@@ -93,7 +93,9 @@ if ($this_site_info['salt'] != $input_vars['api_key']) {
 
 $calendar_info = db_execute("DELETE FROM {$table_prefix}calendar WHERE id=$calendar_id");
 
-
+// remove old calendar dates
+$query="DELETE FROM {$GLOBALS['table_prefix']}calendar_days_cache WHERE calendar_id=".( (int) $calendar_id);
+db_execute($query);
 // ----------------- re-create categories - begin ------------------------------
 if(isset($input_vars['categories'])){
     $categories = preg_split("/,|;|\\./", $input_vars['categories']);

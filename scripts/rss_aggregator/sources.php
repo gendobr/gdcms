@@ -58,7 +58,7 @@ if(get_level($site_id)==0) {
                  ,$label=text('site_id')
                  ,$_group_operation=false);
 
-  $LL = join('&',GetAssociatedArray(db_execute("SELECT rsssource_lang,CONCAT(rsssource_lang,'=',rsssource_lang) FROM {$table_prefix}rsssource WHERE site_id={$site_id}")));
+  $LL = join('&',db_get_associated_array("SELECT rsssource_lang,CONCAT(rsssource_lang,'=',rsssource_lang) FROM {$table_prefix}rsssource WHERE site_id={$site_id}"));
   $re->add_field( $field='rsssource.rsssource_lang'
                  ,$alias='rsssource_lang'
                  ,$type ='enum:'.$LL

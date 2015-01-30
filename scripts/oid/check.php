@@ -70,7 +70,7 @@ if (isset($_POST['ul'])) {
     $user_info = db_getonerow("SELECT *  FROM {$table_prefix}user WHERE user_login='" . DbStr($input_vars['ul']) . "'");
     //prn($user_info);exit();
     if ($user_info) {
-        $user_info['sites'] = GetAssociatedArray(db_execute(
+        $user_info['sites'] = db_get_associated_array(
                                 "SELECT site_id AS `key`, level AS `value`
                     FROM {$table_prefix}site_user
                     WHERE user_id='{$user_info['id']}'
@@ -81,7 +81,7 @@ if (isset($_POST['ul'])) {
                     FROM {$table_prefix}site_user AS site_user
                       ,{$table_prefix}site AS site
                     WHERE site.id=site_user.site_id
-                      AND user_id='{$user_info['id']}'"));
+                      AND user_id='{$user_info['id']}'");
     } else {
         $user_info['sites'] = Array();
     }

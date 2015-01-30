@@ -47,7 +47,6 @@ function menu_site($site_info) {
 
     //$query="SELECT CONCAT(id,'.',lang), CONCAT(id,'.',lang) FROM {$table_prefix}page WHERE site_id={$site_info['id']} AND cense_level>={$site_info['cense_level']}";
     // prn($query);
-    //$pagelist=join(';',GetAssociatedArray(db_execute($query)));
     $tor['site/export']=Array(
             'URL'=>"index.php?action=site/page/export&".session_name()."={$GLOBALS['_COOKIE'][session_name()]}&pagelist=all&site_id={$site_info['id']}"
             ,'innerHTML'=>$text['Export_pages'].'<br><br>'

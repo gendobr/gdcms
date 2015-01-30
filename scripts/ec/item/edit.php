@@ -194,6 +194,7 @@ if (isset($this_ec_item_info['ec_item_img']) && count($this_ec_item_info['ec_ite
                             <input type=submit class=\"btn\" name=ec_item_imgup{$key} value=\"&uarr;\">
                             <input type=submit class=\"btn\" name=ec_item_imgdown{$key} value=\"&darr;\">
                             <a href=\"{$this_site_info['url']}{$img_src['big']}\" target=_blank class=\"imgr\"><img style='max-width:100%;' src=\"{$this_site_info['url']}{$img_src['small']}\"></a>
+                            <input type=text class=\"label\" name=ec_item_img_label_{$key} value=\"".  htmlspecialchars(isset($img_src['label'])?$img_src['label']:'')."\">
                      </span>";
     }
 }

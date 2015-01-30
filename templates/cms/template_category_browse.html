@@ -104,8 +104,10 @@
 {/if}
 
 *}
-
 {*
+{$events->setRowsPerPage(1)}
+{$events->setCategoryId(13)}
+
 {if $events->items_found gt 0}
 {literal}
 <style type="text/css">

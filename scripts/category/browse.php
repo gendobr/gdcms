@@ -35,44 +35,6 @@ $input_vars['lang'] = $lang = get_language('lang');
 global $main_template_name;
 $main_template_name = '';
 
-// ------------ get category info - begin --------------------------------------
-//$where = Array();
-//if (isset($input_vars['category_id'])) {
-//    $where[0] = 'category_id=' . ( (int) $input_vars['category_id'] );
-//}
-//if (isset($input_vars['path'])) {
-//    $input_vars['path'] = preg_replace("/\\/+$|^\\/+/", '', $input_vars['path']);
-//    $where[0] = "path='" . DbStr($input_vars['path']) . "'";
-//}
-//if (isset($input_vars['category_code'])) {
-//    $where[0] = "category_code='" . DbStr($input_vars['category_code']) . "'";
-//}
-//
-//if (count($where) == 0) {
-//    $where[0] = 'start=0';
-//}
-//$where[1] = 'site_id=' . $site_id;
-//$where[2] = 'is_visible =1';
-//$query = "SELECT * FROM {$table_prefix}category WHERE " . join(' AND ', $where);
-////if (isset($_REQUEST['debug'])) {
-////    prn($query);
-////}
-//$this_category_info = db_getonerow($query);
-//if (!$this_category_info) {
-//    die('Category not found');
-//}
-//
-//$category_id = $this_category_info['category_id'];
-//$this_category_info['category_title'] = get_langstring($this_category_info['category_title'], $lang);
-//$this_category_info['category_description'] = get_langstring($this_category_info['category_description'], $lang);
-//$this_category_info['URL'] = str_replace(
-//                Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
-//                Array($this_category_info['path'],$lang   ,$site_id   ,$this_category_info['category_id'],$this_category_info['category_code']),
-//                url_pattern_category);
-//$this_category_info['date_lang_update']=get_langstring($this_category_info['date_lang_update'], $lang);
-////prn($this_category_info);
-//// ------------ get category info - end ----------------------------------------
-//
 
 $this_category_info=category_info($input_vars);
 $category_id = $this_category_info['category_id'];
@@ -405,7 +367,8 @@ if(!is_file($_template)){
 //echo $_template;
 
 $category_events = new CategoryEvents($lang, $this_site_info, $this_category_info, isset($input_vars['event_start']) ? ( (int) $input_vars['event_start']) : 0);
-//$category_events->init();
+// $category_events->init();
+// prn($category_events->list);
 $vyvid = process_template($_template
         , Array(
     'category' => $this_category_info

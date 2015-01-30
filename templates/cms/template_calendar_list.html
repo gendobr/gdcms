@@ -75,45 +75,20 @@
 </span>
 {if $day}<h3>{$day}.{$month}.{$year}</h3>{/if}
 {foreach from=$events item=ev}
-
-            
-     {capture name=ecclass assign="ecclass"}{if $ev.categories}{foreach from=$ev.categories item=_cat} {$_cat.category_code} {/foreach} {/if} {/capture}
+     {capture name=ecclass assign="ecclass"}{if $ev.categories}{foreach from=$ev.event.categories item=_cat} {$_cat.category_code} {/foreach} {/if} {/capture}
      <div class='oneevent {$ecclass}'>
-            <span class="daty">
-                {foreach from=$ev.dates item=_dt}
-                {capture name=npt assign="poch_text"}{if $_dt.pochtyzh_text}{$_dt.pochtyzh_text},{/if} {if $_dt.pochmis_text}{$_dt.pochmis_text},{/if} {if $_dt.pochday_text}{$_dt.pochday_text},{/if} {if $_dt.pochrik_text}{$_dt.pochrik_text},{/if}{/capture}
-                {capture name=npt assign="kin_text"}{if $_dt.kintyzh_text}{$_dt.kintyzh_text},{/if} {if $_dt.kinmis_text}{$_dt.kinmis_text},{/if} {if $_dt.kinday_text}{$_dt.kinday_text},{/if} {if $_dt.kinrik_text}{$_dt.kinrik_text},{/if}{/capture}
-                <nobr>
-                  {$poch_text|regex_replace:"/, +$/":""}
-                  {if $poch_text neq $kin_text}
-                  -- {$kin_text|regex_replace:"/, +$/":""}
-                  {/if}
-                </nobr><br/>
-                {/foreach}
-
-            </span>
-     <div>
-     {if $ev.adresa}<a href="{$ev.adresa}">{/if}
-     {if $ev.kartynka}<img src="{$ev.kartynka}" align="left" border="0px">{/if}
-     <b>{$ev.nazva}</b><br>
-     {if $ev.adresa}</a>{/if}
-     {$ev.description}
-     </div>
-            {if $ev.categories}
-            {foreach from=$ev.categories item=_cat}
-              <a href="{$_cat.URL}">{$_cat.category_title}</a>
-            {/foreach}
-            {/if}
-
-            {*
-            {if $ev.nearest_dates}
-            <div>
-            {txt lang=$text.language_name variants="eng=nearest dates::rus=ближайшие даты::ukr=найближчі дати"}:
-            {foreach from=$ev.nearest_dates item=dat}
-              {$dat|date_format:"%d.%m.%Y"}
-            {/foreach}
-            </div>
-            {/if}
-            *}
+        <span class="daty"><nobr>{$ev.startDate|date_format:"%d.%m.%Y %H:%M"}</nobr></span>
+        <div>
+        {if $ev.event.adresa}<a href="{$ev.event.adresa}">{/if}
+        {if $ev.event.kartynka}<img src="{$ev.event.kartynka}" align="left" border="0px">{/if}
+        <b>{$ev.event.nazva}</b><br>
+        {if $ev.event.adresa}</a>{/if}
+        {$ev.event.description}
+        </div>
+        {if $ev.event.categories}
+               {foreach from=$ev.event.categories item=_cat}
+                 <a href="{$_cat.URL}">{$_cat.category_title}</a>
+               {/foreach}
+        {/if}
      </div>
 {/foreach}
