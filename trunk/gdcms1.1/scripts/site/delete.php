@@ -101,7 +101,7 @@ if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
 
       //------------------ delete menu - begin ---------------------------------
          $query="SELECT id,id FROM {$table_prefix}menu_group WHERE site_id={$this_site_info['id']}";
-         $menu_groups=join(',',GetAssociatedArray(db_execute($query)));
+         $menu_groups=join(',',db_get_associated_array($query));
          //prn($menu_groups);
          
          if(strlen($menu_groups)>0)

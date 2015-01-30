@@ -498,14 +498,7 @@ class Report
   //  return $this->db_getrows($limit_query);
   //}
   function GetNumRows($result_id){ return mysql_num_rows ($result_id); }
-  function GetAssociatedArray($result_id)
-  {
-     $tor=Array();
-     $tmp=$this->GetRows($result_id);
-     if(!$tmp) return $tor;
-     foreach($tmp as $tm) $tor[$tm[0]]=$tm[1];
-     return $tor;
-  }
+
 
 // new versions
   function db_execute($query){if(debug) prn("<b><font color=\"red\">$query</font></b>"); $result_id=mysql_query(trim($query)); if(!$result_id){ prn($query.'<br>'.mysql_error());} return $result_id;}

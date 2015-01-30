@@ -26,7 +26,7 @@
 
 //------------------- check permission - begin ---------------------------------
 $this_site_info['admin_level']=get_level($site_id);
-$max_site_level=GetOneRow(Execute($db,"SELECT max(level) as maxlevel FROM {$table_prefix}site_user WHERE site_id={$site_id} "));
+$max_site_level=db_getonerow("SELECT max(level) as maxlevel FROM {$table_prefix}site_user WHERE site_id={$site_id} ");
 $max_site_level=$max_site_level['maxlevel'];
 // prn('$max_site_level='.$max_site_level,"this_site_info[admin_level]=".$this_site_info['admin_level']);
 if($this_site_info['admin_level']<$max_site_level && !is_admin())

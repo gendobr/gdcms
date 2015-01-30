@@ -686,7 +686,10 @@ function ec_item_adjust($_info,$this_site_info) {
             $cnt=count($_info['ec_item_img']);
             for($i=0; $i<$cnt;$i++){
                 $tmp=explode("\t",$_info['ec_item_img'][$i]);
-                $_info['ec_item_img'][$i]=Array('small'=>$tmp[0],'big'=>$tmp[1]);
+                $_info['ec_item_img'][$i]=Array();
+                $_info['ec_item_img'][$i]['small']=isset($tmp[0])?$tmp[0]:'';
+                $_info['ec_item_img'][$i]['big']=isset($tmp[1])?$tmp[1]:'';
+                $_info['ec_item_img'][$i]['label']=isset($tmp[2])?$tmp[2]:'';
             }
             $_info['ec_main_image'] = $_info['ec_item_img'][0];
         }

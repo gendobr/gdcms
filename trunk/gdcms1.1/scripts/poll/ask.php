@@ -82,7 +82,7 @@ if(isset($input_vars['poll']) && is_array($input_vars['poll']) ) {
                 HAVING level>0
                 ORDER BY level DESC";
         //prn($query);
-        $tmp=GetOneRow(Execute($GLOBALS['db'], $query));
+        $tmp=db_getonerow($query);
         if($tmp) {
              $client_is_valid=1/($tmp['n']*exp($tmp['level']));
         } else $client_is_valid=1;

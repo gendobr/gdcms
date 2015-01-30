@@ -1,7 +1,14 @@
-{foreach from=$event_list item=event}
+
+{foreach from=$event_list item=date}
 <div style="margin-bottom:10px;">
-  {if $event.kartynka}<img src="{$event.kartynka}" style="float:left;margin-right:20px;"/>{/if}
-  <div>{$event.date_begin|date_format:"%Y-%m-%d %H:%M"} ... {$event.date_end|date_format:"%Y-%m-%d %H:%M"} {if $event.adresa}<a href="{$event.adresa}">{$event.nazva}</a>{else}{$event.nazva}{/if}</div>
+  {if $date.event.kartynka}<img src="{$date.event.kartynka}" style="float:left;margin-right:20px;"/>{/if}
+  <div>{$date.startDate|date_format:"%Y-%m-%d %H:%M"} 
+      {if $date.event.adresa}
+         <a href="{$event.adresa}">{$date.event.nazva}</a>
+      {else}
+         {$date.event.nazva}
+      {/if}
+  </div>
   <div style="clear:left;"></div>
 </div>
 {/foreach}

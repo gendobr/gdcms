@@ -39,8 +39,9 @@ $txt = load_msg($ec_item_lang);
 
 $site_id = (int) $this_ec_item_info['site_id'];
 $this_site_info = get_site_info($site_id);
-if (!$this_site_info)
+if (!$this_site_info) {
     die($txt['Site_not_found']);
+}
 $this_site_info['title'] = get_langstring($this_site_info['title'], $ec_item_lang);
 //prn($this_site_info);
 //prn($input_vars);
@@ -169,59 +170,6 @@ class ec_item_comments {
 
 }
 
-# -------------------- draw comments block - begin - begin ---------------------
-//  $comments="
-//  <style>
-//   .comment_sender{border-bottom:1px solid gray;}
-//   .comment_date{font-size:80%;color:gray;}
-//  </style>
-//  <h3>".text('EC_item_comments')."</h3>
-//  ";
-//  foreach($list_of_comments as $cmt)
-//  {
-//      $comments.="
-//      <p>
-//       <div class=comment_sender>{$cmt['ec_item_comment_sender_name']}</div>
-//       <div class=comment_date>{$cmt['ec_item_comment_datetime']}</div>
-//       <div class=comment_body>{$cmt['ec_item_comment_body']}</div>
-//      </p>
-//      ";
-//  }
-//  $comments.="
-//  <h3>".text('New_comment')."</h3>
-//  {$messages}
-//  <form action=index.php method=post>
-//   ".hidden_form_elements('^comment')."
-//    <table>
-//      <tr>
-//         <td>".text('Comment_sender')."</td>
-//         <td><input type=text name=comment_sender style='width:100%;' value='".checkStr($comment_sender)."'></td>
-//      </tr>
-//      <tr>
-//         <td colspan=2>
-//           <textarea name=comment_body style='width:100%;height:150pt;'>".checkStr($comment_body)."</textarea>
-//         </td>
-//      </tr>
-//      <tr>
-//          <td valign=middle>
-//             ".text('Retype_the_number')."
-//          </td>
-//          <td>
-//            <nobr><!--
-//         --><img src=".site_root_URL."?action=ec/item/capcha&t".time()." style='border:1px solid gray;' id=code align=absmiddle><!--
-//         --><input type=text name=comment_code style='width:70pt;'><!--
-//         --></nobr>
-//          <br><a href=\"javascript:void(document.getElementById('code').src='".site_root_URL."?action=ec/item/capcha&t".time()."&t='+Math.random())\">reload</a>
-//          </td>
-//      </tr>
-//      <tr>
-//          <td></td>
-//          <td align=right><input type=submit value='".text('Send')."' style='width:70pt;'></td>
-//      </tr>
-//    </table>
-//  </form>
-//  ";
-# -------------------- draw comments block - begin - end -----------------------
 # ------------------------ draw using SMARTY template - begin ------------------
 # get site menu
 $menu_groups = get_menu_items($this_site_info['id'], 0, $ec_item_lang);

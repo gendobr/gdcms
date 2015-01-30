@@ -92,7 +92,7 @@ if(get_level($site_id)==0)
                  ,$_group_operation=false);
 
   //---------------- list of languages - begin ---------------------------------
-    $LL = join('&',GetAssociatedArray(db_execute("SELECT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}page WHERE site_id={$site_id}")));
+    $LL = join('&',db_get_associated_array("SELECT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}page WHERE site_id={$site_id}"));
     $re->add_field( $field='page.lang'
                    ,$alias='lang'
                    ,$type ='enum:'.$LL

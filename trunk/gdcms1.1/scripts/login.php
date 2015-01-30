@@ -29,13 +29,13 @@ if(isset($input_vars['user_login'])){
                 //prn($_SESSION); exit();
                 //------------------- get user sites - begin ---------------------------
                 if(is_admin()) {
-                    $_SESSION['user_info']['sites']=GetAssociatedArray(db_execute(
+                    $_SESSION['user_info']['sites']=db_get_associated_array(
                             " SELECT id AS `key`, 1000 AS `value` FROM {$table_prefix}site
                                UNION
-                               SELECT dir AS `key`, 1000 AS `value` FROM {$table_prefix}site" ));
+                               SELECT dir AS `key`, 1000 AS `value` FROM {$table_prefix}site" );
                 }
                 else {
-                    $_SESSION['user_info']['sites']=GetAssociatedArray(db_execute(
+                    $_SESSION['user_info']['sites']=db_get_associated_array(
                             "SELECT site_id AS `key`, level AS `value`
                         FROM {$table_prefix}site_user
                         WHERE user_id='{$tmp_user_info['id']}'
@@ -46,7 +46,7 @@ if(isset($input_vars['user_login'])){
                         FROM {$table_prefix}site_user AS site_user
                           ,{$table_prefix}site AS site
                         WHERE site.id=site_user.site_id
-                          AND user_id='{$tmp_user_info['id']}'"));
+                          AND user_id='{$tmp_user_info['id']}'");
                 }
                 // prn($tmp_user_info);
                 //------------------- get user sites - end -----------------------------

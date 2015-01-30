@@ -1,0 +1,17 @@
+CREATE TABLE `cms_calendar_days_cache` (
+  `calendar_id` bigint(20) NOT NULL,
+  `site_id` bigint(20) DEFAULT NULL,
+  `y` int(11) NOT NULL DEFAULT '-1',
+  `m` tinyint(2) NOT NULL DEFAULT '-1',
+  `d` tinyint(2) NOT NULL DEFAULT '-1',
+  `h` tinyint(2) NOT NULL DEFAULT '-1',
+  `i` tinyint(2) NOT NULL DEFAULT '-1',
+  `h2` tinyint(2) NOT NULL DEFAULT '-1',
+  `i2` tinyint(2) NOT NULL DEFAULT '-1',
+  PRIMARY KEY (`calendar_id`,`y`,`m`,`d`),
+  KEY `sid33` (`site_id`),
+  KEY `y33` (`y`),
+  KEY `m33` (`m`),
+  KEY `d33` (`d`),
+  KEY `cid33` (`calendar_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

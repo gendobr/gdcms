@@ -47,14 +47,83 @@ $d = isset($input_vars['d']) ? (int) $input_vars['d'] : date('d'); // day of mon
 $h = isset($input_vars['h']) ? (int) $input_vars['h'] : date('H');// -1; // hours
 $i = isset($input_vars['i']) ? (int) $input_vars['i'] : date('i');// -1; // minutes
 
-//echo "event_get_by_date($site_id, $y, $m, $d, $h, $i)";
-//$event_list = event_get_by_date($site_id, $y, $m, $d, $h, $i,$verbose=isset($input_vars['verbose']));
-$timestamp_start= mktime($h, $i, 1, $m, $d, $y);
-$timestamp_end=mktime($h, $i, 59, $m, $d, $y);
-$event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose=isset($input_vars['verbose']));
 
+//$timestamp_start= mktime($h, $i, 1, $m, $d, $y);
+//$timestamp_end=mktime($h, $i, 59, $m, $d, $y);
+//$event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose=isset($input_vars['verbose']));
+$query="SELECT *
+        FROM {$GLOBALS['table_prefix']}calendar_days_cache 
+        WHERE Y={$y} AND m={$m} AND d={$d} AND site_id={$this_site_info['id']}
+        ORDER BY h ASC, i ASC;";
+//prn($query);
+$event_days=db_getrows($query);
+//prn($event_days);prn($event_days);
+// ------------------- filter time - begin -------------------------------------
+if($h>=0){
+    if($i>=0){
+        // exact time is set
+        $t=$h+0.01*$i;
+        $event_days = array_filter(
+                $event_days,
+                function($var) use($t) {
+                    $from = 0;
+                    if ($var['h'] >= 0) {
+                        $from+=$var['h'];
+                        if ($var['i'] >= 0) {
+                            $from += 0.01 * $var['i'];
+                        }
+                    }
+                    $to = 0;
+                    if ($var['h2'] >= 0) {
+                        $to+=$var['h2'];
+                        if ($var['i2'] >= 0) {
+                            $to+= 0.01 * $var['i2'];
+                        } else {
+                            $to+= 0.59;
+                        }
+                    } else {
+                        $to+=23.59;
+                    }
+                    return $from <= $t && $t <= $to;
+                }
+        );
+    }else{
+        // only hour is set (minutes don't matter)
+        $tmin=$h;
+        $tmax=$h+0.59;
+        $event_days = array_filter(
+                $event_days,
+                function($var) use($tmin, $tmax) {
+                    $from = 0;
+                    if ($var['h'] >= 0) {
+                        $from+=$var['h'];
+                        if ($var['i'] >= 0) {
+                            $from += 0.01 * $var['i'];
+                        }
+                    }
+                    $to = 0;
+                    if ($var['h2'] >= 0) {
+                        $to+=$var['h2'];
+                        if ($var['i2'] >= 0) {
+                            $to+= 0.01 * $var['i2'];
+                        } else {
+                            $to+= 0.59;
+                        }
+                    } else {
+                        $to+=23.59;
+                    }
+                    return $from <= $tmax && $tmin <= $to;
+                }
+        );        
+    }
+    
+}
+// ------------------- filter time - end ---------------------------------------
+//prn($event_days);
 
-//prn($event_list);
+// extract event ids
+$event_ids=array_map(function($in){return $in['calendar_id'];},$event_days);
+// prn($event_ids);
 // restrict by category
 if(count($event_ids)>0 &&  isset($input_vars['category_id'])){
     // get categories for events
@@ -87,20 +156,32 @@ if(count($event_ids)>0 &&  isset($input_vars['category_id'])){
     }
     $event_ids=array_values($event_ids);
 }
-
+// prn($event_ids);
 
 if(count($event_ids)>0){
     $event_list = db_getrows("select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$event_ids).")");
 }else{
     $event_list=Array();
 }
-$event_list = get_view($event_list,$input_vars['lang']);
+$events = get_view($event_list,$input_vars['lang']);
+$map=Array();
+foreach($events as $ev){
+    $map[$ev['id']]=$ev;
+}
+unset($events);
+// prn($map);
 
-//prn('event_list=', $event_list);
+$cnt=count($event_days);
+for($i=0; $i<$cnt; $i++){
+    $event_days[$i]['event']=$map[$event_days[$i]['calendar_id']];
+    $event_days[$i]['startDate']="{$event_days[$i]['y']}-{$event_days[$i]['m']}-{$event_days[$i]['d']} "
+        .($event_days[$i]['h']>=0?$event_days[$i]['h']:0).":".($event_days[$i]['i']>=0?$event_days[$i]['i']:0);
+}
+//prn('event_days=', $event_days);
 # check if template name is posted
 $subtemplate=false;
 if (isset($input_vars['template'])) {
-    $subtemplate=site_get_template($this_site_info,$_REQUEST['template']);
+    $subtemplate=site_get_template($this_site_info,$input_vars['template']);
 }
 if(!$subtemplate){
     $subtemplate=site_get_template($this_site_info,'template_calendar_view_block');
@@ -111,7 +192,7 @@ if(!$subtemplate){
 $vyvid = process_template($subtemplate
                 , Array(
                     'site'=>$this_site_info,
-                    'event_list'=>$event_list
+                    'event_list'=>$event_days
                   ));
 //echo $vyvid;
 

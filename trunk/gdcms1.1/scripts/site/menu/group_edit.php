@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Editing menu group properties
   Arguments are
@@ -74,11 +74,11 @@
     {
        //prn('Language changed !');
        // get all languages
-          $lang_list     =GetAssociatedArray(db_execute("SELECT id,id FROM {$table_prefix}languages WHERE is_visible=1"));
+          $lang_list     =db_get_associated_array("SELECT id,id FROM {$table_prefix}languages WHERE is_visible=1");
           //prn($lang_list);
 
        // get existing group languages
-          $existing_langs=GetAssociatedArray(db_execute("SELECT lang,lang FROM {$table_prefix}menu_group WHERE id={$menu_group_info['id']}"));
+          $existing_langs=db_get_associated_array("SELECT lang,lang FROM {$table_prefix}menu_group WHERE id={$menu_group_info['id']}");
           //prn($existing_langs);
 
        // get allowed langs

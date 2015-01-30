@@ -105,4 +105,3 @@ if (isset($input_vars['element'])) {
 } else {
     echo $vyvid;
 }
-?>
