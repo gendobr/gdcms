@@ -22,6 +22,11 @@
 
 
 
+
+
+
+
+
 {*  list attached events per child *}
 {*
 {literal}
@@ -104,9 +109,28 @@
 {/if}
 
 *}
-{*
+
+
+
+{*  list attached events 
+
 {$events->setRowsPerPage(1)}
 {$events->setCategoryId(13)}
+{$events->setOrdering("year, month, day, hour, minute, category")}
+
+*}
+{$events->setRowsPerPage(100)}
+{$events->setOrdering("year, month, day, hour, minute, category")}
+
+{foreach from=$events->dateselector->parents item=dts}
+/ <a href="{$dts.URL}">{$dts.innerHTML}</a>
+{/foreach}
+{if $events->dateselector->current.innerHTML}/ {$events->dateselector->current.innerHTML}{/if}
+<div>
+{foreach from=$events->dateselector->children item=dts}
+<a href="{$dts.URL}">{$dts.innerHTML}</a>
+{/foreach}
+</div>
 
 {if $events->items_found gt 0}
 {literal}
@@ -127,66 +151,66 @@
 
 
 
-{foreach from=$events->dateselector->parents item=dts}
-/ <a href="{$dts.URL}">{$dts.innerHTML}</a>
-{/foreach}
-{if $events->dateselector->current.innerHTML}/ {$events->dateselector->current.innerHTML}{/if}
-<div>
-{foreach from=$events->dateselector->children item=dts}
-<a href="{$dts.URL}">{$dts.innerHTML}</a>
-{/foreach}
-</div>
 
 
-	<div align=left><b>
+
+<div align=left><b>
 	{txt lang=$text.language_name variants="eng=Events::rus=События::ukr=Події"}
 	{$events->start}-{$events->finish}
 	(
 	 {txt lang=$text.language_name variants="eng=events found::rus=всего найдено::ukr=всього знайдено"} : {$events->items_found}
 	)
-	</b></div>
+</b></div>
 
+
+
+{capture name=npt assign="currentYear"}{/capture}
+{capture name=npt assign="currentMonth"}{/capture}
+{capture name=npt assign="currentDay"}{/capture}
+{capture name=npt assign="prevCategorySet"}{/capture}
 {foreach from=$events->list item=_item}
-	    <div class="event">
-            <span class="daty">
-                {foreach from=$_item.dates item=_dt}
-                {capture name=npt assign="poch_text"}{if $_dt.pochtyzh_text}{$_dt.pochtyzh_text},{/if} {if $_dt.pochmis_text}{$_dt.pochmis_text},{/if} {if $_dt.pochday_text}{$_dt.pochday_text},{/if} {if $_dt.pochrik_text}{$_dt.pochrik_text},{/if}{/capture}
-                {capture name=npt assign="kin_text"}{if $_dt.kintyzh_text}{$_dt.kintyzh_text},{/if} {if $_dt.kinmis_text}{$_dt.kinmis_text},{/if} {if $_dt.kinday_text}{$_dt.kinday_text},{/if} {if $_dt.kinrik_text}{$_dt.kinrik_text},{/if}{/capture}
-                <nobr>
-                  {$poch_text|regex_replace:"/, +$/":""}
-                  {if $poch_text neq $kin_text}
-                  -- {$kin_text|regex_replace:"/, +$/":""}
-                  {/if}
-                </nobr><br/>
-                {/foreach}
-            </span>
-	    <div style='margin-bottom:0;'>
-              {if $_item.kartynka}<img src="$_item.kartynka" align="right">{/if}
-	      {if $_item.adresa}
-	        <a href="{$_item.adresa}">{$_item.nazva}</a>
+
+  {capture name=npt assign="currentCategorySet"}{if $_item.event.categories}{foreach from=$_item.event.categories item=_cat}<a href="{$_cat.URL}">{$_cat.category_title}</a>{/foreach}{/if}{/capture}
+
+
+
+  {if $currentYear neq $_item.y}
+     <h2>{$_item.y}{txt lang=$text.language_name variants="eng=-th year::rus=-й год::ukr=-й рік"}</h2>
+     {capture name=npt assign="currentYear"}{$_item.y}{/capture}
+  {/if}
+  {if $currentMonth neq $_item.m}
+     <h3>{$_item.monthName}</h3>
+     {capture name=npt assign="currentMonth"}{$_item.m}{/capture}
+  {/if}
+  {if $currentDay neq $_item.d}
+     <h4>{$_item.dayName}</h4>
+     {capture name=npt assign="currentDay"}{$_item.d}{/capture}
+  {/if}
+
+  
+  {if $currentCategorySet neq $prevCategorySet}
+      <h5>{$currentCategorySet}</h5>
+      {capture name=npt assign="prevCategorySet"}{$currentCategorySet}{/capture}
+  {/if}
+
+  
+	<div class="event">
+    <span class="daty">{$_item.startDate|date_format:"%Y-%m-%d %H:%M:%S"}</span>
+	  <div style='margin-bottom:0;'>
+        {if $_item.event.kartynka}<img src="$_item.event.kartynka" align="right">{/if}
+	      {if $_item.event.adresa}
+	        <a href="{$_item.adresa}">{$_item.event.nazva}</a>
 	      {else}
-	        <b>{$_item.nazva}</b>
+	        <b>{$_item.event.nazva}</b>
 	      {/if}
-	    </div>
-            {if $_item.description}<div>{$_item.description}</div>{/if}
-            {if $_item.categories}
-            {foreach from=$_item.categories item=_cat}
-              <a href="{$_cat.URL}">{$_cat.category_title}</a>
-            {/foreach}
-            {/if}
+	  </div>
+    {if $_item.event.description}<div>{$_item.event.description}</div>{/if}
 
-            {if $_item.nearest_dates}
-            <div>
-            {txt lang=$text.language_name variants="eng=nearest dates::rus=ближайшие даты::ukr=найближчі дати"}:
-            {foreach from=$_item.nearest_dates item=dat}
-              {$dat|date_format:"%d.%m.%Y"}
-            {/foreach}
-            </div>
-            {/if}
-	    </div>
-	  <div style="clear:left;"></div>
-
+    {$currentCategorySet}
+	</div>
+	<div style="clear:left;"></div>
 {/foreach}
+
 {if $events->pages[1]}
     <br />
     <div align=left>
@@ -202,10 +226,10 @@
 {/if}
 
 {/if}
-*}
-
+{* *}
 
 {* list of attached news *}
+
 {*
 {if $news->items_found gt 0}
 
@@ -254,4 +278,4 @@
 	</div>
         {/if}
 {/if}
- *}
+*}

@@ -404,6 +404,24 @@ function calendar_misyaci() {
         11 => text('month_November'),
         12 => text('month_December'));
 }
+function calendar_month_and_day($m, $d) {
+    switch($m){
+        case  1: return str_replace('{d}',$d,text('monthday_January')); break;
+        case  2: return str_replace('{d}',$d,text('monthday_February')); break;
+        case  3: return str_replace('{d}',$d,text('monthday_March')); break;
+        case  4: return str_replace('{d}',$d,text('monthday_April')); break;
+        case  5: return str_replace('{d}',$d,text('monthday_May')); break;
+        case  6: return str_replace('{d}',$d,text('monthday_June')); break;
+        case  7: return str_replace('{d}',$d,text('monthday_July')); break;
+        case  8: return str_replace('{d}',$d,text('monthday_August')); break;
+        case  9: return str_replace('{d}',$d,text('monthday_September')); break;
+        case 10: return str_replace('{d}',$d,text('monthday_October')); break;
+        case 11: return str_replace('{d}',$d,text('monthday_November')); break;
+        case 12: return str_replace('{d}',$d,text('monthday_December')); break;
+    }
+    return "$m/$d";
+}
+
 
 function calendar_dnityzhnya() {
     return Array(-1 => '--',
@@ -598,20 +616,23 @@ function get_view($event_list, $lang) {
         $categories[$tmp[$i]['category_id']]['category_title'] = get_langstring($tmp[$i]['category_title'], $lang);
         $categories[$tmp[$i]['category_id']]['category_code'] = encode_dir_name($tmp[$i]['category_code']);
         $categories[$tmp[$i]['category_id']]['URL'] = $category_url_prefix . $tmp[$i]['category_id'];
+        $categories[$tmp[$i]['category_id']]['start'] = $tmp[$i]['start'];
     }
     //prn($categories);
 
     for ($i = 0; $i < $cnt; $i++) {
-
-
         //$event_list[$i]['nearest_dates'] = get_nearest_dates($event_list[$i]);
-
         $event_list[$i]['categories'] = Array();
+        $minstart=false;
         if (isset($event_category[$event_list[$i]['id']])) {
             foreach ($event_category[$event_list[$i]['id']] as $cat_id) {
                 $event_list[$i]['categories'][] = $categories[$cat_id];
+                if($minstart===false || $minstart<$categories[$cat_id]['start']){
+                    $minstart=$categories[$cat_id]['start'];
+                }
             }
         }
+        $event_list[$i]['category_order']=(int)$minstart;
     }
     //prn($event_list);
     return $event_list;
@@ -711,6 +732,7 @@ class CategoryEvents2{
     protected $lang, $this_site_info, $category_info, $start;
     protected $_list, $_pages, $items_found;
     protected $rows_per_page = 10;
+    private $subordering;
     
     // 
     function __construct($_lang, $_this_site_info, $_category_info, $start, $input_vars) {
@@ -718,7 +740,7 @@ class CategoryEvents2{
         $this->this_site_info = $_this_site_info;
         $this->category_info = $_category_info;
         $this->start = $start;
-        $this->ordering = 'y ASC, m ASC, d ASC, h ASC, i ASC, nazva ASC';
+        $this->ordering = 'y ASC, m ASC, d ASC, h ASC, i ASC';
 
         if (!function_exists("menu_category")) {
             run('category/functions');
@@ -749,6 +771,7 @@ class CategoryEvents2{
             }
         }
         //$this->init();
+        $this->createDateSelector();
     }
 
     
@@ -888,6 +911,54 @@ class CategoryEvents2{
         return '';
     }
     
+    public function setOrdering($val) {
+        
+        $this->subordering=false;
+        $tmp=explode(',',$val);
+        //prn($val,$tmp);
+        $ordering=Array();
+        for($i=0, $cnt=count($tmp); $i<$cnt; $i++){
+            $tmp[$i]=preg_split('/ +/',trim($tmp[$i]));
+            $tmp[$i][1]=(isset($tmp[$i][1]) && strtoupper($tmp[$i][1])=='DESC')?'DESC':'ASC';
+            $tmp[$i][0]=trim(strtolower($tmp[$i][0]));
+            switch ($tmp[$i][0]){
+                case 'year':
+                case 'y':
+                    $ordering[]='y '.$tmp[$i][1];
+                    break;
+                case 'month':
+                case 'm':
+                    $ordering[]='m '.$tmp[$i][1];
+                    break;
+                case 'day':
+                case 'd':
+                    $ordering[]='d '.$tmp[$i][1];
+                    break;
+                case 'hour':
+                case 'hours':
+                case 'h':
+                    $ordering[]='h '.$tmp[$i][1];
+                    break;
+                case 'minute':
+                case 'minutes':
+                case 'i':
+                    $ordering[]='i '.$tmp[$i][1];
+                    break;
+                //case 'title':
+                //case 'name':
+                //    $ordering[]='nazva '.$tmp[$i][1];
+                //    break;
+                case 'category':
+                    $ordering[]='category_start '.$tmp[$i][1];
+                    break;
+            }
+        }
+        //prn($ordering);
+        $this->ordering=join(',', $ordering);
+        unset($this->_list);
+        return '';
+    }
+
     function __get($attr) {
 
         switch ($attr) {
@@ -915,12 +986,12 @@ class CategoryEvents2{
                 }
                 return $this->start + 1;
                 break;
-            case 'dateselector':
-                if (!isset($this->_list)) {
-                    $this->init();
-                }
-                return $this->dateselector;
-                break;
+            //case 'dateselector':
+                //if (!isset($this->dateselector)) {
+                //    $this->init();
+                //}
+            //    return $this->dateselector;
+            //    break;
             case 'finish':
                 if (!isset($this->_list)) {
                     $this->init();
@@ -941,13 +1012,12 @@ class CategoryEvents2{
         //$category_id = $this->category_info['category_id'];
         // get all the visible children
         $query = "SELECT ch.category_id, BIT_AND(pa.is_visible) as visible
-            FROM {$GLOBALS['table_prefix']}category ch, {$GLOBALS['table_prefix']}category pa
-            WHERE pa.start<=ch.start AND ch.finish<=pa.finish
-              AND {$this->category_info['start']}<=ch.start AND ch.finish<={$this->category_info['finish']}
-              AND pa.site_id=$site_id and ch.site_id=$site_id
-            GROUP BY ch.category_id
-            HAVING visible
-        ";
+                  FROM {$GLOBALS['table_prefix']}category ch, {$GLOBALS['table_prefix']}category pa
+                  WHERE pa.start<=ch.start AND ch.finish<=pa.finish
+                    AND {$this->category_info['start']}<=ch.start AND ch.finish<={$this->category_info['finish']}
+                    AND pa.site_id=$site_id and ch.site_id=$site_id
+                  GROUP BY ch.category_id
+                  HAVING visible";
         //prn($query); exit();
         $children = db_getrows($query);
         $cnt = count($children);
@@ -959,11 +1029,20 @@ class CategoryEvents2{
         // ------------ restrict dates - begin ---------------------------------
         if (isset($this->day)) {
 
-            $query="SELECT SQL_CALC_FOUND_ROWS *
-                    FROM {$GLOBALS['table_prefix']}calendar_days_cache 
-                    WHERE Y={$this->year} AND m={$this->month} AND d={$this->day} AND site_id={$site_id}
-                    ORDER BY {$this->ordering}
-                    LIMIT {$this->start},{$this->rows_per_page};";
+            //$query="SELECT SQL_CALC_FOUND_ROWS *
+            //        FROM {$GLOBALS['table_prefix']}calendar_days_cache 
+            //        WHERE Y={$this->year} AND m={$this->month} AND d={$this->day} AND site_id={$site_id}
+            //        ORDER BY {$this->ordering}
+            //        LIMIT {$this->start},{$this->rows_per_page};";
+            $query="SELECT SQL_CALC_FOUND_ROWS dch.*, MIN(c.start) AS category_start
+                    FROM {$GLOBALS['table_prefix']}calendar_days_cache AS dch
+                         INNER JOIN {$GLOBALS['table_prefix']}calendar_category cc ON dch.calendar_id=cc.event_id
+                         INNER JOIN {$GLOBALS['table_prefix']}category c ON ( cc.category_id=c.category_id AND c.site_id={$site_id} )
+                    WHERE Y={$this->year} AND m={$this->month} AND d={$this->day} AND dch.site_id={$site_id}
+                    GROUP BY dch.calendar_id,dch.site_id,dch.Y,dch.m,dch.d 
+                    ".( $this->ordering ? "ORDER BY {$this->ordering}":'')
+                   ." LIMIT {$this->start},{$this->rows_per_page} ";
+            //prn($query);
             $event_days= db_getrows($query);
             $event_ids = array_unique(array_map(function($in){return $in['calendar_id'];},$event_days));
 
@@ -973,11 +1052,21 @@ class CategoryEvents2{
 
         } elseif (isset($this->month)) {
 
-            $query="SELECT SQL_CALC_FOUND_ROWS *
-                    FROM {$GLOBALS['table_prefix']}calendar_days_cache 
-                    WHERE Y={$this->year} AND m={$this->month} AND site_id={$site_id}
-                    ORDER BY {$this->ordering}
-                    LIMIT {$this->start},{$this->rows_per_page};";
+            //$query="SELECT SQL_CALC_FOUND_ROWS *
+            //        FROM {$GLOBALS['table_prefix']}calendar_days_cache 
+            //        WHERE Y={$this->year} AND m={$this->month} AND site_id={$site_id}
+            //        ORDER BY {$this->ordering}
+            //        LIMIT {$this->start},{$this->rows_per_page};";
+
+            $query="SELECT SQL_CALC_FOUND_ROWS dch.*, MIN(c.start) AS category_start
+                    FROM {$GLOBALS['table_prefix']}calendar_days_cache AS dch
+                         INNER JOIN {$GLOBALS['table_prefix']}calendar_category cc ON dch.calendar_id=cc.event_id
+                         INNER JOIN {$GLOBALS['table_prefix']}category c ON ( cc.category_id=c.category_id AND c.site_id={$site_id} )
+                    WHERE Y={$this->year} AND m={$this->month} AND dch.site_id={$site_id}
+                    GROUP BY dch.calendar_id,dch.site_id,dch.Y,dch.m,dch.d 
+                    ".( $this->ordering ? "ORDER BY {$this->ordering}":'')
+                   ." LIMIT {$this->start},{$this->rows_per_page} ";
+            // prn($query);
             $event_days= db_getrows($query);
             $event_ids = array_unique(array_map(function($in){return $in['calendar_id'];},$event_days));
 
@@ -987,11 +1076,21 @@ class CategoryEvents2{
 
         } elseif (isset($this->year)) {
             
-            $query="SELECT SQL_CALC_FOUND_ROWS *
-                    FROM {$GLOBALS['table_prefix']}calendar_days_cache 
-                    WHERE Y={$this->year} AND site_id={$site_id}
-                    ORDER BY {$this->ordering}
-                    LIMIT {$this->start},{$this->rows_per_page};";
+            //$query="SELECT SQL_CALC_FOUND_ROWS *
+            //        FROM {$GLOBALS['table_prefix']}calendar_days_cache 
+            //        WHERE Y={$this->year} AND site_id={$site_id}
+            //        ORDER BY {$this->ordering}
+            //        LIMIT {$this->start},{$this->rows_per_page};";
+            $query="SELECT SQL_CALC_FOUND_ROWS dch.*, MIN(c.start) AS category_start
+                    FROM {$GLOBALS['table_prefix']}calendar_days_cache AS dch
+                         INNER JOIN {$GLOBALS['table_prefix']}calendar_category cc ON dch.calendar_id=cc.event_id
+                         INNER JOIN {$GLOBALS['table_prefix']}category c ON ( cc.category_id=c.category_id AND c.site_id={$site_id} )
+                    WHERE Y={$this->year} AND dch.site_id={$site_id}
+                    GROUP BY dch.calendar_id,dch.site_id,dch.Y,dch.m,dch.d 
+                    ".( $this->ordering ? "ORDER BY {$this->ordering}":'')
+                   ." LIMIT {$this->start},{$this->rows_per_page} ";
+            // prn($query);
+
             $event_days = db_getrows($query);
             $event_ids  = array_unique(array_map(function($in){return $in['calendar_id'];},$event_days));
 
@@ -1028,6 +1127,8 @@ class CategoryEvents2{
         foreach($events as $ev){
             $map[$ev['id']]=$ev;
         }
+        
+        $month_names = calendar_misyaci();
         unset($events,$event_list);
         $cnt=count($event_days);
         for($i=0; $i<$cnt; $i++){
@@ -1035,13 +1136,17 @@ class CategoryEvents2{
                 $event_days[$i]['event']=$map[$event_days[$i]['calendar_id']];
                 $event_days[$i]['startDate']="{$event_days[$i]['y']}-{$event_days[$i]['m']}-{$event_days[$i]['d']} "
                     .($event_days[$i]['h']>=0?$event_days[$i]['h']:0).":".($event_days[$i]['i']>=0?$event_days[$i]['i']:0);                
+                $event_days[$i]['monthName']=$month_names[$event_days[$i]['m']];
+                $event_days[$i]['dayName']=calendar_month_and_day($event_days[$i]['m'], $event_days[$i]['d']);
             }else{
                 unset($event_days[$i]);
             }
         }
-        $event_days=array_values($event_days);
-
-        $this->_list = & $event_days;
+        if($event_days){
+           $event_days=array_values($event_days);
+        }
+        // prn($event_days);
+        $this->_list = $event_days;
 
         // ------------- date selector links - begin ---------------------------
         $this->createDateSelector();
