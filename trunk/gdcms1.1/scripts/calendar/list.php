@@ -252,12 +252,17 @@ $num = $num['n'];
 
 $pages = '';
 $page_url_prefix = "index.php?" . preg_query_string("/^start|^event/");
-for ($i = 0; $i < $num; $i = $i + 10) {
-    $pages.=" &nbsp; <a href={$page_url_prefix}&start={$i}>" . (1 + $i / 10) . "</a> &nbsp; ";
+for ($i = 0; $i < $num; $i = $i + 100) {
+    if($i==$start){
+        $pages.=" &nbsp; <a class=currentPage href={$page_url_prefix}&start={$i}>" . (1 + $i / 100) . "</a> &nbsp; ";
+    }else{
+        $pages.=" &nbsp; <a href={$page_url_prefix}&start={$i}>" . (1 + $i / 100) . "</a> &nbsp; ";
+    }
+    
 }
 
 
-$rows = db_getrows("SELECT * FROM {$table_prefix}calendar WHERE site_id='$site_id' $where ORDER BY `id` ASC LIMIT $start, 10");
+$rows = db_getrows("SELECT * FROM {$table_prefix}calendar WHERE site_id='$site_id' $where ORDER BY `id` ASC LIMIT $start, 100");
 
 
 $input_vars['page_content'] = "
@@ -281,6 +286,12 @@ $input_vars['page_content'] = "
 }
 .num{
    width:50px;
+}
+.currentPage{
+  display:inline-block;
+  padding:1px 6px;
+  color:white;
+  background-color:#284351;
 }
  -->
 </style>
@@ -313,6 +324,10 @@ $input_vars['page_content'] = "
 </span>
 <!-- search form - finish -->
 " . preg_hidden_form_elements("/^event|^start|^filter/") . "
+    
+
+<br/><br/>
+<p>".text('Pages').": {$pages}</p>
 <table>
 <tr>
    <th></th>

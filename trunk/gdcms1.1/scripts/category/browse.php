@@ -366,18 +366,23 @@ if(!is_file($_template)){
 
 //echo $_template;
 
-$category_events = new CategoryEvents($lang, $this_site_info, $this_category_info, isset($input_vars['event_start']) ? ( (int) $input_vars['event_start']) : 0);
+$category_events = new CategoryEvents2(
+        $lang,
+        $this_site_info,
+        $this_category_info,
+        isset($input_vars['event_start']) ? ( (int) $input_vars['event_start']) : 0,
+        $input_vars);
 // $category_events->init();
 // prn($category_events->list);
 $vyvid = process_template($_template
-        , Array(
-    'category' => $this_category_info
+    , Array(
+      'category' => $this_category_info
     , 'news' => new CategoryNews($lang, $this_site_info, $this_category_info, isset($input_vars['news_start']) ? ( (int) $input_vars['news_start']) : 0)
     , 'events' => $category_events
     , 'text' => $txt
     , 'site' => $this_site_info
     , 'lang' => $lang
-        ), Array('category_news')
+    ), Array('category_news')
 );
 $this_site_info['title'] = get_langstring($this_site_info['title'], $input_vars['lang']);
 $file_content = process_template($this_site_info['template']
