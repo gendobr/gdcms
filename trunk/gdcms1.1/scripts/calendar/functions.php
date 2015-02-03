@@ -709,7 +709,7 @@ function getMonthTable($year, $month, $this_site_info) {
     foreach ($calendar as $row) {
         $tr = Array();
         foreach ($row as $day) {
-            if (isset($existing_days[$day])) {
+            if (isset($existing_days[(int)$day])) {
                 $view_day_events_url = str_replace(Array('{year}', '{month}', '{day}'), Array($year, $month, $day), $month_table['view_day_events_url_template']);
                 $tr[] = Array('innerHTML' => $day, 'href' => $view_day_events_url, 'year' => $year, 'month' => $month, 'day' => $day);
             } else {
@@ -746,7 +746,7 @@ class CategoryEvents2{
             run('category/functions');
         }
 
-        // ??????
+        //
         $this->startname = 'event_start';
 
 
