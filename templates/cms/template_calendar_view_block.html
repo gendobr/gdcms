@@ -4,7 +4,7 @@
   {if $date.event.kartynka}<img src="{$date.event.kartynka}" style="float:left;margin-right:20px;"/>{/if}
   <div>{$date.startDate|date_format:"%Y-%m-%d %H:%M"} 
       {if $date.event.adresa}
-         <a href="{$event.adresa}">{$date.event.nazva}</a>
+         <a href="{$date.event.adresa}">{$date.event.nazva}</a>
       {else}
          {$date.event.nazva}
       {/if}
