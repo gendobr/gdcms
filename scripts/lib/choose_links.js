@@ -62,7 +62,8 @@ function draw_file_links(json){
     }
 
     // draw upload form
-    var site_id=$('input[name="site_id"]').attr('value');
+    //var site_id=$('input[name="site_id"]').attr('value');
+    var site_id=$('input[name="site_id"]').val();
     // console.log('site_id='+site_id);
     var dirname='';
     for(var i=0;i<json.parents.length;i++){

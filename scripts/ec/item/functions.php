@@ -685,6 +685,10 @@ function ec_item_adjust($_info,$this_site_info) {
         if (count($_info['ec_item_img']) > 0) {
             $cnt=count($_info['ec_item_img']);
             for($i=0; $i<$cnt;$i++){
+                if(strlen($_info['ec_item_img'][$i])==0){
+                    unset($_info['ec_item_img'][$i]);
+                    continue;
+                }
                 $tmp=explode("\t",$_info['ec_item_img'][$i]);
                 $_info['ec_item_img'][$i]=Array();
                 $_info['ec_item_img'][$i]['small']=isset($tmp[0])?$tmp[0]:'';
@@ -692,6 +696,7 @@ function ec_item_adjust($_info,$this_site_info) {
                 $_info['ec_item_img'][$i]['label']=isset($tmp[2])?$tmp[2]:'';
             }
             $_info['ec_main_image'] = $_info['ec_item_img'][0];
+            $_info['ec_item_img']=array_values($_info['ec_item_img']);
         }
     } else {
         $_info['ec_item_img'] = Array();
