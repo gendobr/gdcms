@@ -1,14 +1,22 @@
 <?php
 
+global $main_template_name;
+$main_template_name = '';
+
+
+
 run('lib/file_functions');
 run('site/image/url_replacer');
 run('ec/item/functions');
 run('site/menu');
 
-global $main_template_name;
-$main_template_name = '';
+//header('dbg-1: xxx');
 
-
+//
+////exit('001');
+//
+//
+//
 # ------------------- check ec_item_id - begin ------------------------------------
 $ec_item_id = 0;
 $ec_item_lang = get_language('ec_item_lang');
@@ -25,6 +33,8 @@ if ($ec_item_id == 0) {
     return;
 }
 
+//header('dbg-1: xx1');
+
 
 # ------------------- get site info - begin ---------------------------------------
 $site_id = $this_ec_item_info['site_id'];
@@ -38,11 +48,18 @@ if ($user_cense_level <= 0) {
     return;
 }
 
-prn($_FILES['ec_item_img']);
+// header('dbg-1: xx2');
 
-// ----------------- do upload - begin -----------------------------------------
+// echo '{"status":"error","message":"Ec item not found"}';
+
+
+// header('dbg-1: xx3');
+
+// prn($_FILES['ec_item_img']);
+//
+//// ----------------- do upload - begin -----------------------------------------
 $photos=$_FILES['ec_item_img'];
-if ($photos['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/", $photos['name'], $regs)) {
+if ($photos['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/i", $photos['name'], $regs)) {
     
     
     $data = date('Y-m-d-h-i-s');
@@ -64,7 +81,7 @@ if ($photos['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/", $photos['name'], 
     $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . encode_file_name($photos['name']);
     $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
     ec_img_resize($photos['tmp_name'], $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
-    $this_ec_item_info["ec_item_img"][] = Array("gallery/$relative_dir/$small_image_file_name","gallery/$relative_dir/$big_image_file_name");
+    $this_ec_item_info["ec_item_img"][] = Array("gallery/$relative_dir/$small_image_file_name","gallery/$relative_dir/$big_image_file_name",'');
     
     // update item info
     $ec_item_img=array_values($this_ec_item_info['ec_item_img']);
@@ -81,7 +98,7 @@ if ($photos['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/", $photos['name'], 
     echo '{"status":"success","message":"OK"}';
     return;
 }
-// ----------------- do upload - end -------------------------------------------
+//// ----------------- do upload - end -------------------------------------------
 
 echo '{"status":"error","message":"image file not posted"}';
 return;
