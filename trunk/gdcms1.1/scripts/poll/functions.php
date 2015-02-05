@@ -87,6 +87,10 @@ function enhanced_security_scripts($md5_headers){
         <div id=\"oPersistDiv\" class=\"userData\"></div>
         <script src=\"scripts/poll/fetch_whorls.js\" type=\"text/javascript\"></script>
         <script type=\"text/javascript\">
+        
+        if((typeof retries) == \"undefined\"){
+            var retries= 5;
+        }
         $(document).ready(function(){
         setTimeout(
             function(){
