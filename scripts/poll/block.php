@@ -107,6 +107,10 @@ if(isset($input_vars['element'])) {
     <div id=toinsert>$vyvid</div>
     <script type=\"text/javascript\">
     <!--
+        if((typeof retries) == \"undefined\"){
+            var retries= 5;
+        }
+
         $(document).ready(function(){
         setTimeout(
             function(){

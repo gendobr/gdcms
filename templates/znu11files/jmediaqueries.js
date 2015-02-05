@@ -150,7 +150,7 @@ $(document).ready(function(){
 	}
 
 	
-	var links=$('link[rel="stylesheet"]');
+	var links=$('link.mediaquery[rel="stylesheet"]');
 	links.each(function(i,e){
 		var el=$(e);
 		var obj={'href':el.attr('href'),'media':el.attr('media'), 'src':'','style':''};
