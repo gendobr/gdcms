@@ -1029,16 +1029,15 @@ class CategoryEvents2{
         // ------------ restrict dates - begin ---------------------------------
         if (isset($this->day)) {
 
-            //$query="SELECT SQL_CALC_FOUND_ROWS *
-            //        FROM {$GLOBALS['table_prefix']}calendar_days_cache 
-            //        WHERE Y={$this->year} AND m={$this->month} AND d={$this->day} AND site_id={$site_id}
-            //        ORDER BY {$this->ordering}
-            //        LIMIT {$this->start},{$this->rows_per_page};";
+            
+            
             $query="SELECT SQL_CALC_FOUND_ROWS dch.*, MIN(c.start) AS category_start
                     FROM {$GLOBALS['table_prefix']}calendar_days_cache AS dch
                          INNER JOIN {$GLOBALS['table_prefix']}calendar_category cc ON dch.calendar_id=cc.event_id
                          INNER JOIN {$GLOBALS['table_prefix']}category c ON ( cc.category_id=c.category_id AND c.site_id={$site_id} )
                     WHERE Y={$this->year} AND m={$this->month} AND d={$this->day} AND dch.site_id={$site_id}
+                        AND dch.calendar_id IN ( SELECT event_id FROM {$GLOBALS['table_prefix']}calendar_category WHERE category_id in(" . join(',', $children) . ") )
+                        AND dch.calendar_id IN ( SELECT calendar.id FROM {$GLOBALS['table_prefix']}calendar calendar WHERE calendar.site_id=$site_id AND calendar.vis )
                     GROUP BY dch.calendar_id,dch.site_id,dch.Y,dch.m,dch.d 
                     ".( $this->ordering ? "ORDER BY {$this->ordering}":'')
                    ." LIMIT {$this->start},{$this->rows_per_page} ";
@@ -1052,17 +1051,13 @@ class CategoryEvents2{
 
         } elseif (isset($this->month)) {
 
-            //$query="SELECT SQL_CALC_FOUND_ROWS *
-            //        FROM {$GLOBALS['table_prefix']}calendar_days_cache 
-            //        WHERE Y={$this->year} AND m={$this->month} AND site_id={$site_id}
-            //        ORDER BY {$this->ordering}
-            //        LIMIT {$this->start},{$this->rows_per_page};";
-
             $query="SELECT SQL_CALC_FOUND_ROWS dch.*, MIN(c.start) AS category_start
                     FROM {$GLOBALS['table_prefix']}calendar_days_cache AS dch
                          INNER JOIN {$GLOBALS['table_prefix']}calendar_category cc ON dch.calendar_id=cc.event_id
                          INNER JOIN {$GLOBALS['table_prefix']}category c ON ( cc.category_id=c.category_id AND c.site_id={$site_id} )
                     WHERE Y={$this->year} AND m={$this->month} AND dch.site_id={$site_id}
+                        AND dch.calendar_id IN (SELECT event_id FROM {$GLOBALS['table_prefix']}calendar_category WHERE category_id in(" . join(',', $children) . ") )
+                        AND dch.calendar_id IN ( SELECT calendar.id FROM {$GLOBALS['table_prefix']}calendar calendar WHERE calendar.site_id=$site_id AND calendar.vis )
                     GROUP BY dch.calendar_id,dch.site_id,dch.Y,dch.m,dch.d 
                     ".( $this->ordering ? "ORDER BY {$this->ordering}":'')
                    ." LIMIT {$this->start},{$this->rows_per_page} ";
@@ -1076,16 +1071,13 @@ class CategoryEvents2{
 
         } elseif (isset($this->year)) {
             
-            //$query="SELECT SQL_CALC_FOUND_ROWS *
-            //        FROM {$GLOBALS['table_prefix']}calendar_days_cache 
-            //        WHERE Y={$this->year} AND site_id={$site_id}
-            //        ORDER BY {$this->ordering}
-            //        LIMIT {$this->start},{$this->rows_per_page};";
             $query="SELECT SQL_CALC_FOUND_ROWS dch.*, MIN(c.start) AS category_start
                     FROM {$GLOBALS['table_prefix']}calendar_days_cache AS dch
                          INNER JOIN {$GLOBALS['table_prefix']}calendar_category cc ON dch.calendar_id=cc.event_id
                          INNER JOIN {$GLOBALS['table_prefix']}category c ON ( cc.category_id=c.category_id AND c.site_id={$site_id} )
                     WHERE Y={$this->year} AND dch.site_id={$site_id}
+                      AND dch.calendar_id IN (SELECT event_id FROM {$GLOBALS['table_prefix']}calendar_category WHERE category_id in(" . join(',', $children) . ") )
+                      AND dch.calendar_id IN ( SELECT calendar.id FROM {$GLOBALS['table_prefix']}calendar calendar WHERE calendar.site_id=$site_id AND calendar.vis )
                     GROUP BY dch.calendar_id,dch.site_id,dch.Y,dch.m,dch.d 
                     ".( $this->ordering ? "ORDER BY {$this->ordering}":'')
                    ." LIMIT {$this->start},{$this->rows_per_page} ";
@@ -1115,9 +1107,7 @@ class CategoryEvents2{
         $query = "SELECT calendar.*
                   FROM {$GLOBALS['table_prefix']}calendar calendar
                   WHERE calendar.site_id=$site_id
-                    AND calendar.vis
-                    AND calendar.id in(SELECT event_id FROM {$GLOBALS['table_prefix']}calendar_category WHERE category_id in(" . join(',', $children) . ") )
-                    {$date_where}
+                  {$date_where}
                   ";
         //AND lang='" . DbStr($this->lang) . "'
         // prn($query); exit();
