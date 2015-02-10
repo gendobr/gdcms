@@ -45,6 +45,11 @@ if (!$rsssource_info) {
 }
 prn($rsssource_info);
 
+$rsssource_id = $rsssource_info['rsssource_id'];
+$site_id = $rsssource_info['site_id'];
+$query="UPDATE {$table_prefix}rsssource SET rsssource_last_updated=now() WHERE rsssource_id=$rsssource_id AND site_id=$site_id";
+db_execute($query);
+
 $site_id = checkInt($rsssource_info['site_id']);
 // ------------------ get feed URL - end ---------------------------------------
 // ------------------ load RSS from source - begin -----------------------------
@@ -190,7 +195,6 @@ foreach ($x as $item) {
         ";
 }
 
-$query="UPDATE {$table_prefix}rsssource SET rsssource_last_updated=now() WHERE rsssource_id=$rsssource_id AND site_id=$site_id";
-db_execute($query);
+
 
 ?>
