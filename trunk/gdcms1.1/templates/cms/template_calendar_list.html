@@ -75,7 +75,7 @@
 </span>
 {if $day}<h3>{$day}.{$month}.{$year}</h3>{/if}
 {foreach from=$events item=ev}
-     {capture name=ecclass assign="ecclass"}{if $ev.categories}{foreach from=$ev.event.categories item=_cat} {$_cat.category_code} {/foreach} {/if} {/capture}
+     {capture name=ecclass assign="ecclass"}{if $ev.event.categories}{foreach from=$ev.event.categories item=_cat} {$_cat.category_code} {/foreach} {/if} {/capture}
      <div class='oneevent {$ecclass}'>
         <span class="daty"><nobr>{$ev.startDate|date_format:"%d.%m.%Y %H:%M"}</nobr></span>
         <div>
