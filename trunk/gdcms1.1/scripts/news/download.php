@@ -230,7 +230,7 @@ function downloadNext(){
            $('#log').append(it);
            newsList.shift();
            document.getElementById('news_sources').value=newsList.join(\"\\n\");
-           setTimeout(downloadNext, 10000);
+           setTimeout(downloadNext, 30000);
         });    
     }else{
        $('#doDownload').attr('disabled',false);
