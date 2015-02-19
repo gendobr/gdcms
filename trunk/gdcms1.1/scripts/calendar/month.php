@@ -136,7 +136,7 @@ $existing_days=array_flip(array_map(function($in){return $in['d'];},db_getrows($
 foreach ($calendar as $row) {
     $tr = Array();
     foreach ($row as $day) {
-        if (isset($existing_days[$day])) {
+        if (isset($existing_days[(int)$day])) {
             $view_day_events_url = $view_day_events_url_prefix . $day;
             $tr[]=Array('innerHTML'=>$day,'href'=>$view_day_events_url);
         } else {
