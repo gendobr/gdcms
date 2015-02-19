@@ -34,7 +34,7 @@ if (isset($input_vars['url'])) {
 
 
     $url = $input_vars['url'];
-    if (!is_valid_url($url)) {
+    if (!parse_url($url)) {
         echo '{"status":"error","message":"invalid URL"}';
         return;
     }
