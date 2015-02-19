@@ -248,6 +248,12 @@ function menu_site($site_info) {
                 ,'attributes'=>''
         );
 
+        $tor['news/download']=Array(
+                'URL'=>"index.php?action=news/download&site_id=".$site_info['id']
+                ,'innerHTML'=>text('News_import')
+                ,'attributes'=>''
+        );
+
         $tor['news/view']=Array(
                 'URL'=>site_public_URL."/index.php?action=news/view&site_id=".$site_info['id'].'&'.$sid
                 ,'innerHTML'=>$text['View_news']
