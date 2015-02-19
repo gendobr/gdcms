@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*
   draw menu for news
@@ -212,4 +212,322 @@ function menu_news_comment($info){
     return $tor;
 }
 
-?>
+class CategoryNews {
+
+    protected $lang, $this_site_info, $category_info, $start;
+    protected $_list, $_pages, $items_found;
+    protected $rows_per_page = 10;
+    protected $ordering = 'news.last_change_date DESC';
+    protected $startname = 'news_start';
+
+    function __construct($_lang, $_this_site_info, $_category_info, $start) {
+        $this->lang = $_lang;
+        $this->this_site_info = $_this_site_info;
+        $this->category_info = $_category_info;
+        $this->start = $start;
+        
+
+        if (isset($input_vars['year'])) {
+            $this->year = (int) $input_vars['year'];
+        }
+
+        if (isset($input_vars['month'])) {
+            $this->month = (int) $input_vars['month'];
+            if (!isset($this->year)) {
+                $this->year = (int) date('Y');
+            }
+        }
+
+        if (isset($input_vars['day'])) {
+            $this->day = (int) $input_vars['day'];
+            if (!isset($this->month)) {
+                $this->month = (int) date('m');
+            }
+            if (!isset($this->year)) {
+                $this->year = (int) date('Y');
+            }
+        }
+        //$this->init();
+        $this->createDateSelector();
+    }
+    
+    public function createDateSelector(){
+        // ------------- date selector links - begin ---------------------------
+        $this->dateselector = new stdClass();
+        $this->dateselector->parents = Array();
+        $this->dateselector->current = Array();
+        $this->dateselector->children = Array();
+
+        if (isset($this->day)) {
+            $month_names = calendar_misyaci();
+            $this->dateselector->parents[] = Array(
+                'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/")
+                , 'innerHTML' => text('All_dates')
+            );
+            $this->dateselector->parents[] = Array(
+                'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}"
+                , 'innerHTML' => $this->year
+            );
+            $this->dateselector->parents[] = Array(
+                'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}&month={$this->month}"
+                , 'innerHTML' => $month_names[$this->month]
+            );
+            $this->dateselector->current = Array(
+                'URL' => ''// 
+                , 'innerHTML' => $this->day
+            );
+        } elseif (isset($this->month)) {
+
+            $month_names = calendar_misyaci();
+
+            $this->dateselector->parents[] = Array(
+                'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/")
+                , 'innerHTML' => text('All_dates')
+            );
+            $this->dateselector->parents[] = Array(
+                'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}"
+                , 'innerHTML' => $this->year
+            );
+            $this->dateselector->current = Array(
+                'URL' => ''// 
+                , 'innerHTML' => $month_names[$this->month]
+            );
+
+            $timestamp_start = mktime(12, 0, 0, $this->month, 1, $this->year);
+            $timestamp_end = mktime(12, 0, 0, $this->month + 1, 0, $this->year);
+            for ($i = $timestamp_start; $i <= $timestamp_end; $i+=86400) { // 86400 = seconds in day
+                $day = date('d', $i);
+                $this->dateselector->children[] = Array(
+                    'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}&month={$this->month}&day=" . $day// 
+                    , 'innerHTML' => $day
+                );
+            }
+        } elseif (isset($this->year)) {
+            $month_names = calendar_misyaci();
+            $this->dateselector->parents[] = Array(
+                'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/")
+                , 'innerHTML' => text('All_dates')
+            );
+            $this->dateselector->current = Array(
+                'URL' => ''// 
+                , 'innerHTML' => $this->year
+            );
+            for ($i = 1; $i <= 12; $i++) {
+                $this->dateselector->children[] = Array(
+                    'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}&month={$i}"// 
+                    , 'innerHTML' => $month_names[$i]
+                );
+            }
+        } else {
+            $current_year = (int) date('Y');
+            $this->dateselector->current = Array(
+                'URL' => ''// 
+                , 'innerHTML' => text('All_dates')
+            );
+            for ($i = -1; $i <= 1; $i++) {
+                $this->dateselector->children[] = Array(
+                    'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year=" . ($current_year + $i)// 
+                    , 'innerHTML' => ($current_year + $i)
+                );
+            }
+        }
+        // ------------- date selector links - end ---------------------------
+    }
+    
+    public function setRowsPerPage($val) {
+        $this->rows_per_page = (int) $val;
+        unset($this->_list);
+        return '';
+    }
+
+    public function setCategoryId($val) {
+        $category_id = (int) $val;
+        $this->category_info = category_info(Array(
+            'category_id' => $category_id,
+            'site_id' => $this->this_site_info['id'],
+            'lang' => $this->lang
+        ));
+        unset($this->_list);
+        return '';
+    }
+    
+    public function setLang($val) {
+        $this->lang = preg_replace('/[^a-z]/i','', $val);
+        $this->category_info = category_info(Array(
+            'category_id' => $this->category_info['category_id'],
+            'site_id' => $this->this_site_info['id'],
+            'lang' => $this->lang
+        ));
+        unset($this->_list);
+        return '';
+    }
+    
+    public function setOrdering($val) {
+        
+        $this->subordering=false;
+        $tmp=explode(',',$val);
+        //prn($val,$tmp);
+        $ordering=Array();
+        for($i=0, $cnt=count($tmp); $i<$cnt; $i++){
+            $tmp[$i]=preg_split('/ +/',trim($tmp[$i]));
+            $tmp[$i][1]=(isset($tmp[$i][1]) && strtoupper($tmp[$i][1])=='DESC')?'DESC':'ASC';
+            $tmp[$i][0]=trim(strtolower($tmp[$i][0]));
+            switch ($tmp[$i][0]){
+                case 'date':
+                case 'datetime':
+                    $ordering[]='news.last_change_date '.$tmp[$i][1];
+                    break;
+                case 'weight':
+                    $ordering[]='news.weight '.$tmp[$i][1];
+                    break;
+            }
+        }
+        //prn($ordering);
+        $this->ordering=join(',', $ordering);
+        unset($this->_list);
+        return '';
+    }
+    function __get($attr) {
+        if (!isset($this->_list)) {
+            $this->init();
+        }
+        switch ($attr) {
+            case 'list':
+                return $this->_list;
+                break;
+            case 'pages':
+                return $this->_pages;
+                break;
+            case 'items_found':
+                return $this->items_found;
+                break;
+            case 'start':
+                return $this->start + 1;
+                break;
+            case 'finish':
+                return min($this->start + $this->rows_per_page, $this->items_found);
+                break;
+            default: return Array();
+        }
+    }
+
+    private function init() {
+        $site_id = $this->this_site_info['id'];
+        $category_id = $this->category_info['category_id'];
+
+        // get all the visible children
+        $query = "SELECT ch.category_id, BIT_AND(pa.is_visible) as visible
+            FROM {$GLOBALS['table_prefix']}category ch, {$GLOBALS['table_prefix']}category pa
+            WHERE pa.start<=ch.start AND ch.finish<=pa.finish
+              AND {$this->category_info['start']}<=ch.start AND ch.finish<={$this->category_info['finish']}
+              AND pa.site_id=$site_id and ch.site_id=$site_id
+            GROUP BY ch.category_id
+            HAVING visible
+        ";
+        // prn($query);
+        $children = db_getrows($query);
+        $cnt = count($children);
+        for ($i = 0; $i < $cnt; $i++) {
+            $children[$i] = $children[$i][category_id];
+        }
+        // prn(join(',',$children));
+        // 
+        // 
+        $date_restriction='';
+        if (isset($this->day)) {
+
+            $date_min=date('Y-m-d H:i:s',mktime ( 0, 0, 1, $this->month, $this->day, $this->year ));
+            $date_max=date('Y-m-d H:i:s',mktime ( 23, 59, 59, $this->month, $this->day, $this->year ));
+            $date_restriction=" AND news.last_change_date BETWEEN $date_min AND $date_max";
+
+        } elseif (isset($this->month)) {
+
+            $date_min=date('Y-m-d H:i:s',mktime ( 0, 0, 1, $this->month, 1, $this->year ));
+            $date_max=date('Y-m-d H:i:s',mktime ( 23, 59, 59, $this->month + 1, -1, $this->year ));
+            $date_restriction=" AND news.last_change_date BETWEEN $date_min AND $date_max";
+
+        } elseif (isset($this->year)) {
+            
+            $date_min=date('Y-m-d H:i:s',mktime ( 0, 0, 1, 1, 1, $this->year ));
+            $date_max=date('Y-m-d H:i:s',mktime ( 23, 59, 59, 1, -1, $this->year + 1));
+            $date_restriction=" AND news.last_change_date BETWEEN $date_min AND $date_max";
+
+        }
+        // get all the visible news attached to visible children
+        $query = "SELECT SQL_CALC_FOUND_ROWS
+                   news.id
+                  ,news.lang
+                  ,news.title
+                  ,news.news_code
+                  ,news.site_id
+                  ,news.abstract AS abstract
+                  ,news.last_change_date
+                  ,news.expiration_date
+                  ,news.tags
+                  ,IF(LENGTH(TRIM(news.content))>0,1,0) as content_present
+            FROM {$GLOBALS['table_prefix']}news news
+            WHERE site_id=$site_id
+              AND lang='" . DbStr($this->lang) . "'
+              AND cense_level>={$this->this_site_info['cense_level']}
+              AND last_change_date<=now()
+              AND ( expiration_date is null OR now()<=expiration_date )
+              AND news.id in(SELECT news_id FROM {$GLOBALS['table_prefix']}news_category WHERE category_id in(" . join(',', $children) . ") )
+              {$date_restriction}
+            ".( $this->ordering ? "ORDER BY {$this->ordering}" : '')."
+            LIMIT {$this->start},{$this->rows_per_page}";
+        //prn($query);
+        $this->_list = db_getrows($query);
+
+
+        $this->items_found = db_getonerow("SELECT FOUND_ROWS() AS n_records");
+        $this->items_found = $this->items_found['n_records'];
+        //prn('$this->items_found=' . $this->items_found);
+        # --------------------------- list of pages - begin --------------------------
+        $this->_pages = $this->get_paging_links($this->items_found, $this->start, $this->rows_per_page);
+        //prn('$this->_pages=',$this->_pages);
+        # --------------------------- list of pages - end ----------------------------
+
+        $this->_list = news_get_view($this->_list, $this->lang);
+
+        return '';
+    }
+
+    function get_paging_links($records_found, $start, $rows_per_page) {
+
+        $url_prefix = site_URL . '?' . preg_query_string("/" . $this->startname . "|" . session_name() . "/") . "&{$this->startname}=";
+
+        $pages = Array();
+        $imin = max(0, $start - 10 * $rows_per_page);
+        $imax = min($records_found, $start + 10 * $rows_per_page);
+        if ($imin > 0) {
+            $pages[] = Array(
+                'URL' => $url_prefix . '0',
+                'innerHTML' => '[1]'
+            );
+            $pages[] = Array('URL' => '', 'innerHTML' => '...');
+        }
+
+        for ($i = $imin; $i < $imax; $i = $i + $rows_per_page) {
+            if ($i == $start) {
+                $pages[] = Array('URL' => '', 'innerHTML' => '<b>[' . (1 + $i / $rows_per_page) . ']</b>');
+            } else {
+                $pages[] = Array('URL' => $url_prefix . $i, 'innerHTML' => ( 1 + $i / $rows_per_page));
+            }
+        }
+
+        if ($imax < $records_found) {
+            $last_page = floor(($records_found - 1) / $rows_per_page);
+            if ($last_page > 0) {
+                $pages[] = Array('URL' => '', 'innerHTML' => "...");
+                $pages[] = Array(
+                    'URL' => $url_prefix . ($last_page * $rows_per_page)
+                    , 'innerHTML' => "[" . ($last_page + 1) . "]"
+                );
+            }
+        }
+        return $pages;
+    }
+
+}
+
+
