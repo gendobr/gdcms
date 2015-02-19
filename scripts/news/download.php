@@ -162,6 +162,10 @@ if (isset($input_vars['url'])) {
 	);";
     //prn($query);
     db_execute($query);
+    
+    
+    $query="insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
+    db_execute($query);
     echo '{"status":"success"}';
     return;
 }
@@ -197,6 +201,7 @@ $input_vars['page_content'] = "
 </pre>
 
         <ol id=log></ol>
+        <div id='loading' class=\"meter\" style=\"display:none;\"><span style=\"width: 100%\"></span></div>
     </div>
 <input type=\"button\" id=\"doDownload\" value=\"" . text('News_start_import') . "\">
     
@@ -207,12 +212,17 @@ var newsList=[];
 function startDownload(){
   var rows=$('#news_sources').val();
   if(rows.length>0){
-    $('#doDownload').attr('disabled',true);
     newsList=rows.split(/\\n/);
-    // console.log(newsList.length);
-    downloadNext();
+    var cid=$('#news_category').val();
+    if(cid.length>0){
+       $('#doDownload').hide();
+       downloadNext();
+    $('#doDownload').hide();
+    }else{
+       alert('" . text('News_Category') . "?????');
+    }
   }else{
-    $('#doDownload').attr('disabled',false);
+    $('#doDownload').show();
   }
 }
 
@@ -220,6 +230,7 @@ function downloadNext(){
     if(newsList.length>0){
         var row=newsList[0].split(/[ \\t]+/);
         // console.log(row);
+        $('#loading').show();
         $.ajax({
            type: \"POST\",
            url: \"index.php\",
@@ -230,10 +241,11 @@ function downloadNext(){
            $('#log').append(it);
            newsList.shift();
            document.getElementById('news_sources').value=newsList.join(\"\\n\");
-           setTimeout(downloadNext, 30000);
+           setTimeout(downloadNext, 20000);
         });    
     }else{
-       $('#doDownload').attr('disabled',false);
+       $('#loading').hide();
+       $('#doDownload').show();
        alert('DONE !!!');
     }
 }
@@ -242,6 +254,67 @@ $(document).ready(function(){
    $(\"#doDownload\").click(startDownload);
 });
 </script>
+<style type='text/css'>
+
+.meter {
+    background: none repeat scroll 0 0 rgb(85, 85, 85);
+    border-radius: 25px;
+    box-shadow: 0 -1px 1px rgba(255, 255, 255, 0.3) inset;
+    height: 20px;
+    margin: 60px 0 20px;
+    padding: 10px;
+    position: relative;
+}
+.meter > span {
+    background-color: rgb(43, 194, 83);
+    background-image: -moz-linear-gradient(center bottom , rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
+    border-radius: 20px 8px 8px 20px;
+    box-shadow: 0 2px 9px rgba(255, 255, 255, 0.3) inset, 0 -2px 6px rgba(0, 0, 0, 0.4) inset;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.meter > span:after, .animate > span > span {
+    animation: 2s linear 0s normal none infinite running move;
+    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0));
+    background-size: 50px 50px;
+    border-radius: 20px 8px 8px 20px;
+    bottom: 0;
+    content: \"\";
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+.animate > span:after {
+    display: none;
+}
+@keyframes move {
+0% {
+    background-position: 0 0;
+}
+100% {
+    background-position: 50px 50px;
+}
+}
+.orange > span {
+    background-color: rgb(241, 161, 101);
+    background-image: -moz-linear-gradient(center top , rgb(241, 161, 101), rgb(243, 109, 10));
+}
+.red > span {
+    background-color: rgb(240, 163, 163);
+    background-image: -moz-linear-gradient(center top , rgb(240, 163, 163), rgb(244, 35, 35));
+}
+.nostripes > span > span, .nostripes > span:after {
+    animation: 0s ease 0s normal none 1 running none;
+    background-image: none;
+}
+
+</style>
+
          ";
 
 //--------------------------- context menu -- begin ----------------------------
