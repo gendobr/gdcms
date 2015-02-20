@@ -220,7 +220,7 @@ class CategoryNews {
     protected $ordering = 'news.last_change_date DESC';
     protected $startname = 'news_start';
 
-    function __construct($_lang, $_this_site_info, $_category_info, $start) {
+    function __construct($_lang, $_this_site_info, $_category_info, $start, $input_vars) {
         $this->lang = $_lang;
         $this->this_site_info = $_this_site_info;
         $this->category_info = $_category_info;
@@ -248,31 +248,31 @@ class CategoryNews {
             }
         }
         //$this->init();
-        $this->createDateSelector();
+        //$this->createDateSelector();
     }
     
     public function createDateSelector(){
         // ------------- date selector links - begin ---------------------------
-        $this->dateselector = new stdClass();
-        $this->dateselector->parents = Array();
-        $this->dateselector->current = Array();
-        $this->dateselector->children = Array();
+        $this->_dateselector = new stdClass();
+        $this->_dateselector->parents = Array();
+        $this->_dateselector->current = Array();
+        $this->_dateselector->children = Array();
 
         if (isset($this->day)) {
             $month_names = calendar_misyaci();
-            $this->dateselector->parents[] = Array(
+            $this->_dateselector->parents[] = Array(
                 'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/")
                 , 'innerHTML' => text('All_dates')
             );
-            $this->dateselector->parents[] = Array(
+            $this->_dateselector->parents[] = Array(
                 'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}"
                 , 'innerHTML' => $this->year
             );
-            $this->dateselector->parents[] = Array(
+            $this->_dateselector->parents[] = Array(
                 'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}&month={$this->month}"
                 , 'innerHTML' => $month_names[$this->month]
             );
-            $this->dateselector->current = Array(
+            $this->_dateselector->current = Array(
                 'URL' => ''// 
                 , 'innerHTML' => $this->day
             );
@@ -280,15 +280,15 @@ class CategoryNews {
 
             $month_names = calendar_misyaci();
 
-            $this->dateselector->parents[] = Array(
+            $this->_dateselector->parents[] = Array(
                 'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/")
                 , 'innerHTML' => text('All_dates')
             );
-            $this->dateselector->parents[] = Array(
+            $this->_dateselector->parents[] = Array(
                 'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}"
                 , 'innerHTML' => $this->year
             );
-            $this->dateselector->current = Array(
+            $this->_dateselector->current = Array(
                 'URL' => ''// 
                 , 'innerHTML' => $month_names[$this->month]
             );
@@ -297,37 +297,45 @@ class CategoryNews {
             $timestamp_end = mktime(12, 0, 0, $this->month + 1, 0, $this->year);
             for ($i = $timestamp_start; $i <= $timestamp_end; $i+=86400) { // 86400 = seconds in day
                 $day = date('d', $i);
-                $this->dateselector->children[] = Array(
+                $this->_dateselector->children[] = Array(
                     'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}&month={$this->month}&day=" . $day// 
                     , 'innerHTML' => $day
                 );
             }
         } elseif (isset($this->year)) {
             $month_names = calendar_misyaci();
-            $this->dateselector->parents[] = Array(
+            $this->_dateselector->parents[] = Array(
                 'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/")
                 , 'innerHTML' => text('All_dates')
             );
-            $this->dateselector->current = Array(
+            $this->_dateselector->current = Array(
                 'URL' => ''// 
                 , 'innerHTML' => $this->year
             );
             for ($i = 1; $i <= 12; $i++) {
-                $this->dateselector->children[] = Array(
+                $this->_dateselector->children[] = Array(
                     'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year={$this->year}&month={$i}"// 
                     , 'innerHTML' => $month_names[$i]
                 );
             }
         } else {
-            $current_year = (int) date('Y');
-            $this->dateselector->current = Array(
+            //$current_year = (int) date('Y');
+            $this->_dateselector->current = Array(
                 'URL' => ''// 
                 , 'innerHTML' => text('All_dates')
             );
-            for ($i = -1; $i <= 1; $i++) {
-                $this->dateselector->children[] = Array(
-                    'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year=" . ($current_year + $i)// 
-                    , 'innerHTML' => ($current_year + $i)
+            // get min and max years
+            $query="SELECT max(news.last_change_date) as maxdate ,min(news.last_change_date) as mindate
+                    FROM {$GLOBALS['table_prefix']}news news
+                    WHERE site_id={$this->this_site_info['id']}
+                      AND lang='" . DbStr($this->lang) . "'";
+            $minmax=  db_getonerow($query);
+            $max=(int)date('Y',strtotime($minmax['maxdate']));
+            $min=(int)date('Y',strtotime($minmax['mindate']));
+            for ($i = $min; $i <= $max; $i++) {
+                $this->_dateselector->children[] = Array(
+                    'URL' => site_URL . '?' . preg_query_string("/day|month|year|event_start/") . "&year=" . ($i)// 
+                    , 'innerHTML' => ($i)
                 );
             }
         }
@@ -394,24 +402,30 @@ class CategoryNews {
         switch ($attr) {
             case 'list':
                 return $this->_list;
-                break;
+
             case 'pages':
                 return $this->_pages;
-                break;
+
+            case 'dateselector':
+                return $this->_dateselector;
+
             case 'items_found':
                 return $this->items_found;
-                break;
+
             case 'start':
                 return $this->start + 1;
-                break;
+
             case 'finish':
                 return min($this->start + $this->rows_per_page, $this->items_found);
-                break;
+
             default: return Array();
         }
     }
 
     private function init() {
+
+        $this->createDateSelector();
+        
         $site_id = $this->this_site_info['id'];
         $category_id = $this->category_info['category_id'];
 
@@ -438,19 +452,19 @@ class CategoryNews {
 
             $date_min=date('Y-m-d H:i:s',mktime ( 0, 0, 1, $this->month, $this->day, $this->year ));
             $date_max=date('Y-m-d H:i:s',mktime ( 23, 59, 59, $this->month, $this->day, $this->year ));
-            $date_restriction=" AND news.last_change_date BETWEEN $date_min AND $date_max";
+            $date_restriction=" AND news.last_change_date BETWEEN '$date_min' AND '$date_max' ";
 
         } elseif (isset($this->month)) {
 
             $date_min=date('Y-m-d H:i:s',mktime ( 0, 0, 1, $this->month, 1, $this->year ));
             $date_max=date('Y-m-d H:i:s',mktime ( 23, 59, 59, $this->month + 1, -1, $this->year ));
-            $date_restriction=" AND news.last_change_date BETWEEN $date_min AND $date_max";
+            $date_restriction=" AND news.last_change_date BETWEEN '$date_min' AND '$date_max' ";
 
         } elseif (isset($this->year)) {
             
             $date_min=date('Y-m-d H:i:s',mktime ( 0, 0, 1, 1, 1, $this->year ));
             $date_max=date('Y-m-d H:i:s',mktime ( 23, 59, 59, 1, -1, $this->year + 1));
-            $date_restriction=" AND news.last_change_date BETWEEN $date_min AND $date_max";
+            $date_restriction=" AND news.last_change_date BETWEEN '$date_min' AND '$date_max' ";
 
         }
         // get all the visible news attached to visible children

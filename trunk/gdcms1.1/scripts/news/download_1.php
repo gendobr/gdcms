@@ -10,10 +10,10 @@
 
 $debug = false;
 run('site/menu');
-run('lib/http/class_pear');
-run('lib/http/class_net_socket');
-run('lib/http/class_net_url');
-run('lib/http/class_http_request');
+//run('lib/http/class_pear');
+//run('lib/http/class_net_socket');
+//run('lib/http/class_net_url');
+//run('lib/http/class_http_request');
 run('lib/simple_html_dom');
 
 //------------------- site info - begin ----------------------------------------
@@ -34,7 +34,7 @@ if (get_level($site_id) == 0) {
 }
 //------------------- check permission - end -----------------------------------
 // ------------------ do download - begin --------------------------------------
-if (isset($input_vars['url'])) {
+if (isset($input_vars['data'])) {
 
     global $main_template_name;
     $main_template_name = '';
@@ -97,27 +97,27 @@ if (isset($input_vars['url'])) {
 
     
 
-    // ======= downloading one url = begin =====================================
-    $obj_request = new HTTP_Request($url, Array(
-                    'timeout'=>60
-                    ,'allowRedirects'=>true
-    ));
-    // set_time_limit (100);
-    $obj_request->sendRequest();
-    sleep(5);
-
-    $body = $obj_request->getResponseBody();
-
-    $headers=$obj_request->getResponseHeader();
-    # check if request was successful
-    $success = $obj_request->getResponseCode();
+    //    // ======= downloading one url = begin =====================================
+    //    $obj_request = new HTTP_Request($url, Array(
+    //                    'timeout'=>60
+    //                    ,'allowRedirects'=>true
+    //    ));
+    //    // set_time_limit (100);
+    //    $obj_request->sendRequest();
+    //    sleep(5);
+    //
+    //    $body = $obj_request->getResponseBody();
+    //
+    //    $headers=$obj_request->getResponseHeader();
+    //    # check if request was successful
+    //    $success = $obj_request->getResponseCode();
+    //    
+    //    //echo $body; exit();
+    //    // ======= downloading one url = end =======================================
     
-    //echo $body; exit();
-    // ======= downloading one url = end =======================================
-    
-    $html = str_get_html($body);
+    $html = str_get_html($input_vars['data']);
     if (!$html) {
-        echo '{"status":"error","message":"cannot download URL"}';
+        echo '{"status":"error","message":"cannot parse html"}';
         return;
     }
     
@@ -232,6 +232,7 @@ unset($tmp, $tm);
 
 
 $input_vars['page_content'] = "
+    <script type=\"text/javascript\" src=\"".site_root_URL."/scripts/lib/jquery.ajax-cross-origin.min.js\"></script>
     <div>
         <div class=label>" . text('News_Category') . " : </div>
     	<select name=news_category  id=news_category>
@@ -279,18 +280,28 @@ function downloadNext(){
         var row=newsList[0].split(/[ \\t]+/);
         // console.log(row);
         $('#loading').show();
-        $.ajax({
-           type: \"POST\",
-           url: \"index.php\",
-           data: { action: \"news/download\", site_id: $site_id, url: row[1], date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
-           dataType: \"json\"
-        }).always(function( msg ) {
-           var it=$('<li>' + msg.status + ' : '+row[1]+'</li>');
-           $('#log').append(it);
-           newsList.shift();
-           document.getElementById('news_sources').value=newsList.join(\"\\n\");
-           setTimeout(downloadNext, 20000);
-        });    
+                $.ajax({
+                   type: \"GET\",
+                   url: row[1],
+                   async:false,
+                   crossDomain:true,
+                   dataType:'text'
+                }).done(function( data ) {
+                    console.log(data);
+                    $.ajax({
+                       type: \"POST\",
+                       url: \"index.php\",
+                       data: { action: \"news/download\", site_id: $site_id, url:row[1], data: data, date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
+                       dataType: \"json\"
+                    }).always(function( msg ) {
+                       var it=$('<li>' + msg.status + ' : '+row[1]+'</li>');
+                       $('#log').append(it);
+                       newsList.shift();
+                       document.getElementById('news_sources').value=newsList.join(\"\\n\");
+                       setTimeout(downloadNext, 20000);
+                    });    
+
+                });    
     }else{
        $('#loading').hide();
        $('#doDownload').show();
