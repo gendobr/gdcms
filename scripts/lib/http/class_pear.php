@@ -230,7 +230,7 @@ class PEAR
      * @access  public
      * @return  bool    true if parameter is an error
      */
-    function isError($data, $code = null)
+    static function isError($data, $code = null)
     {
         if (is_object($data) && (get_class($data) == 'PEAR_Error' ||
                                  is_subclass_of($data, 'PEAR_Error'))) {
