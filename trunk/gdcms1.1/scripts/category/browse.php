@@ -243,7 +243,8 @@ $category_news=new CategoryNews(
         $lang,
         $this_site_info,
         $this_category_info,
-        isset($input_vars['news_start']) ? ( (int) $input_vars['news_start']) : 0);
+        isset($input_vars['news_start']) ? ( (int) $input_vars['news_start']) : 0,
+        $input_vars);
 
 $vyvid = process_template($_template
     , Array(
