@@ -249,7 +249,7 @@ function menu_site($site_info) {
         );
 
         $tor['news/download']=Array(
-                'URL'=>"index.php?action=news/download&site_id=".$site_info['id']
+                'URL'=>"index.php?action=news/download_2&site_id=".$site_info['id']
                 ,'innerHTML'=>text('News_import')
                 ,'attributes'=>''
         );
