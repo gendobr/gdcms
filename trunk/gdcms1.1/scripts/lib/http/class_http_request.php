@@ -921,7 +921,7 @@ class HTTP_Response
     function process($saveBody = true)
     {
         do {
-            $line = $this->_sock->readLine(); # prn($line);
+            $line = $this->_sock->readLine();  prn('line='.$line);
             #if(gettype($line)!='string')
             if (sscanf($line, 'HTTP/%s %s', $http_version, $returncode) != 2) {
                 return PEAR::raiseError('Malformed response.');
