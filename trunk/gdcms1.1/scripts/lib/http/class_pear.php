@@ -477,7 +477,7 @@ class PEAR
      * @see PEAR::setErrorHandling
      * @since PHP 4.0.5
      */
-    function raiseError($message = null,
+    static function raiseError($message = null,
                          $code = null,
                          $mode = null,
                          $options = null,
@@ -542,7 +542,7 @@ class PEAR
                          $userinfo = null)
     {
         if (isset($this) && is_subclass_of($this, 'PEAR_Error')) {
-            return $this->raiseError($message, $code, null, null, $userinfo);
+            return PEAR::raiseError($message, $code, null, null, $userinfo);
         } else {
             return PEAR::raiseError($message, $code, null, null, $userinfo);
         }
