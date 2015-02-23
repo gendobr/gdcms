@@ -10,10 +10,10 @@
 
 $debug = false;
 run('site/menu');
-run('lib/http/class_pear');
-run('lib/http/class_net_socket');
-run('lib/http/class_net_url');
-run('lib/http/class_http_request');
+//run('lib/http/class_pear');
+//run('lib/http/class_net_socket');
+//run('lib/http/class_net_url');
+//run('lib/http/class_http_request');
 run('lib/simple_html_dom');
 run('lib/charset/charset');
 
@@ -99,20 +99,42 @@ if (isset($input_vars['url'])) {
     
 
     // ======= downloading one url = begin =====================================
-    $obj_request = new HTTP_Request($url, Array(
-                    'timeout'=>60
-                    ,'allowRedirects'=>true
-    ));
-    // set_time_limit (100);
-    $obj_request->sendRequest();
-    sleep(5);
+    //    $obj_request = new HTTP_Request($url, Array(
+    //                    'timeout'=>60
+    //                    ,'allowRedirects'=>true
+    //    ));
+    //    // set_time_limit (100);
+    //    $obj_request->sendRequest();
+    //    sleep(10);
+    //
+    //    $body = $obj_request->getResponseBody();
+    //
+    //    $headers=$obj_request->getResponseHeader();
+    //    # check if request was successful
+    //    $success = $obj_request->getResponseCode();
+    //    
+    //    echo $body; exit();
+    //
 
-    $body = $obj_request->getResponseBody();
-
-    $headers=$obj_request->getResponseHeader();
-    # check if request was successful
-    $success = $obj_request->getResponseCode();
+    // echo ':'.$url.';<br>';
     
+    $ch = curl_init(); 
+    curl_setopt($ch, CURLOPT_URL,$url); // set url to post to 
+    curl_setopt($ch, CURLOPT_FAILONERROR, 1); 
+    //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects 
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // return into a variable 
+    curl_setopt($ch, CURLOPT_TIMEOUT, 20); // times out after 20s 
+    curl_setopt($ch, CURLOPT_USERAGENT, "User-Agent:Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36");
+    
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_VERBOSE, false);
+    
+    // curl_setopt($ch, CURLOPT_POST, 1); // set POST method 
+    //curl_setopt($ch, CURLOPT_POSTFIELDS, "url=index%3Dbooks&field-keywords=PHP+MYSQL"); // add POST fields 
+    $body = curl_exec($ch); // run the whole process 
+    //echo curl_error ($ch ).'<br>';
+    curl_close($ch);   
     //echo $body; exit();
     // ======= downloading one url = end =======================================
     
