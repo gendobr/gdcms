@@ -114,6 +114,14 @@ var ImageDialog = {
 			if (v) {
 				if (v == 'left' || v == 'right') {
 					st['float'] = v;
+                                        if(v=='left'){
+                                            st['margin-right']='2em';
+                                            st['margin-left']='0px';
+                                        }
+                                        if(v=='right'){
+                                            st['margin-right']='0px';
+                                            st['margin-left']='2em';
+                                        }
 					delete st['vertical-align'];
 				} else {
 					st['vertical-align'] = v;
