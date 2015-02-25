@@ -69,7 +69,7 @@ function insert_html(text){
 
 
 function insert_image(url){
-    tinyMCE.execCommand('mceInsertContent',false,'<img src="'+url+'"/>');
+    tinyMCE.execCommand('mceInsertContent',false,'<img src="'+url+'" align="left"/>');
 }
 
 
