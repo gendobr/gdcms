@@ -375,10 +375,20 @@ var ImageDialog = {
 
 				v = getSelectValue(f, 'align');
 				if (v) {
-					if (v == 'left' || v == 'right')
-						dom.setStyle(img, 'float', v);
-					else
+					if (v == 'left' || v == 'right'){
+                                            if(v == 'left'){
+                                                dom.setStyle(img, 'margin-right', "2em");
+                                                dom.setStyle(img, 'margin-left', "");
+                                            }
+                                            if(v == 'right'){
+                                                dom.setStyle(img, 'margin-right', "");
+                                                dom.setStyle(img, 'margin-left', "2em");
+                                            }
+				            dom.setStyle(img, 'float', v);
+                                        }
+					else{
 						img.style.verticalAlign = v;
+                                        }
 				}
 			}
 
