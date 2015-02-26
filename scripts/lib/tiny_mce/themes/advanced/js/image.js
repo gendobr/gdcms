@@ -149,8 +149,8 @@ var ImageDialog = {
 				st['margin-left'] = v + 'px';
 				st['margin-right'] = v + 'px';
 			} else {
-				delete st['margin-left'];
-				delete st['margin-right'];
+				//delete st['margin-left'];
+				//delete st['margin-right'];
 			}
 
 			// Handle vspace
