@@ -219,6 +219,7 @@ class CategoryNews {
     protected $rows_per_page = 10;
     protected $ordering = 'news.last_change_date DESC';
     protected $startname = 'news_start';
+    protected $includeChildren=true;
 
     function __construct($_lang, $_this_site_info, $_category_info, $start, $input_vars) {
         $this->lang = $_lang;
@@ -359,6 +360,12 @@ class CategoryNews {
         return '';
     }
     
+    public function setIncludeChildren($val) {
+        $this->includeChildren = $val;
+        unset($this->_list);
+        return '';
+    }
+    
     public function setLang($val) {
         $this->lang = preg_replace('/[^a-z]/i','', $val);
         $this->category_info = category_info(Array(
@@ -395,6 +402,10 @@ class CategoryNews {
         unset($this->_list);
         return '';
     }
+    
+    
+    
+    
     function __get($attr) {
         if (!isset($this->_list)) {
             $this->init();
@@ -429,20 +440,25 @@ class CategoryNews {
         $site_id = $this->this_site_info['id'];
         $category_id = $this->category_info['category_id'];
 
-        // get all the visible children
-        $query = "SELECT ch.category_id, BIT_AND(pa.is_visible) as visible
-            FROM {$GLOBALS['table_prefix']}category ch, {$GLOBALS['table_prefix']}category pa
-            WHERE pa.start<=ch.start AND ch.finish<=pa.finish
-              AND {$this->category_info['start']}<=ch.start AND ch.finish<={$this->category_info['finish']}
-              AND pa.site_id=$site_id and ch.site_id=$site_id
-            GROUP BY ch.category_id
-            HAVING visible
-        ";
-        // prn($query);
-        $children = db_getrows($query);
-        $cnt = count($children);
-        for ($i = 0; $i < $cnt; $i++) {
-            $children[$i] = $children[$i][category_id];
+        
+        if($this->includeChildren){
+            // get all the visible children
+            $query = "SELECT ch.category_id, BIT_AND(pa.is_visible) as visible
+                FROM {$GLOBALS['table_prefix']}category ch, {$GLOBALS['table_prefix']}category pa
+                WHERE pa.start<=ch.start AND ch.finish<=pa.finish
+                  AND {$this->category_info['start']}<=ch.start AND ch.finish<={$this->category_info['finish']}
+                  AND pa.site_id=$site_id and ch.site_id=$site_id
+                GROUP BY ch.category_id
+                HAVING visible
+            ";
+            // prn($query);
+            $children = db_getrows($query);
+            $cnt = count($children);
+            for ($i = 0; $i < $cnt; $i++) {
+                $children[$i] = $children[$i]['category_id'];
+            }            
+        }else{
+            $children = Array($this->category_info['category_id']);
         }
         // prn(join(',',$children));
         // 
