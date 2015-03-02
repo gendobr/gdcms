@@ -391,7 +391,7 @@ $input_vars['page_content'].= ( isset($form['elements']['is_visible']) ? "
     <input type=text
            name='{$form['elements']['category_code']->form_element_name}'
            id='{$form['elements']['category_code']->form_element_name}'
-           value='".($form['elements']['category_code']->form_element_value?$form['elements']['category_code']->form_element_value:encode_dir_name(get_langstring($form['elements']['category_title']->value, default_language)))."'>
+           value='".($form['elements']['category_code']->form_element_value?$form['elements']['category_code']->form_element_value:($rep->id))."'>
    </div>
    <br/><input type=submit value='{$text['Save']}'>
    </form>
