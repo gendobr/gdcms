@@ -222,10 +222,27 @@ for ($i = 0; $i < $cnt; $i++) {
 // if(isset($_REQUEST['v'])) phpinfo();,isset($_REQUEST['v'])
 
 $template_name='template_category_browse';
+
+
 $_template = sites_root.'/'.$this_site_info['dir']."/{$template_name}_{$category_id}.html";
 if(!is_file($_template)){
-    $_template = site_get_template($this_site_info, $template_name);
+    $_template='';
 }
+if(!$_template){
+    $prnts=array_reverse($this_category_info['parents']);
+    foreach ($prnts as $tmp) {
+        $_template = sites_root.'/'.$this_site_info['dir']."/{$template_name}_{$tmp['category_id']}.html";
+        if(is_file($_template)){
+            break;
+        }else{
+            $_template='';
+        }
+    }
+    if(!$_template){
+       $_template = site_get_template($this_site_info, $template_name);
+    }
+}
+
 
 
 //echo $_template;
