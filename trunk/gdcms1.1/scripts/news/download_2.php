@@ -348,11 +348,27 @@ function downloadNext(){
            data: { action: \"news/download_2\", site_id: $site_id, url: row[1], date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
            dataType: \"json\"
         }).always(function( msg ) {
-           var it=$('<li>' + msg.status + ' : '+row[1]+' ' + (msg.message? '<br>' + msg.status:'' ) + '</li>');
-           $('#log').append(it);
-           newsList.shift();
-           document.getElementById('news_sources').value=newsList.join(\"\\n\");
-           setTimeout(downloadNext, 20000);
+        
+           if(msg.status=='success'){
+                var it=$('<li>' + msg.status + ' : '+row[1]+' ' + (msg.message? '<br>' + msg.status:'' ) + '</li>');
+                $('#log').append(it);
+                newsList.shift();
+                document.getElementById('news_sources').value=newsList.join(\"\\n\");
+                setTimeout(downloadNext, 20000);
+           }else{
+                $.ajax({
+                    type: \"POST\",
+                    url: \"index.php\",
+                    data: { action: \"news/download_1\", site_id: $site_id, url: row[1], date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
+                    dataType: \"json\"
+                }).always(function( msg ) {
+                    var it=$('<li>' + msg.status + ' : '+row[1]+' ' + (msg.message? '<br>' + msg.status:'' ) + '</li>');
+                    $('#log').append(it);
+                    newsList.shift();
+                    document.getElementById('news_sources').value=newsList.join(\"\\n\");
+                    setTimeout(downloadNext, 20000);
+                })
+           }
         });    
     }else{
        $('#loading').hide();
