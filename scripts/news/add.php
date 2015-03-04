@@ -124,7 +124,7 @@ if(isset($input_vars['return']) && strlen($input_vars['return'])>0)
 }
 else
 {
-      header("Location: index.php?action=news/edit&news_id={$news_id}&lang={$news_lang}&site_id={$site_id}&interface_lang={$_SESSION['lang']}");
+      header("Location: index.php?action=news/edit&news_id={$news_id}&lang={$news_lang}&site_id={$site_id}&interface_lang={$_SESSION['lang']}&aed=".defaultToVisualEditor);
 }
 exit;
 
