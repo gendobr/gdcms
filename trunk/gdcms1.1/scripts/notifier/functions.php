@@ -127,7 +127,7 @@ function notify_action_email($to,$subject,$body) {
 }
 
 function notify_action_email_html($to,$subject,$body) {
-    return my_mail($to,$subject,$body,true);
+    return my_mail($to,$subject,$body,Array('IsHTML'=>true));
 }
 
 function notify_action_sms($to,$subject,$body) {
