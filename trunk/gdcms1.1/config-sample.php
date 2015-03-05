@@ -103,7 +103,7 @@ define('emails_at_once',1);
 
 
 
-
+define('defaultToVisualEditor', 1);
 
 
 
