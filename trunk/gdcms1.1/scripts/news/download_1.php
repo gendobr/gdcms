@@ -77,7 +77,7 @@ if (isset($input_vars['url'])) {
         $year = (int) date('Y');
         $month = $matches[1];
         $day = $matches[2];
-        $last_change_date = date("Y-m-d H:i:s", mktime(12, 0, 0, $month, $day, $year));
+        $last_change_date = date("Y-m-d H:i:s", mktime(0, 1, 1, $month, $day, $year));
     } elseif (checkDatetime($dateString)) {
         $last_change_date = date("Y-m-d H:i:s", strtotime($dateString));
     } else {
