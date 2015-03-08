@@ -951,6 +951,39 @@ function transliterate($str) {
     return $tor;
 }
 
+function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
+    $lines = explode($break, $str);
+    foreach ($lines as &$line) {
+        $line = rtrim($line);
+        if (mb_strlen($line, site_charset) <= $width) {
+            continue;
+        }
+        $words = explode(' ', $line);
+        $line = '';
+        $actual = '';
+        foreach ($words as $word) {
+            if (mb_strlen($actual . $word, site_charset) <= $width) {
+                $actual .= $word . ' ';
+            } else {
+                if ($actual != '') {
+                    $line .= rtrim($actual) . $break;
+                }
+                $actual = $word;
+                if ($cut) {
+                    while (mb_strlen($actual,site_charset) > $width) {
+                        $line .= mb_substr($actual, 0, $width,site_charset) . $break;
+                        $actual = mb_substr($actual, $width, mb_strlen($actual, site_charset)-$width,site_charset);
+                    }
+                }
+                $actual .= ' ';
+            }
+        }
+        $line .= trim($actual);
+    }
+    return implode($break, $lines);
+}
+
+
 function ml($a,$s) {
     $_a=DbStr($a);
     $_d=date('Y-m-d H:i:s');
