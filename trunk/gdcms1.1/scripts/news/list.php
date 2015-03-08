@@ -167,8 +167,8 @@ $cnt = count($response['rows']);
 for ($i = 0; $i < $cnt; $i++) {
     //--------------------------- context menu -- begin ------------------------
     $response['rows'][$i]['context_menu'] = menu_news($response['rows'][$i]);
-    $response['rows'][$i]['category_id'] = wordwrap($response['rows'][$i]['category_id'], 10, " ",true);
-    $response['rows'][$i]['tags'] = wordwrap($response['rows'][$i]['tags'], 10, "&shy;",true);
+    $response['rows'][$i]['category_id'] = mb_wordwrap($response['rows'][$i]['category_id'], 10, "&shy;",true);
+    $response['rows'][$i]['tags'] = mb_wordwrap($response['rows'][$i]['tags'], 10, "&shy;",true);
     //--------------------------- context menu -- end --------------------------
 }
 //--------------------------- context menu -- end ------------------------------
