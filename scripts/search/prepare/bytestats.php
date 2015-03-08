@@ -1,6 +1,20 @@
 <?php
 
-$filename = '/home/dobro/wwwroot/cms/_hidden/search-learning-set/rus-utf8.txt';
+//$lang='rus-utf8';
+//$lang='deu-cp1252';
+//$lang='deu-utf8';
+//$lang='fra-cp1252';
+//$lang='fra-utf8';
+//$lang='rus-cp866';
+//$lang='rus-koi8';
+//$lang='deu-iso-8859-1';
+//$lang='eng';
+//$lang='fra-iso-8859-1';
+//$lang='rus-cp1251';
+//$lang='rus-iso-8859-5';
+$lang='rus-utf8';
+$filename = "/home/dobro/wwwroot/cms/_/learning-set/{$lang}.txt";
+
 $file = file_get_contents($filename);
 
 $st=$file;
@@ -23,6 +37,8 @@ for ($i = 1; $i < $cnt; $i++) {
 }
 unset($st);
 
+//print_r($chunks);exit;
+
 $cntK = count($chunks);
 for ($K = 0; $K < $cntK; $K++) {
     echo "\n\n$K / $cntK\n";
@@ -38,7 +54,7 @@ for ($K = 0; $K < $cntK; $K++) {
         }
         $v++;
         
-        if (!isset($stats[$key = $pre . $cur])) {
+        if (!isset($stats[$key = ord($pre) . '.' . ord($cur)])) {
             $stats[$key]=0;
         }
         $stats[$key] ++;
@@ -54,7 +70,7 @@ foreach ($keys as $key) {
     $stats[$key]*=$norm;
 }
 
-// echo '<pre>'; print_r($stats);echo '</pre>';
+//echo '<pre>'; print_r($stats);echo '</pre>';
 echo "\n\n$n bigramms\n";
 file_put_contents($filename . '.stats', serialize($stats));
 // $st=explode('<style',$file);
