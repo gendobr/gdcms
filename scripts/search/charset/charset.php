@@ -43,21 +43,31 @@
 class charsetdetector {
 
     private $encoding;
-    private $zero = 0.000001;
+    private $keys;
+    private $zero = 0.00000001;
 
     public function __construct($emc) {
         $this->encoding = $emc;
+        $this->keys=Array();
+        foreach($this->encoding as $en){
+            $this->keys=array_merge($this->keys, array_keys($en['stats']));
+        }
+        $this->keys=array_unique($this->keys);
         //print_r($emc);
     }
 
-    public function detect($str) {
+    public function detect($str1) {
+        
+        $str = preg_replace("/\\n/",' ',$str1);
+        $str = preg_replace("/\\s+/",' ',$str);
+
         $distr = $this->getByteStats($str);
 
         $selectedCharset = false;
         $minimalDistance = false;
         foreach ($this->encoding as $stat) {
             $distance = $this->chiSquare($stat['stats'], $distr['n'], $distr['stats']);
-            echo "{$stat['charset']} => $distance<br>\n";
+            //echo "{$stat['charset']} => $distance<br>\n";
             if ($selectedCharset === false) {
                 $selectedCharset = $stat['charset'];
                 $minimalDistance = $distance;
@@ -70,38 +80,17 @@ class charsetdetector {
         return $selectedCharset;
 
     }
-    private function getByteStats($pst) {
-        $stats = Array();
-        $cnt = strlen($pst);
-        $n = 0;
-        for ($i = 0; $i < $cnt; $i++) {
-            $cur = substr($pst, $i, 1);
-            if (!isset($stats[$key = ord($cur)])) {
-                $stats[$key] = 0;
-            }
-            $stats[$key] ++;
-            $n++;
-        }
-        $keys = array_keys($stats);
-        $norm = 1.0 / $n;
-        foreach ($keys as $key) {
-            $stats[$key]*=$norm;
-        }
-        return Array('n'=>$n,'stats'=>$stats);
-    }
     //    private function getByteStats($pst) {
     //        $stats = Array();
     //        $cnt = strlen($pst);
-    //        $pre = substr($pst, 0, 1);
     //        $n = 0;
-    //        for ($i = 1; $i < $cnt; $i++) {
+    //        for ($i = 0; $i < $cnt; $i++) {
     //            $cur = substr($pst, $i, 1);
-    //            if (!isset($stats[$key = ord($pre) . '.' . ord($cur)])) {
+    //            if (!isset($stats[$key = ord($cur)])) {
     //                $stats[$key] = 0;
     //            }
     //            $stats[$key] ++;
     //            $n++;
-    //            $pre = $cur;
     //        }
     //        $keys = array_keys($stats);
     //        $norm = 1.0 / $n;
@@ -110,7 +99,28 @@ class charsetdetector {
     //        }
     //        return Array('n'=>$n,'stats'=>$stats);
     //    }
-    
+    private function getByteStats($pst) {
+        $stats = Array();
+        $cnt = strlen($pst);
+        $pre = substr($pst, 0, 1);
+        $n = 0;
+        for ($i = 1; $i < $cnt; $i++) {
+            $cur = substr($pst, $i, 1);
+            if (!isset($stats[$key = ord($pre) . '.' . ord($cur)])) {
+                $stats[$key] = 0;
+            }
+            $stats[$key] ++;
+            $n++;
+            $pre = $cur;
+        }
+        $keys = array_keys($stats);
+        $norm = 1.0 / $n;
+        foreach ($keys as $key) {
+            $stats[$key]*=$norm;
+        }
+        return Array('n' => $n, 'stats' => $stats);
+    }
+
     private function chiSquare($sample, $N, $unknown) {
         
         $chi2distance = 0;
@@ -119,11 +129,10 @@ class charsetdetector {
         }else{
             $n=1;
         }
-        $keys = array_merge(array_keys($sample), array_keys($unknown));
         
         //echo "<table>";
         
-        foreach ($keys as $key) {
+        foreach ($this->keys as $key) {
             if(isset($sample[$key]) ){
                 $un=( isset($unknown[$key])?$unknown[$key]:0  );
                 if($sample[$key] > $this->zero){
