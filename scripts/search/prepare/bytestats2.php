@@ -1,9 +1,21 @@
 <?php
 
 $langs = Array(
-    'rus-utf8', 'deu-cp1252', 'deu-utf8', 'fra-cp1252', 'fra-utf8', 'rus-cp866', 'rus-koi8',
-    'deu-iso-8859-1', 'eng-utf8', 'eng-iso-8859-1', 'eng-cp1252', 'fra-iso-8859-1',
-    'rus-cp1251', 'rus-iso-8859-5', 'rus-utf8'
+//    'rus-utf8', 
+    'deu-cp1252', 
+//    'deu-utf8', 
+//    'fra-cp1252', 
+//    'fra-utf8', 
+//    'rus-cp866', 
+//    'rus-koi8',
+//    'deu-iso-8859-1', 
+//    'eng-utf8', 
+//    'eng-iso-8859-1', 
+//    'eng-cp1252', 
+//    'fra-iso-8859-1',
+//    'rus-cp1251', 
+//    'rus-iso-8859-5', 
+//    'rus-utf8'
 );
 
 
@@ -68,8 +80,8 @@ foreach ($langs as $lang) {
         }
     }
     
-//echo '<pre>'; print_r($stats);echo '</pre>';
+    //echo '<pre>'; print_r($stats);echo '</pre>';
     echo "\n\n$lang - $n bigramms\n";
     file_put_contents(dirname($filename) . "/{$lang}.stats", serialize($stats));
-// $st=explode('<style',$file);
+    // $st=explode('<style',$file);
 }
