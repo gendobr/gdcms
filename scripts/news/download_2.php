@@ -15,7 +15,7 @@ run('site/menu');
 //run('lib/http/class_net_url');
 //run('lib/http/class_http_request');
 run('lib/simple_html_dom');
-run('lib/charset/charset');
+//run('lib/charset/charset');
 
 //------------------- site info - begin ----------------------------------------
 $site_id = checkInt($input_vars['site_id']);
@@ -144,11 +144,23 @@ if (isset($input_vars['url'])) {
         return;
     }
     
-    $charset = new charset();
-    $encoding = strtoupper($charset->detect($html->plaintext));
-    if($debug) {
-        echo $encoding;
+    //    $charset = new charset();
+    //    $encoding = strtoupper($charset->detect($html->plaintext));
+    //    if($debug) {
+    //        echo $encoding;
+    //    }
+    $encoding = site_charset;
+    foreach ($html->find('meta') as $element) {
+        if (isset($element->charset)) {
+            $encoding = $element->charset;
+            break;
+        }elseif(preg_match("/charset= *([0-9a-z-]+) *\$/i",$element->content,$matches)){
+            $encoding = $matches[1];
+            break;
+        }
     }
+    
+    
     
     
     $title = '';
@@ -187,7 +199,7 @@ if (isset($input_vars['url'])) {
         } catch (Exception $e) {
         }
     }
-    $abstract.= "<p><a href=\"$url\" target=_blank>$url</a></p>";
+    $abstract=  strip_tags($abstract)."<p><a href=\"$url\" target=_blank>$url</a></p>";
 
 
     $query = "SELECT id as newid FROM {$GLOBALS['table_prefix']}news 
