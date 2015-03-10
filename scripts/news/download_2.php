@@ -198,11 +198,16 @@ if (isset($input_vars['url'])) {
     if($encoding!=site_charset){
         try {
             $title=iconv($encoding, site_charset, $title);
-            //echo("Dbg1: $encoding, ".site_charset." $title"); exit();
         } catch (Exception $e) {
         }
     }
 
+    if (!$title) {
+        echo '{"status":"error","message":"page title not found"}';
+        return;
+    }
+    
+    
     $abstract = '';
     foreach ($html->find('meta') as $element) {
         if (!$abstract && $element->name == 'og:description') {
