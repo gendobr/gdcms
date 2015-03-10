@@ -15,7 +15,7 @@ run('site/menu');
 //run('lib/http/class_net_url');
 //run('lib/http/class_http_request');
 run('lib/simple_html_dom');
-//run('lib/charset/charset');
+run('lib/charset/charset');
 
 //------------------- site info - begin ----------------------------------------
 $site_id = checkInt($input_vars['site_id']);
@@ -117,75 +117,25 @@ if (isset($input_vars['url'])) {
     //
 
     // echo ':'.$url.';<br>';
-    $curldebug=false;
-    $ch = curl_init(); 
     
-    $cacheUrl='http://webcache.googleusercontent.com/search?q=cache:'.preg_replace("/^http:\\/\\//",'',$url);
-    curl_setopt($ch, CURLOPT_URL,$cacheUrl); // set url to post to 
-    curl_setopt($ch, CURLOPT_FAILONERROR, 0); 
+    $ch = curl_init(); 
+    curl_setopt($ch, CURLOPT_URL,$url); // set url to post to 
+    curl_setopt($ch, CURLOPT_FAILONERROR, 1); 
     //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects 
     curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // return into a variable 
     curl_setopt($ch, CURLOPT_TIMEOUT, 20); // times out after 20s 
     curl_setopt($ch, CURLOPT_USERAGENT, "User-Agent:Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36");
     
-    if($curldebug){
-        // CURLOPT_VERBOSE: TRUE to output verbose information. Writes output to STDERR, 
-        // or the file specified using CURLOPT_STDERR.
-        curl_setopt($ch, CURLOPT_VERBOSE, true);
-        $verbose = fopen('php://temp', 'rw+');
-        curl_setopt($ch, CURLOPT_STDERR, $verbose);
-    }
-    
-    curl_setopt($ch, CURLOPT_HTTPHEADER, Array(
-        'Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language:en-US,en;q=0.8,ru;q=0.6,uk;q=0.4',
-        'Cache-Control:max-age=0',
-        'Connection:keep-alive'
-    ));
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_VERBOSE, false);
     
     // curl_setopt($ch, CURLOPT_POST, 1); // set POST method 
     //curl_setopt($ch, CURLOPT_POSTFIELDS, "url=index%3Dbooks&field-keywords=PHP+MYSQL"); // add POST fields 
     $body = curl_exec($ch); // run the whole process 
     //echo curl_error ($ch ).'<br>';
-    // echo 'body='.$body; //exit();
-    //
-    //
-    if($curldebug){
-        if ($body === FALSE) {
-            printf("cUrl error (#%d): %s<br>\n", curl_errno($ch),
-                   htmlspecialchars(curl_error($ch)));
-        }
-
-        rewind($verbose);
-        $verboseLog = stream_get_contents($verbose);
-
-        echo "Verbose information:\n<pre>", htmlspecialchars($verboseLog), "</pre>\n";
-        
-    }
-
     curl_close($ch);   
-
-    
-    
-//    if ($body === FALSE) {
-//        prn('try Google cache');
-//        $cacheUrl='http://webcache.googleusercontent.com/search?q=cache:'.preg_replace("/^http:\\/\\//",'',$url);
-//        prn($cacheUrl);
-//        $ch = curl_init(); 
-//        curl_setopt($ch, CURLOPT_URL,$cacheUrl); // set url to post to 
-//        curl_setopt($ch, CURLOPT_FAILONERROR, 0); 
-//        //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects 
-//        curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // return into a variable 
-//        curl_setopt($ch, CURLOPT_TIMEOUT, 20); // times out after 20s 
-//        curl_setopt($ch, CURLOPT_USERAGENT, "User-Agent:Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36");
-//        $body = curl_exec($ch); // run the whole process 
-//        curl_close($ch);   
-//    }
-    
-    
-    
+    //echo $body; exit();
     // ======= downloading one url = end =======================================
     
     $html = str_get_html($body);
@@ -193,14 +143,12 @@ if (isset($input_vars['url'])) {
         echo '{"status":"error","message":"cannot download URL"}';
         return;
     }
-    //exit();
     
     //    $charset = new charset();
     //    $encoding = strtoupper($charset->detect($html->plaintext));
     //    if($debug) {
     //        echo $encoding;
     //    }
-    $encoding = site_charset;
     foreach ($html->find('meta') as $element) {
         if (isset($element->charset)) {
             $encoding = $element->charset;
@@ -210,6 +158,8 @@ if (isset($input_vars['url'])) {
             break;
         }
     }
+    echo $encoding;exit();
+    
     
     
     $title = '';
@@ -248,18 +198,9 @@ if (isset($input_vars['url'])) {
         } catch (Exception $e) {
         }
     }
-    $abstract=  strip_tags($abstract)."<p><a href=\"$url\" target=_blank>$url</a></p>";
+    $abstract.= "<p><a href=\"$url\" target=_blank>$url</a></p>";
 
 
-//    prn("
-//            UPDATE {$GLOBALS['table_prefix']}news 
-//            SET title='" . DbStr($title) . "',
-//                abstract='" . DbStr($abstract) . "',
-//            WHERE id=... AND lang='....' AND site_id=.....
-//            ");
-//    exit();
-    
-    
     $query = "SELECT id as newid FROM {$GLOBALS['table_prefix']}news 
               WHERE site_id=$site_id AND lang='{$lang}'
                 AND LOCATE('" . DbStr($url) . "',abstract)";
@@ -415,14 +356,30 @@ function downloadNext(){
         $.ajax({
            type: \"POST\",
            url: \"index.php\",
-           data: { action: \"news/download_1\", site_id: $site_id, url: row[1], date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
+           data: { action: \"news/download_t\", site_id: $site_id, url: row[1], date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
            dataType: \"json\"
         }).always(function( msg ) {
-           var it=$('<li>' + msg.status + ' : '+row[1]+' ' + (msg.message? '<br>' + msg.status:'' ) + '</li>');
-           $('#log').append(it);
-           newsList.shift();
-           document.getElementById('news_sources').value=newsList.join(\"\\n\");
-           setTimeout(downloadNext, 20000);
+        
+           if(msg.status=='success'){
+                var it=$('<li>' + msg.status + ' : '+row[1]+' ' + (msg.message? '<br>' + msg.status:'' ) + '</li>');
+                $('#log').append(it);
+                newsList.shift();
+                document.getElementById('news_sources').value=newsList.join(\"\\n\");
+                setTimeout(downloadNext, 20000);
+           }else{
+                $.ajax({
+                    type: \"POST\",
+                    url: \"index.php\",
+                    data: { action: \"news/download_1\", site_id: $site_id, url: row[1], date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
+                    dataType: \"json\"
+                }).always(function( msg ) {
+                    var it=$('<li>' + msg.status + ' : '+row[1]+' ' + (msg.message? '<br>' + msg.status:'' ) + '</li>');
+                    $('#log').append(it);
+                    newsList.shift();
+                    document.getElementById('news_sources').value=newsList.join(\"\\n\");
+                    setTimeout(downloadNext, 20000);
+                })
+           }
         });    
     }else{
        $('#loading').hide();
