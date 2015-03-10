@@ -119,6 +119,10 @@ if (isset($input_vars['url'])) {
     // echo ':'.$url.';<br>';
     
     $ch = curl_init(); 
+    
+    
+    $url='http://webcache.googleusercontent.com/search?q=cache:'.preg_replace("/^http:\\/\\//",'',$url);
+    
     curl_setopt($ch, CURLOPT_URL,$url); // set url to post to 
     curl_setopt($ch, CURLOPT_FAILONERROR, 1); 
     //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects 
@@ -149,17 +153,37 @@ if (isset($input_vars['url'])) {
     //    if($debug) {
     //        echo $encoding;
     //    }
-    foreach ($html->find('meta') as $element) {
-        if (isset($element->charset)) {
-            $encoding = $element->charset;
-            break;
-        }elseif(preg_match("/charset= *([0-9a-z-]+) *\$/i",$element->content,$matches)){
-            $encoding = $matches[1];
-            break;
-        }
-    }
-    echo $encoding;exit();
-    
+    //    foreach ($html->find('meta') as $element) {
+    //        if (isset($element->charset)) {
+    //            $encoding = $element->charset;
+    //            break;
+    //        }elseif(preg_match("/charset= *([0-9a-z-]+) *\$/i",$element->content,$matches)){
+    //            $encoding = $matches[1];
+    //            break;
+    //        }
+    //    }
+
+    include(script_root.'/search/charset/charset.php');
+    $charsetDataDir=script_root.'/search/charset/data';
+    $detector = new charsetdetector(Array(
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-utf8.stats")) ),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-utf8.stats")) ),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-utf8.stats")) ),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-utf8.stats")) ),
+        Array('charset' => 'WINDOWS-1251',  'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp1251.stats")) ),
+        Array('charset' => 'KOI8-R', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-koi8.stats")) ),
+        Array('charset' => 'CP866', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp866.stats"))  ),
+        Array('charset' => 'ISO-8859-5'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-iso-8859-5.stats")) ),
+        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-cp1252.stats"))  ),
+        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-cp1252.stats")) ),
+        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-cp1252.stats")) ),
+        Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-iso-8859-1.stats")) ),
+        Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats")) ),
+        Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats")) ),
+    ));
+    $encoding = strtoupper($detector->detect($html->plaintext));
+    echo $encoding."\n";///exit();
+    echo "<hr>{$html->plaintext}<hr>";
     
     
     $title = '';
@@ -168,6 +192,7 @@ if (isset($input_vars['url'])) {
             $title = $element->content;
         }
     }
+    //echo "title0=$title"."\n";///exit();
     if (!$title) {
         $title = $html->find("title", 0);
         if ($title) {
@@ -176,6 +201,7 @@ if (isset($input_vars['url'])) {
             $title = '';
         }
     }
+    // echo "title1=$title"."\n";///exit();
     if($encoding!=site_charset){
         try {
             $title=iconv($encoding, site_charset, $title);
@@ -183,6 +209,9 @@ if (isset($input_vars['url'])) {
         }
     }
 
+    echo "title2=$title"."\n";///exit();
+    
+    
     $abstract = '';
     foreach ($html->find('meta') as $element) {
         if (!$abstract && $element->name == 'og:description') {
@@ -199,7 +228,7 @@ if (isset($input_vars['url'])) {
         }
     }
     $abstract.= "<p><a href=\"$url\" target=_blank>$url</a></p>";
-
+exit();
 
     $query = "SELECT id as newid FROM {$GLOBALS['table_prefix']}news 
               WHERE site_id=$site_id AND lang='{$lang}'
@@ -367,6 +396,7 @@ function downloadNext(){
                 document.getElementById('news_sources').value=newsList.join(\"\\n\");
                 setTimeout(downloadNext, 20000);
            }else{
+                /*
                 $.ajax({
                     type: \"POST\",
                     url: \"index.php\",
@@ -379,6 +409,7 @@ function downloadNext(){
                     document.getElementById('news_sources').value=newsList.join(\"\\n\");
                     setTimeout(downloadNext, 20000);
                 })
+                */
            }
         });    
     }else{
