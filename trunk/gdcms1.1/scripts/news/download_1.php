@@ -311,7 +311,7 @@ if (isset($input_vars['url'])) {
         $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
         if($debug) {prn($query);}
         db_execute($query);
-        echo '{"status":"success","news_id":"'.$news_id.'"}';
+        echo '{"status":"success","news_id":"'.$news_id.'","charset":"'.$encoding.'"}';
 
     }else{
         // calculate news id
