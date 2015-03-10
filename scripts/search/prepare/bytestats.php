@@ -9,10 +9,12 @@
 //$lang='rus-koi8';
 //$lang='deu-iso-8859-1';
 //$lang='eng';
+//$lang='eng-iso-8859-1';
+$lang='eng-cp1252';
 //$lang='fra-iso-8859-1';
 //$lang='rus-cp1251';
 //$lang='rus-iso-8859-5';
-$lang='rus-utf8';
+//$lang='rus-utf8';
 $filename = "/home/dobro/wwwroot/cms/_/learning-set/{$lang}.txt";
 
 $file = file_get_contents($filename);
