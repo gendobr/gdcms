@@ -200,17 +200,36 @@ if (isset($input_vars['url'])) {
     //    if($debug) {
     //        echo $encoding;
     //    }
-    $encoding = site_charset;
-    foreach ($html->find('meta') as $element) {
-        if (isset($element->charset)) {
-            $encoding = $element->charset;
-            break;
-        }elseif(preg_match("/charset= *([0-9a-z-]+) *\$/i",$element->content,$matches)){
-            $encoding = $matches[1];
-            break;
-        }
-    }
-    
+    //    $encoding = site_charset;
+    //    foreach ($html->find('meta') as $element) {
+    //        if (isset($element->charset)) {
+    //            $encoding = $element->charset;
+    //            break;
+    //        }elseif(preg_match("/charset= *([0-9a-z-]+) *\$/i",$element->content,$matches)){
+    //            $encoding = $matches[1];
+    //            break;
+    //        }
+    //    }
+    include(script_root.'/search/charset/charset.php');
+    $charsetDataDir=script_root.'/search/charset/data';
+    $detector = new charsetdetector(Array(
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-utf8.stats")) ),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-utf8.stats")) ),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-utf8.stats")) ),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-utf8.stats")) ),
+        Array('charset' => 'WINDOWS-1251',  'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp1251.stats")) ),
+        Array('charset' => 'KOI8-R', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-koi8.stats")) ),
+        Array('charset' => 'CP866', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp866.stats"))  ),
+        Array('charset' => 'ISO-8859-5'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-iso-8859-5.stats")) ),
+        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-cp1252.stats"))  ),
+        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-cp1252.stats")) ),
+        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-cp1252.stats")) ),
+        Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-iso-8859-1.stats")) ),
+        Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats")) ),
+        Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats")) ),
+    ));
+    $encoding = strtoupper($detector->detect($html->plaintext));
+
     
     $title = '';
     foreach ($html->find('meta') as $element) {
@@ -346,7 +365,7 @@ if (isset($input_vars['url'])) {
         if($debug) {prn($query);}
         db_execute($query);
 
-        echo '{"status":"success","news_id":"'.$news_id.'"}';
+        echo '{"status":"success","news_id":"'.$news_id.'","charset":"'.$encoding.'"}';
         return;        
     }
 }
