@@ -66,14 +66,48 @@ $detector = new charsetdetector(Array(
 
 
 
-
-$filename = "rus.txt";
-$str = file_get_contents($filename);
-echo "<hr>{$filename} => " . $detector->detect($str) . "<hr>";
-
-
-
-//$filename = "charset-cp1251.txt";
+//
+//$filename = "rus.txt";
 //$str = file_get_contents($filename);
-//echo "<hr>{$filename} => " . $detector->detect($str) . "<hr>";
-//echo iconv($detector->detect($str), 'UTF-8', $str) . "<hr>";
+//$encoding = $detector->detect($str);
+//echo "<hr>{$filename} => " . $encoding . "<hr>";
+//echo iconv($encoding, 'UTF-8', $str) . "<hr>";
+//echo "<hr><hr><hr><hr>";
+//
+//
+//
+//
+//$str1 = iconv('UTF-8','CP1251',$str);
+//$encoding = $detector->detect($str1);
+//echo "<hr>{$filename} => " . $encoding . "<hr>";
+//echo iconv($encoding, 'UTF-8', $str1) . "<hr>";
+//echo "<hr><hr><hr><hr>";
+//
+//
+//$filename = "rus-koi8r.txt";
+//$str1 = file_get_contents($filename);
+//$encoding = $detector->detect($str1);
+//echo "<hr>{$filename} => " . $encoding . "<hr>";
+//echo iconv($encoding, 'UTF-8', $str1) . "<hr>";
+//echo "<hr><hr><hr><hr>";
+//
+//
+//
+//
+//
+//$filename = "charset-utf8-1.txt";
+//$str1 = file_get_contents($filename);
+//$encoding = $detector->detect($str1);
+//echo "<hr>{$filename} => " . $encoding . "<hr>";
+//echo iconv($encoding, 'UTF-8', $str1) . "<hr>";
+//echo "<hr><hr><hr><hr>";
+//
+
+
+
+$filename = "charset-utf8-2.txt";
+$str1 = file_get_contents($filename);
+$encoding = $detector->detect($str1);
+echo "<hr>{$filename} => " . $encoding . "<hr>";
+echo iconv($encoding, 'UTF-8', $str1) . "<hr>";
+echo "<hr><hr><hr><hr>";
