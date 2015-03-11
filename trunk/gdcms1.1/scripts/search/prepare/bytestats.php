@@ -14,7 +14,7 @@ $langs = Array(
     //'fra-iso-8859-1',
     //'rus-cp1251', 
     //'rus-iso-8859-5', 
-    //'deu-cp1252',
+    //'deu-cp1252',   
 );
 foreach ($langs as $lang) {
 
