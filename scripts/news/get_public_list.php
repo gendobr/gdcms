@@ -134,25 +134,37 @@ $categories = $news_browse_tree;
 // ====================== get category selector = end ==========================
 // ---------------------- tag selector - begin ---------------------------------
 $lang = DbStr($input_vars['lang']);
-$query = "SELECT DISTINCT news_tags.tag
-           FROM {$table_prefix}news_tags AS news_tags
-              , {$table_prefix}news AS news
-           WHERE news_tags.news_id=news.id
-             AND news.lang=news_tags.lang
-             AND news.cense_level>={$this_site_info['cense_level']}
-             AND news.site_id={$site_id}
-             AND news.lang='{$lang}'";
-$tags = db_getrows($query);
+
+run('lib/file_functions');
+// cache info as file in the site dir
+$tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", cachetime);
+if ($tmp) {
+     $tags = $tmp;
+}else{
+    $query = "SELECT DISTINCT news_tags.tag
+               FROM {$table_prefix}news_tags AS news_tags
+                  , {$table_prefix}news AS news
+               WHERE news_tags.news_id=news.id
+                 AND news.lang=news_tags.lang
+                 AND news.cense_level>={$this_site_info['cense_level']}
+                 AND news.site_id={$site_id}
+                 AND news.lang='{$lang}'";
+    $tags = db_getrows($query);
+    set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tags);
+}
+
 //prn($tags);
 $tag_selector = '';
 $selected_tags = Array();
 if (count($tags) > 0) {
     $cnt = count($tags);
-    for ($i = 0; $i < $cnt; $i++)
+    for ($i = 0; $i < $cnt; $i++) {
         $tags[$i] = $tags[$i]['tag'];
+    }
 
-    if (isset($input_vars['tags']) && strlen($input_vars['tags']) > 0)
+    if (isset($input_vars['tags']) && strlen($input_vars['tags']) > 0) {
         $selected_tags = array_intersect($tags, explode(',', $input_vars['tags']));
+    }
 
     $url_prefix = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^tags$|^category_id$|^action$') . '&tags=';
 
