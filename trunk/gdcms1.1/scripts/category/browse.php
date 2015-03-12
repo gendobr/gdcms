@@ -49,7 +49,8 @@ if (is_valid_url($url = trim($this_category_info['category_description']))) {
 
 run('lib/file_functions');
 // cache info as file in the site dir
-$tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 0);
+//$tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 0);
+$tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 600);
 
 if ($tmp) {
     // prn($tmp);
