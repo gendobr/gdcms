@@ -150,7 +150,7 @@ if ($tmp) {
                  AND news.site_id={$site_id}
                  AND news.lang='{$lang}'";
     $tags = db_getrows($query);
-    set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tags);
+    set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", $tags);
 }
 
 //prn($tags);
@@ -228,26 +228,41 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
             $day_options = join(' ', $days);
         }
     } else {
-        $tmp = db_getrows("SELECT DISTINCT month(last_change_date) AS month
-                                  FROM {$table_prefix}news as news
-                                  WHERE news.site_id={$site_id}
-                                   AND  news.cense_level>={$this_site_info['cense_level']}
-                                   AND news.lang='{$lang}'
-                                   AND year(last_change_date)=$news_date_year
-                                  ORDER BY month ASC");
+        $tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", cachetime);
+        if (!$tmp) {
+            $tmp = db_getrows("SELECT DISTINCT month(last_change_date) AS month
+                                      FROM {$table_prefix}news as news
+                                      WHERE news.site_id={$site_id}
+                                       AND  news.cense_level>={$this_site_info['cense_level']}
+                                       AND news.lang='{$lang}'
+                                       AND year(last_change_date)=$news_date_year
+                                      ORDER BY month ASC");
+            set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", $tmp);
+        }
         $months = Array();
         $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_day$|^news_keywords$|^action$') . "&news_date_month=";
-        foreach ($tmp as $tm)
+        foreach ($tmp as $tm) {
             $months[] = "<a href='{$href}{$tm['month']}'>" . $month_names[$tm['month']] . "</a>";
+        }
         $month_options = join(' ', $months);
     }
 } else {
     $all_dates = "<b>{$txt['All_dates']}</b>";
     $years = Array();
     $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^action$') . '&news_date_year=';
-    $tmp = db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$table_prefix}news as news WHERE news.site_id={$site_id} AND  news.cense_level>={$this_site_info['cense_level']} AND news.lang='{$lang}' ORDER BY year ASC");
-    foreach ($tmp as $tm)
+    
+    
+
+    $tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", cachetime);
+    if (!$tmp) {
+        $tmp = db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$table_prefix}news as news WHERE news.site_id={$site_id} AND  news.cense_level>={$this_site_info['cense_level']} AND news.lang='{$lang}' ORDER BY year ASC");
+        set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", $tmp);
+    }
+
+    
+    foreach ($tmp as $tm){
         $years[] = "<a href='{$href}{$tm['year']}'>{$tm['year']}</a>";
+    }
     $year_options = join(' ', $years);
 }
 
@@ -488,13 +503,20 @@ foreach ($menu_groups as $kmg => $mg) {
 }
 //------------------------ get list of languages - begin -----------------------
 # -------------------- get list of page languages - begin --------------------
-$tmp = db_getrows("SELECT DISTINCT lang
+
+$tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
+if (!$tmp) {
+    $tmp = db_getrows("SELECT DISTINCT lang
                      FROM {$table_prefix}news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
+    set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
+}
+
 $existing_languages = Array();
-foreach ($tmp as $tm)
+foreach ($tmp as $tm) {
     $existing_languages[$tm['lang']] = $tm['lang'];
+}
 # prn($existing_languages);
 # -------------------- get list of page languages - end ----------------------
 
