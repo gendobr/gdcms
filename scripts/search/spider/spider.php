@@ -49,7 +49,7 @@ if (count($to_add) > 0) {
 
 $query = "SELECT @date1:=MIN(date_indexed) AS md FROM {$table_prefix}search_index;";
 db_execute($query);
-// prn(db_getrows("SELECT @date1"));
+//prn(db_getrows("SELECT @date1"));
 
 $query = "SELECT * FROM {$table_prefix}search_index WHERE date_indexed=@date1 LIMIT 0,100;";
 $this_url_info = db_getrows($query);
@@ -279,7 +279,8 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
                 checksum='".DbStr($this_url_info['checksum'])."',
                 lang='".DbStr($this_url_info['lang'])."'
             WHERE id=".( (int) $this_url_info['id'])."
-    ";    
+    ";
+    // prn($query);
     db_execute($query);
     echo "<hr>";
     
@@ -307,11 +308,14 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     }
     exit('<hr>OK ('.(microtime(true)-$time_start).'s )');
 } else {
-    $query = "UPDATE {$table_prefix}search_index SET date_indexed=now()";
+    $query = "UPDATE {$table_prefix}search_index SET date_indexed=now() WHERE id=".( (int)$this_url_info['id'] );
     db_execute($query);
     exit('Invalid URL ('.(microtime(true)-$time_start).'s )');
 }
 # ------------------------- get url to index - end -----------------------------
+
+
+// REPAIR TABLE `cms8_search_index` QUICK EXTENDED; 
   echo "
 </body>
 </html>
