@@ -1,26 +1,31 @@
 <?php
 
 $langs = Array(
-//    'rus-utf8', 
+    'rus-cp1251', 
+    'rus-iso-8859-5', 
+    'rus-cp866', 
+    'rus-koi8',
+    'rus-utf8', 
+
     'deu-cp1252', 
-//    'deu-utf8', 
-//    'fra-cp1252', 
-//    'fra-utf8', 
-//    'rus-cp866', 
-//    'rus-koi8',
-//    'deu-iso-8859-1', 
-//    'eng-utf8', 
-//    'eng-iso-8859-1', 
-//    'eng-cp1252', 
-//    'fra-iso-8859-1',
-//    'rus-cp1251', 
-//    'rus-iso-8859-5', 
-//    'rus-utf8'
+    'deu-utf8', 
+    'deu-iso-8859-1', 
+
+    'fra-cp1252', 
+    'fra-utf8', 
+    'fra-iso-8859-1',
+
+    'eng-utf8', 
+    'eng-iso-8859-1', 
+    'eng-cp1252', 
 );
 
 
 
 foreach ($langs as $lang) {
+    
+    echo "$lang : <br>\n";
+    
     $filename = "/home/dobro/wwwroot/cms/_/learning-set/{$lang}.txt";
 
     $file = file_get_contents($filename);
@@ -38,10 +43,11 @@ foreach ($langs as $lang) {
     }
     unset($st);
 
-//print_r($chunks);exit;
+    //print_r($chunks);exit;
 
     $stats = [];
     $cntK = count($chunks);
+    $n=0;
     for ($K = 0; $K < $cntK; $K++) {
         echo "\n\n$K / $cntK\n";
         $pst = $chunks[$K];
@@ -50,7 +56,7 @@ foreach ($langs as $lang) {
         for ($i = 0; $i < $cnt; $i++) {
             $cur = substr($pst, $i, 1);
             if ($v == 1000) {
-                echo "$i-";
+                // echo "$i-";
                 $v = 0;
             }
             $v++;
@@ -71,14 +77,16 @@ foreach ($langs as $lang) {
     }
     asort($stats);
     
+    
     $summa=0;
     $keys=array_keys($stats);
     foreach($keys as $key){
         $summa+=$stats[$key];
-        if($summa<0.01){
+        if($summa<0.001){
             unset($stats[$key]);
         }
     }
+    print_r($stats); //exit();
     
     //echo '<pre>'; print_r($stats);echo '</pre>';
     echo "\n\n$lang - $n bigramms\n";

@@ -80,14 +80,14 @@ foreach ($langs as $lang) {
     $keys = array_keys($stats);
     foreach ($keys as $key) {
         $summa+=$stats[$key];
-        if ($summa < 0.01) {
+        if ($summa < 0.001) {
             unset($stats[$key]);
         }
     }
-//print_r($stats);
-//echo "$n\n\n";
-//exit;
-//echo '<pre>'; print_r($stats);echo '</pre>';
+    //print_r($stats);
+    //echo "$n\n\n";
+    //exit;
+    //echo '<pre>'; print_r($stats);echo '</pre>';
     echo "\n\n$lang - $n bigramms\n";
     file_put_contents(dirname($filename) . "/{$lang}.stats", serialize($stats));
 // $st=explode('<style',$file);
