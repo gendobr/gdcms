@@ -138,6 +138,30 @@ if (isset($input_vars['url'])) {
     //echo $body; exit();
     // ======= downloading one url = end =======================================
     
+    
+    function removeTag($tag, $html) {
+
+        $tag = strtoupper($tag);
+        $openTag = '<' . $tag;
+        $closeTag = '</' . $tag . '>';
+
+        $result = $html;
+        $code = strtoupper($html);
+        $posStart = strpos($code, $openTag);
+        $posFinish = strpos($code, $closeTag);
+
+        while(! ($posStart === false )){
+            // remove block
+            $result = substr($result, 0, $posStart).substr($result, $posFinish + strlen($closeTag));
+            $code = substr($code, 0, $posStart).substr($code, $posFinish + strlen($closeTag));
+            $posStart = strpos($code, $openTag);
+            $posFinish = strpos($code, $closeTag);        
+        }
+        return $result;
+    }
+    $body=removeTag('style', $body);
+    $body=removeTag('script', $body);
+    
     $html = str_get_html($body);
     if (!$html) {
         echo '{"status":"error","message":"cannot download URL"}';
@@ -177,6 +201,8 @@ if (isset($input_vars['url'])) {
         Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats")) ),
         Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats")) ),
     ));
+    
+    
     $encoding = strtoupper($detector->detect($html->plaintext));
     
     
