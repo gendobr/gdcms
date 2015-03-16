@@ -2,6 +2,11 @@
 
 define('max_spider_trials',5);
 
+
+
+$time_start =  microtime(true);
+
+
 echo "
 <html>
    <head>
@@ -9,7 +14,7 @@ echo "
      <META content=\"text/html; charset=".site_charset."\" http-equiv=\"Content-Type\">
    </head>
 <body>
-<a href=index.php?action=site/spider>next</a><br>
+<a href=index.php?action=search/spider/spider&t=".time().">next</a><br>
 ";
 
 
@@ -67,7 +72,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     if (!$this_site_info) {
         $query = "DELETE FROM {$table_prefix}search_index WHERE id=" . ( (int) $this_url_info['id'] );
         db_execute($query);
-        exit('Site not found');
+        exit('Site not found ( '.(microtime(true)-$time_start).'s )');
     }
     # ------------------------- get site info - end ----------------------------
     # 
@@ -79,7 +84,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     if (!is_searchable($this_url_info['url'], $this_site_info)) {
         $query = "DELETE FROM {$table_prefix}site_search WHERE id=" . ( (int) $this_url_info['id'] );
         db_execute($query);
-        exit('URL is forbidden by site setings');
+        exit('URL is forbidden by site setings ('.(microtime(true)-$time_start).'s )');
     }
     // prn($this_site_info); exit();
     // ======= downloading one url = begin =====================================
@@ -109,7 +114,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     if (!preg_match("/Content-Type: *text/i", $headers)) {
         $query = "UPDATE {$table_prefix}search_index SET date_indexed=now(), is_valid=0 WHERE id={$this_url_info['id']}";
         db_execute($query);
-        exit('Wrong Content-Type');
+        exit('Wrong Content-Type ('.(microtime(true)-$time_start).'s )');
     }
 
     
@@ -129,7 +134,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     if (!$html) {
         $query = "UPDATE {$table_prefix}search_index SET date_indexed=now(), is_valid=is_valid-1 WHERE id={$this_url_info['id']}";
         db_execute($query);
-        exit('Error: cannot parse html');
+        exit('Error: cannot parse html ('.(microtime(true)-$time_start).'s )');
     }
 
 
@@ -300,11 +305,11 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
             db_execute($query);
         }
     }
-    exit('<hr>OK');
+    exit('<hr>OK ('.(microtime(true)-$time_start).'s )');
 } else {
     $query = "UPDATE {$table_prefix}search_index SET date_indexed=now()";
     db_execute($query);
-    exit('Invalid URL');
+    exit('Invalid URL ('.(microtime(true)-$time_start).'s )');
 }
 # ------------------------- get url to index - end -----------------------------
   echo "
