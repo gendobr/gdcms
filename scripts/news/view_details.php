@@ -129,7 +129,7 @@ if (get_level($site_id) <= 0 && $this_news_info['cense_level'] < $this_site_info
 //     {show_related_news news_id=$news.id lang=$news.lang site_id=$news.site_id}
 //   {/capture}
 //   {if $related_news}
-//       {txt lang=$text.language_name variants="eng=Similar news::rus=Похожие новости::ukr=Схожі новини"}
+//       {txt lang=$text.language_name variants="eng=Similar news::rus=пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ::ukr=пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"}
 //       {$related_news}
 //   {/if}
 
@@ -359,7 +359,7 @@ class NewsComments {
                 if ($parent_position >= 0) {
                     $old_next = $list[$parent_position]['next'];
                     $list[$parent_position]['next'] = $i;
-                    // найти хвост списка, который начинается с элемента $i
+                    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ $i
                     $j = $i;
                     while ($list[$j]['next'] >= 0) {
                         $j = $list[$j]['next'];

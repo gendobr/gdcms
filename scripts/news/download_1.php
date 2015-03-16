@@ -185,7 +185,29 @@ if (isset($input_vars['url'])) {
 //    }
     
     
-    
+    function removeTag($tag, $html) {
+
+        $tag = strtoupper($tag);
+        $openTag = '<' . $tag;
+        $closeTag = '</' . $tag . '>';
+
+        $result = $html;
+        $code = strtoupper($html);
+        $posStart = strpos($code, $openTag);
+        $posFinish = strpos($code, $closeTag);
+
+        while(! ($posStart === false )){
+            // remove block
+            $result = substr($result, 0, $posStart).substr($result, $posFinish + strlen($closeTag));
+            $code = substr($code, 0, $posStart).substr($code, $posFinish + strlen($closeTag));
+            $posStart = strpos($code, $openTag);
+            $posFinish = strpos($code, $closeTag);        
+        }
+        return $result;
+    }
+    $body=removeTag('style', $body);
+    $body=removeTag('script', $body);
+
     // ======= downloading one url = end =======================================
     
     $html = str_get_html($body);
