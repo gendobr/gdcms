@@ -1,17 +1,17 @@
 CREATE TABLE `cms_search_index` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `site_id` bigint(20) NOT NULL DEFAULT '0',
-  `url` varchar(255) DEFAULT NULL,
-  `size` int(11) DEFAULT NULL,
-  `title` text,
-  `words` text,
-  `date_indexed` datetime DEFAULT NULL,
-  `is_valid` tinyint(4) NOT NULL DEFAULT '1',
-  `checksum` varchar(32) DEFAULT NULL,
+  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `site_id` BIGINT(20) NOT NULL DEFAULT '0',
+  `url` VARCHAR(4096) DEFAULT NULL,
+  `size` INT(11) DEFAULT NULL,
+  `title` TEXT,
+  `words` TEXT,
+  `date_indexed` DATETIME DEFAULT NULL,
+  `is_valid` TINYINT(4) NOT NULL DEFAULT '1',
+  `checksum` VARCHAR(32) DEFAULT NULL,
+  `lang` VARCHAR(3) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `date_indexed` (`date_indexed`),
   KEY `site_id` (`site_id`),
-  KEY `url` (`url`),
-  KEY `checksum` (`checksum`),
-  FULLTEXT KEY `words` (`words`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8
+  KEY `url` (`url`(333)),
+  KEY `checksum` (`checksum`)
+) ENGINE=INNODB AUTO_INCREMENT=22351 DEFAULT CHARSET=utf8;
