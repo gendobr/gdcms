@@ -395,6 +395,9 @@ class CategoryNews {
                 case 'weight':
                     $ordering[]='news.weight '.$tmp[$i][1];
                     break;
+                case 'id':
+                    $ordering[]='news.id '.$tmp[$i][1];
+                    break;
             }
         }
         //prn($ordering);
