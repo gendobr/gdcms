@@ -210,6 +210,11 @@ foreach($input_vars['dates'] as $dt){
             return;
         }
         // --------------- add new date - end ----------------------------------
+        
+        
+        if(!isset($month)){ $month=$new_pochmis;}
+        if(!isset($year)) {$year=$new_pochrik;}
+        if(!isset($day)) {$day=$new_pochday;}
 }
 $tmp = db_getrows("SELECT * FROM {$table_prefix}calendar_date WHERE calendar_id={$calendar_info['id']}");
 $calendar_info['dates'] = Array();
@@ -249,7 +254,7 @@ if(isset($input_vars['categories'])){
    $query="DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990";
    db_execute($query);
 
-$calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_id={$site_id}&month={month}&year={year}&day={day}";
+$calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_id={$site_id}&month={$month}&year={$year}&day={$day}";
 
 event_recache_days($calendar_info['id']);
 
