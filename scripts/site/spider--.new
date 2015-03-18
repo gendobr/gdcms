@@ -1,0 +1,4 @@
+#!/bin/sh
+/usr/local/bin/wget -q -O /usr/home/dobro/sites.zhu.edu.ua/cms/scripts/site/spider.txt http://sites.zhu.edu.ua/cms/index.php?action=site/spider
+cat /usr/home/dobro/sites.zhu.edu.ua/cms/scripts/site/spider.txt >> /usr/home/dobro/sites.zhu.edu.ua/cms/scripts/site/spider.log.txt
+#rm -f /usr/home/dobro/sites.zhu.edu.ua/cms/scripts/site/spider.txt
