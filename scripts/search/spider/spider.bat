@@ -1,0 +1,1 @@
+C:\Inetpub\wwwroot\cms\scripts\wget\wget http://www.zsu.zp.ua/cms/index.php?action=site/spider --output-document=C:/Inetpub/wwwroot/cms/template_cache/file.txt --quiet
