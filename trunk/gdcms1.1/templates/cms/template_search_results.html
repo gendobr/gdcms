@@ -1,8 +1,7 @@
 
-
-
-<div align=center>
-<form action={$form_action} method=post>
+<div>
+<form action=/cms/index.php method=post>
+<input type=hidden name=action value='search/query/query'>
 <input type=hidden name=site_id value='{$form_site_id}'>
 <input type=hidden name=lang value='{$form_lang}'>
 <INPUT type=text NAME=keywords SIZE=40 value='{$form_keywords}'>
@@ -12,21 +11,21 @@
 
 {if $form_keywords ne ''}
 
-<br>
 
   <div align=left style="font-size:110%;">
-  <b>{$text.Search} "{$form_keywords}"<br><br>
-
+  <b>{$text.Search} "{$form_keywords}" :
   {$urls_found} {$text.URLs_found}</b></div>
+
   <br />
 
   {foreach from=$search_result item=page}
     <div style="padding:5px;border:1px solid silver;margin-bottom:5px;">
-      <b><a href="{$page.url}">{$page.title}</a></b>,
-      {$text.Site} <i>{$page.site_title}</i><br />
+      <h4><a href="{$page.url}">{$page.title}</a></h4>
+      <div><a href="{$page.site_url}">{$page.site_title}</a></div>
       <i style='font-size:90%;'>{$page.date_indexed}</i>
       <i style='font-size:90%;'>{$page.size} bytes</i><br/>
-      {* $text.Found_words_are} : {$page.show_words *}
+
+      {* $text.Found_words_are} : {$page.show_words} *}
       {* {$page.id} {$page.rel} *}
     </div>
   {/foreach}
@@ -37,6 +36,7 @@
   <div align=left>
     {$text.Pages} : {foreach from=$paging_links item=link} <a href="{$link.URL}">{$link.innerHTML}</a> {/foreach}
   </div>
+
   {/if}
 
 
@@ -46,4 +46,3 @@
 
 
 <br />
-
