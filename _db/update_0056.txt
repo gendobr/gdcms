@@ -1,0 +1,10 @@
+CREATE TABLE `cms_search_index_cache` (
+  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `site_id` BIGINT(20) NOT NULL DEFAULT '0',
+  `url` VARCHAR(4096) DEFAULT NULL,
+  `size` INT(11) DEFAULT NULL,
+  `title` TEXT,
+  `words` TEXT,
+  `date_indexed` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
