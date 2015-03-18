@@ -1,20 +1,20 @@
 <?php
 
-define('max_spider_trials',5);
+define('max_spider_trials', 5);
 
 
 
-$time_start =  microtime(true);
+$time_start = microtime(true);
 
 
 echo "
 <html>
    <head>
      <meta http-equiv=\"Refresh\" content=\"10;URL=index.php?action=search/spider/spider\">
-     <META content=\"text/html; charset=".site_charset."\" http-equiv=\"Content-Type\">
+     <META content=\"text/html; charset=" . site_charset . "\" http-equiv=\"Content-Type\">
    </head>
 <body>
-<a href=index.php?action=search/spider/spider&t=".time().">next</a><br>
+<a href=index.php?action=search/spider/spider&t=" . time() . ">next</a><br>
 ";
 
 
@@ -45,6 +45,14 @@ if (count($to_add) > 0) {
     db_execute($query);
 }
 # ----------- check if all sites are taken into account - end ------------------
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
 # ------------------------- get url to index - begin ---------------------------
 
 $query = "SELECT @date1:=MIN(date_indexed) AS md FROM {$table_prefix}search_index;";
@@ -55,6 +63,7 @@ $query = "SELECT * FROM {$table_prefix}search_index WHERE date_indexed=@date1 LI
 $this_url_info = db_getrows($query);
 
 $max = count($this_url_info);
+prn($max.' URLs');
 if ($max > 0) {
     $this_url_info = $this_url_info[rand(0, $max - 1)];
 }
@@ -72,22 +81,27 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     if (!$this_site_info) {
         $query = "DELETE FROM {$table_prefix}search_index WHERE id=" . ( (int) $this_url_info['id'] );
         db_execute($query);
-        exit('Site not found ( '.(microtime(true)-$time_start).'s )');
+        exit('Site not found ( ' . (microtime(true) - $time_start) . 's )');
     }
     # ------------------------- get site info - end ----------------------------
-    # 
-    # 
-    # 
+
 
     run('search/spider/functions');
-    # check if the URL is valid
+    # -------------------- check if the URL is valid - begin -------------------
     if (!is_searchable($this_url_info['url'], $this_site_info)) {
         $query = "DELETE FROM {$table_prefix}site_search WHERE id=" . ( (int) $this_url_info['id'] );
         db_execute($query);
-        exit('URL is forbidden by site setings ('.(microtime(true)-$time_start).'s )');
+        exit('URL is forbidden by site setings (' . (microtime(true) - $time_start) . 's )');
     }
     // prn($this_site_info); exit();
-    // ======= downloading one url = begin =====================================
+    # -------------------- check if the URL is valid - end ---------------------
+    # 
+    # 
+    # 
+    # 
+    # 
+    # 
+    # ------- downloading one url - begin --------------------------------------
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $this_url_info['url']); // set url to post to 
     curl_setopt($ch, CURLOPT_FAILONERROR, 1);
@@ -106,23 +120,34 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     // echo curl_error ($ch ).'<br>';
     curl_close($ch);
     //echo $body; exit();
-    // ======= downloading one url = end =======================================
     //prn(rawurlencode($body));exit('4');
-    
+    # ------- downloading one url - end ----------------------------------------
+    # 
+    # 
+    # 
+    # 
+    # --------- check http headers - begin -------------------------------------
     $headers = preg_split("/\\r\\n\\r\\n|\\n\\n/", $body);
     $headers = $headers[0];
     if (!preg_match("/Content-Type: *text/i", $headers)) {
         $query = "UPDATE {$table_prefix}search_index SET date_indexed=now(), is_valid=0 WHERE id={$this_url_info['id']}";
         db_execute($query);
-        exit('Wrong Content-Type ('.(microtime(true)-$time_start).'s )');
+        exit('Wrong Content-Type (' . (microtime(true) - $time_start) . 's )');
     }
+    # --------- check http headers - end ---------------------------------------
 
+
+
+    #  remove headers from reply
+    $body = str_replace($headers, '', $body);
+    
+    # get checksum 
+    $this_url_info['checksum'] = md5($body);
     
     
     
-    $body=str_replace($headers,'',$body);
-    $this_url_info['checksum']=md5($body);
-    $this_url_info['size']=strlen($body);
+    # get reply size
+    $this_url_info['size'] = strlen($body);
     //prn(htmlspecialchars($body));
 
     $body = removeTag('script', $body);
@@ -134,7 +159,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     if (!$html) {
         $query = "UPDATE {$table_prefix}search_index SET date_indexed=now(), is_valid=is_valid-1 WHERE id={$this_url_info['id']}";
         db_execute($query);
-        exit('Error: cannot parse html ('.(microtime(true)-$time_start).'s )');
+        exit('Error: cannot parse html (' . (microtime(true) - $time_start) . 's )');
     }
 
 
@@ -162,7 +187,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
 
     // prn($encoding, htmlspecialchars($html->plaintext));
     // exit('11');
-    
+
     $title = '';
     foreach ($html->find('meta') as $element) {
         if ($element->property == 'og:title') {
@@ -185,12 +210,12 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
         }
     }
 
-    $this_url_info['date_indexed']=date('Y-m-d H:i:s');
+    $this_url_info['date_indexed'] = date('Y-m-d H:i:s');
 
     //prn($encoding, htmlspecialchars($title));
     //exit('12');
-    
-    
+
+
     include (script_root . "/search/tokenizer/tokenizer.php");
     include (script_root . "/search/tokenizer/tokenizer_ukr.php");
     include (script_root . "/search/tokenizer/tokenizer_rus.php");
@@ -235,11 +260,11 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     $lang = $langSelector->getTextLang($remainder);
     $lang = $lang['lang'];
     if (!$title) {
-        $title=  get_langstring($this_site_info['title'], $lang);
+        $title = get_langstring($this_site_info['title'], $lang);
     }
-    $this_url_info['lang']=$lang;
-    $this_url_info['title']=$title;
-    
+    $this_url_info['lang'] = $lang;
+    $this_url_info['title'] = $title;
+
     $checkedLangs = Array();
     while (true) {
         if (isset($checkedLangs[$lang])) {
@@ -262,61 +287,65 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
         $remainder = $reply['remainder'];
         $lang = $langSelector->getTextLang($remainder);
         $lang = $lang['lang'];
-
     }
     //print_r(join(' ',$tokens));
-    $this_url_info['words']=join(' ',array_map(function($x){return join(' ',  $x);},$tokens));
+    $this_url_info['words'] = join(' ', array_map(function($x) {return join(' ', $x);}, $tokens));
     print_r($this_url_info);
-    
+
     // update db record
-    $query="UPDATE {$table_prefix}search_index
-            SET url='".DbStr($this_url_info['url'])."',
-                size=".( (int) $this_url_info['size']).",
-                title='".DbStr($this_url_info['title'])."',
-                words='".DbStr($this_url_info['words'])."',
+    $query = "UPDATE {$table_prefix}search_index
+            SET url='" . DbStr($this_url_info['url']) . "',
+                size=" . ( (int) $this_url_info['size']) . ",
+                title='" . DbStr($this_url_info['title']) . "',
+                words='" . DbStr($this_url_info['words']) . "',
                 date_indexed=now(),
-                is_valid=".max_spider_trials.",
-                checksum='".DbStr($this_url_info['checksum'])."',
-                lang='".DbStr($this_url_info['lang'])."'
-            WHERE id=".( (int) $this_url_info['id'])."
+                is_valid=" . max_spider_trials . ",
+                checksum='" . DbStr($this_url_info['checksum']) . "',
+                lang='" . DbStr($this_url_info['lang']) . "'
+            WHERE id=" . ( (int) $this_url_info['id']) . "
     ";
     // prn($query);
     db_execute($query);
-    echo "<hr>";
     
     
-    
-    
-    // search URLs    
-    $links=get_links($this_url_info['url'], $body, $this_site_info);
-    prn($links);
-    
-    // create new records if needed
-    if(count($links) > 0){
-        $query = "SELECT url FROM {$table_prefix}search_index WHERE url IN ('" . join("','", $links) . "');";
-        $existing_links = array_map(function($el){return $el['url'];},db_getrows($query));
-        $urls_to_add = array_diff($links, $existing_links);
-        if(count($urls_to_add)>0){
-            $insertSql=Array();
-            foreach($urls_to_add as $url_to_add){
-                $insertSql[]="({$this_url_info['site_id']},'".  DbStr($url_to_add)."', ".max_spider_trials.",'".date('Y-m-d H:i:s', time() - rand(1000, 2000))."')";
+    # mark other rows with the same checksum as invalid
+    $query = "UPDATE {$table_prefix}search_index SET is_valid=0 WHERE checksum='" . DbStr($this_url_info['checksum']) . "' ";
+    db_execute($query);
 
+    echo "<hr>";
+
+
+
+
+    // search URLs    
+    $links = get_links($this_url_info['url'], $body, $this_site_info);
+    prn($links);
+
+    // create new records if needed
+    if (count($links) > 0) {
+        $query = "SELECT url FROM {$table_prefix}search_index WHERE url IN ('" . join("','", $links) . "');";
+        $existing_links = array_map(function($el) {
+            return $el['url'];
+        }, db_getrows($query));
+        $urls_to_add = array_diff($links, $existing_links);
+        if (count($urls_to_add) > 0) {
+            $insertSql = Array();
+            foreach ($urls_to_add as $url_to_add) {
+                $insertSql[] = "({$this_url_info['site_id']},'" . DbStr($url_to_add) . "', " . max_spider_trials . ",'" . date('Y-m-d H:i:s', time() - rand(1000, 2000)) . "')";
             }
-            $query="insert into {$table_prefix}search_index(site_id,url,is_valid,date_indexed) values ".join(',',$insertSql);
+            $query = "insert into {$table_prefix}search_index(site_id,url,is_valid,date_indexed) values " . join(',', $insertSql);
             db_execute($query);
         }
     }
-    exit('<hr>OK ('.(microtime(true)-$time_start).'s )');
+    exit('<hr>OK (' . (microtime(true) - $time_start) . 's )');
 } else {
-    $query = "UPDATE {$table_prefix}search_index SET date_indexed=now() WHERE id=".( (int)$this_url_info['id'] );
+    $query = "UPDATE {$table_prefix}search_index SET date_indexed=now() WHERE id=" . ( (int) $this_url_info['id'] );
     db_execute($query);
-    exit('Invalid URL ('.(microtime(true)-$time_start).'s )');
+    exit('Invalid URL (' . (microtime(true) - $time_start) . 's )');
 }
 # ------------------------- get url to index - end -----------------------------
-
-
 // REPAIR TABLE `cms8_search_index` QUICK EXTENDED; 
-  echo "
+echo "
 </body>
 </html>
 ";
