@@ -101,16 +101,20 @@ if (is_logged()) {
             , 'attributes' => ''
         );
 
+        $input_vars['page_menu']['admin']['items']['search/spider/recreateindex'] = Array(
+            'URL' => "index.php?action=search/spider/recreateindex&key=".md5(local_root)
+            , 'innerHTML' => 'Re-create full text search index'
+            , 'attributes' => ' target=_blank '
+        );
 
     }
 
     $input_vars['page_menu']['admin']['items']['site/spider'] = Array(
-        'URL' => "index.php?action=site/spider"
-        , 'innerHTML' => $text['Run_spider']
+        'URL' => "index.php?action=search/spider/spider"
+        , 'innerHTML' => 'Run spider'
         , 'attributes' => ' target=_blank '
     );
 
-    
     // get user sites
     $keys=array_keys($_SESSION['user_info']['sites']);
     foreach($keys as &$val){
@@ -137,11 +141,3 @@ $input_vars['page_menu']['main']['items']['manual'] = Array(
     , 'innerHTML' => $text['Manual']
     , 'attributes' => ' target=_blank '
 );
-//
-//
-//$input_vars['page_menu']['main']['items']['howto'] = Array(
-//    'URL' => "man/faq.html"
-//    , 'innerHTML' => 'FAQ'
-//    , 'attributes' => ' target=_blank '
-//);
-?>
