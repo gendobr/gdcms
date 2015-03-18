@@ -41,7 +41,15 @@ class tokenizer_ukr implements tokenizer {
                 $remainder.=$char;
             }
         }
-        
+        if (mb_strlen($token, self::$encoding) > 0) {
+            // апострофи на початку та в кінці слів
+            $token = preg_replace("/^'+|'+\$/", '', $token);
+            $token = preg_replace("/ +/", " ", $token);
+            if (mb_strlen($token, self::$encoding) > 0) {
+                $token = explode(' ', $token);
+                $tokens = array_merge($tokens, $token);
+            }
+        }
         return Array('tokens'=>$tokens,'remainder'=>$remainder);
     }
 
