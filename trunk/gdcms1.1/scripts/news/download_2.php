@@ -193,7 +193,7 @@ if (isset($input_vars['url'])) {
         Array('charset' => 'WINDOWS-1251',  'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp1251.stats")) ),
         // Array('charset' => 'KOI8-R', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-koi8.stats")) ),
         // Array('charset' => 'CP866', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp866.stats"))  ),
-        Array('charset' => 'ISO-8859-5'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-iso-8859-5.stats")) ),
+        // Array('charset' => 'ISO-8859-5'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-iso-8859-5.stats")) ),
         Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-cp1252.stats"))  ),
         Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-cp1252.stats")) ),
         Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-cp1252.stats")) ),
