@@ -12,7 +12,7 @@ if (isset($input_vars['interface_lang']) && $input_vars['interface_lang']) {
     $input_vars['lang'] = $input_vars['interface_lang'];
 }
 $input_vars['lang'] = $_SESSION['lang'];
-$lang = get_language('lang');
+$input_vars['lang'] = $lang = get_language('lang');
 $txt = load_msg($input_vars['lang']);
 // -------------------------- get language - end -------------------------------
 // 
@@ -133,9 +133,10 @@ if (strlen($keywords) > 0) {
             FROM {$GLOBALS['table_prefix']}search_index_cache AS ss
             WHERE MATCH (words) AGAINST ('" . DbStr($keywords) . "')
                 AND site_id IN(" . join(',', $siteIds) . ")
+                AND lang='".  DbStr($input_vars['lang'])."'
             LIMIT 0,101;";
     $search_result = db_getrows($query);
-    // prn($query);
+    echo '<!-- '; prn($query); echo ' -->';
 
     // extract site info
     $tmp = db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}site WHERE id IN(" . join(',', $siteIds) . ")");
