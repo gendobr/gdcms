@@ -2,16 +2,20 @@
 
 # -------------------- number of news in the block - begin ---------------------
 $rows = rows_per_page;
-if (isset($input_vars['rows']))
+if (isset($input_vars['rows'])) {
     $rows = (int) $input_vars['rows'];
-if ($rows <= 0 or $rows > 10000)
+}
+if ($rows <= 0 or $rows > 10000) {
     $rows = rows_per_page;
+}
 # -------------------- number of news in the block - end -----------------------
 # -------------------- if abstracts should be shown - begin --------------------
 $show_abstracts = true;
-if (isset($input_vars['abstracts']))
-    if ($input_vars['abstracts'] == 'no')
+if (isset($input_vars['abstracts'])) {
+    if ($input_vars['abstracts'] == 'no') {
         $show_abstracts = false;
+    }
+}
 # -------------------- if abstracts should be shown - end ----------------------
 
 
@@ -20,40 +24,47 @@ run('news/menu');
 
 $debug = false;
 
-if (isset($input_vars['interface_lang']))
-    if ($input_vars['interface_lang'])
-        $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
+if (isset($input_vars['interface_lang']) && $input_vars['interface_lang']) {
+    $input_vars['lang'] = $input_vars['interface_lang'];
+}
+if (!isset($input_vars['lang'])) {
     $input_vars['lang'] = default_language;
-if (strlen($input_vars['lang']) == 0)
+}
+if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = default_language;
+}
 $input_vars['lang'] = get_language('lang');
 
-//-------------------------- load messages - begin -----------------------------
+# -------------------------- load messages - begin -----------------------------
 global $txt;
 $txt = load_msg($input_vars['lang']);
-//-------------------------- load messages - end -------------------------------
-//
-//------------------- get site info - begin ------------------------------------
-if (!function_exists('get_site_info'))
+# -------------------------- load messages - end -------------------------------
+#
+# ------------------- get site info - begin ------------------------------------
+if (!function_exists('get_site_info')) {
     run('site/menu');
+}
 $site_id = checkInt($input_vars['site_id']);
 $this_site_info = get_site_info($site_id);
-//prn($this_site_info);die();
-//prn($input_vars);
-if (!$this_site_info)
+if (!$this_site_info) {
     die($txt['Site_not_found']);
-//------------------- get site info - end --------------------------------------
-//
-//--------------------------- get site template - begin ------------------------
-// $custom_page_template = sites_root . '/' . $this_site_info['dir'] . '/template_index.html';
+}
+# ------------------- get site info - end --------------------------------------
+#
+#
+#
+#
+#
+# --------------------------- get site template - begin ------------------------
 $custom_page_template = site_get_template($this_site_info, 'template_index.html', false);
-// prn('$news_template',$news_template);
-if (is_file($custom_page_template))
-    $this_site_info['template'] = $custom_page_template;
-//--------------------------- get site template - end --------------------------
-//
-// ====================== get category selector = begin ========================
+# --------------------------- get site template - end --------------------------
+#
+#
+#
+#
+#
+#
+# ====================== get category selector = begin =========================
 if (!class_exists('news_browse_tree')) {
     run('lib/class_tree1');
     run('lib/class_tree2');
@@ -72,21 +83,11 @@ if (!class_exists('news_browse_tree')) {
         function restrict_children() {
             global $table_prefix, $db, $input_vars;
             $child_ids = Array();
-            foreach ($this->children as $ke => $ch)
+            foreach ($this->children as $ke => $ch) {
                 $child_ids[$ke] = (int) $ch['category_id'];
+            }
             if (count($child_ids) > 0) {
-                /*
-                  $query="SELECT pa.category_id
-                  FROM {$table_prefix}category as ch
-                  ,{$table_prefix}category as pa
-                  ,{$table_prefix}news as news
-                  WHERE pa.category_id in(".join(',',$child_ids).")
-                  AND pa.start<=ch.start AND ch.finish<=pa.finish
-                  AND news.category_id = ch.category_id
-                  AND news.lang = '".DbStr($input_vars['lang'])."'";
-                 */
-                $query =
-                        "select pa.category_id
+                $query = "select pa.category_id
                 from {$table_prefix}category as pa
                      STRAIGHT_JOIN {$table_prefix}category as ch
                      STRAIGHT_JOIN {$table_prefix}news_category as nc
@@ -99,15 +100,19 @@ if (!class_exists('news_browse_tree')) {
                 $visible_children = db_getrows($query);
                 //prn($visible_children);
                 $cnt = count($visible_children);
-                for ($i = 0; $i < $cnt; $i++)
+                for ($i = 0; $i < $cnt; $i++) {
                     $visible_children[$i] = $visible_children[$i]['category_id'];
-            }else
+                }
+            } else {
                 $visible_children = Array();
+            }
 
             $cnt = count($this->children);
-            for ($i = 0; $i < $cnt; $i++)
-                if (!in_array($this->children[$i]['category_id'], $visible_children))
+            for ($i = 0; $i < $cnt; $i++) {
+                if (!in_array($this->children[$i]['category_id'], $visible_children)) {
                     unset($this->children[$i]);
+                }
+            }
             $this->children = array_values($this->children);
         }
 
@@ -131,16 +136,23 @@ $category_selector = $news_browse_tree->draw();
 $categories = $news_browse_tree;
 #   prn($news_browse_tree);
 #  echo $category_selector;
-// ====================== get category selector = end ==========================
-// ---------------------- tag selector - begin ---------------------------------
+# ====================== get category selector = end ==========================
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# ---------------------- tag selector - begin ----------------------------------
 $lang = DbStr($input_vars['lang']);
 
 run('lib/file_functions');
 // cache info as file in the site dir
 $tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", cachetime);
 if ($tmp) {
-     $tags = $tmp;
-}else{
+    $tags = $tmp;
+} else {
     $query = "SELECT DISTINCT news_tags.tag
                FROM {$table_prefix}news_tags AS news_tags
                   , {$table_prefix}news AS news
@@ -181,11 +193,17 @@ if (count($tags) > 0) {
         }
     }
     //prn(checkStr($tag_selector));
-    if (strlen($tag_selector) > 0)
+    if (strlen($tag_selector) > 0) {
         $tag_selector = "<div><b>{$txt['News_tags']}</b><br>$tag_selector</div>";
+    }
     //prn($tag_selector);
 }
-// ---------------------- tag selector - end -----------------------------------
+# ---------------------- tag selector - end ------------------------------------
+# 
+# 
+# 
+# 
+# 
 # --------------------- draw date selector - begin -----------------------------
 # site_id=1&lang=ukr&news_date_year=2007&news_date_month=1&news_date_day=29
 $lang = DbStr($input_vars['lang']);
@@ -250,8 +268,8 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
     $all_dates = "<b>{$txt['All_dates']}</b>";
     $years = Array();
     $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^action$') . '&news_date_year=';
-    
-    
+
+
 
     $tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", cachetime);
     if (!$tmp) {
@@ -259,8 +277,8 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
         set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", $tmp);
     }
 
-    
-    foreach ($tmp as $tm){
+
+    foreach ($tmp as $tm) {
         $years[] = "<a href='{$href}{$tm['year']}'>{$tm['year']}</a>";
     }
     $year_options = join(' ', $years);
@@ -270,86 +288,101 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
 # news search form
 $news_date_selector = "<div>$all_dates</div>";
 $news_date_selector.="<div>{$txt['Year']} : {$year_options} </div>";
-if (isset($month_options) && strlen($month_options) > 0)
+if (isset($month_options) && strlen($month_options) > 0) {
     $news_date_selector.="<div>{$txt['Month']} : {$month_options} </div>";
-if (isset($day_options) && strlen($day_options) > 0)
+}
+if (isset($day_options) && strlen($day_options) > 0) {
     $news_date_selector.="<div>{$txt['Day']} : {$day_options} </div>";
+}
 
 # --------------------- draw date selector - end -------------------------------
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
 # --------------------- draw keyword search form - begin -----------------------
 $news_keywords = trim(isset($input_vars['news_keywords']) ? $input_vars['news_keywords'] : '');
-//$news_keywords_selector="
-//  <form action=".site_root_URL."/index.php>
-//  <input type=hidden name=action value=news/view>
-//  <input type=hidden name=site_id value=$site_id>
-//  <input type=text name=news_keywords value=\"{$news_keywords}\">
-//  <input type=submit value=\"{$txt['Search']}\">
-//  </form>
-//  ";
 $news_keywords_selector = "
     <form action=\"" . url_prefix_news_list . "site_id=$site_id\" method=\"post\">
     <input type=text name=news_keywords value=\"{$news_keywords}\">
     <input type=submit value=\"{$txt['Search']}\">
     </form>
     ";
-
 # --------------------- draw keyword search form - end -------------------------
-//------------------- get list of news - begin ---------------------------------
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# ------------------- get list of news - begin ---------------------------------
 
 $lang = DbStr($input_vars['lang']);
 
 
-# --------------------------- get list of news - begin -----------------------
-
-
-
-
+# ------------------------- category restriction - begin -----------------------
 if (isset($input_vars['category_id'])) {
-    $category_ids=preg_split("/(;|:|,| )+/", $input_vars['category_id']);
-    for($i=0,$cnt=count($category_ids);$i<$cnt;$i++){
-      $category_ids[$i]*=1;
-      if($category_ids[$i]<=0){
-         unset($category_ids[$i]);
-      }
+    $category_ids = preg_split("/(;|:|,| )+/", $input_vars['category_id']);
+    for ($i = 0, $cnt = count($category_ids); $i < $cnt; $i++) {
+        $category_ids[$i]*=1;
+        if ($category_ids[$i] <= 0) {
+            unset($category_ids[$i]);
+        }
     }
-    $category_ids=array_values($category_ids);
+    $category_ids = array_values($category_ids);
 
-    if(count($category_ids)>0){
-      $category_ids=join(',',$category_ids);
-      if (isset($input_vars['category_filter_mode'])) {
-        $category_restriction = "
+    if (count($category_ids) > 0) {
+        $category_ids = join(',', $category_ids);
+        if (isset($input_vars['category_filter_mode'])) {
+            $category_restriction = "
                inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
                inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id)
                inner join {$GLOBALS['table_prefix']}category as pa on (pa.start<=ch.start and ch.finish<=pa.finish and pa.category_id in({$category_ids}))
               ";
-      } else {
-        $category_restriction = "
+        } else {
+            $category_restriction = "
                inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
                inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id and ch.category_id  in({$category_ids}))
               ";
-      }
-
+        }
     }
     //$category_restriction="AND ne.category_id={$news_browse_tree->info['category_id']}";
-}else
+} else {
     $category_restriction = '';
-# ------------------------- category restriction - end ---------------------
-
-
-
-
-
-# ------------------------- date restriction - begin -----------------------
+}
+# ------------------------- category restriction - end -------------------------
+# 
+# 
+# 
+# 
+# 
+# 
+# ------------------------- date restriction - begin ---------------------------
 $news_date_restriction = '';
-if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']) > 0)
+if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']) > 0) {
     $news_date_restriction.="  AND YEAR(ne.last_change_date)=" . ((int) $input_vars['news_date_year']);
-if (isset($input_vars['news_date_month']) && strlen($input_vars['news_date_month']) > 0)
+}
+if (isset($input_vars['news_date_month']) && strlen($input_vars['news_date_month']) > 0) {
     $news_date_restriction.="  AND MONTH(ne.last_change_date)=" . ((int) $input_vars['news_date_month']);
-if (isset($input_vars['news_date_day']) && strlen($input_vars['news_date_day']) > 0)
+}
+if (isset($input_vars['news_date_day']) && strlen($input_vars['news_date_day']) > 0) {
     $news_date_restriction.="  AND DAYOFMONTH(ne.last_change_date)=" . ((int) $input_vars['news_date_day']);
+}
 #prn($news_date_restriction);
-# ------------------------- date restriction - end -------------------------
-# ------------------------- keyword restriction - begin --------------------
+# ------------------------- date restriction - end -----------------------------
+# 
+# 
+# 
+# 
+# 
+# ------------------------- keyword restriction - begin ------------------------
 $news_keywords_restriction = '';
 if (strlen($news_keywords) > 0) {
     # $news_keywords
@@ -359,55 +392,78 @@ if (strlen($news_keywords) > 0) {
     for ($i = 0; $i < $cnt; $i++) {
         if (strlen($news_keywords_restriction[$i]) > 0) {
             $news_keywords_restriction[$i] = sprintf($tmp, DbStr($news_keywords_restriction[$i]));
-        }
-        else
+        } else {
             unset($news_keywords_restriction[$i]);
+        }
     }
     if (count($news_keywords_restriction) > 0) {
         $news_keywords_restriction = ' AND ' . join(' AND ', $news_keywords_restriction);
-    }
-    else
+    } else
         $news_keywords_restriction = '';
 }
 # prn('$news_keywords_restriction='.$news_keywords_restriction);
-# ------------------------- keyword restriction - end ----------------------
-# ------------------------- tag restriction - begin ------------------------
+# ------------------------- keyword restriction - end --------------------------
+# 
+# 
+# 
+# 
+# ------------------------- tag restriction - begin ----------------------------
 if (count($selected_tags) > 0) {
     $news_tags_restriction = '';
     foreach ($selected_tags as $tg) {
         //$news_tags_restriction.=" AND FIND_IN_SET('" . DbStr($tg) . "',tags)>0 ";
         $news_tags_restriction.=" AND LOCATE('" . DbStr(trim($tg)) . "',tags)>0 ";
     }
-}
-else
+} else {
     $news_tags_restriction = '';
-# ------------------------- tag restriction - end --------------------------
-
-if (!isset($input_vars['start']))
+}
+# ------------------------- tag restriction - end ------------------------------
+# 
+# 
+# 
+# ------------------------- page start - begin ---------------------------------
+if (!isset($input_vars['start'])) {
     $input_vars['start'] = 0;
+}
 $start = abs(round(1 * $input_vars['start']));
-
-
-// ------------------  set custom ordering - begin -----------------------------
-$orderby = isset($_REQUEST['orderby']) ? trim($_REQUEST['orderby']) : '';
-if (strlen($orderby) > 0) {
-    $orderby = explode(' ', $_REQUEST['orderby']);
-    if (in_array($orderby[0], array('id', 'title', 'last_change_date', 'category_id', 'expiration_date', 'weight'))) {
-        if (isset($orderby[1]) && strtolower($orderby[1]) == 'desc') {
-            $orderby[1] = 'desc';
-        } else {
-            $orderby[1] = 'asc';
+# ------------------------- page start - end -----------------------------------
+# 
+# 
+# 
+# 
+# ------------------  set custom ordering - begin ------------------------------
+$orderby = Array();
+if (isset($_REQUEST['orderby']) && strlen($_REQUEST['orderby']) > 0) {
+    $sortablecolumns = array_flip(array('id', 'title', 'last_change_date', 'category_id', 'expiration_date', 'weight'));
+    $tmp = explode(',', $_REQUEST['orderby']);
+    // echo '<!-- tmp'; prn($tmp); echo ' -->';
+    foreach ($tmp as $tm) {
+        // echo '<!-- tm'; prn($tm); echo ' -->';
+        $ord = preg_split('/ +/', trim($tm));
+        // echo '<!-- ord '; prn($ord); echo ' -->';
+        if (isset($sortablecolumns[$ord[0]])) {
+            if (isset($ord[1]) && strtolower($ord[1]) == 'desc') {
+                $ord[1] = 'desc';
+            } else {
+                $ord[1] = 'asc';
+            }
+            $orderby[$ord[0]] = "ne.{$ord[0]} {$ord[1]}";
         }
-        $orderby = "{$orderby[0]} {$orderby[1]}, ";
-    } else {
-        $orderby = '';
     }
 }
+//echo '<!-- orderby'; prn($orderby); echo ' -->';
+if (!isset($orderby['last_change_date'])) {
+    if (isset($input_vars['date']) && $input_vars['date'] == 'asc') {
+        $date_order = 'ASC';
+    } else {
+        $date_order = 'DESC';
+    }
+    $orderby[] = "ne.last_change_date {$date_order}";
+}
+$orderby = join(',', $orderby);
 // ------------------  set custom ordering - begin -----------------------------
 // ------------------  set ordering - begin ------------------------------------
-if (isset($_REQUEST['date']) && $_REQUEST['date'] == 'asc')
-    $date_order = 'ASC'; else
-    $date_order = 'DESC';
+
 
 $now = date('Y-m-d H:i:s', time());
 $query = "SELECT DISTINCT SQL_CALC_FOUND_ROWS
@@ -433,8 +489,9 @@ $query = "SELECT DISTINCT SQL_CALC_FOUND_ROWS
               $news_date_restriction
               $news_keywords_restriction
               $news_tags_restriction
-            ORDER BY {$orderby} ne.last_change_date $date_order
+            ORDER BY {$orderby}
             LIMIT $start,$rows";
+
 $list_of_news = db_getrows($query);
 // if(isset($input_vars['debug'])) prn($query,$list_of_news);
 // echo '<!-- '; prn($query); echo ' -->';
@@ -457,7 +514,8 @@ if ($imin > 0) {
 
 for ($i = $imin; $i < $imax; $i = $i + rows_per_page) {
     if ($i == $start)
-        $to = '<b>[' . (1 + $i / rows_per_page) . ']</b>'; else
+        $to = '<b>[' . (1 + $i / rows_per_page) . ']</b>';
+    else
         $to = ( 1 + $i / rows_per_page);
     $pages[] = Array(
         'URL' => url_prefix_news_list . "start={$i}&" . query_string('^start$|^' . session_name() . '$|^action$')
