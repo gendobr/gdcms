@@ -84,11 +84,8 @@
 {foreach from=$lang  key=ke item=lg}
    <td align="center" valign="top" background="{$site_root_url}/templates/design3/but_2.jpg">
     <img src="{$site_root_url}/templates/design3/top_0.gif" height="14">
-    <br>
-    <img src="{$site_root_url}/templates/design3/spacer.gif" width="1" height="8">
-    <br><nobr><img src="{$site_root_url}/templates/design3/spacer.gif" width="10" height="8" align=absmiddle>
-    <a href="{$lg.url}"  class="bold">{$lg.lang}</a>
-    <img src="{$site_root_url}/templates/design3/spacer.gif" width="10" height="8" align=absmiddle></nobr></td>
+    <a href="{$lg.url}"  style="display:block;margin:0 10px;" class="bold">{$lg.lang}</a>
+    </td>
 {/foreach}
  <td align="right"><img src="{$site_root_url}/templates/design3/rr.gif" width="81" height="53"></td>
 </tr>
