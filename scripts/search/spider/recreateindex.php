@@ -17,7 +17,8 @@ db_execute("INSERT INTO {$GLOBALS['table_prefix']}search_index_cache
 	size, 
 	title, 
 	words, 
-	date_indexed
+	date_indexed,
+        lang
 	)
 	SELECT 
 	id, 
@@ -26,7 +27,8 @@ db_execute("INSERT INTO {$GLOBALS['table_prefix']}search_index_cache
 	size, 
 	title, 
 	words, 
-	date_indexed
+	date_indexed,
+        lang
 	FROM cms8_search_index
 	WHERE is_valid<>0");
 db_execute("ALTER TABLE `{$GLOBALS['table_prefix']}search_index_cache` ADD FULLTEXT INDEX `wrds` (`words`)"); 

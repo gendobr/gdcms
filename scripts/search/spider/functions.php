@@ -160,10 +160,10 @@ function get_links($url, $html, $site_info) {
 
                 //while(ereg('/[^/]+/\.\./',$link)) {
                 while (preg_match("/\\/[^\\/]+\\/\\.\\.\\//", $link)) {
-                    $link = ereg_replace('/[^/]+/\.\./', '/', $link);
+                    $link = preg_replace('/[^\\/]+\\/\.\./', '/', $link);
                 }
                 while (preg_match("/\\/\\.\\//", $link)) {
-                    $link = ereg_replace('/\./', '/', $link);
+                    $link = preg_replace('/\./', '/', $link);
                 }
             }
             # ------------------- relative link - end -----------------------------

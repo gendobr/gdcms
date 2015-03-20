@@ -1,7 +1,14 @@
 <?php
 
+
+$max_sleep=20;
+
 define('max_spider_trials', 5);
 
+// =============================================================================
+
+set_time_limit($max_sleep+5);
+sleep($sleep=rand(0, $max_sleep));
 
 
 $time_start = microtime(true);
@@ -14,6 +21,7 @@ echo "
      <META content=\"text/html; charset=" . site_charset . "\" http-equiv=\"Content-Type\">
    </head>
 <body>
+Sleep $sleep<br>
 <a href=index.php?action=search/spider/spider&t=" . time() . ">next</a><br>
 ";
 
@@ -89,7 +97,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     run('search/spider/functions');
     # -------------------- check if the URL is valid - begin -------------------
     if (!is_searchable($this_url_info['url'], $this_site_info)) {
-        $query = "DELETE FROM {$table_prefix}site_search WHERE id=" . ( (int) $this_url_info['id'] );
+        $query = "DELETE FROM {$table_prefix}search_index WHERE id=" . ( (int) $this_url_info['id'] );
         db_execute($query);
         exit('URL is forbidden by site setings (' . (microtime(true) - $time_start) . 's )');
     }
@@ -141,6 +149,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     #  remove headers from reply
     $body = str_replace($headers, '', $body);
     
+    
     # get checksum 
     $this_url_info['checksum'] = md5($body);
     
@@ -165,25 +174,26 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
 
 
 
-    include(script_root . '/search/charset/charset.php');
-    $charsetDataDir = script_root . '/search/charset/data';
-    $detector = new charsetdetector(Array(
-        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-utf8.stats"))),
-        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-utf8.stats"))),
-        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-utf8.stats"))),
-        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-utf8.stats"))),
-        Array('charset' => 'WINDOWS-1251', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp1251.stats"))),
-        Array('charset' => 'KOI8-R', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-koi8.stats"))),
-        Array('charset' => 'CP866', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp866.stats"))),
-        Array('charset' => 'ISO-8859-5', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-iso-8859-5.stats"))),
-        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-cp1252.stats"))),
-        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-cp1252.stats"))),
-        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-cp1252.stats"))),
-        Array('charset' => 'ISO-8859-1', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-iso-8859-1.stats"))),
-        Array('charset' => 'ISO-8859-1', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats"))),
-        Array('charset' => 'ISO-8859-1', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats"))),
-    ));
-    $encoding = strtoupper($detector->detect($html->plaintext));
+//    include(script_root . '/search/charset/charset.php');
+//    $charsetDataDir = script_root . '/search/charset/data';
+//    $detector = new charsetdetector(Array(
+//        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-utf8.stats"))),
+//        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-utf8.stats"))),
+//        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-utf8.stats"))),
+//        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-utf8.stats"))),
+//        Array('charset' => 'WINDOWS-1251', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp1251.stats"))),
+//        Array('charset' => 'KOI8-R', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-koi8.stats"))),
+//        Array('charset' => 'CP866', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp866.stats"))),
+//        Array('charset' => 'ISO-8859-5', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-iso-8859-5.stats"))),
+//        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-cp1252.stats"))),
+//        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-cp1252.stats"))),
+//        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-cp1252.stats"))),
+//        Array('charset' => 'ISO-8859-1', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-iso-8859-1.stats"))),
+//        Array('charset' => 'ISO-8859-1', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats"))),
+//        Array('charset' => 'ISO-8859-1', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats"))),
+//    ));
+//    $encoding = strtoupper($detector->detect($html->plaintext));
+    $encoding=site_charset;
 
     // prn($encoding, htmlspecialchars($html->plaintext));
     // exit('11');
@@ -309,7 +319,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     
     
     # mark other rows with the same checksum as invalid
-    $query = "UPDATE {$table_prefix}search_index SET is_valid=0 WHERE checksum='" . DbStr($this_url_info['checksum']) . "' ";
+    $query = "UPDATE {$table_prefix}search_index SET is_valid=0 WHERE checksum='" . DbStr($this_url_info['checksum']) . "' AND id<> ".( (int) $this_url_info['id']);
     db_execute($query);
 
     echo "<hr>";
