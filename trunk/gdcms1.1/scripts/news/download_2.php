@@ -249,6 +249,14 @@ if (isset($input_vars['url'])) {
         } catch (Exception $e) {
         }
     }
+    
+    $len1=0;
+    $len0=1;
+    while($len0!=$len1){
+        $len0=mb_strlen($abstract, site_charset);
+        $abstract = html_entity_decode($abstract);
+        $len1=mb_strlen($abstract, site_charset);
+    }
     $abstract=  strip_tags($abstract)."<p><a href=\"$url\" target=_blank>$url</a></p>";
 
 
