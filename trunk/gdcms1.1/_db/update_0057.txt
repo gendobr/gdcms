@@ -1,0 +1,2 @@
+ALTER TABLE `cms_search_index_cache` ADD COLUMN `lang` VARCHAR(3) NULL AFTER `date_indexed`; 
+ALTER TABLE `cms_search_index_cache` ADD INDEX `lang` (`lang`), ADD INDEX `site` (`site_id`); 
