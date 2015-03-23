@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   List of threads for a selected site and selected forum
   Arguments are
@@ -15,8 +15,7 @@
   $this_site_info = get_site_info($site_id);
 
   //prn('$this_site_info=',$this_site_info);
-  if(checkInt($this_site_info['id'])<=0)
-  {
+  if(checkInt($this_site_info['id'])<=0) {
      $input_vars['page_title']   = $text['Site_not_found'];
      $input_vars['page_header']  = $text['Site_not_found'];
      $input_vars['page_content'] = $text['Site_not_found'];
