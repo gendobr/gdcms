@@ -321,6 +321,12 @@ function menu_site($site_info) {
                 ,'innerHTML'=>$text['View_forums']
                 ,'attributes'=>' target=_blank '
         );
+                
+        $tor['forum/publicsearch']=Array(
+                'URL'=>"index.php?action=forum/publicsearch&site_id={$site_info['id']}&lang={$_SESSION['lang']}".'&'.$sid
+                ,'innerHTML'=>$text['forum_search']
+                ,'attributes'=>' target=_blank '
+        );
         $tor['forum/search']=Array(
                 'URL'=>"index.php?action=forum/search&site_id={$site_info['id']}&orderby=data+desc"
                 ,'innerHTML'=>$text['Search_messages']

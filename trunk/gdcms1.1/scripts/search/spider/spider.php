@@ -7,7 +7,7 @@ define('max_spider_trials', 5);
 
 // =============================================================================
 
-set_time_limit($max_sleep+5);
+set_time_limit($max_sleep+20);
 sleep($sleep=rand(0, $max_sleep));
 
 
@@ -162,9 +162,8 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     $body = removeTag('script', $body);
     $body = removeTag('style', $body);
 
-
     run('lib/simple_html_dom');
-    $html = str_get_html($body);
+    $html = str_get_html(str_replace('<',' <',$body));
     if (!$html) {
         $query = "UPDATE {$table_prefix}search_index SET date_indexed=now(), is_valid=is_valid-1 WHERE id={$this_url_info['id']}";
         db_execute($query);
@@ -226,10 +225,13 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     //exit('12');
 
 
-    include (script_root . "/search/tokenizer/tokenizer.php");
-    include (script_root . "/search/tokenizer/tokenizer_ukr.php");
-    include (script_root . "/search/tokenizer/tokenizer_rus.php");
-    include (script_root . "/search/tokenizer/tokenizer_eng.php");
+    include (script_root . "/search/tokenizer/tokenizer2.php");
+    include (script_root . "/search/tokenizer/tokenizer2_ukr.php");
+    include (script_root . "/search/tokenizer/tokenizer2_rus.php");
+    include (script_root . "/search/tokenizer/tokenizer2_eng.php");
+    include (script_root . "/search/tokenizer/greedytokenizer.php");
+    
+    
     include (script_root . "/search/getlanguage/getlanguage.php");
     include (script_root . "/search/commonwords/commonwords.php");
 
@@ -239,8 +241,6 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     include (script_root . "/search/stemming/porter_ukr.class.php");
 
 
-
-    $commonwords = new commonwords(script_root . "/search/commonwords/commonwords.txt");
 
     $langSelector = new getlanguage(Array(
         'files' => Array(
@@ -252,22 +252,24 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
         )
     ));
 
-    $tokenizers = Array(
-        'eng' => new tokenizer_eng(),
-        'ukr' => new tokenizer_ukr(),
-        'rus' => new tokenizer_rus()
-    );
-
-    $stemmers = Array(
-        'eng' => new porter_eng(),
-        'ukr' => new porter_ukr(),
-        'rus' => new porter_rus()
-    );
 
 
-    $tokens = Array();
-    $remainder = $html->plaintext;
-    $lang = $langSelector->getTextLang($remainder);
+
+
+    
+    
+    
+    $plaintext = $html->plaintext;
+    $len1=0;
+    $len0=1;
+    while($len0!=$len1){
+        $len0=mb_strlen($abstract, site_charset);
+        $plaintext = html_entity_decode($plaintext);
+        $len1=mb_strlen($abstract, site_charset);
+    }
+    
+    
+    $lang = $langSelector->getTextLang($plaintext);
     $lang = $lang['lang'];
     if (!$title) {
         $title = get_langstring($this_site_info['title'], $lang);
@@ -275,31 +277,46 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     $this_url_info['lang'] = $lang;
     $this_url_info['title'] = $title;
 
-    $checkedLangs = Array();
-    while (true) {
-        if (isset($checkedLangs[$lang])) {
-            break;
-        }
-        $checkedLangs[$lang] = 1;
-        $reply = $tokenizers[$lang]->getTokens($remainder);
-        // print_r($reply); exit("222");
-        if (count($reply['tokens']) > 0) {
-            $tokens[$lang] = $commonwords->removeCommonWords($reply['tokens']);
-            $cnt = count($tokens[$lang]);
-            for ($i = 0; $i < $cnt; $i++) {
-                $tokens[$lang][$i] = $stemmers[$lang]->stem($tokens[$lang][$i]);
+    
+    $greedytokenizer=new greedytokenizer([
+        new tokenizer2_ukr(),
+        new tokenizer2_rus(),
+        new tokenizer2_eng()
+    ]);
+    $tokens = $greedytokenizer->getTokens($plaintext);
+    //echo "<hr>"; print_r(join(' ',$tokens));echo "<hr>";
+    
+    $commonwords = new commonwords(script_root . "/search/commonwords/commonwords.txt");
+    $tokens = $commonwords->removeCommonWords($tokens);
+    //prn($commonwords);
+    
+    $stemmers = Array(
+        'eng' => new porter_eng(),
+        'ukr' => new porter_ukr(),
+        'rus' => new porter_rus()
+    );
+    $cnt = count($tokens);
+    for ($i = 0; $i < $cnt; $i++) {
+        $stem=false;
+        foreach($stemmers as $stemmer){
+            $tmp=$stemmer->stem($tokens[$i]);
+            if( strlen($tmp)>0 && ( $stem===false || mb_strlen($tmp, site_charset)< mb_strlen($stem, site_charset ) ) ){
+                $stem=$tmp;
+                //echo "stem &lt;=$tmp<br>";
             }
+            //echo "stem=$stem; tmp=$tmp<br>";
         }
-        $dl = mb_strlen($remainder, $encoding) - mb_strlen($reply['remainder'], $encoding);
-        if ($dl == 0) {
-            break;
+        //echo "stem=$stem;<br>";
+        if($stem && mb_strlen($stem, site_charset)>1){
+            $tokens[$i] = $stem;
+        }else{
+            unset($tokens[$i]);
         }
-        $remainder = $reply['remainder'];
-        $lang = $langSelector->getTextLang($remainder);
-        $lang = $lang['lang'];
     }
+    
     //print_r(join(' ',$tokens));
-    $this_url_info['words'] = join(' ', array_map(function($x) {return join(' ', $x);}, $tokens));
+    $this_url_info['words'] = join(' ', $tokens);
+
     print_r($this_url_info);
 
     // update db record

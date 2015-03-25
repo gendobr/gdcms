@@ -1,6 +1,6 @@
 <?php
 /**
- * Это публичный список сообщений в заданной дискуссии
+ * пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  */
 
 //prn($_SESSION);
@@ -249,7 +249,7 @@ if(isset($input_vars['msg'])) {
 
     if(count($errors)==0) {
         function ch($name) {
-            return mysql_escape_string(strip_tags($name));
+            return DbStr(strip_tags($name));
         }
         $_SESSION['code']='';
 
