@@ -1,10 +1,13 @@
 <?php
 
-include ("../tokenizer/tokenizer.php");
-include ("../tokenizer/tokenizer_eng.php");
+include ("../tokenizer/tokenizer2.php");
+include ("../tokenizer/tokenizer2_eng.php");
 
 $str = file_get_contents("eng.txt");
 
-$t = new tokenizer_eng();
+$t = new tokenizer2_eng();
 
-print_r($t->getTokens($str));
+$res=$t->getFirstToken($str);
+print_r($res);
+
+echo "\n\n\n ". ( strlen($str) - strlen($res['token'])  - strlen($res['remainder']) ." \n\n\n" );

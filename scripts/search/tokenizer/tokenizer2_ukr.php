@@ -1,6 +1,6 @@
 <?php
 
-class tokenizer_eng implements tokenizer {
+class tokenizer2_ukr implements tokenizer2 {
 
     private static $alfavit = Array();
     private static $encoding = 'UTF-8';
@@ -8,12 +8,11 @@ class tokenizer_eng implements tokenizer {
 
     public function __construct() {
         self::$apos=Array("’","'","‘","ʼ");
-        self::$alfavit = array_flip(explode(',', "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,'"));
+        self::$alfavit = array_flip(explode(',', "а,б,в,г,ґ,д,е,є,ж,з,и,і,ї,й,к,л,м,н,о,п,р,с,т,у,ф,х,ц,ч,ш,щ,ь,ю,я,'"));
     }
 
-    public function getTokens($str) {
+    public function getFirstToken($str) {
         $lowercaseStr = str_replace(self::$apos,"'",mb_strtolower($str, self::$encoding));
-        $remainder = '';
         $tokens = Array();
         $cnt = mb_strlen($str, self::$encoding);
         $token = '';
@@ -22,21 +21,25 @@ class tokenizer_eng implements tokenizer {
             if (isset(self::$alfavit [$char])) {
                 $token.=$char;
             } else {
-                if (mb_strlen($token, self::$encoding) > 0) {
+                //if (mb_strlen($token, self::$encoding) > 0) {
+                if (strlen($token) > 0) {
                     
+                    // апострофи на початку та в кінці слів
                     $token = preg_replace("/^'+|'+\$/", '', $token);
 
-                    $token = trim(preg_replace("/'([^smd])/", ' $1', $token));
+                    //апострофи не перед я, ю, є, ї
+                    $token = trim(preg_replace("/'([^яюєї])/", ' $1', $token));
 
                     $token = preg_replace("/ +/", " ", $token);
 
-                    if (mb_strlen($token, self::$encoding) > 0) {
+                    //if (mb_strlen($token, self::$encoding) > 0) {
+                    if (strlen($token) > 0) {
                         $token = explode(' ', $token);
                         $tokens = array_merge($tokens, $token);
+                        $token = '';
+                        break;
                     }
-                    $token = '';
                 }
-                $remainder.=$char;
             }
         }
         if (mb_strlen($token, self::$encoding) > 0) {
@@ -48,8 +51,14 @@ class tokenizer_eng implements tokenizer {
                 $tokens = array_merge($tokens, $token);
             }
         }
-
-        return Array('tokens'=>$tokens,'remainder'=>$remainder);
+        $firstToken = isset($tokens[0]) ? $tokens[0] : '';
+        
+        if(strlen($firstToken)>0){
+            $pos = mb_strpos($lowercaseStr, $firstToken, 0, self::$encoding);
+            return Array('token' => $firstToken, 'remainder' => mb_substr($str, $pos + mb_strlen($firstToken, self::$encoding), null, self::$encoding));            
+        }else{
+            return Array('token' => $firstToken, 'remainder' => $str);
+        }
     }
 
 }

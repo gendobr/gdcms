@@ -87,7 +87,7 @@ if(isset($input_vars['msg'])) {
 
     if(count($errors)==0) {
         run('notifier/functions');
-        function ch($name) {return mysql_escape_string(strip_tags(trim($name)));}
+        function ch($name) {return DbStr(strip_tags(trim($name)));}
         $_SESSION['code']='';
         $name   = ch($_SESSION['site_visitor_info']['site_visitor_login']);
         $email  = ch($_SESSION['site_visitor_info']['site_visitor_email']);   if(!is_valid_email($email)) $email='';

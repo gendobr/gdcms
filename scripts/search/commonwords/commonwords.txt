@@ -200,10 +200,13 @@ ldquo
 rdquo
 ldquo
 rdquo
-nbsp
 ndash
 html
 eng
 rus
 ukr
 nobr
+laquo
+quot
+div
+raquo
