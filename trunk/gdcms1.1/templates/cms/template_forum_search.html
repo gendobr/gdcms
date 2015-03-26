@@ -1,0 +1,40 @@
+
+
+<form action="index.php" method="get">
+    {$form.hidden_elements}
+    <div class="search-form-element"><label>{$text.forum_search_keywords} : </label><input type='text' name='keywords' value="{$form.keywords|escape:'html'}"></div>
+    <div class="search-form-element"><label>{$text.Forum} : </label><select name="forum_id"><option value=''></option>{$form.forum_options}</select></div>
+    <input type="submit" value="{$text.Search}">
+</form>
+
+<p>{$result.n_rows} {$text.forum_search_messages_found}</p>
+
+{foreach from=$result.rows item=row}
+<div class="forum-search-row">
+    <div class="breadcrumbs">
+        <a href="{$row.forum.URL}" class="forum-link">{$row.forum.name}</a>
+        / <a href="{$row.thread.URL}" class="forum-link">{$row.thread.subject}</a>
+    </div>
+    <div class="message-meta">
+        <span class="message-meta-datetime">{$row.data|date_format:"%d.%m.%Y %H:%M"}</span>
+        <span class="message-meta-sender">{$row.name} :</span>
+    </div>
+    <div class="message-body">
+        {$row.html}
+    </div>
+</div>
+<br><br>
+{/foreach}
+
+
+<br>
+<div class="forum-search-pages">
+{$text.Pages} :
+{foreach from=$result.pages item=pg}
+    {if $pg.URL}
+       <a href="{$pg.URL}" class="forum-link">{$pg.innerHTML}</a>
+    {else}
+       <b>{$pg.innerHTML}</b>
+    {/if}
+{/foreach}
+</div>
