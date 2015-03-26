@@ -7,7 +7,7 @@ define('max_spider_trials', 5);
 
 // =============================================================================
 
-set_time_limit($max_sleep+20);
+set_time_limit($max_sleep+30);
 sleep($sleep=rand(0, $max_sleep));
 
 
