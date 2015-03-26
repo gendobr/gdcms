@@ -78,23 +78,37 @@ function event_recache_days($calendar_id){
     $oneDay = date_interval_create_from_date_string('1 day');
     for ($i = 0; $i < $intervalSize; $i++) {
         $allDays[$i] = array_combine (Array('Y','m','d','w') , explode(',',$t->format("Y,m,d,w")));
+        $allDays[$i]['Y']*=1;
+        $allDays[$i]['m']*=1;
+        $allDays[$i]['d']*=1;
+        $allDays[$i]['w']*=1;
         $t->add($oneDay);
     }
     
-    //prn($allDays);// exit();
+    //filelog($allDays);// exit();
     
     // iterate over dates
     $matchedDays=Array();
     foreach($dates as $dateInterval){
+        
+        $dtk=array_keys($dateInterval);
+        foreach($dtk as $k){
+            $dateInterval[$k]=intval($dateInterval[$k]);
+        }
+        
+        //filelog('calendar_id='.$calendar_id,'$dateInterval=',$dateInterval);//exit();
         // get all possible start dates
         $startDates=Array();
         foreach($allDays as $key=>$day){
+            
             $is_matched=
                      ($dateInterval['pochrik']==$day['Y'] || $dateInterval['pochrik']==-1)
                   && ($dateInterval['pochmis']==$day['m'] || $dateInterval['pochmis']==-1)
                   && ($dateInterval['pochtyzh']==$day['w'] || $dateInterval['pochtyzh']==-1)
                   && ($dateInterval['pochday']==$day['d'] || $dateInterval['pochday']==-1);
             if($is_matched){
+                //filelog('calendar_id='.$calendar_id,'$key='.$key,'$day',$day, '$dateInterval', $dateInterval);
+                
                 $startDates[]=Array(
                     'key'=>$key,
                     'Y'=>$day['Y'],
@@ -107,7 +121,8 @@ function event_recache_days($calendar_id){
             }
         }
         
-        //prn($startDates);// exit();
+        //filelog($startDates);// exit();
+        //filelog('calendar_id='.$calendar_id,'$startDates=',$startDates);//exit();
 
         
         // for each start date get matching end date
@@ -117,7 +132,12 @@ function event_recache_days($calendar_id){
             // prn('-----------',$dat);
             for ($i = $dat['key']; $i < $intervalSize; $i++){
                 
-                $day=&$allDays[$i];
+                $day=$allDays[$i];
+                //                $is_matched=
+                //                         ($dateInterval['kinrik']==$day['Y'] || $dateInterval['kinrik']==-1)
+                //                      && ($dateInterval['kinmis']==$day['m'] || $dateInterval['kinmis']==-1)
+                //                      && ($dateInterval['kintyzh']==$day['w'] || $dateInterval['kintyzh']==-1)
+                //                      && ($dateInterval['kinday']==$day['d'] || $dateInterval['kinday']==-1);
                 $is_matched=
                          ($dateInterval['kinrik']==$day['Y'] || $dateInterval['kinrik']==-1)
                       && ($dateInterval['kinmis']==$day['m'] || $dateInterval['kinmis']==-1)
@@ -138,7 +158,7 @@ function event_recache_days($calendar_id){
                 }
             }
             if($endDate<0){
-                $day=&$allDays[$intervalSize-1];
+                $day=$allDays[$intervalSize-1];
                 $endDate=Array(
                         'key'=>$intervalSize-1,
                         'Y'=>$day['Y'],
@@ -152,13 +172,14 @@ function event_recache_days($calendar_id){
             $endDates[]=$endDate;
             //prn($endDate);
         }
+        //filelog('calendar_id='.$calendar_id,'$endDates=',$endDates);//exit();
         // prn($allDays[$endDates[0]]);exit();
         // prn($startDates, $endDates);
         // put dates into matchedDays array
         $cnt=count($startDates);
         for($i=0; $i<$cnt; $i++){
             for($k=$startDates[$i]['key']; $k<=$endDates[$i]['key']; $k++){
-                $day=&$allDays[$k];
+                $day=$allDays[$k];
                 $matchedDays[$k]=Array(
                         'Y'=>$day['Y'],
                         'm'=>$day['m'],
@@ -171,8 +192,9 @@ function event_recache_days($calendar_id){
                 );
             }
         }
+        //filelog('calendar_id='.$calendar_id,'matchedDays=',$matchedDays);//exit();
     }
-    // prn($matchedDays);exit();
+    //filelog('calendar_id='.$calendar_id,'matchedDays=',$matchedDays);//exit();
 
     
     // remove old calendar dates
