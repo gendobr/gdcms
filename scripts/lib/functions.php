@@ -480,6 +480,17 @@ function prn() {
     }
     echo "\n<hr color=lime size=2px>\n";
 }
+function filelog() {
+    $filepath=template_cache_root.'/log_'.preg_replace("/\\W/",'_',$_REQUEST['action']);
+    
+    $log ="\n\n----------------------\n".date('Y-m-d H:i:s')."\n";
+    $arg_list = func_get_args();
+    foreach($arg_list as $ppp) {
+        $log.= "\n".var_export($ppp,true)."\n";
+    }
+    $log.= "\n\n";
+    file_put_contents($filepath, $log, FILE_APPEND | LOCK_EX);
+}
 //------------------------- print debug info -- end ----------------------------
 
 function clear() {
