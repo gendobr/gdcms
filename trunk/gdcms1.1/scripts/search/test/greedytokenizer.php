@@ -6,8 +6,8 @@ include ("../tokenizer/tokenizer2_rus.php");
 include ("../tokenizer/tokenizer2_eng.php");
 include ("../tokenizer/greedytokenizer.php");
 
-$str = file_get_contents("ukr.txt");
-//$str = file_get_contents("rus.txt");
+//$str = file_get_contents("ukr.txt");
+$str = file_get_contents("rus1.txt");
 //$str = file_get_contents("ukr1.txt");
 
 $start=  microtime(true);
