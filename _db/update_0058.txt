@@ -1,0 +1,1 @@
+ALTER TABLE  `cms_ec_item` CHANGE  `ec_item_img`  `ec_item_img` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
