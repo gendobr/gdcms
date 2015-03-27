@@ -1,6 +1,6 @@
 <?php
 
-
+// exit(' debugging ');
 $max_sleep=20;
 
 define('max_spider_trials', 5);
@@ -77,9 +77,9 @@ if ($max > 0) {
 }
 prn($this_url_info);
 
-if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
+if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
 
-    $query = "UPDATE {$table_prefix}search_index SET date_indexed=now() WHERE id={$this_url_info['id']}";
+    $query = "UPDATE {$table_prefix}search_index SET date_indexed=now(), is_valid=5 WHERE id={$this_url_info['id']}";
     db_execute($query);
 
     // index URL
@@ -150,8 +150,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     $body = str_replace($headers, '', $body);
     
     
-    # get checksum 
-    $this_url_info['checksum'] = md5($body);
+
     
     
     
@@ -159,9 +158,20 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     $this_url_info['size'] = strlen($body);
     //prn(htmlspecialchars($body));
 
-    $body = removeTag('script', $body);
-    $body = removeTag('style', $body);
+    $body = removeTag($body, '<script','</script>');
+    
+    $body = removeTag($body, '<noscript','</noscript>');
+    
+    $body = removeTag($body, '<style','</style>');
 
+    $body = removeTag($body, '<noindex','</noindex>');
+    
+    $body = removeTag($body, '<!--noindex-->','<!--/noindex-->');
+    // prn(htmlspecialchars($body));
+
+
+    
+    
     run('lib/simple_html_dom');
     $html = str_get_html(str_replace('<',' <',$body));
     if (!$html) {
@@ -260,6 +270,8 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
     
     
     $plaintext = $html->plaintext;
+    
+    echo "<hr> PLAINTEXT:<br>".$plaintext."<hr>";
     $len1=0;
     $len0=1;
     while($len0!=$len1){
@@ -267,7 +279,13 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
         $plaintext = html_entity_decode($plaintext);
         $len1=mb_strlen($abstract, site_charset);
     }
+
     
+    
+    # get checksum 
+    $this_url_info['checksum'] = md5($body);
+    
+
     
     $lang = $langSelector->getTextLang($plaintext);
     $lang = $lang['lang'];
@@ -314,7 +332,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 998) {
         }
     }
     
-    //print_r(join(' ',$tokens));
+    echo "<hr> TOKENS:<br>".(join(' ',$tokens))."<hr>";
     $this_url_info['words'] = join(' ', $tokens);
 
     print_r($this_url_info);

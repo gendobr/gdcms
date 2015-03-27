@@ -181,11 +181,10 @@ function get_links($url, $html, $site_info) {
     return array_unique($tor);
 }
 
-function removeTag($tag, $html) {
+function removeTag($html, $openTag, $closeTag) {
 
-    $tag = strtoupper($tag);
-    $openTag = '<' . $tag;
-    $closeTag = '</' . $tag . '>';
+    $openTag = strtoupper($openTag);
+    $closeTag = strtoupper($closeTag);
 
     $result = $html;
     $code = strtoupper($html);
