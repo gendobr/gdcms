@@ -215,6 +215,7 @@ if ($ec_item_id > 0){
     $(document).ready(function(){
         $('#ec_item_img').fileupload({
             dataType: 'json',
+            sequentialUploads: true,
             formData:[{name:'action',value:'ec/item/imgreceiver'},{name:'ec_item_id',value:'{$ec_item_id}'},{name:'ec_item_lang',value:'{$ec_item_lang}'}],
             done: function (e, data) {
                 //console.log(data);
