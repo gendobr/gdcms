@@ -72,7 +72,8 @@ div.q {margin-left=5pt;  margin-right=20pt;}
 	<td background="{$site_root_url}/templates/design11/smugy.jpg" width="30%" height="25"  valign=top><img src="{$site_root_url}/templates/design11/null.gif"  height="25"></td><td background="{$site_root_url}/templates/design11/kolomenu_1.jpg"><img src="{$site_root_url}/templates/design11/null.gif"></td><td width="65%"  rowspan="3" valign="top"><div class="q">
       <h1>{$page.title}</h1>
 	  {sysmsg}
-      {$page.content}
+          <div>{if $page.category_id}<a href="{$page.category->URL}">{$page.category->category_title}</a>{/if}</div>
+          {$page.content}
 </div></td> 
 	</tr>
 		<tr><td background="{$site_root_url}/templates/design11/lilov.jpg" width="30%"  height="5"  valign=top><img src="{$site_root_url}/templates/design11/null.gif" height="5"></td><td background="{$site_root_url}/templates/design11/kolomenu_2.jpg"><img src="{$site_root_url}/templates/design11/null.gif"></td>
