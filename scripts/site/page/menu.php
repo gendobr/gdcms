@@ -91,7 +91,7 @@ function menu_page($page_info) {
 }
 
 function get_page_info($page_id, $page_lang) {
-    global $table_prefix, $db;
+    global $table_prefix;
     $_id = (int) $page_id;
     $_lang = DbStr($page_lang);
     $query = "SELECT page.* ,site.url as site_url
@@ -102,8 +102,9 @@ function get_page_info($page_id, $page_lang) {
 
     $this_page_info['file'] = $this_page_info['id'] . '.' . $this_page_info['lang'] . '.html';
     $this_page_info['path'] = preg_replace("/^\\/+|\\/+$/", '', $this_page_info['path']);
-    if (strlen($this_page_info['path']) > 0)
+    if (strlen($this_page_info['path']) > 0) {
         $this_page_info['file'] = $this_page_info['path'] . '/' . $this_page_info['file'];
+    }
 
     // ----------------- list of possible templates - begin ----------------------
     $this_page_info['templates'] = Array();
@@ -119,33 +120,79 @@ function get_page_info($page_id, $page_lang) {
     $this_page_info['templates'][] = 'template_index.html';
     // ----------------- list of possible templates - end ------------------------
     // create static page URL
-    $this_page_url =
-            '/' . preg_replace('/(^\/+|\/+$)/', '', $this_page_info['path'])
+    $this_page_url = '/' . preg_replace('/(^\/+|\/+$)/', '', $this_page_info['path'])
             . '/' . $this_page_info['id']
             . '.' . $this_page_info['lang']
             . '.html';
     // prn($this_page_url);
-    $this_page_info['absolute_url'] =
-            preg_replace('/\/+$/', '', $this_page_info['site_url'])
+    $this_page_info['absolute_url'] = preg_replace('/\/+$/', '', $this_page_info['site_url'])
             . preg_replace('/\/+/', '/', $this_page_url);
 
     // friendly URL
-    $this_page_info['friendly_url']='';
+    $this_page_info['friendly_url'] = '';
     $this_page_info['file2'] = '';
-    if(strlen($this_page_info['page_file_name'])>0){
-        $this_page_url =
-            '/' . preg_replace('/(^\/+|\/+$)/', '', $this_page_info['path'])
-            . '/' . $this_page_info['page_file_name'];
-        $this_page_info['friendly_url']= preg_replace('/\/+$/', '', $this_page_info['site_url'])
-            . preg_replace('/\/+/', '/', $this_page_url);
+    if (strlen($this_page_info['page_file_name']) > 0) {
+        $this_page_url = '/' . preg_replace('/(^\/+|\/+$)/', '', $this_page_info['path'])
+                . '/' . $this_page_info['page_file_name'];
+        $this_page_info['friendly_url'] = preg_replace('/\/+$/', '', $this_page_info['site_url'])
+                . preg_replace('/\/+/', '/', $this_page_url);
 
         $this_page_info['file2'] = $this_page_info['path'] . '/' . $this_page_info['page_file_name'];
     }
 
-
+    $this_page_info['category']=new pagecategory($this_page_info['category_id'],$this_page_info['lang'],$this_page_info['site_id']);
 
     # prn($query,$this_page_info);
     return $this_page_info;
 }
 
-?>
+class pagecategory {
+
+    private $categoryInfo;
+    private $categoryId;
+    private $lang;
+
+    function __construct($categoryId, $lang, $site_id) {
+        $this->categoryId = $categoryId;
+        $this->lang = $lang;
+        $this->site_id = $site_id;
+    }
+
+    private function init() {
+        if (isset($this->categoryInfo)) {
+            return;
+        }
+        if (!$this->categoryId) {
+            return;
+        }
+        run('category/functions');
+        $this->categoryInfo = category_info(Array(
+            'category_id' => $this->categoryId,
+            'lang' => $this->lang,
+            'site_id' => $this->site_id
+        ));
+    }
+
+    function __get($attr) {
+        if (!isset($this->categoryInfo)) {
+            $this->init();
+        }
+        if ($this->categoryInfo) {
+            switch ($attr) {
+                case 'category_id':
+                    return $this->categoryId;
+                case 'lang':
+                    return $this->lang;
+                case 'site_id':
+                    return $this->site_id;
+                case 'category_title':
+                    return $this->categoryInfo['category_title'];
+                case 'category_description':
+                    return $this->categoryInfo['category_description'];
+                case 'URL':
+                    return $this->categoryInfo['URL'];
+            }
+        }
+        return false;
+    }
+}
