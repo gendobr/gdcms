@@ -198,4 +198,3 @@ function category_info($options) {
     return $this_category_info;
 }
 // ------------ get category info - end ----------------------------------------
-
