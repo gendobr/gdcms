@@ -4,7 +4,10 @@
 // $filename = '/home/dobro/wwwroot/cms/_hidden/search-learning-set/rus.csv'; 
 // $filename='/home/dobro/wwwroot/cms/_hidden/search-learning-set/eng.csv';
 // $filename = '/home/dobro/wwwroot/cms/_hidden/search-learning-set/slov.txt';
-$filename = '/home/dobro/wwwroot/cms/_hidden/search-learning-set/ces.txt';
+// $filename = '/home/dobro/wwwroot/cms/_hidden/search-learning-set/ces.txt';
+// $filename = '/home/dobro/wwwroot/cms/_/learning-set/deu-utf8.txt';
+$filename = '/home/dobro/wwwroot/cms/_/learning-set/fra-utf8.txt';
+
 
 $file = mb_strtolower(file_get_contents($filename), 'utf-8');
 
@@ -50,7 +53,9 @@ $alphabets=Array(
     //'rus'=>explode(',', ' ,а,б,в,г,д,е,ё,ж,з,и,й,к,л,м,н,о,п,р,с,т,у,ф,х,ц,ч,ш,щ,ъ,ы,ь,э,ю,я'),
     //'eng'=>explode(',', ' ,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z'),
     //'slo'=>explode(',', ' ,a,á,ä,b,c,č,d,ď,e,é,f,g,h,ch,i,í,j,k,l,ĺ,ľ,m,n,ň,o,ó,ô,p,q,r,ŕ,s,š,t,ť,u,ú,v,w,x,y,ý,z,ž'),
-    'češ'=>explode(',', ' ,a,á,b,c,č,d,ď,e,é,ě,f,g,h,i,í,j,k,l,m,n,ň,o,ó,p,q,r,ř,s,š,t,ť,u,ú,ů,v,w,x,y,ý,z,ž'),
+    //'češ'=>explode(',', ' ,a,á,b,c,č,d,ď,e,é,ě,f,g,h,i,í,j,k,l,m,n,ň,o,ó,p,q,r,ř,s,š,t,ť,u,ú,ů,v,w,x,y,ý,z,ž'),
+    //'deu'=>explode(',', ' ,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ä,ö,ü,ß'),
+    'fra'=>explode(',', ' ,a,n,b,o,c,p,d,q,e,r,f,s,g,t,h,u,i,v,j,w,k,x.l,y,m,z,é,â,ê,î,ô,û,à,è,ù,ë,ï,ü,ÿ,ç'),
 );
 $stats = array();
 $all_letters = Array();

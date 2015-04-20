@@ -15,12 +15,17 @@ class getlanguage {
         }
     }
 
-    public function getTextLang($str) {
+    public function getTextLang($str,$candidates=false) {
         $distr = $this->getTextStats($str);
 
         $selectedLang = false;
         $minimalDistance = false;
-        foreach ($this->lang as $lang => $stat) {
+        if(!$candidates){
+            $candidates=array_keys($this->lang);
+        }
+        // foreach ($this->lang as $lang => $stat) {
+        foreach ($candidates as $lang){
+            $stat = $this->lang[$lang];
             //$distance = $this->chiSquareConfidence($stat, $distr['n'], $distr['stats']);
             $distance = $this->chiSquare($stat, $distr['n'], $distr['stats']);
 
