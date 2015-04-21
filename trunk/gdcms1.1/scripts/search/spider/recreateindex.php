@@ -29,7 +29,7 @@ db_execute("INSERT INTO {$GLOBALS['table_prefix']}search_index_cache
 	words, 
 	date_indexed,
         lang
-	FROM cms8_search_index
+	FROM {$GLOBALS['table_prefix']}search_index
 	WHERE is_valid<>0");
 db_execute("ALTER TABLE `{$GLOBALS['table_prefix']}search_index_cache` ADD FULLTEXT INDEX `wrds` (`words`)"); 
 echo (microtime(true)-$timestart)."s OK";
