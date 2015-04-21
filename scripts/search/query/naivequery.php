@@ -124,14 +124,23 @@ if (strlen($keywords) > 0) {
         $lang = $lang['lang'];
     }
     // echo '<!-- tokens'; prn($tokens); echo '-->';
-    $keywords = join(' ', array_map(function($x) {
-                return join(' ', $x);
-            }, $tokens));
+    $keywords = explode(' ',join(' ', array_map(function($x) {return join(' ', $x);}, $tokens)));
 
-
-    $query = "SELECT  MATCH (words) AGAINST ('" . DbStr($keywords) . "') AS rel, ss.* 
+    $where=Array();
+    foreach($keywords as $kw){
+        if(strlen($kw)>0){
+            $where[]=" LOCATE('" . DbStr($kw) . "', words)";
+        }
+    }
+    if(count($where)>0){
+        $where='('.join( ' AND ',$where ).')';
+    }else{
+        $where=0;
+    }
+    
+    $query = "SELECT  $where AS rel, ss.* 
             FROM {$GLOBALS['table_prefix']}search_index_cache AS ss
-            WHERE MATCH (words) AGAINST ('" . DbStr($keywords) . "')
+            WHERE $where
                 AND site_id IN(" . join(',', $siteIds) . ")
                 AND lang='".  DbStr($input_vars['lang'])."'
             LIMIT 0,101;";
