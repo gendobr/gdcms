@@ -28,62 +28,46 @@ $samples=Array(
 $detector = new charsetdetector($samples);
 
 
-//
-//$filename = "rus.txt";
-//$str = file_get_contents($filename);
-//$encoding = $detector->detect($str);
-//echo "<hr>{$filename} => " . $encoding . "<hr>";
-//echo iconv($encoding, 'UTF-8', $str) . "<hr>";
-//echo "<hr><hr><hr><hr>";
-//
-//
-//
-//
-//$str1 = iconv('UTF-8','CP1251',$str);
-//$encoding = $detector->detect($str1);
-//echo "<hr>{$filename} => " . $encoding . "<hr>";
-//echo iconv($encoding, 'UTF-8', $str1) . "<hr>";
-//echo "<hr><hr><hr><hr>";
-//
-//
-//$filename = "rus-koi8r.txt";
-//$str1 = file_get_contents($filename);
-//$encoding = $detector->detect($str1);
-//echo "<hr>{$filename} => " . $encoding . "<hr>";
-//echo iconv($encoding, 'UTF-8', $str1) . "<hr>";
-//echo "<hr><hr><hr><hr>";
-//
-//
-//
-//
-//
-//$filename = "charset-utf8-1.txt";
-//$str1 = file_get_contents($filename);
-//$encoding = $detector->detect($str1);
-//echo "<hr>{$filename} => " . $encoding . "<hr>";
-//echo iconv($encoding, 'UTF-8', $str1) . "<hr>";
-//echo "<hr><hr><hr><hr>";
-//
-//exit('1');
+$dirname='/home/dobro/wwwroot/cms/_/learning-set/out';
 
-// $filename = "http://www.washingtonpost.com/world/europe/russias-anti-us-sentiment-now-is-even-worse-than-it-was-in-soviet-union/2015/03/08/b7d534c4-c357-11e4-a188-8e4971d37a8d_story.html";
-// $filename = "http://www.worldaffairsjournal.org/blog/elisabeth-braw/kremlin%E2%80%99s-influence-game";
-// $filename = 'http://geopolitika.ru/article/rossiya-i-latinskaya-amerika-na-fone-zapadnyh-sankciy';
-// $filename = 'http://inopressa.ru/article/11Mar2015/times/fin_putin.html';
-// $filename = 'http://mobile.nytimes.com/2015/03/10/business/dealbook/in-russia-the-well-for-corporate-bailouts-might-run-dry.html';
-// $filename = 'http://www.worldaffairsjournal.org/blog/elisabeth-braw/kremlin%E2%80%99s-influence-game';
-// $filename = 'http://www.novayagazeta.ru/inquests/67574.html';
-// $filename = 'http://www.newsbalt.ru/detail/?ID=17584';
-// $filename = 'http://geopolitika.ru/article/rossiya-i-latinskaya-amerika-na-fone-zapadnyh-sankciy';
-$filename = 'http://www.newtimes.ru/articles/detail/95732';
+$logfile='./detect_encoding2.log';
+
+$logfile=fopen($logfile, 'w');
+
+$filelist = array_diff(scandir($dirname), array('..', '.'));
+foreach($filelist as $filename){
+    $str1 = file_get_contents($dirname.'/'.$filename);
+    $html = str_get_html($str1);
+    $text = preg_replace("/\\s+/",' ',$html->plaintext);
+
+    
+    $encoding = $detector->detect($text);
 
 
-$str1 = file_get_contents($filename);
-$html = str_get_html($str1);
-$text=$html->plaintext;
+    $title = '';
+    foreach ($html->find('meta') as $element) {
+        if ($element->property == 'og:title') {
+            $title = $element->content;
+        }
+    }
+    if (!$title) {
+        $title = $html->find("title", 0);
+        if ($title) {
+            $title = $title->plaintext;
+        } else {
+            $title = '';
+        }
+    }
+    if ($encoding != 'UTF-8') {
+        try {
+            $title = iconv($encoding, 'UTF-8', $title);
+        } catch (Exception $e) {
+            
+        }
+    }
 
-$encoding = $detector->detect($text);
+    echo $filename."\n{$encoding} \n{$title}\n\n";
+    fwrite ($logfile , "{$filename}\t{$encoding}\t{$title}\n");
+}
 
-echo "<hr>{$filename} => " . $encoding . "<hr>";
-echo iconv($encoding, 'UTF-8', $text) . "<hr>";
-echo "<hr><hr><hr><hr>";
+fclose($logfile);
