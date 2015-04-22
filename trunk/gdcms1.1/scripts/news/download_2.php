@@ -197,9 +197,9 @@ if (isset($input_vars['url'])) {
         Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-cp1252.stats"))  ),
         Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-cp1252.stats")) ),
         Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-cp1252.stats")) ),
-        Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-iso-8859-1.stats")) ),
-        Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats")) ),
-        Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats")) ),
+        //Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-iso-8859-1.stats")) ),
+        //Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats")) ),
+        //Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats")) ),
     ));
     
     

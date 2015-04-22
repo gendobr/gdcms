@@ -313,7 +313,7 @@ $news_categories_selector.="
 	                    selectors[imax]=imax;
 	                    new_selector=document.createElement('div');
 	                    new_selector.setAttribute('id', 'news_category_'+imax);
-	                    new_selector.innerHTML='<select name=news_category[] id=selector_'+imax+'  onchange=\"update_categories()\"><option value=\"\"></option>" . str_replace(Array("\r", "\n"), '', draw_options(0, $list_of_categories)) . "</select>'
+	                    new_selector.innerHTML='<select name=news_category[] id=selector_'+imax+'  onchange=\"update_categories()\"><option value=\"\"></option>" . str_replace(Array("\r", "\n","'",'"'), ' ', draw_options(0, $list_of_categories)) . "</select>'
 	                    var container = document.getElementById('list_of_categories');
 	                    container.appendChild(new_selector);
 	              }
