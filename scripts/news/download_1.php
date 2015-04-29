@@ -94,7 +94,6 @@ if (isset($input_vars['url'])) {
     $news_extra_1 = '';
     $news_extra_2 = '';
     $cense_level = $this_site_info['cense_level'];
-    $tags = '';
 
     
 
@@ -298,15 +297,56 @@ if (isset($input_vars['url'])) {
     }
     $abstract=  strip_tags($abstract)."<p><a href=\"$url\" target=_blank>$url</a></p>";
 
+    include (script_root . "/search/getlanguage/getlanguage.php");
 
-//    prn("
-//            UPDATE {$GLOBALS['table_prefix']}news 
-//            SET title='" . DbStr($title) . "',
-//                abstract='" . DbStr($abstract) . "',
-//            WHERE id=... AND lang='....' AND site_id=.....
-//            ");
-//    exit();
-    
+    $langSelector = new getlanguage(Array(
+        'files' => Array(
+            'eng' => script_root . "/search/getlanguage/stats_eng.txt",
+            'rus' => script_root . "/search/getlanguage/stats_rus.txt",
+            'ukr' => script_root . "/search/getlanguage/stats_ukr.txt",
+        )
+    ));
+
+    // ----------------- clear tags - begin ------------------------------------
+    $tags = preg_split("/,|;|\\./", isset($input_vars['tags'])?$input_vars['tags']:"");
+    $cnt = count($tags);
+    $langTags = Array();
+    for ($i = 0; $i < $cnt; $i++) {
+        $tags[$i] = trim($tags[$i]);
+        $tags[$i] = preg_replace("/ +/", " ", $tags[$i]);
+
+        $tagLanguage = $langSelector->getTextLang($tags[$i]);
+
+        if (!isset($langTags[$tagLanguage['lang']])) {
+            $langTags[$tagLanguage['lang']] = Array();
+        }
+        $langTags[$tagLanguage['lang']][] = $tags[$i];
+    }
+
+    // $this_news_info['tags']=join(',',$tags);
+    // ----------------- clear tags - end --------------------------------------
+    # ------------------ rebuild tags - begin ----------------------------------
+    function updateNewsTags($newsId, $lang, $tags) {
+
+        
+        $cnt = count($tags);
+        if ($cnt > 0) {
+            $query = Array();
+            for ($i = 0; $i < $cnt; $i++) {
+                $tag = trim($tags[$i]);
+                if (strlen($tag) > 0) {
+                    $query[] = "({$newsId},'{$lang}','" . DbStr($tag) . "')";
+                }
+            }
+            $query = "INSERT INTO {$GLOBALS['table_prefix']}news_tags(news_id,lang,tag) VALUES" . join(',', $query);
+            db_execute($query);
+        }
+    }
+
+    # ------------------ rebuild tags - end ------------------------------------
+
+
+
     
     $query = "SELECT id as newid FROM {$GLOBALS['table_prefix']}news 
               WHERE site_id=$site_id AND lang='{$lang}'
@@ -324,7 +364,7 @@ if (isset($input_vars['url'])) {
                 abstract='" . DbStr($abstract) . "',
                 cense_level='{$cense_level}', 
                 category_id='{$category_id}',
-                tags='{$tags}',
+                tags='".  DbStr(join(',',$tags))."',
                 expiration_date=null,
                 weight='{$weight}'
                     
@@ -340,6 +380,13 @@ if (isset($input_vars['url'])) {
         $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
         if($debug) {prn($query);}
         db_execute($query);
+        
+        // update tags
+        db_execute("DELETE FROM {$GLOBALS['table_prefix']}news_tags WHERE news_id={$news_id}");
+        foreach($langTags as $lanf=>$tags){
+            updateNewsTags($news_id, $lanf, $tags);
+        }
+        
         echo '{"status":"success","news_id":"'.$news_id.'","charset":"'.$encoding.'"}';
 
     }else{
@@ -378,7 +425,7 @@ if (isset($input_vars['url'])) {
             '{$last_change_date}', 
             '" . DbStr($abstract) . "', 
             '{$category_id}', 
-            '{$tags}', 
+            '".  DbStr(join(',',$tags))."', 
              null, 
             '{$weight}', 
             '{$creation_date}', 
@@ -394,6 +441,12 @@ if (isset($input_vars['url'])) {
         if($debug) {prn($query);}
         db_execute($query);
 
+        // update tags
+        db_execute("DELETE FROM {$GLOBALS['table_prefix']}news_tags WHERE news_id={$news_id}");
+        foreach($langTags as $lanf=>$tags){
+            updateNewsTags($news_id, $lanf, $tags);
+        }
+        
         echo '{"status":"success","news_id":"'.$news_id.'","charset":"'.$encoding.'"}';
         return;        
     }
@@ -458,12 +511,21 @@ function startDownload(){
 function downloadNext(){
     if(newsList.length>0){
         var row=newsList[0].split(/[ \\t]+/);
+        
+        var tags='';
+        if(row.length>2){
+          tags+=row[2];
+          for(var ti=3; ti<row.length; ti++){
+             tags+=' '+row[ti];
+          }
+        }
+
         // console.log(row);
         $('#loading').show();
         $.ajax({
            type: \"POST\",
            url: \"index.php\",
-           data: { action: \"news/download_1\", site_id: $site_id, url: row[1], date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
+           data: { action: \"news/download_1\", site_id: $site_id, url: row[1], date:row[0], tags:tags, category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
            dataType: \"json\"
         }).always(function( msg ) {
            var it=$('<li>' + msg.status + ' : '+row[1]+' ' + (msg.message? '<br>' + msg.status:'' ) + '</li>');
