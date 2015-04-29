@@ -16,7 +16,6 @@ run('site/menu');
 //run('lib/http/class_http_request');
 run('lib/simple_html_dom');
 //run('lib/charset/charset');
-
 //------------------- site info - begin ----------------------------------------
 $site_id = checkInt($input_vars['site_id']);
 $this_site_info = get_site_info($site_id);
@@ -96,7 +95,7 @@ if (isset($input_vars['url'])) {
     $cense_level = $this_site_info['cense_level'];
     $tags = '';
 
-    
+
 
     // ======= downloading one url = begin =====================================
     //    $obj_request = new HTTP_Request($url, Array(
@@ -117,28 +116,29 @@ if (isset($input_vars['url'])) {
     //
 
     // echo ':'.$url.';<br>';
-    
-    $ch = curl_init(); 
-    curl_setopt($ch, CURLOPT_URL,$url); // set url to post to 
-    curl_setopt($ch, CURLOPT_FAILONERROR, 1); 
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url); // set url to post to 
+    curl_setopt($ch, CURLOPT_FAILONERROR, 1);
     //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects 
     curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // return into a variable 
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // return into a variable 
     curl_setopt($ch, CURLOPT_TIMEOUT, 20); // times out after 20s 
     curl_setopt($ch, CURLOPT_USERAGENT, "User-Agent:Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36");
-    
+
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_VERBOSE, false);
-    
+
     // curl_setopt($ch, CURLOPT_POST, 1); // set POST method 
     //curl_setopt($ch, CURLOPT_POSTFIELDS, "url=index%3Dbooks&field-keywords=PHP+MYSQL"); // add POST fields 
     $body = curl_exec($ch); // run the whole process 
     //echo curl_error ($ch ).'<br>';
-    curl_close($ch);   
+    curl_close($ch);
+
     //echo $body; exit();
     // ======= downloading one url = end =======================================
-    
-    
+
+
     function removeTag($tag, $html) {
 
         $tag = strtoupper($tag);
@@ -150,24 +150,25 @@ if (isset($input_vars['url'])) {
         $posStart = strpos($code, $openTag);
         $posFinish = strpos($code, $closeTag);
 
-        while(! ($posStart === false )){
+        while (!($posStart === false )) {
             // remove block
-            $result = substr($result, 0, $posStart).substr($result, $posFinish + strlen($closeTag));
-            $code = substr($code, 0, $posStart).substr($code, $posFinish + strlen($closeTag));
+            $result = substr($result, 0, $posStart) . substr($result, $posFinish + strlen($closeTag));
+            $code = substr($code, 0, $posStart) . substr($code, $posFinish + strlen($closeTag));
             $posStart = strpos($code, $openTag);
-            $posFinish = strpos($code, $closeTag);        
+            $posFinish = strpos($code, $closeTag);
         }
         return $result;
     }
-    $body=removeTag('style', $body);
-    $body=removeTag('script', $body);
-    
+
+    $body = removeTag('style', $body);
+    $body = removeTag('script', $body);
+
     $html = str_get_html($body);
     if (!$html) {
         echo '{"status":"error","message":"cannot download URL"}';
         return;
     }
-    
+
     //    $charset = new charset();
     //    $encoding = strtoupper($charset->detect($html->plaintext));
     //    if($debug) {
@@ -183,30 +184,30 @@ if (isset($input_vars['url'])) {
     //            break;
     //        }
     //    }
-    include(script_root.'/search/charset/charset.php');
-    $charsetDataDir=script_root.'/search/charset/data';
+    include(script_root . '/search/charset/charset.php');
+    $charsetDataDir = script_root . '/search/charset/data';
     $detector = new charsetdetector(Array(
-        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-utf8.stats")) ),
-        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-utf8.stats")) ),
-        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-utf8.stats")) ),
-        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-utf8.stats")) ),
-        Array('charset' => 'WINDOWS-1251',  'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp1251.stats")) ),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-utf8.stats"))),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-utf8.stats"))),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-utf8.stats"))),
+        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-utf8.stats"))),
+        Array('charset' => 'WINDOWS-1251', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp1251.stats"))),
         // Array('charset' => 'KOI8-R', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-koi8.stats")) ),
         // Array('charset' => 'CP866', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp866.stats"))  ),
         // Array('charset' => 'ISO-8859-5'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-iso-8859-5.stats")) ),
-        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-cp1252.stats"))  ),
-        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-cp1252.stats")) ),
-        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-cp1252.stats")) ),
-        //Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-iso-8859-1.stats")) ),
-        //Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats")) ),
-        //Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats")) ),
+        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-cp1252.stats"))),
+        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-cp1252.stats"))),
+        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-cp1252.stats"))),
+            //Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-iso-8859-1.stats")) ),
+            //Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats")) ),
+            //Array('charset' => 'ISO-8859-1'  , 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats")) ),
     ));
-    
-    
+
+
     $encoding = strtoupper($detector->detect($html->plaintext));
-    
-    
-    
+
+
+
     $title = '';
     foreach ($html->find('meta') as $element) {
         if ($element->property == 'og:title') {
@@ -221,10 +222,11 @@ if (isset($input_vars['url'])) {
             $title = '';
         }
     }
-    if($encoding!=site_charset){
+    if ($encoding != site_charset) {
         try {
-            $title=iconv($encoding, site_charset, $title);
+            $title = iconv($encoding, site_charset, $title);
         } catch (Exception $e) {
+            
         }
     }
 
@@ -232,8 +234,8 @@ if (isset($input_vars['url'])) {
         echo '{"status":"error","message":"page title not found"}';
         return;
     }
-    
-    
+
+
     $abstract = '';
     foreach ($html->find('meta') as $element) {
         if (!$abstract && $element->name == 'og:description') {
@@ -243,31 +245,97 @@ if (isset($input_vars['url'])) {
             $abstract = $element->content;
         }
     }
-    if($encoding!=site_charset){
+    if ($encoding != site_charset) {
         try {
-           $abstract=iconv($encoding, site_charset, $abstract);
+            $abstract = iconv($encoding, site_charset, $abstract);
         } catch (Exception $e) {
+            
         }
     }
-    
-    $len1=0;
-    $len0=1;
-    while($len0!=$len1){
-        $len0=mb_strlen($abstract, site_charset);
+
+    $len1 = 0;
+    $len0 = 1;
+    while ($len0 != $len1) {
+        $len0 = mb_strlen($abstract, site_charset);
         $abstract = html_entity_decode($abstract);
-        $len1=mb_strlen($abstract, site_charset);
+        $len1 = mb_strlen($abstract, site_charset);
     }
-    $abstract=  strip_tags($abstract)."<p><a href=\"$url\" target=_blank>$url</a></p>";
+    $abstract = strip_tags($abstract) . "<p><a href=\"$url\" target=_blank>$url</a></p>";
+
+
+    include (script_root . "/search/getlanguage/getlanguage.php");
+
+
+    $langSelector = new getlanguage(Array(
+        'files' => Array(
+            'eng' => script_root . "/search/getlanguage/stats_eng.txt",
+            'rus' => script_root . "/search/getlanguage/stats_rus.txt",
+            'ukr' => script_root . "/search/getlanguage/stats_ukr.txt",
+        )
+    ));
+
+    // ----------------- clear tags - begin ------------------------------------
+    $tags = preg_split("/,|;|\\./", isset($input_vars['tags'])?$input_vars['tags']:"");
+    $cnt = count($tags);
+    $langTags = Array();
+    for ($i = 0; $i < $cnt; $i++) {
+        $tags[$i] = trim($tags[$i]);
+        $tags[$i] = preg_replace("/ +/", " ", $tags[$i]);
+
+        $tagLanguage = $langSelector->getTextLang($tags[$i]);
+
+        if (!isset($langTags[$tagLanguage['lang']])) {
+            $langTags[$tagLanguage['lang']] = Array();
+        }
+        $langTags[$tagLanguage['lang']][] = $tags[$i];
+    }
+
+    // $this_news_info['tags']=join(',',$tags);
+    // ----------------- clear tags - end --------------------------------------
+    # ------------------ rebuild tags - begin ----------------------------------
+    function updateNewsTags($newsId, $lang, $tags) {
+
+        
+        $cnt = count($tags);
+        if ($cnt > 0) {
+            $query = Array();
+            for ($i = 0; $i < $cnt; $i++) {
+                $tag = trim($tags[$i]);
+                if (strlen($tag) > 0) {
+                    $query[] = "({$newsId},'{$lang}','" . DbStr($tag) . "')";
+                }
+            }
+            $query = "INSERT INTO {$GLOBALS['table_prefix']}news_tags(news_id,lang,tag) VALUES" . join(',', $query);
+            db_execute($query);
+        }
+    }
+
+    # ------------------ rebuild tags - end ------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     $query = "SELECT id as newid FROM {$GLOBALS['table_prefix']}news 
               WHERE site_id=$site_id AND lang='{$lang}'
                 AND LOCATE('" . DbStr($url) . "',abstract)";
-    if($debug) {prn($query);}
-    $newid = db_getonerow($query);    
-    
-    if($newid){
-        $news_id=$newid['newid'];
+    if ($debug) {
+        prn($query);
+    }
+    $newid = db_getonerow($query);
+
+    if ($newid) {
+        $news_id = $newid['newid'];
         $query = "
             UPDATE {$GLOBALS['table_prefix']}news 
             SET title='" . DbStr($title) . "',
@@ -276,25 +344,39 @@ if (isset($input_vars['url'])) {
                 abstract='" . DbStr($abstract) . "',
                 cense_level='{$cense_level}', 
                 category_id='{$category_id}',
-                tags='{$tags}',
+                tags='".  DbStr(join(',',$tags))."',
                 expiration_date=null,
                 weight='{$weight}'
                     
             WHERE id={$news_id} AND lang='{$lang}' AND site_id=$site_id
             ";
-        if($debug) {prn($query);}
+        if ($debug) {
+            prn($query);
+        }
         db_execute($query);
 
         $query = "DELETE FROM {$GLOBALS['table_prefix']}news_category WHERE news_id={$news_id}";
-        if($debug) {prn($query);}
+        if ($debug) {
+            prn($query);
+        }
         db_execute($query);
-        
-        $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
-        if($debug) {prn($query);}
-        db_execute($query);
-        echo '{"status":"success","news_id":"'.$news_id.'","charset":"'.$encoding.'"}';
 
-    }else{
+        $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
+        if ($debug) {
+            prn($query);
+        }
+        db_execute($query);
+
+
+        // update tags
+        db_execute("DELETE FROM {$GLOBALS['table_prefix']}news_tags WHERE news_id={$news_id}");
+        foreach($langTags as $lanf=>$tags){
+            updateNewsTags($news_id, $lanf, $tags);
+        }
+
+
+        echo '{"status":"success","news_id":"' . $news_id . '","charset":"' . $encoding . '"}';
+    } else {
         // calculate news id
         $query = "SELECT max(id) AS newid FROM {$table_prefix}news";
         $newid = db_getonerow($query);
@@ -330,7 +412,7 @@ if (isset($input_vars['url'])) {
             '{$last_change_date}', 
             '" . DbStr($abstract) . "', 
             '{$category_id}', 
-            '{$tags}', 
+            '".  DbStr(join(',',$tags))."', 
              null, 
             '{$weight}', 
             '{$creation_date}', 
@@ -339,15 +421,25 @@ if (isset($input_vars['url'])) {
             '{$news_extra_1}', 
             '{$news_extra_2}'
             );";
-        if($debug) {prn($query);}
+        if ($debug) {
+            prn($query);
+        }
         db_execute($query);
 
         $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
-        if($debug) {prn($query);}
+        if ($debug) {
+            prn($query);
+        }
         db_execute($query);
 
-        echo '{"status":"success","news_id":"'.$news_id.'"}';
-        return;        
+        // update tags
+        db_execute("DELETE FROM {$GLOBALS['table_prefix']}news_tags WHERE news_id={$news_id}");
+        foreach($langTags as $lanf=>$tags){
+            updateNewsTags($news_id, $lanf, $tags);
+        }
+
+        echo '{"status":"success","news_id":"' . $news_id . '"}';
+        return;
     }
 }
 
@@ -410,12 +502,20 @@ function startDownload(){
 function downloadNext(){
     if(newsList.length>0){
         var row=newsList[0].split(/[ \\t]+/);
+        
+        var tags='';
+        if(row.length>2){
+          tags+=row[2];
+          for(var ti=3; ti<row.length; ti++){
+             tags+=' '+row[ti];
+          }
+        }
         // console.log(row);
         $('#loading').show();
         $.ajax({
            type: \"POST\",
            url: \"index.php\",
-           data: { action: \"news/download_2\", site_id: $site_id, url: row[1], date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
+           data: { action: \"news/download_2\", site_id: $site_id, url: row[1], date:row[0], tags:tags, category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
            dataType: \"json\"
         }).always(function( msg ) {
         
@@ -429,7 +529,7 @@ function downloadNext(){
                 $.ajax({
                     type: \"POST\",
                     url: \"index.php\",
-                    data: { action: \"news/download_1\", site_id: $site_id, url: row[1], date:row[0], category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
+                    data: { action: \"news/download_1\", site_id: $site_id, url: row[1], date:row[0],tags:tags, category_id:$('#news_category').val(), lang:'{$_SESSION['lang']}'},
                     dataType: \"json\"
                 }).always(function( msg ) {
                     var it=$('<li>' + msg.status + ' : '+row[1]+' ' + (msg.message? '<br>' + msg.status:'' ) + '</li>');

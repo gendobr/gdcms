@@ -260,7 +260,7 @@ if(strlen($input_vars['save_changes'])>0)
            run('lib/class.phpmailer');
            run('lib/class.smtp');
 
-           function allowed_chars($str){return wordwrap(preg_replace('/[^ 1234567890\-_àáâãäåæçèéêëìíîïğñòóôõö÷øùşıÿüú¸.\?\!ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ÙÀŞßÜÚQWERTYUIOPASDFGHJKL;:\'ZXCVBNM,\/qwertyuiopasdfghjklzxcvbnm³¿º²¯ª´¥@%]/',' ',strip_tags($str)),60,'<br>');}
+           function allowed_chars($str){return wordwrap(preg_replace('/[^ 1234567890\-_Ğ°Ğ±Ğ²Ğ³Ğ´ĞµĞ¶Ğ·Ğ¸Ğ¹ĞºĞ»Ğ¼Ğ½Ğ¾Ğ¿Ñ€ÑÑ‚ÑƒÑ„Ñ…Ñ†Ñ‡ÑˆÑ‰ÑÑÑÑŒÑŠÑ‘.\?\!ĞĞ‘Ğ’Ğ“Ğ”Ğ•ĞĞ–Ğ—Ğ˜Ğ™ĞšĞ›ĞœĞĞĞŸĞ Ğ¡Ğ¢Ğ£Ğ¤Ğ¥Ğ¦Ğ§Ğ©ĞĞ®Ğ¯Ğ¬ĞªQWERTYUIOPASDFGHJKL;:\'ZXCVBNM,\/qwertyuiopasdfghjklzxcvbnmÑ–Ñ—Ñ”Ğ†Ğ‡Ğ„Ò‘Ò@%]/',' ',strip_tags($str)),60,'<br>');}
            $tmp_news_info=Array();
            $tmp_news_info['title']=$this_news_info['title'];
            $tmp_news_info['last_change_date']=date('d.m.Y H:i:s',strtotime($this_news_info['last_change_date']));
