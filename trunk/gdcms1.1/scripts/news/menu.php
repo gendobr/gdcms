@@ -250,6 +250,64 @@ class CategoryNews {
         }
         //$this->init();
         //$this->createDateSelector();
+        if(isset($input_vars['tags'])){
+            $this->selectedTags=array_filter($tags = preg_split("/,|;|\\./",$input_vars['tags']),function($el){return strlen(trim($el))>0;});
+        }else{
+            $this->selectedTags=[];
+        }
+    }
+    
+    public function createTagSelector(){
+        $this->tagSelector=[];
+
+        // get list of tags
+        // cache info as file in the site dir
+        $tmp = get_cached_info(sites_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
+        if ($tmp) {
+            $this->tagSelector = $tmp;
+        } else {
+            $query = "SELECT DISTINCT news_tags.tag, news_tags.lang, count(news.id) as N
+                       FROM {$GLOBALS['table_prefix']}news_tags AS news_tags
+                          , {$GLOBALS['table_prefix']}news AS news
+                       WHERE news_tags.news_id=news.id
+                         AND news.lang=news_tags.lang
+                         AND news.cense_level>={$this->this_site_info['cense_level']}
+                         AND news.site_id={$this->this_site_info['id']}
+                         AND news.lang='{$this->lang}'
+                       GROUP BY news_tags.tag
+                       ORDER BY news_tags.lang, news_tags.tag";
+            //prn($query);
+            $this->tagSelector = db_getrows($query);
+            set_cached_info(sites_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->tagSelector);
+        }
+        $cnt=count($this->tagSelector);
+        for($i=0; $i<$cnt; $i++){
+            $url=site_URL.'?'.preg_query_string('/tags/');
+            $index=array_search($this->tagSelector[$i]['tag'],$this->selectedTags);
+            if( $index === false ){
+                // url to add tag
+                $newSelectedTags=[$this->tagSelector[$i]['tag']];
+                $cnt2=count($this->selectedTags);
+                for($i2=0; $i2<$cnt2;$i2++){
+                    $newSelectedTags[]=$this->selectedTags[$i2];
+                }
+                $this->tagSelector[$i]['url']=$url.'&tags='.rawurlencode(join(',',$newSelectedTags));
+                $this->tagSelector[$i]['selected']=0;
+            }else{
+                // url to remove tag
+                $newSelectedTags=[];
+                $cnt2=count($this->selectedTags);
+                for($i2=0; $i2<$cnt2;$i2++){
+                    if($i2!=$index){
+                        $newSelectedTags[]=$this->selectedTags[$i2];
+                    }
+                }
+                $this->tagSelector[$i]['url']=$url.'&tags='.rawurlencode(join(',',$newSelectedTags));
+                $this->tagSelector[$i]['selected']=1;
+            }
+        }
+        //prn($this->tagSelector);
+        //$this->selectedTags
     }
     
     public function createDateSelector(){
@@ -438,7 +496,8 @@ class CategoryNews {
 
     private function init() {
 
-        $this->createDateSelector();
+        //$this->createDateSelector();
+        //$this->createTagSelector();
         
         $site_id = $this->this_site_info['id'];
         $category_id = $this->category_info['category_id'];
@@ -486,6 +545,16 @@ class CategoryNews {
             $date_restriction=" AND news.last_change_date BETWEEN '$date_min' AND '$date_max' ";
 
         }
+        
+        $tag_restriction='';
+        if(count($this->selectedTags)>0){
+            $query=[];
+            foreach($this->selectedTags as $selectedTag){
+                $query[]="'".DbStr($selectedTag)."'";
+            }
+            $tag_restriction = "AND news.id IN(SELECT news_tags.news_id FROM {$GLOBALS['table_prefix']}news_tags AS news_tags WHERE news_tags.tag in(".join(',',$query).") )";
+        }
+
         // get all the visible news attached to visible children
         $query = "SELECT SQL_CALC_FOUND_ROWS
                    news.id
@@ -506,6 +575,7 @@ class CategoryNews {
               AND ( expiration_date is null OR now()<=expiration_date )
               AND news.id in(SELECT news_id FROM {$GLOBALS['table_prefix']}news_category WHERE category_id in(" . join(',', $children) . ") )
               {$date_restriction}
+              {$tag_restriction}
             ".( $this->ordering ? "ORDER BY {$this->ordering}" : '')."
             LIMIT {$this->start},{$this->rows_per_page}";
         //prn($query);
