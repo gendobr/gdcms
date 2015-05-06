@@ -118,7 +118,7 @@
 {$events->setCategoryId(13)}
 {$events->setOrdering("year, month, day, hour, minute, category")}
 
-*}
+
 {$events->setRowsPerPage(100)}
 {$events->setOrdering("year, month, day, hour, minute, category")}
 
@@ -226,12 +226,34 @@
 {/if}
 
 {/if}
-{* *}
+ *}
 
 {* list of attached news *}
+{$news->createDateSelector()}
+{$news->createTagSelector()}
 
-{*
-{if $news->items_found gt 0}
+  <div style="width:300px; float:right; margin:0 0 20px 20px;">
+  {foreach from=$news->tagSelector item=tgs}
+     {if $tgs.selected}
+       <a href="{$tgs.url}" style="color:white;background-color:#AF4331;">&nbsp;{$tgs.tag} ({$tgs.N})&nbsp;</a>
+     {else}
+       <a href="{$tgs.url}">&nbsp;{$tgs.tag} ({$tgs.N})&nbsp;</a>
+     {/if}
+  {/foreach}
+  </div>
+
+
+  {foreach from=$news->dateselector->parents item=dts name=foo}
+    / <a href="{$dts.URL}">{$dts.innerHTML}</a>
+  {/foreach}
+  {if $news->dateselector->current.innerHTML}/ {$news->dateselector->current.innerHTML}{/if}
+  <div>
+  {foreach from=$news->dateselector->children item=dts}
+  <a href="{$dts.URL}">{$dts.innerHTML}</a>
+  {/foreach}
+  </div>
+
+  {if $news->items_found gt 0}
 
 	<div align=left><b>
 	{txt lang=$text.language_name variants="eng=News::rus=Новости::ukr=Новини"}
@@ -278,4 +300,4 @@
 	</div>
         {/if}
 {/if}
-*}
+ {* *}
