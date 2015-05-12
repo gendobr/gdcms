@@ -282,7 +282,7 @@ class CategoryNews {
         }
         $cnt=count($this->tagSelector);
         for($i=0; $i<$cnt; $i++){
-            $url=site_URL.'?'.preg_query_string('/tags/');
+            $url=site_URL.'?'.preg_query_string('/tags|start/');
             $index=array_search($this->tagSelector[$i]['tag'],$this->selectedTags);
             if( $index === false ){
                 // url to add tag
