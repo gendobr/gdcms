@@ -30,13 +30,12 @@ $input_vars['page_menu']['main'] = Array('title' => $text['Main_menu'], 'items' 
 
 if (!is_logged()) {
     $input_vars['page_menu']['main']['items']['login'] = Array(
-           'URL' => ''
-          ,'innerHTML'=>$text['Login']
-                       ."<div id=\"loginoutput\"></div>
+        'URL' => ''
+        , 'innerHTML' => $text['Login']
+        . "<div id=\"loginoutput\"></div>
                          <div id=\"logininput\"></div>
                          <script type=\"text/javascript\" src=\"scripts/lib/jquery.form.js\"></script>
                          <script type=\"text/javascript\" src=\"scripts/login.js\"></script>"
-
         , 'attributes' => ""
     );
     $input_vars['page_menu']['main']['items']['forgot_password'] = Array(
@@ -47,15 +46,19 @@ if (!is_logged()) {
 }
 
 if (is_logged()) {
-    if (isset($_SESSION['user_info']))
-        if (isset($_SESSION['user_info']['sites']))
-            if (is_array($_SESSION['user_info']['sites']))
-                if (count($_SESSION['user_info']['sites']) > 0)
+    if (isset($_SESSION['user_info'])) {
+        if (isset($_SESSION['user_info']['sites'])) {
+            if (is_array($_SESSION['user_info']['sites'])) {
+                if (count($_SESSION['user_info']['sites']) > 0) {
                     $input_vars['page_menu']['main']['items']['site/list'] = Array(
                         'URL' => "index.php?action=site/list"
                         , 'innerHTML' => text('List_of_sites')
                         , 'attributes' => ''
                     );
+                }
+            }
+        }
+    }
 
     $input_vars['page_menu']['main']['items']['notifier/list'] = Array(
         'URL' => "index.php?action=notifier/list"
@@ -69,6 +72,12 @@ if (is_logged()) {
         , 'attributes' => ''
     );
 
+    $input_vars['page_menu']['main']['items']['pswd'] = Array(
+        'URL' => "index.php?action=user/pswd"
+        , 'innerHTML' => text('Change_password')
+        , 'attributes' => ""
+    );
+    
     $input_vars['page_menu']['main']['items']['login'] = Array(
         'URL' => "javascript:void(dologout())"
         , 'innerHTML' => text('Logout') . "<script type=\"text/javascript\" src=\"scripts/logout.js\"></script>"
@@ -102,11 +111,10 @@ if (is_logged()) {
         );
 
         $input_vars['page_menu']['admin']['items']['search/spider/recreateindex'] = Array(
-            'URL' => "index.php?action=search/spider/recreateindex&key=".md5(local_root)
+            'URL' => "index.php?action=search/spider/recreateindex&key=" . md5(local_root)
             , 'innerHTML' => 'Re-create full text search index'
             , 'attributes' => ' target=_blank '
         );
-
     }
 
     $input_vars['page_menu']['admin']['items']['site/spider'] = Array(
@@ -116,15 +124,17 @@ if (is_logged()) {
     );
 
     // get user sites
-    $keys=array_keys($_SESSION['user_info']['sites']);
-    foreach($keys as &$val){
+    $keys = array_keys($_SESSION['user_info']['sites']);
+    $keys[]=0;
+    foreach ($keys as &$val) {
         $val*=1;
     }
-    $query="select count(*) as n from {$GLOBALS['table_prefix']}notification_queue WHERE notification_queue_attempts<5 AND site_id in(".join(',',$keys).")";
-    $n_notification_queue=  db_getonerow($query);
+    $query = "select count(*) as n from {$GLOBALS['table_prefix']}notification_queue WHERE notification_queue_attempts<5 AND site_id in(" . join(',', $keys) . ")";
+    // prn($query);
+    $n_notification_queue = db_getonerow($query);
     $input_vars['page_menu']['admin']['items']['notifier/cron'] = Array(
         'URL' => "index.php?action=notifier/cron"
-        , 'innerHTML' => 'Run notifier cron task ('.$n_notification_queue['n'].')'
+        , 'innerHTML' => 'Run notifier cron task (' . $n_notification_queue['n'] . ')'
         , 'attributes' => ' target=_blank '
     );
 
