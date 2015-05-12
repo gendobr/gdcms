@@ -1,13 +1,13 @@
-<?
+<?php
 
 /*
   Password recovery & form
  */
 
-$error_msg = '';
-$_SESSION['user_info']['is_logged'] = false;
+$error_msg = (isset($input_vars['msg']) ? $input_vars['msg'] : '' );
+// $_SESSION['user_info']['is_logged'] = false;
 
-if (strlen($input_vars['user_login']) > 0) {
+if (isset($input_vars['user_login']) && strlen($input_vars['user_login']) > 0) {
 //-------------------------- check info -- begin -------------------------------
     //------------------- get user info -- begin -------------------------------
     $tmp_user_info = db_getonerow(
@@ -27,6 +27,7 @@ if (strlen($input_vars['user_login']) > 0) {
         //----------------- send mail - begin ----------------------------------
         // prn("{$prefix}/mailer/class.phpmailer.php");
         require_once(script_root . "/lib/class.phpmailer.php");
+        require_once(script_root . "/lib/class.smtp.php");
         include(script_root . "/lib/mailing.php");
         // prn($tmp_user_info);
         my_mail(
@@ -37,7 +38,9 @@ if (strlen($input_vars['user_login']) > 0) {
                 "Your password is {$tmp_user_info['user_password']}\n" .
                 " Regards " . mail_FromName
         );
-        $input_vars['page_content'] = " {$text['Password_is_sent']} ";
+        header("Location: index.php?action=forgot_password&msg=" . rawurlencode($text['Password_is_sent']));
+        $GLOBALS['main_template_name'] = '';
+        return;
         //----------------- send mail - end --------------------------------------
     } else {
         $input_vars['page_content'] = $text['ERROR'] . ' : ' . $text['Wrong_login_name'];
@@ -47,13 +50,13 @@ if (strlen($input_vars['user_login']) > 0) {
 //---------------------- form - begin ------------------------------------------
 
     $input_vars['page_content'] = "
-  <font color=red><b>$error_msg</b></font>
-  <form action=index.php method=post>
-  <input type=hidden name=action value='forgot_password'>
-  {$text['Login_name']} : <input type=text     name=user_login    value='" . checkStr($input_vars['user_login']) . "'>
-  <input type=submit value='{$text['Send_me_password']}'>
-  </form>
-  ";
+    <font color=red><b>$error_msg</b></font>
+    <form action=index.php method=post>
+    <input type=hidden name=action value='forgot_password'>
+    {$text['Login_name']} : <input type=text     name=user_login    value='" . htmlspecialchars(isset($input_vars['user_login']) ? $input_vars['user_login'] : '', 0, site_charset) . "'>
+    <input type=submit value='{$text['Send_me_password']}'>
+    </form>
+    ";
 //---------------------- form - end --------------------------------------------
 }
 
@@ -61,4 +64,3 @@ if (strlen($input_vars['user_login']) > 0) {
 
 $input_vars['page_title'] = $text['Password_reminder'];
 $input_vars['page_header'] = $text['Password_reminder'];
-?>
