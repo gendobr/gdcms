@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Edit user properties
 */

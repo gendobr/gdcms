@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Functions used to manage users
  
