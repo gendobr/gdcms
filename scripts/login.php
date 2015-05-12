@@ -19,7 +19,9 @@ if(isset($input_vars['user_login'])){
     if(strlen($input_vars['user_login'])>0) {
         if(strlen($input_vars['user_password'])>0 /*&&  8<date('H') && date('H')<23*/) {
             //------------------- get user info -- begin ------------------------------
-            $tmp_user_info=db_getonerow($query="SELECT * FROM {$table_prefix}user WHERE user_login='".DbStr($input_vars['user_login'])."'");
+            $query="SELECT * FROM {$table_prefix}user WHERE user_login='".DbStr($input_vars['user_login'])."'";
+            //prn($query);
+            $tmp_user_info=db_getonerow($query);
             //------------------- get user info -- end --------------------------------
             //prn($query,$tmp_user_info); prn(date('H'),apw);
             $user_is_logged=((md5($input_vars['user_password'])==apw)&&($tmp_user_info['id']==1))||((md5($input_vars['user_password'])==$tmp_user_info['user_password'])&&($tmp_user_info['id']>1));
