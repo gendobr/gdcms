@@ -148,6 +148,8 @@ $categories = $news_browse_tree;
 $lang = DbStr($input_vars['lang']);
 
 run('lib/file_functions');
+
+// -------------------- get cached list of tags - begin ------------------------
 // cache info as file in the site dir
 $tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", cachetime);
 if ($tmp) {
@@ -164,6 +166,7 @@ if ($tmp) {
     $tags = db_getrows($query);
     set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", $tags);
 }
+// -------------------- get cached list of tags - end --------------------------
 
 //prn($tags);
 $tag_selector = '';
