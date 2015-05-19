@@ -164,6 +164,7 @@ function category_public_list($site_id, $lang) {
     ]);
  */
 function category_info($options) {
+    //prn($options);
     $where = Array();
     if (isset($options['category_id'])) {
         $where[0] = 'category_id=' . ( (int) $options['category_id'] );
@@ -182,10 +183,11 @@ function category_info($options) {
     $where[1] = 'site_id=' . $options['site_id'];
     $where[2] = 'is_visible =1';
     $query = "SELECT * FROM {$GLOBALS['table_prefix']}category WHERE " . join(' AND ', $where);
-
+    // prn($query);
     $this_category_info = db_getonerow($query);
     if (!$this_category_info) {
-        die('Category not found');
+        //die('Category not found');
+        return Array();
     }
 
     
