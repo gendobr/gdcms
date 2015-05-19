@@ -37,6 +37,10 @@ $main_template_name = '';
 
 
 $this_category_info=category_info($input_vars);
+if(!$this_category_info){
+    header("HTTP/1.0 404 Not Found");
+    exit('Page not found');
+}
 $category_id = $this_category_info['category_id'];
 // -------------------- do redirect if needed - begin --------------------------
 if (is_valid_url($url = trim($this_category_info['category_description']))) {
