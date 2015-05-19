@@ -140,6 +140,7 @@ function news_get_view($news_list, $lang) {
                 Array($tmp[$i]['path'],$lang   ,$site_id   ,$tmp[$i]['category_id'],$tmp[$i]['category_code']),
                 url_pattern_category);
         $categories[$tmp[$i]['category_id']]['deep'] = $tmp[$i]['deep'];
+        $categories[$tmp[$i]['category_id']]['category_id'] = $tmp[$i]['category_id'];
     }
     //prn($categories);
 
