@@ -495,7 +495,10 @@ $query = "SELECT DISTINCT SQL_CALC_FOUND_ROWS
             ORDER BY {$orderby}
             LIMIT $start,$rows";
 
+            
+$startTime=  microtime(true);
 $list_of_news = db_getrows($query);
+header('Cms-Timing: '. (microtime(true)-$startTime));
 // if(isset($input_vars['debug'])) prn($query,$list_of_news);
 // echo '<!-- '; prn($query); echo ' -->';
 # --------------------------- get list of news - end -------------------------

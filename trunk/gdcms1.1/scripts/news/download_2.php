@@ -266,28 +266,29 @@ if (isset($input_vars['url'])) {
     include (script_root . "/search/getlanguage/getlanguage.php");
 
 
-    $langSelector = new getlanguage(Array(
-        'files' => Array(
-            'eng' => script_root . "/search/getlanguage/stats_eng.txt",
-            'rus' => script_root . "/search/getlanguage/stats_rus.txt",
-            'ukr' => script_root . "/search/getlanguage/stats_ukr.txt",
-        )
-    ));
+    //$langSelector = new getlanguage(Array(
+    //    'files' => Array(
+    //        'eng' => script_root . "/search/getlanguage/stats_eng.txt",
+    //        'rus' => script_root . "/search/getlanguage/stats_rus.txt",
+    //        'ukr' => script_root . "/search/getlanguage/stats_ukr.txt",
+    //    )
+    //));
 
     // ----------------- clear tags - begin ------------------------------------
     $tags = preg_split("/,|;|\\./", isset($input_vars['tags'])?$input_vars['tags']:"");
     $cnt = count($tags);
-    $langTags = Array();
+    $langTags = Array($lang=>Array());
     for ($i = 0; $i < $cnt; $i++) {
         $tags[$i] = trim($tags[$i]);
         $tags[$i] = preg_replace("/ +/", " ", $tags[$i]);
+        
+        $langTags[$lang][] = $tags[$i];
+        //$tagLanguage = $langSelector->getTextLang($tags[$i]);
 
-        $tagLanguage = $langSelector->getTextLang($tags[$i]);
-
-        if (!isset($langTags[$tagLanguage['lang']])) {
-            $langTags[$tagLanguage['lang']] = Array();
-        }
-        $langTags[$tagLanguage['lang']][] = $tags[$i];
+        //if (!isset($langTags[$tagLanguage['lang']])) {
+        //    $langTags[$tagLanguage['lang']] = Array();
+        //}
+        //$langTags[$tagLanguage['lang']][] = $tags[$i];
     }
 
     // $this_news_info['tags']=join(',',$tags);
