@@ -1,6 +1,5 @@
 <?php
 
-//----------------------Гена придумал ---------------------------------
 $link = $db;
 $data = date("Y-m-d H:i");
 
@@ -60,13 +59,13 @@ $vyvid = '';
 # ------------------------- update - begin -------------------------------------
 if (isset($input_vars['rozdil1'])) {
 
-    $rozdil1 = mysql_escape_string(trim($input_vars['rozdil1']));
+    $rozdil1 = DbStr(trim($input_vars['rozdil1']));
     $rozdil21 = encode_dir_name(trim($input_vars['rozdil1']));
-    $pidpys1 = mysql_escape_string($input_vars['pidpys1']);
-    $autor1 = mysql_escape_string($input_vars['autor1']);
-    $rik1 = mysql_escape_string($input_vars['rik1']);
-    $vis1 = mysql_escape_string($input_vars['vis1']);
-    $description1=mysql_escape_string($input_vars['description1']);
+    $pidpys1 = DbStr($input_vars['pidpys1']);
+    $autor1 = DbStr($input_vars['autor1']);
+    $rik1 = DbStr($input_vars['rik1']);
+    $vis1 = DbStr($input_vars['vis1']);
+    $description1=DbStr($input_vars['description1']);
     //$photos1 = $row['photos'];photos = '$photos1'             ,
     $query = "UPDATE {$table_prefix}photogalery
                 SET pidpys = '$pidpys1'
@@ -194,7 +193,7 @@ $vyvid .="</div></td>
       <tr><td></td><td></td><td><input type=submit value=\"OK\"></td></tr>
       </table></form>";
 # ----------------------- draw form - end --------------------------------------
-//--------------------------- Гена придумал --------------------------
+
 $input_vars['page_title'] =
         $input_vars['page_header'] = $this_site_info['title'] . ' - ' . $text['Gallery_manage'];
 $input_vars['page_content'] = $vyvid;
@@ -205,5 +204,3 @@ $site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</
 $input_vars['page_menu']['site'] = Array('title' => $site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------
-//--------------------------- Гена допридумывал --------------------------
-?>
