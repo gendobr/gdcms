@@ -1,94 +1,125 @@
 <?php
+
 /*
   Generate "Latest news" block
   arguments are
-    $site_id - site identifier, integer, mandatory
-    $lang    - interface language, char(3), mandatory (rus|ukr|eng)
-    $rows    - number of rows< integer, optional
-    $abstracts =yes|no (default is "yes")
-    $template=<template file name>, file name (extension is ".html"),
-              template placed in site root directory.
-    $date=asc if the oldest messages must appear at top of the list
-    $date=desc if the newest messages must appear at top of the list
+  $site_id - site identifier, integer, mandatory
+  $lang    - interface language, char(3), mandatory (rus|ukr|eng)
+  $rows    - number of rows< integer, optional
+  $abstracts =yes|no (default is "yes")
+  $template=<template file name>, file name (extension is ".html"),
+  template placed in site root directory.
+  $date=asc if the oldest messages must appear at top of the list
+  $date=desc if the newest messages must appear at top of the list
 
-    $category=<category_id> restrict category
-*/
+  $category=<category_id> restrict category
+ */
 
-header('Content-Type:text/html; charset='.site_charset);
+header('Content-Type:text/html; charset=' . site_charset);
 header('Access-Control-Allow-Origin: *');
 
+$GLOBALS['main_template_name'] = '';
+include(script_root . '/news/get_public_list2.php');
 
-$input_vars['category_filter_mode']='yes';
-include(script_root.'/news/get_public_list.php');
-if(isset($input_vars['debug'])) prn($list_of_news);
-/*
-   'paging_links'=>$pages
-  ,'text'=>$txt
-  ,'news'=>$list_of_news
-  ,'news_found' => $news_found
-  ,'news_date_selector'=>$news_date_selector
-  ,'news_keywords_selector'=>$news_keywords_selector
-  ,'news_category_selector'=>$category_selector
-  ,'news_tags'=>$tag_selector
-*/
 
-global $main_template_name; $main_template_name='';
+$site_id = checkInt($input_vars['site_id']);
+$this_site_info = get_site_info($site_id);
+if (!$this_site_info) {
+    die($txt['Site_not_found']);
+}
 
-//run('site/page/page_view_functions');
+$news = new CmsNewsViewer($input_vars);
+
+$news->setFiltermode(true);
+
+
+if(isset($input_vars['orderby'])){
+    $news->setOrdering($input_vars['orderby']);
+}else{
+    $news->setOrdering("date desc");
+}
+// orderby=last_change_date+desc
+
+
+
+$txt = load_msg($news->getLang());
+
 
 # ---------------------- choose template - begin -------------------------------
-
 # check if template name is posted
-  if(isset($_REQUEST['template']))
-  {
-    $_REQUEST['template'] = str_replace(Array('/', "\\"), '_', $_REQUEST['template']); // to prevent template names like /etc/passwd
-    $news_template = sites_root.'/'.$this_site_info['dir'].'/'.$_REQUEST['template'].'.html';
-    if(!is_file($news_template)) $news_template=false;
-    if(!$news_template) $news_template = sites_root.'/'.$this_site_info['dir'].'/'.$_REQUEST['template'];
-    if(!is_file($news_template)) $news_template=false;
-  }
-  else $news_template=false;
+if (isset($input_vars['template'])) {
+    $input_vars['template'] = str_replace(Array('/', "\\"), '_', $input_vars['template']); // to prevent template names like /etc/passwd
+    $news_template = sites_root . '/' . $this_site_info['dir'] . '/' . $input_vars['template'] . '.html';
+    if (!is_file($news_template)) {
+        $news_template = false;
+    }
+    if (!$news_template) {
+        $news_template = sites_root . '/' . $this_site_info['dir'] . '/' . $input_vars['template'];
+    }
+    if (!is_file($news_template)) {
+        $news_template = false;
+    }
+} else {
+    $news_template = false;
+}
 
 
 # check if site news template name exists
-  if(!$news_template) $news_template = sites_root.'/'.$this_site_info['dir'].'/template_news_view_block.html';
-  if(!is_file($news_template)) $news_template=false;
+if (!$news_template) {
+    $news_template = sites_root . '/' . $this_site_info['dir'] . '/template_news_view_block.html';
+}
+if (!is_file($news_template)) {
+    $news_template = false;
+}
 
 # use default system template
-  #prn('$news_template',$news_template);
-  if(!$news_template) $news_template = 'cms/template_news_view_block';
+#prn('$news_template',$news_template);
+if (!$news_template) {
+    $news_template = 'cms/template_news_view_block';
+}
 # ---------------------- choose template - end ---------------------------------
 
-  #prn('$news_template',$news_template);
-  $vyvid=process_template( $news_template
-                                ,Array(
-                                  'paging_links'=>$pages
-                                 ,'text'=>$txt
-                                 ,'news'=>$list_of_news
-                                 ,'news_found' => $news_found
-                                 ,'all_news_url'=>$all_news_url
-                                 ,'start'=>$start+1
-                                 ,'finish'=>min($news_found,count($list_of_news))
-                                ));
-
-if(strlen($vyvid)==0) {echo '';return '';}
+$list=$news->list;
+//prn($list);
 
 
+$vyvid = process_template($news_template
+        , Array(
+    'paging_links' => $news->list['pages']
+    , 'text' => $txt
+    , 'news' => $news->list['rows']
+    , 'news_found' => $news->list['total']
+    , 'all_news_url' => $news->url(Array())
+    , 'start' => $news->list['start']
+    , 'finish' => $news->list['finish']
+        ));
 
-header('Content-Type:text/html; charset='.site_charset);
+
+//run('site/page/page_view_functions');
+#prn('$news_template',$news_template);
+
+
+if (strlen($vyvid) == 0) {
+    echo '';
+    return '';
+}
+
+
+
+header('Content-Type:text/html; charset=' . site_charset);
 header('Access-Control-Allow-Origin: *');
 
 
-if(isset($input_vars['element']) && strlen(trim($input_vars['element']))>0){
+if (isset($input_vars['element']) && strlen(trim($input_vars['element'])) > 0) {
     echo "
     <html>
         <head>
-            <META content=\"text/html; charset=".site_charset."\" http-equiv=\"Content-Type\">
+            <META content=\"text/html; charset=" . site_charset . "\" http-equiv=\"Content-Type\">
         </head>
         <body>
     <div id=toinsert>
     <!--
-          ".str_replace(Array('<!--','-->'),Array('{*','*}'),$vyvid)."
+          " . str_replace(Array('<!--', '-->'), Array('{*', '*}'), $vyvid) . "
      -->
     </div>
     <script type=\"text/javascript\">
@@ -136,7 +167,7 @@ if(isset($input_vars['element']) && strlen(trim($input_vars['element']))>0){
         if(to)
         {
            //alert('element - OK');
-           to.innerHTML = stripAndExecuteScript(decode('".preg_replace("/\\s+/",' ',str_replace(Array('"',"'","\n","\r",'<script','</script'),Array('2~','1~',' ',' ','~script','~/script'),$vyvid))."'));
+           to.innerHTML = stripAndExecuteScript(decode('" . preg_replace("/\\s+/", ' ', str_replace(Array('"', "'", "\n", "\r", '<script', '</script'), Array('2~', '1~', ' ', ' ', '~script', '~/script'), $vyvid)) . "'));
         }
       }
     }
@@ -145,7 +176,7 @@ if(isset($input_vars['element']) && strlen(trim($input_vars['element']))>0){
         </body>
     </html>
     ";
-}else{
+} else {
     echo $vyvid;
 }
 
@@ -193,5 +224,4 @@ if(isset($input_vars['element']) && strlen(trim($input_vars['element']))>0){
 //</html>
 //';
 // remove from history
-   nohistory($input_vars['action']);
-?>
+nohistory($input_vars['action']);
