@@ -270,12 +270,23 @@ class CmsNewsViewer {
             switch ($tmp[$i][0]) {
                 case 'date':
                 case 'datetime':
+                case 'last_change_date':
                     $this->currentInputData['ordering'][] = "date {$tmp[$i][1]}";
                     $ordering[] = 'news.last_change_date ' . $tmp[$i][1];
                     break;
+                
+                case 'expiration_date':
+                    $this->currentInputData['ordering'][] = "expiration_date {$tmp[$i][1]}";
+                    $ordering[] = 'news.expiration_date ' . $tmp[$i][1];
+                    break;
+                
                 case 'weight':
                     $this->currentInputData['ordering'][] = "weight {$tmp[$i][1]}";
                     $ordering[] = 'news.weight ' . $tmp[$i][1];
+                    break;
+                case 'title':
+                    $this->currentInputData['ordering'][] = "title {$tmp[$i][1]}";
+                    $ordering[] = 'news.title ' . $tmp[$i][1];
                     break;
                 case 'id':
                     $this->currentInputData['ordering'][] = "id {$tmp[$i][1]}";

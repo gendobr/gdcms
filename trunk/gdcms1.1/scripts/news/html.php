@@ -130,7 +130,6 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
         ."&lang=<span id=s_lang>{$_SESSION['lang']}</span>"
         ."&rows=10"
         ."&template=<span id=s_template></span>"
-        ."&date=<span id=s_date>desc</span>"
         ."&orderby=<span id=s_order></span>"
         ."&category_id=<span id=s_category>0</span>',null);
 &lt;/script&gt;
@@ -151,7 +150,6 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
  ."&amp;lang=<span id=s_lang>{$_SESSION['lang']}</span>"
  ."&amp;rows=<span id=s_rows>10</span>"
  ."&amp;template=<span id=s_template></span>"
- ."&amp;date=<span id=s_date>desc</span>"
  ."&amp;orderby=<span id=s_order></span>"
  ."&amp;element=news$uid"
  ."&amp;category_id=<span id=s_category>0</span>'&gt;&lt;/iframe&gt;
@@ -170,7 +168,6 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
  ."&amp;lang=<span id=s_lang1>{$_SESSION['lang']}</span>"
  ."&amp;rows=<span id=s_rows1>10</span>"
  ."&amp;template=<span id=s_template1></span>"
- ."&amp;date=<span id=s_date1>desc</span>"
  ."&amp;orderby=<span id=s_order1></span>"
  ."&amp;category_id=<span id=s_category1>0</span>"
  ."\"&gt;&lt;/script&gt;\n\n"
@@ -185,7 +182,6 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
  ."&amp;lang=<span id=s_lang2>{$_SESSION['lang']}</span>"
  ."&amp;rows=<span id=s_rows2>10</span>"
  ."&amp;template=<span id=s_template2></span>"
- ."&amp;date=<span id=s_date2>desc</span>"
  ."&amp;orderby=<span id=s_order2></span>"
  ."&amp;category_id=<span id=s_category2>0</span>'));?&gt; \n \n"
  ."</pre></div>
@@ -202,7 +198,6 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
  ."&amp;lang=<span id=s_lang3>{$_SESSION['lang']}</span>"
  ."&amp;rows=<span id=s_rows3>10</span>"
  ."&amp;template=<span id=s_template3></span>"
- ."&amp;date=<span id=s_date3>desc</span>"
  ."&amp;orderby=<span id=s_order3></span>"
  ."&amp;category_id=<span id=s_category3>0</span>\"&gt;RSS&lt;/a&gt; \n \n"
  ."</pre></div>
@@ -215,7 +210,6 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
  ."&amp;lang=<span id=s_lang4>{$_SESSION['lang']}</span>"
  ."&amp;rows=<span id=s_rows4>10</span>"
  ."&amp;template=<span id=s_template4></span>"
- ."&amp;date=<span id=s_date4>desc</span>"
  ."&amp;orderby=<span id=s_order4></span>"
  ."&amp;category_id=<span id=s_category4>0</span>\" title=\"".get_langstring($this_site_info['title'],$_SESSION['lang'])."\" /&gt; \n \n"
  ."</pre></div>
@@ -291,7 +285,9 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
     ").'</pre></div>';
 
  //echo $iframe;
+$input_vars['page_title']='---';
 $input_vars['page_content']=$iframe;
+
  //----------------------------- draw page - end --------------------------------
 
 
