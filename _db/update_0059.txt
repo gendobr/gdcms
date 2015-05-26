@@ -1,0 +1,2 @@
+ALTER TABLE `cms8_news` ADD INDEX `dte` (`last_change_date`), ADD INDEX `dteutn` (`expiration_date`); 
+ALTER TABLE `cms8_news` ADD INDEX `ste_lng` (`lang`, `site_id`); 
