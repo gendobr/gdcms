@@ -77,7 +77,17 @@ if (isset($input_vars['url'])) {
         $month = $matches[1];
         $day = $matches[2];
         $last_change_date = date("Y-m-d H:i:s", mktime(0, 1, 1, $month, $day, $year));
-    } elseif (checkDatetime($dateString)) {
+    }elseif (preg_match("/^(\\d{2})\\.(\\d{2})\\.(\\d{2})\$/", $dateString, $matches)) {
+        $year = 2000+$matches[3];
+        $month = $matches[2];
+        $day = $matches[1];
+        $last_change_date = date("Y-m-d H:i:s", mktime(0, 1, 1, $month, $day, $year));
+    }elseif (preg_match("/^(\\d{2})\\.(\\d{2})\\.(\\d{4})\$/", $dateString, $matches)) {
+        $year = $matches[3];
+        $month = $matches[2];
+        $day = $matches[1];
+        $last_change_date = date("Y-m-d H:i:s", mktime(0, 1, 1, $month, $day, $year));
+    }elseif (checkDatetime($dateString)) {
         $last_change_date = date("Y-m-d H:i:s", strtotime($dateString));
     } else {
         $last_change_date = date("Y-m-d H:i:s");
@@ -447,7 +457,7 @@ if (isset($input_vars['url'])) {
 
 // ------------------ do download - end ----------------------------------------
 # get list of all site categories
-$query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
+$query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>=0 AND site_id={$site_id} ORDER BY start ASC";
 $tmp = db_getrows($query);
 $list_of_categories = Array();
 foreach ($tmp as $tm) {
@@ -468,8 +478,10 @@ $input_vars['page_content'] = "
     <div>
         <div class=label>" . text('News_Sources') . " : </div>
 <pre>
-2014-01-23  http://some.server.com/news/1234
-0123  http://some.server.com/news/1235
+2014-01-23  http://some.server.com/news/1234    tag1,tag2,tag3
+0123  http://some.server.com/news/1235    tag1,tag2,tag3
+01.04.15	http://gorozhanin.com.ua/read/7215.html    tag1,tag2,tag3
+01.04.2015	http://gorozhanin.com.ua/read/7215.html    tag1,tag2,tag3
 ...
 </pre>
         <textarea id=\"news_sources\" style=\"width:100%; height:300px;\"></textarea>
