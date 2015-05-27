@@ -76,7 +76,7 @@ ajax_loadblock('calendar$uid','"
   </pre>
   <h3>".text('Calendar_widget_today_events')."</h3>
   <pre style='padding:10px;width:500pt; height:150pt;overflow:scroll;'>
-&lt;script type=\"text/javascript\" src=\"".site_root_URL."/cms/scripts/lib/ajax_loadblock.js\"&gt;&lt;/script&gt;
+&lt;script type=\"text/javascript\" src=\"".site_root_URL."/scripts/lib/ajax_loadblock.js\"&gt;&lt;/script&gt;
 &lt;div id=calendar$uid&gt;&nbsp;&lt;/div&gt;
 &lt;script type=\"text/javascript\"&gt;
 ajax_loadblock('calendar$uid','"
@@ -94,7 +94,19 @@ ajax_loadblock('calendar$uid','"
   </pre>
 
   <h3>".text('Calendar_widget_month')."</h3>
-  <div>".site_root_URL."/index.php?action=calendar/month_block&site_id={$site_id}&interface_lang=rus</div>
+  <pre style='padding:10px;width:500pt; height:150pt;overflow:scroll;'>
+&lt;script type=\"text/javascript\" src=\"".site_root_URL."/scripts/lib/ajax_loadblock.js\"&gt;&lt;/script&gt;
+&lt;div id=calendar$uid&gt;&nbsp;&lt;/div&gt;
+&lt;script type=\"text/javascript\"&gt;
+ajax_loadblock('calendar$uid','"
+     .site_root_URL
+     ."/index.php?action=calendar/month_block"
+     ."&amp;site_id={$site_id}"
+     ."&amp;lang={$_SESSION['lang']}"
+     ."',null);
+&lt;/script&gt;
+  </pre>
+
 
 ";
 # ------------------------------------------------------------------------------
