@@ -1,0 +1,132 @@
+{capture name=npt assign="newpagetitle"}{txt lang=$text.language_name variants="eng=News::rus=Новости::ukr=Новини"}{/capture}
+{save path="page.title" value=$newpagetitle}
+<link title="{$newpagetitle}" type="application/rss+xml" rel="alternate" href="{$rss_url}"/>
+{literal}
+<style type="text/css">
+.tag_selected, .tag{white-space:nowrap;}
+.tag_selected {font-weight:bold;}
+.tag{font-weight:normal;}
+img.img_tag_selected, img.img_tag{margin:0px;}
+</style>
+{/literal}
+
+
+<span style="width:24%; display:inline-block;vertical-align:top;">
+    <form action="{$news->keyword_selector.action}" method="post">
+        <input type=text name="{$news->keyword_selector.name}" value="{$news->keyword_selector.value}">
+        <input type=submit value="{$txt.Search}">
+    </form>
+</span>
+
+<span style="width:24%; display:inline-block;vertical-align:top;">
+    {foreach from=$news->dateselector->parents item=dts}
+        / <a href="{$dts.URL}">{$dts.innerHTML}</a>
+    {/foreach}
+    {if $news->dateselector->current.innerHTML}/ {$news->dateselector->current.innerHTML}{/if}
+    <div>
+        {foreach from=$news->dateselector->children item=dts}
+            <a href="{$dts.URL}">{$dts.innerHTML}</a>
+        {/foreach}
+    </div>
+</span>
+
+<span style="width:24%; display:inline-block;vertical-align:top;">
+    {if $news->category_selector.parents}
+      {foreach from=$news->category_selector.parents item=parent}
+        <div style="margin-left:{$parent.deep}0pt"><a href="{$parent.URL}">{$parent.category_title}</a></div>
+      {/foreach}
+    {/if}
+    <div style="margin-left:{$news->category_selector.deep}0pt; font-weight:bold;">{$news->category_selector.category_title}</div>
+
+
+    {if $news->category_selector.children}
+      <div style="margin-left:20px;">
+      {foreach from=$news->category_selector.children item=child}
+        <div style="margin-left:{$news->category_selector.deep}0pt"><a href="{$child.URL}">{$child.category_title}</a></div>
+      {/foreach}
+      </div>
+    {/if}
+
+    <span style="display:inline-block;width:99%;margin-top:10pt;">
+    {$news->category_selector.category_description}
+    <div style='text-align:right;'>{*$news->category_selector.date_last_changed*}{$news->category_selector.date_lang_update}</div>
+    </span>
+</span>
+
+<span style="width:24%; display:inline-block;vertical-align:top;">
+{if $news->tag_selector}
+    {foreach from=$news->tag_selector item=tag}
+        {if $tag.selected}
+           <a href="{$tag.url}" style="background-color:yellow;">{$tag.tag}</a>
+        {/if}
+        
+    {/foreach}
+    <hr>
+    {foreach from=$news->tag_selector item=tag}
+        {if !$tag.selected}
+           <a href="{$tag.url}">{$tag.tag}</a>
+        {/if}
+        
+    {/foreach}
+{/if}
+</span>
+
+<div style='clear:both;'></div>
+<br />
+
+
+{$news->setFiltermode(false)}
+{$news->setOrdering("datetime desc")}
+<div align=left><b>
+{txt lang=$text.language_name variants="eng=News::rus=Новости::ukr=Новини"}
+{$news->list.start}-{$news->list.finish}
+(
+ {txt lang=$text.language_name variants="eng=news found::rus=всего найдено::ukr=всього знайдено"}
+ : {$news->list.total}
+)
+</b></div>
+
+
+{if $news->list.total gt 0}
+{foreach from=$news->list.rows item=news_item}
+  <div align=left>
+    <div>
+    <h4 style='margin-bottom:0;'>
+      {if $news_item.content_present eq '1'}
+        <a href="{$news_item.URL_view_details}">{$news_item.title}</a>
+      {else}
+        {$news_item.title}
+      {/if}
+    </h4>
+    <div style='font-size:90%;'>{$news_item.last_change_date|date_format:"%Y-%m-%d %H:%M:%S"} {if $news_item.expiration_date}... {$news_item.expiration_date|date_format:"%Y-%m-%d %H:%M:%S"}{/if}</div>
+    {$news_item.abstract}
+    </div>
+    <div>
+        {foreach from=$news_item.tag_links item=tag}
+          <a href="{$tag.URL}">{$tag.name}</a>
+        {/foreach}
+        {foreach from=$news_item.categories item=cat}
+          <a href="{$cat.URL}">{$cat.category_title}</a>
+        {/foreach}
+    </div>
+
+  </div>
+  <div style="clear:both;"></div>
+{/foreach}
+<br />
+<div align=left>
+{$txt.Pages} :
+{foreach from=$news->list.pages item=link}
+  {if $link.URL|count_characters >2}
+    {if $link.active}
+       <a href="{$link.URL}" style="font-size:150%;">{$link.innerHTML}</a>
+    {else}
+       <a href="{$link.URL}">{$link.innerHTML}</a>
+    {/if}
+  {else}
+    {$link.innerHTML}
+  {/if}
+{/foreach}
+</div>
+{* <a href="{$all_news_url}">{$txt.More_news} &raquo; </a> *}
+{/if}
