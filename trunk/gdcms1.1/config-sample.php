@@ -125,6 +125,8 @@ define('url_pattern_gallery_image', site_public_URL . "/index.php?action=gallery
 define('url_template_news_details', site_public_URL . "/index.php?action=news/view_details&news_id={news_id}&lang={lang}&news_code={news_code}");
 
 
+
+
 define('url_prefix_news_list', sites_root_URL . "/news.php?");
 define('url_prefix_guestbook', "/cms/index.php?action=gb/guestbook&");
 define('url_prefix_search', sites_root_URL . "/search.php?");
@@ -134,4 +136,8 @@ define('url_prefix_search', sites_root_URL . "/search.php?");
 
 define('gallery_big_image_width', 800);
 define('gallery_big_image_height', 800);
-?>
+
+
+define('url_template_news_list', site_public_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}");
+define('url_template_news_list_other_parameters', "{key}={value}&"); // template for one (key, value) pair
+define('url_template_news_list_ignore_parameters', "/PHPSESSID|action/i"); // regular expression
