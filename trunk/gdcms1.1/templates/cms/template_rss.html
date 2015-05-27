@@ -1,12 +1,12 @@
 {literal}<?xml version="1.0"?>{/literal}
 <rss version="2.0">
   <channel>
-    <title><![CDATA[{ch_encoding from=$site.title}]]></title>
+    <title><![CDATA[{$site.title}]]></title>
     <link><![CDATA[{$new_list_url}]]></link>
     <description></description>
     <language>{$text.language_name}</language>
-    <pubDate>{$news[0].last_change_date|date_format:"%a, %d %b %Y %H:%M:%S"}</pubDate>
-    <lastBuildDate>{$news[0].last_change_date|date_format:"%a, %d %b %Y %H:%M:%S"}</lastBuildDate>
+    <pubDate>{$news->list[0].last_change_date|date_format:"%a, %d %b %Y %H:%M:%S"}</pubDate>
+    <lastBuildDate>{$news->list[0].last_change_date|date_format:"%a, %d %b %Y %H:%M:%S"}</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>ZNU CMS</generator>
     <managingEditor>saltan20003@rambler.ru</managingEditor>
@@ -18,12 +18,12 @@
 		<link>http://www.championat.ru/hockey/</link>
 	   </image>
     *}
-{if $news_found gt 0}
-{foreach from=$news item=news_item}
+{if $news->list.total gt 0}
+{foreach from=$news->list.rows item=news_item}
     <item>
-      <title><![CDATA[{ch_encoding from=$news_item.title}]]></title>
+      <title><![CDATA[{$news_item.title}]]></title>
       <link><![CDATA[{$news_item.URL_view_details}]]></link>
-      <description><![CDATA[{ch_encoding from=$news_item.abstract}]]></description>
+      <description><![CDATA[{$news_item.abstract}]]></description>
       <pubDate>{$news_item.last_change_date|date_format:"%a, %d %b %Y %H:%M:%S"}</pubDate>
       <guid><![CDATA[{$news_item.URL_view_details}]]></guid>
     </item>
