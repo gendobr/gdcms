@@ -376,7 +376,7 @@ $input_vars['page_content'].= "
  -->
 </style>
 
-    <div><a href=\"index.php?action=calendar/list&amp;site_id=62\">".text('Calendar_manage')."</a> / {$input_vars['page_title']}</div>
+    <div><a href=\"index.php?action=calendar/list&amp;site_id={$site_id}\">".text('Calendar_manage')."</a> / {$input_vars['page_title']}</div>
     <form method=post action=index.php?site_id={$site_id}&action=calendar/edit&event_id={$event_id}>
           <input type=hidden name='upd' value='1'>
           <p>" . text('Calendar_event_title') . "<br />
