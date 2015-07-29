@@ -1,0 +1,1 @@
+ALTER TABLE `cms8_news` ADD INDEX `site_land_date` (`lang`, `site_id`, `last_change_date`); 
