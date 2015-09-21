@@ -181,12 +181,21 @@ asort($file_list);
 ml('site/files#list', Array($this_site_info, $current_dir));
 //------------------- get file list - end ------------------------------------
 //
-//
+
+if(strlen($current_dir_relative)==0){
+    $file_view_prefix="{$site_root_url}";
+}else{
+    $file_view_prefix="{$site_root_url}/{$current_dir_relative}";
+}
 //
 //------------------- draw list of files - begin -----------------------------
 $input_vars['page_content'] = '';
 
-
+if(strlen($current_dir_relative)==0){
+    $dir_view_prefix="";
+}else{
+    $dir_view_prefix="{$current_dir_relative}/";
+}
 
 $input_vars['page_content'].="
     $message
@@ -251,7 +260,7 @@ if(strlen($current_dir_relative)==0){
         $prefix.='/'.$path[$i];
         $input_vars['page_content'].="&nbsp;/&nbsp;<a href=\"{$prefix}\">{$path[$i]}</a>";
     }
-    $input_vars['page_content'].='&nbsp;/&nbsp;'.$path[$cnt];
+    $input_vars['page_content'].='&nbsp;/&nbsp;'.$path[$cnt]."<a href=\"{$file_view_prefix}\"><img src=\"img/icon_view.gif\"></a>";
 }
 
 $input_vars['page_content'].="</p>";
@@ -276,11 +285,7 @@ if (strlen($current_dir_relative) > 0) {
 
 
 # ----------- draw list of directories - begin ---------------------------------
-if(strlen($current_dir_relative)==0){
-    $dir_view_prefix="";
-}else{
-    $dir_view_prefix="{$current_dir_relative}/";
-}
+
 foreach ($dir_list as $ke => $fname) {
     // prn($site_root_dir.$fname);
     if (preg_match("/^\\/gallery|^\\/cache/", $fname)) {
@@ -293,7 +298,8 @@ foreach ($dir_list as $ke => $fname) {
       <div class=row>
       <span class='mnu'>
             <a href=\"index.php?action=site/files&site_id={$this_site_info['id']}&popup=$popup&text_field_id={$text_field_id}&delete_file=" . rawurlencode($fname) . "&current_dir=" . rawurlencode($current_dir_relative) . "\" onclick=\"return confirm('{$text['Are_you_sure']}?')\" title=\"{$text['Delete']}\"><img src=img/icon_delete1.gif border=0 width=20px height=15px></a>
-            <a href=\"index.php?action=site/files&site_id={$this_site_info['id']}&popup=$popup&text_field_id={$text_field_id}&current_dir={$dir_view_prefix}{$fname}\" title=\"{$text['Step_inside_directory']}\"><img src=img/icon_open.gif border=0  width=20px height=15px></a>
+            <!-- <a href=\"index.php?action=site/files&site_id={$this_site_info['id']}&popup=$popup&text_field_id={$text_field_id}&current_dir={$dir_view_prefix}{$fname}\" title=\"{$text['Step_inside_directory']}\"><img src=img/icon_open.gif border=0  width=20px height=15px></a> -->
+            <a href=\"{$file_view_prefix}/{$fname}\"><img src=img/icon_view.gif border=0  width=20px height=15px></a>
             {$rename_button}
       </span>
       <span class='fnm'>
@@ -308,11 +314,6 @@ foreach ($dir_list as $ke => $fname) {
 //
 # ----------- draw list of files - begin ---------------------------------------
 
-if(strlen($current_dir_relative)==0){
-    $file_view_prefix="{$site_root_url}/";
-}else{
-    $file_view_prefix="{$site_root_url}/{$current_dir_relative}/";
-}
 
 foreach ($file_list as $ke => $fname) {
     // prn($file_view_prefix,$fname);
@@ -332,7 +333,7 @@ foreach ($file_list as $ke => $fname) {
         <div class=row>
         <span class='mnu'>
             <a href=\"index.php?action=site/files&site_id={$this_site_info['id']}&popup=$popup&text_field_id={$text_field_id}&delete_file=" . rawurlencode($fname) . "&current_dir=" . rawurlencode($input_vars['current_dir']) . "\" onclick=\"return confirm('{$text['Are_you_sure']}?')\" title=\"{$text['Delete']}\"><img src=img/icon_delete1.gif border=0 width=20px height=15px></a>
-            <a href=\"{$file_view_prefix}{$fname}?v=" . time() . "\" target=_blank title=\"{$text['View_file']}\"><img src=img/icon_view.gif border=0 width=20px height=15px></a>
+            <a href=\"{$file_view_prefix}/{$fname}?v=" . time() . "\" target=_blank title=\"{$text['View_file']}\"><img src=img/icon_view.gif border=0 width=20px height=15px></a>
             {$rename_button}
             " .
             ( (strlen($text_field_id) > 0) ? ins($fname, $site_root_url, $text_field_id) : '' )
