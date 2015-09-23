@@ -4,7 +4,6 @@
   List of files for the site
   Argument is $site_id - site identifier
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com
- * todo: надо переписать, чтобы не читать все файлы каждый раз - только текущую директорию
  */
 
 # ----------------- if the popup template should be used - begin ---------------
@@ -322,12 +321,14 @@ foreach ($file_list as $ke => $fname) {
     } else {
         $rename_button = "<a href=\"javascript:void(rename('" . basename($fname) . "'))\" title=\"Rename\" class=\"btn\">R</a>";
     }
-    if (preg_match('/^\./', basename($fname)))
-        continue;
-    if (preg_match('/\.zip$/i', basename($fname)))
+    //    if (preg_match('/^\./', basename($fname))) {
+    //        continue;
+    //    }
+    if (preg_match('/\.zip$/i', basename($fname))) {
         $link_unzip = " (<a href=\"index.php?action=site/files&site_id={$this_site_info['id']}&popup=$popup&text_field_id={$text_field_id}&unzip_file=" . rawurlencode($fname) . "&current_dir=" . rawurlencode($input_vars['current_dir']) . "\">unzip</a>)";
-    else
+    } else {
         $link_unzip = '';
+    }
 
     $input_vars['page_content'].="
         <div class=row>
