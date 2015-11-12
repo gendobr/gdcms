@@ -259,7 +259,7 @@ if(strlen($current_dir_relative)==0){
         $prefix.='/'.$path[$i];
         $input_vars['page_content'].="&nbsp;/&nbsp;<a href=\"{$prefix}\">{$path[$i]}</a>";
     }
-    $input_vars['page_content'].='&nbsp;/&nbsp;'.$path[$cnt]."<a href=\"{$file_view_prefix}\"><img src=\"img/icon_view.gif\"></a>";
+    $input_vars['page_content'].='&nbsp;/&nbsp;'.$path[$cnt]."<a href=\"{$file_view_prefix}\" target=_blank><img src=\"img/icon_view.gif\"></a>";
 }
 
 $input_vars['page_content'].="</p>";
@@ -298,7 +298,7 @@ foreach ($dir_list as $ke => $fname) {
       <span class='mnu'>
             <a href=\"index.php?action=site/files&site_id={$this_site_info['id']}&popup=$popup&text_field_id={$text_field_id}&delete_file=" . rawurlencode($fname) . "&current_dir=" . rawurlencode($current_dir_relative) . "\" onclick=\"return confirm('{$text['Are_you_sure']}?')\" title=\"{$text['Delete']}\"><img src=img/icon_delete1.gif border=0 width=20px height=15px></a>
             <!-- <a href=\"index.php?action=site/files&site_id={$this_site_info['id']}&popup=$popup&text_field_id={$text_field_id}&current_dir={$dir_view_prefix}{$fname}\" title=\"{$text['Step_inside_directory']}\"><img src=img/icon_open.gif border=0  width=20px height=15px></a> -->
-            <a href=\"{$file_view_prefix}/{$fname}\"><img src=img/icon_view.gif border=0  width=20px height=15px></a>
+            <a href=\"{$file_view_prefix}/{$fname}\" target=_blank><img src=img/icon_view.gif border=0  width=20px height=15px></a>
             {$rename_button}
       </span>
       <span class='fnm'>

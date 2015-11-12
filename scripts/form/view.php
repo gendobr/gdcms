@@ -70,6 +70,8 @@ if (strlen(dirname($form_file)) < strlen($this_site_info['site_root_dir'])){
 
 
 $form_html = join('', file($form_file));
+$captcha_placeholder_exists=(strpos($form_html , '{captcha}')!==false);
+
 
 // remove HTML comments
 $form_html = explode('<!--', $form_html);
@@ -141,7 +143,7 @@ $form_data_posted=isset($input_vars['formdata']);
 $form_can_be_accepted = false;
 
 // if form is submitted
-$form_is_submitted = $form_data_posted && isset($input_vars['formdata']['code']);
+$form_is_submitted = $form_data_posted;// && isset($input_vars['formdata']['code']);
 
 // ------------------- post data - begin ---------------------------------------
 if ($form_data_posted) {
@@ -172,7 +174,7 @@ if ($form_data_posted) {
 
         switch (strtolower($attributes['type'])) {
             case 'submit':
-                if($form_is_submitted){
+                if($form_is_submitted && $captcha_placeholder_exists){
                     if (!isset($_SESSION['code'])){
                         $_SESSION['code'] = '';
                     }
@@ -545,7 +547,7 @@ if (!$form_can_be_accepted) {
     //if(isset($input_vars['formdata'])) prn('formdata=',$input_vars['formdata']);
 
     // check if capcha placeholder exists
-    $captcha_placeholder_exists=(strpos($form_html , '{captcha}')!==false);
+    
     $captcha_html='<span class="captcha">'
                  . '<span class="captcha_label">'
                  . $txt['Retype_the_code']
@@ -578,11 +580,13 @@ if (!$form_can_be_accepted) {
 
         switch (strtolower($attributes['type'])) {
             case 'submit':
-                if (!isset($_SESSION['code'])) {
-                    $_SESSION['code'] = '';
-                }
-                if(!$captcha_placeholder_exists){
-                    $new_tag = $captcha_html. $new_tag;
+                if($captcha_placeholder_exists){
+                    if (!isset($_SESSION['code'])) {
+                        $_SESSION['code'] = '';
+                    }
+                    if(!$captcha_placeholder_exists){
+                        $new_tag = $captcha_html. $new_tag;
+                    }
                 }
                 break;
 

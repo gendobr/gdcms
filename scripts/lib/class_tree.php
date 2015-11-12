@@ -1,4 +1,4 @@
-<?
+<?php
 class tree
 {
    var $db;      // database handle

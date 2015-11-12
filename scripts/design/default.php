@@ -37,9 +37,9 @@ $(window).load(function () {
 <div  style="background-color:white; border:2px solid #284351; padding:5pt; text-align:left;">
 <span style="display:inline-block;vertical-align:top;width:200pt;">
    <!--  -->
-   <?
+   <?php
    foreach($input_vars['list_of_languages'] as $lang){
-    ?><div style=""><b><a href="<?=$lang['href']?>"><?=$lang['name']?></a></b></div><?
+    ?><div style=""><b><a href="<?=$lang['href']?>"><?=$lang['name']?></a></b></div><?php
    }
    ?>
    <!--  -->

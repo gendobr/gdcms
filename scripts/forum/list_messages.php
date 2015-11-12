@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   List of messages for a selected site, selected forum and selected thread
   Arguments are

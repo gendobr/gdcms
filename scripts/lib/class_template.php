@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Template processor
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com

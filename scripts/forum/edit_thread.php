@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*
   Edit forum properties
@@ -65,7 +65,7 @@ class ThreadEditor extends extended_db_record_editor {
         global $input_vars;
         $this->check_form_values_message='';
         if (isset($input_vars['db_record_editor_forum_id']) && $input_vars['db_record_editor_forum_id'] <= 0) {
-            $this->check_form_values_message = '<b style="color:red;">ОШИБКА: Выберите форум</b>';
+            $this->check_form_values_message = '<b style="color:red;">пїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ</b>';
             return false;
         }
         return true;

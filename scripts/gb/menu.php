@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   draw menu
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com

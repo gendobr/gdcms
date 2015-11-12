@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Select one of site images
   Argument is $site_id - site identifier, integer, mandatory

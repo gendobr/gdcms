@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   List of sites
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Approve news publication
   argument is $news_id    - news identifier, integer, mandatory

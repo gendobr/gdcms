@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Edit site map
   Argument is $site_id - site identifier

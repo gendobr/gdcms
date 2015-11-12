@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   List of forums for a selected site
   Argument is

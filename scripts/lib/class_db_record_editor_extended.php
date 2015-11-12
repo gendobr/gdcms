@@ -1,4 +1,4 @@
-<?
+<?php
 
 class extended_db_record_editor extends db_record_editor
 {

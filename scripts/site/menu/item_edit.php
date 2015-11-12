@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Editing menu group properties
   Arguments are

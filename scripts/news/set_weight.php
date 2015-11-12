@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Set news weight
   argument is $news_id    - news identifier, integer, mandatory

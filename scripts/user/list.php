@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   List of users
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com

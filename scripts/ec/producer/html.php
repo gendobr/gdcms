@@ -78,7 +78,7 @@ $(window).load(function () {
 });
 </script>
 </head>
-<body leftmargin="5" topmargin="5" style='background-color:white;'><?
+<body leftmargin="5" topmargin="5" style='background-color:white;'><?php
 
  echo $iframe;
 

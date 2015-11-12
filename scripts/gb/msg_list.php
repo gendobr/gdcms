@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   List of messages in guestbook for moderator
   Argument is
