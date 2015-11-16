@@ -88,8 +88,9 @@ $page['lang']=$lang;
 $page['site_id']=$site_id;
 $page['content']= get_cached_page("http://sites.znu.edu.ua:8000/cms/index.php?action=news/block&site_id=27&lang={$lang}&rows=5&abstracts=yes&template=block_news")
 ."<div align=right>
+      <a href='http://sites.znu.edu.ua/cms/index.php?action=news_subscription/subscribe&site_id=27' class=more_news_button>".txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Підписатися на розсилку::rus=Подписаться на рассылку::eng=Subscribe to mailing list'))."</a>
       <a href='http://sites.znu.edu.ua/cms/index.php?action=news/rss&site_id=27&lang={$lang}&rows=10&template=&date=desc&category_id=0'><img src=http://sites.znu.edu.ua/cms/img/rss.gif style='margin:0px;border:none;'></a>
-      <a href=http://sites.znu.edu.ua/news.php?start=0&site_id=27&interface_lang={$lang} class=more_news_button>"
+      <a href='http://sites.znu.edu.ua/news.php?start=0&site_id=27&interface_lang={$lang}' class=more_news_button>"
       .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі новини::rus=Все новости::eng=All News'))
       ."</a>
    </div>";

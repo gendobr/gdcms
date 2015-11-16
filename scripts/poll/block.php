@@ -26,13 +26,14 @@ $poll_id=isset($input_vars['poll_id'])?(int)$input_vars['poll_id']:0;
 if($poll_id>0) $get_poll=" AND id=$poll_id"; else $get_poll='';
 
 $polls=db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1 $get_poll ORDER BY ordering ASC");
-if(!$polls) {
-    echo '';
-    return '';
-}
+//if(!$polls) {
+//    echo '';
+//    return '';
+//}
 //prn('$polls',$polls);
 
 $poll_ids=Array();
+$poll_ids[]=0;
 foreach($polls as $key=>$val) $poll_ids[$key]=(int)$val['id'];
 
 $vidpovidi=db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");

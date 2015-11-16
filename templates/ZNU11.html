@@ -13,17 +13,23 @@
 
 
    <!-- common CSS -->
-   <link rel="stylesheet" type="text/css" href="{$site_root_url}/templates/znu11files/style.css"  media="screen" >
+   <link rel="stylesheet" type="text/css" id="screen_style" href="{$site_root_url}/templates/znu11files/style.css"  media="screen" >
    <!--  , projection -->
    <!-- print -->
-   <link rel="stylesheet" media="print" type="text/css" href="{$site_root_url}/templates/znu11files/print.css"> 
+   <link rel="stylesheet" media="print" id="print_style" type="text/css" href="{$site_root_url}/templates/znu11files/print.css"> 
 <!--[if IE]>
 <link rel="stylesheet" class='mediaquery' type="text/css" href="{$site_root_url}/templates/znu11files/ie.css" media="screen">
 <![endif]-->
    <!-- media queries -->
    <link rel="stylesheet" type="text/css" href="{$site_root_url}/templates/znu11files/custom.css"  class="mediaquery" media="screen">
 
-
+   {literal}
+    <script type="application/javascript">
+        window.openPP = function() {
+          var printPreview = window.open(window.location.href+'#printable', 'print_preview', "resizable=yes,scrollbars=yes,status=yes,menubar=yes");
+        };
+    </script>
+   {/literal}
 
    <!--[if lt IE 9]>
    <script type="text/javascript" src="{$site_root_url}/templates/znu11files/html5.js"></script>
@@ -45,7 +51,9 @@
       {/foreach}
       <!--  language selector - end -->
       <li class="menu1-item"><a href="{$znu_root_url}/cms/index.php?action=category%2Ftree&site_id=73&interface_lang={$text.language_name}" class="top map">{txt lang=$text.language_name variants="eng=Site map::rus=Карта сайта::ukr=Мапа сайту"}</a></li>
-      <li class="menu1-item"><a name="top" href="{$znu_root_url}/{$text.language_name}/ " class="top home">{txt lang=$text.language_name variants="eng=Main page::rus=Главная страница::ukr=Головна сторінка"}</a></li>
+      <li class="menu1-item"><a name="top" href="{$znu_root_url}/{$text.language_name}/" class="top home">{txt lang=$text.language_name variants="eng=Main page::rus=Главная страница::ukr=Головна сторінка"}</a></li>
+      <li class="menu1-item"><a name="top" href="#content_top" class="top nobg">{txt lang=$text.language_name variants="eng=To page conent::rus=К тексту страницы::ukr=До тексту сторінки"}</a></li>
+      <li class="menu1-item"><a name="top" href="javascript:void(window.openPP())" class="top nobg">{txt lang=$text.language_name variants="eng=Printable view::rus=Версия для печати::ukr=Версія для друку"}</a></li>
       </ul><span class="search"><form action="http://sites.znu.edu.ua/search.php"><input type=hidden name=site_id value="25"><input type=hidden name=lang value="{$text.language_name}"><input type=text class="txt" name="keywords"><input type=submit value="{txt lang=$text.language_name variants="eng=Search::rus=Найти::ukr=Знайти"}" class="btn"></form>     
 		</span>
 	</span><!--
@@ -53,6 +61,7 @@
 		<span id="header">
 			<a href="http://www.znu.edu.ua/" class="nounderline"><img src="{$site_root_url}/templates/znu11files/logo.png" class="logo">
 			<h1 class="logo_text">{txt lang=$text.language_name variants="eng=Zaporizhzhya National University::rus=Запорожский национальный университет::ukr=Запорізький національний університет"}</h1></a>
+                        <div><a class='official' href="http://www.whois.com/whois/znu.edu.ua">{txt lang=$text.language_name variants="eng=Official site::rus=Официальный сайт::ukr=Офіційний сайт"}</a></div>
 			<span id="headertext">
 				<span class="menu2">
 					{fragment place="topmenu" lang=$text.language_name site_id=73}
@@ -78,6 +87,7 @@
 			</span><!--
 			--><span class="leftcolumn">
 				<span class="textblock">
+                                    <a class="content_top_link" name="content_top">&nbsp;</a>
 					<h1 class="zagolovok">{if $page.header}{$page.header}{else}{$page.title}{/if}</h1>
 					<span class="texty">
 						{sysmsg}
@@ -139,8 +149,10 @@
 		</span>
 	</span><!-- 
 	--><!--noindex--><span id="footer">
-		<p>&copy; 2012 {txt lang=$text.language_name variants="eng=ZNU, Zaporizhzhya National University, Zhukovsky str., 66, Zaporizhzhya, Ukraine, 69600 ::rus=ЗНУ  Запорожский национальный университет, 69600, г.Запорожье, ул. Жуковского, 66 ::ukr=ЗНУ Запорізький національний університет, 69600, м. Запоріжжя, вул. Жуковського, 66"}
-    <br/><br/></p>
+		<p>&copy; 2012 {txt lang=$text.language_name variants="eng=ZNU, Zaporizhzhya National University, Zhukovsky str., 66, Zaporizhzhya, Ukraine, 69600 tel/fax +38 (061)228-75-08  ::rus=ЗНУ  Запорожский национальный университет, 69600, г.Запорожье, ул. Жуковского, 66, тел./факс  +38 (061)228-75-08  ::ukr=ЗНУ Запорізький національний університет, 69600, м. Запоріжжя, вул. Жуковського, 66, тел./факс  +38 (061)228-75-08 "}
+    <br/>
+    {txt lang=$text.language_name variants="eng=Webmaster email::rus=Электронная почта разработчика сайта::ukr=Адреса електронної пошти веб-майстра"} <a href="mailto:webmaster@znu.edu.ua">webmaster@znu.edu.ua</a>
+    <br/></p>
 	{literal}
             <span style="display:inline-block;">
             <table cellSpacing=0 cellPadding=0 align=center border=0 class="noprint">
@@ -244,6 +256,16 @@
             </span>
             {/literal}
 	</span><!--/noindex-->
+   {literal}
+    <script type="application/javascript">
+        if(window.location.hash==='#printable'){
+            var printDocument = window.document;
+            //console.log(printDocument);
+            printDocument.getElementById("print_style").media="screen, print";
+            printDocument.getElementById("screen_style").media="none";
+        }
+    </script>
+   {/literal}
 </body>
 </html>      
 

@@ -8,7 +8,7 @@ body{
   background:#F2F5FE;
   text-align:center;
 
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96aff5', endColorstr='#ffffff'); /* для IE6-9 */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96aff5', endColorstr='#ffffff'); /* пїЅпїЅпїЅ IE6-9 */
 
 
   background: -moz-linear-gradient(top, #96aff5, #ffffff); /* Firefox 3.6+ */
@@ -25,9 +25,9 @@ body{
   font-family:"Tahoma",sans-serif;
 }
 @font-face {
-   font-family: "Academy Bold"; /* имя шрифта для CSS правил */
-   src: local("Academy Bold"), /* проверяем наличие шрифта в ОС пользователя */
-   url('Academy Bold.otf'); /* если шрифт не установлен, тогда загружаем его по указанному пути */
+   font-family: "Academy Bold"; /* пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ CSS пїЅпїЅпїЅпїЅпїЅпїЅ */
+   src: local("Academy Bold"), /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
+   url('Academy Bold.otf'); /* пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ */
 }
 
 
@@ -371,6 +371,7 @@ background-color: white;
 .ukr  {background-position: 0px -86px;}
 .map  {background-position: 0px   0px;}
 .home{background-position: 0px -22px;}
+.top.nobg{padding-left:5px;background:none;}
 
 span.top, a.top:hover{color:#cedbf9;}
 
@@ -556,3 +557,23 @@ margin:20px;
 font-size:8pt;
 }
 
+
+
+
+.official{
+    color:#FFA500;
+    border-bottom: 1px solid #FFA500;
+}
+.official:hover{
+    color:#EED000;
+    border-bottom: 1px solid #EED000;
+}
+.content_top_link{
+    display:block;
+    float:right;
+    opacity:0;
+}
+
+.category-content{
+     display:inline-block;width:99%;margin-top:10pt;
+}

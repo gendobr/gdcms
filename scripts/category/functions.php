@@ -190,8 +190,9 @@ function category_info($options) {
         return Array();
     }
 
-    
+    $this_category_info['category_title_orig'] = $this_category_info['category_title'];
     $this_category_info['category_title'] = get_langstring($this_category_info['category_title'], $options['lang']);
+    
     $this_category_info['category_description'] = get_langstring($this_category_info['category_description'], $options['lang']);
     $this_category_info['URL'] = str_replace( Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), Array($this_category_info['path'], $options['lang'], $options['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), url_pattern_category);
     $this_category_info['date_lang_update'] = get_langstring($this_category_info['date_lang_update'], $options['lang']);

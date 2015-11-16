@@ -2,6 +2,8 @@
 
 
 $(document).ready(function(){
+
+	//console.log('jmediaqueries');
 	var regex = {
 		media: /@media[^\{]+\{([^\{\}]*\{[^\}\{]*\})+/gi,
 		keyframes: /@(?:\-(?:o|moz|webkit)\-)?keyframes[^\{]+\{(?:[^\{\}]*\{[^\}\{]*\})+[^\}]*\}/gi,
@@ -21,25 +23,35 @@ $(document).ready(function(){
 
 	var cssFiles=[];
 	
-    var parseCss=function(cssFile){
+	var parseCss=function(cssFile){
+		
+		// console.log(cssFile); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		var styles=cssFile.src;
+		var media=cssFile.media;
 
-        var styles=cssFile.src;
-        var media=cssFile.media;
-        var href=cssFile.href;
-        
+		var href=cssFile.href;
+
+                // get media queries
 		var qs = styles.replace(regex.comments, "").replace(regex.keyframes, "").match(regex.media);
+		//console.log(qs); // !!!!!!!!!!!!!!!
+		
+		// count media queries
 		var ql = qs && qs.length || 0;
+		//console.log('ql='+ql); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+
+                // replace urls inside CSS
 		href = href.substring(0, href.lastIndexOf("/"));
 		if (href.length) {
 		  href += "/";
 		}
-
 		var repUrls = function(css) {
 		  return css.replace(regex.urls, "$1" + href + "$2$3");
 		};
-        
-        // media queries not found, use styles "as is"
+
+
+
+		// media queries not found, use styles "as is"
 		if(ql==0){
 			return {
 				src:cssFile.src,
@@ -48,28 +60,32 @@ $(document).ready(function(){
 				style:styles
 			}
 		}
-
-        var useMedia = !ql && media;
+		
+		// console.log('media='+media);
+		var useMedia = !ql && media;
+		//var useMedia = ql && media;
 		if (useMedia) {
 		  ql = 1;
 		}
-		// console.log(useMedia);
+		//console.log('usemedia='+useMedia);
 		var mediastyles=[];
 		var rules = [];
+		
+		var fullq, thisq, eachq, eql;
 		for (var i = 0; i < ql; i++) {
-			var fullq, thisq, eachq, eql;
-		    if (useMedia) {
-			    fullq = media;
-			    rules.push(repUrls(styles));
-		    } else {
+			if (useMedia) {
+				fullq = media;
+				rules.push(repUrls(styles));
+			} else {
 				fullq = qs[i].match(regex.findStyles) && RegExp.$1;
-			    rules.push(RegExp.$2 && repUrls(RegExp.$2));
-		    }
-		    // console.log(fullq, rules);
- 		    eachq = fullq.split(",");
+				rules.push(RegExp.$2 && repUrls(RegExp.$2));
+			}
+			//console.log('++++++++++++++',fullq,'================', rules);
+ 			eachq = fullq.split(",");
 			eql = eachq.length;
 			for (var j = 0; j < eql; j++) {
 				thisq = eachq[j];
+				//console.log('*******',thisq);
 				if (isUnsupportedMediaQuery(thisq)) {
 				  continue;
 				}
@@ -84,64 +100,70 @@ $(document).ready(function(){
 		}
 		
 		// console.log(mediastyles, rules);
+		// console.log(mediastyles);
+		//console.log(rules);
 
 
-        return {
+        var tor = {
 			src:cssFile.src,
 			media:(useMedia?media:false),
 			href:cssFile.href,
 			mediastyles:mediastyles,
 			rules:rules,
 			style:false
-		}
+		};
+		
+	//console.log(tor);
+	
+	return tor;
 	}
 
 
     var applyCss=function(){
 		// check if all CSS 
-	    for(var i=0, cnt=cssFiles.length;i<cnt; i++){
-		    if(!cssFiles[i].src){
+		// console.log('check if all CSS loaded');
+		for(var i=0, cnt=cssFiles.length;i<cnt; i++){
+			//console.log(i,cssFiles[i].href);
+			if(!cssFiles[i].src){
 				return;
 			}
-	    }
-	    // console.log('(re)applyCss');
-	    $('.jmediaqueries').remove();
-	    
-	    
-        //console.log(cssFiles);
-
+			//console.log('OK');
+			
+		}
+		//console.log('(re)applyCss');
+		$('.jmediaqueries').remove();
+		//console.log(cssFiles);
 		var currWidth = $(document).innerWidth();
 		var styleBlocks = {};
-
-	    for(var i=0, cnt=cssFiles.length;i<cnt; i++){
-		    if(cssFiles[i].style){
-	    	   // media queries not found, place styles AS IS
-			   $( "<style type=\"text/css\" class=\"jmediaqueries\" "+( cssFiles[i].media ?" media=\""+cssFiles[i].media+"\"":'')+">"+cssFiles[i].style+"</style>" ).appendTo( "head" )
+		for(var i=0, cnt=cssFiles.length;i<cnt; i++){
+			if(cssFiles[i].style){
+				// media queries not found, place styles AS IS
+				$( "<style type=\"text/css\" class=\"jmediaqueries\" "+( cssFiles[i].media ?" media=\""+cssFiles[i].media+"\"":'')+">"+cssFiles[i].style+"</style>" ).appendTo( "head" )
 			}else{
-	    	    // media queries found
-	    	    // console.log(i, cssFiles[i], cssFiles[i].mediastyles);
-	    	    for (var j=0, cnt1=cssFiles[i].mediastyles.length; j<cnt1; j++ ) {
-						var thisstyle = cssFiles[i].mediastyles[j], 
-							min = thisstyle.minw, 
-							max = thisstyle.maxw, 
-							minnull = min === null, 
-							maxnull = max === null, 
-							em = "em";
-						if (!!min) {
-						  min = parseFloat(min) * (min.indexOf(em) > -1 ? eminpx || getEmValue() : 1);
-						}
-						if (!!max) {
-						  max = parseFloat(max) * (max.indexOf(em) > -1 ? eminpx || getEmValue() : 1);
-						}
-						if (!thisstyle.hasquery || (!minnull || !maxnull) && (minnull || currWidth >= min) && (maxnull || currWidth <= max)) {
-						  if (!styleBlocks[thisstyle.media]) {
+				// media queries found
+				// console.log(i, cssFiles[i], cssFiles[i].mediastyles);
+				for (var j=0, cnt1=cssFiles[i].mediastyles.length; j<cnt1; j++ ) {
+					var 	thisstyle = cssFiles[i].mediastyles[j], 
+						min = thisstyle.minw, 
+						max = thisstyle.maxw, 
+						minnull = min === null, 
+						maxnull = max === null, 
+						em = "em";
+					if (!!min) {
+						min = parseFloat(min) * (min.indexOf(em) > -1 ? eminpx || getEmValue() : 1);
+					}
+					if (!!max) {
+						max = parseFloat(max) * (max.indexOf(em) > -1 ? eminpx || getEmValue() : 1);
+					}
+					if (!thisstyle.hasquery || (!minnull || !maxnull) && (minnull || currWidth >= min) && (maxnull || currWidth <= max)) {
+						if (!styleBlocks[thisstyle.media]) {
 							styleBlocks[thisstyle.media] = [];
-						  }
-						  styleBlocks[thisstyle.media].push(cssFiles[i].rules[thisstyle.rules]);
 						}
-			    }
+						styleBlocks[thisstyle.media].push(cssFiles[i].rules[thisstyle.rules]);
+					}
+				}
 			}
-	    }
+		}
 		for (var k in styleBlocks) {
 		  if (styleBlocks.hasOwnProperty(k)) {
 			  $( "<style type=\"text/css\" class=\"jmediaqueries\" media=\""+k+"\">"+styleBlocks[k].join("\n")+"</style>" ).appendTo( "head" );
@@ -160,7 +182,7 @@ $(document).ready(function(){
     // CSS file load listener factory
     var onCssLoaded=function(i){
 		return function(data){
-			// console.log(cssFiles[i].href+' loaded');
+			//console.log(cssFiles[i].href+' loaded');
 			cssFiles[i].src=data;
 			cssFiles[i]=parseCss(cssFiles[i]);
 			applyCss();

@@ -132,12 +132,63 @@ if ($tmp) {
     set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tmp);
 }
 
-// get attached news - delayed feature
-run('news/menu');
+// do search 
+$search_results=Array();
+$too_many=false;
+if(isset($input_vars['keywords'])){
+    $words=preg_split("/[; ,.!\t-]+/",$input_vars['keywords']);
+    $where=Array();
+    foreach($words as $word){
+        $where[]=  " ( LOCATE('".DbStr($word)."',category_description) OR LOCATE('".DbStr($word)."',category_title) )";
+    }
+    if( count($where) > 0 ){
+        $sql="SELECT *
+        FROM {$table_prefix}category 
+        WHERE site_id={$this_site_info['id']}  AND is_visible
+        AND ".join(' AND ',$where)."
+        AND {$this_category_info['start']} <= `start` AND `finish` <= {$this_category_info['finish']} 
+        LIMIT 0,101";
+        
+        
+        
+        $search_results=db_getrows($sql);
+        $cnt = count($search_results);
+        
+        for ($i = 0; $i < $cnt; $i++) {
+            $ch_category_title = get_langstring($search_results[$i]['category_title'], $lang, true);
+            if(!$ch_category_title){
+                unset($search_results[$i]);
+                continue;
+            }
 
-// get attached calendar events - delayed feature
-run('calendar/functions');
-// get attached pages - delayed feature
+            $ch = &$search_results[$i];
+            $ch['category_title'] = get_langstring($ch['category_title'], $lang, true);
+            $ch['category_description'] = strip_tags(get_langstring($ch['category_description'], $lang));
+            if(is_valid_url($ch['category_description'])){
+                $ch['category_min_description']="<a href=\"{$ch['category_description']}\">{$ch['category_description']}</a>";
+            }else{
+                $ch['category_min_description']=shorten($ch['category_description'],128);
+            }
+            //prn($ch['category_description']);
+            //if(is_valid_url($url=trim($ch['category_description']))){
+            // $ch['URL'] = $url;
+            //}else{
+            $ch['URL'] = str_replace(
+                    Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
+                    Array($ch['path'],$lang   ,$site_id   ,$ch['category_id'],$ch['category_code']),
+                    url_pattern_category);
+            //}
+        }
+        $search_results = array_values($search_results);
+        if($cnt>101){
+            unset($search_results[100]);
+            $too_many=true;
+        }
+
+    }
+}
+
+
 // ---------------------- draw - begin -----------------------------------------
 run('site/page/page_view_functions');
 $menu_groups = get_menu_items($site_id, 0, $lang);
@@ -238,7 +289,7 @@ $lang_list=array_values($lang_list);
 //clearstatcache();
 // if(isset($_REQUEST['v'])) phpinfo();,isset($_REQUEST['v'])
 
-$template_name='template_category_browse';
+$template_name='template_category_search';
 
 
 $_template = sites_root.'/'.$this_site_info['dir']."/{$template_name}_{$category_id}.html";
@@ -262,29 +313,15 @@ if(!$_template){
 
 
 
-//echo $_template;
-
-$category_events = new CategoryEvents2(
-        $lang,
-        $this_site_info,
-        $this_category_info,
-        isset($input_vars['event_start']) ? ( (int) $input_vars['event_start']) : 0,
-        $input_vars);
-// $category_events->init();
-// prn($category_events->list);
-
-$category_news=new CategoryNews(
-        $lang,
-        $this_site_info,
-        $this_category_info,
-        isset($input_vars['news_start']) ? ( (int) $input_vars['news_start']) : 0,
-        $input_vars);
 
 $vyvid = process_template($_template
     , Array(
       'category' => $this_category_info
-    , 'news' => $category_news
-    , 'events' => $category_events
+    , 'search_results' => $search_results
+    , 'too_many' => $too_many
+    , 'n_results' => count($search_results)
+    , 'keywords' => (isset($input_vars['keywords'])?$input_vars['keywords']:'')
+    , 'action' => site_public_URL.'/index.php'
     , 'text' => $txt
     , 'site' => $this_site_info
     , 'lang' => $lang

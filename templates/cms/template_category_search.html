@@ -1,0 +1,36 @@
+{if $category.parents}
+  {foreach from=$category.parents item=parent}
+    <div style="margin-left:{$parent.deep}0pt"><a href="{$parent.URL}">{$parent.category_title}</a></div>
+  {/foreach}
+{/if}
+<div style="margin-left:{$category.deep}0pt; font-weight:bold;"><a href="{$category.URL}">{$category.category_title}</a></div>
+
+
+<form action="{$action}">
+    <input type="hidden" name="action" value="category/child-search">
+    <input type="hidden" name="site_id" value="{$category.site_id}">
+    <input type="hidden" name="category_id" value="{$category.category_id}">
+    <input type="text" name="keywords" value="{$keywords|escape:'html'}">
+    <input type="submit" value="{txt lang=$text.language_name variants="eng=Search::rus=Искать::ukr=Знайти"}">
+</form>
+{if $too_many}
+   <p>{txt lang=$text.language_name variants="eng=Too many results, please refine your keywords::rus=Слишком много результатов, пожалуйста, уточните запрос::ukr=Занадто багато результатів, будь ласка, уточніть запит"}</p>
+{/if}
+
+
+{if $keywords}
+   <p>{txt lang=$text.language_name variants="eng=Web-pages found::rus=Найдено web-страниц::ukr=Знайдено web-сторінок"}: {$n_results}</p>
+{/if}
+{if $search_results}
+  <div>
+  {foreach from=$search_results item=child}
+    <p>
+    <b><a href="{$child.URL}" target="_blank">{$child.category_title}</a></b>
+    <div>{$child.category_min_description}</div>
+    </p>
+  {/foreach}
+  </div>
+{/if}
+
+
+

@@ -934,7 +934,7 @@ function shorten($str,$len=60) {
 
 
 // ----------------- get langstring - begin ----------------------------------
-function get_langstring($str,$lang='') {
+function get_langstring($str,$lang='', $strict=false) {
     if(strlen($lang)==0) $lng=$_SESSION['lang']; else $lng=$lang;
     $tmp=explode("<{$lng}>",$str);
     if(isset($tmp[1])) {
@@ -942,12 +942,13 @@ function get_langstring($str,$lang='') {
         $tmp=explode("</{$lng}>",$tmp);
         return $tmp[0];
     }
-    else {
+    if(!$strict){
         $tmp=explode('>',$str);
         if(!isset($tmp[1])) return $str;
         $tmp=explode('<',$tmp[1]);
         return $tmp[0];
     }
+    return '';
 }
 // ----------------- get langstring - end ------------------------------------
 function transliterate($str) {
