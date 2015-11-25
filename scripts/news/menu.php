@@ -267,10 +267,27 @@ class CategoryNews {
         if ($tmp) {
             $this->tagSelector = $tmp;
         } else {
+            //$query = "SELECT DISTINCT news_tags.tag, news_tags.lang, count(news.id) as N
+            //           FROM {$GLOBALS['table_prefix']}news_tags AS news_tags
+            //              , {$GLOBALS['table_prefix']}news AS news
+            //           WHERE news_tags.news_id=news.id
+            //             AND news.lang=news_tags.lang
+            //             AND news.cense_level>={$this->this_site_info['cense_level']}
+            //             AND news.site_id={$this->this_site_info['id']}
+            //             AND news.lang='{$this->lang}'
+            //           GROUP BY news_tags.tag
+            //           ORDER BY news_tags.lang, news_tags.tag";
             $query = "SELECT DISTINCT news_tags.tag, news_tags.lang, count(news.id) as N
                        FROM {$GLOBALS['table_prefix']}news_tags AS news_tags
                           , {$GLOBALS['table_prefix']}news AS news
+                          , (
+                          select news_category.news_id
+                        from  {$GLOBALS['table_prefix']}category AS category
+                              inner join {$GLOBALS['table_prefix']}news_category as news_category ON news_category.category_id=category.category_id
+                        where {$this->category_info['start']}<=category.start AND category.finish <={$this->category_info['finish']}
+                      ) AS nc
                        WHERE news_tags.news_id=news.id
+                         AND news_tags.news_id=nc.news_id
                          AND news.lang=news_tags.lang
                          AND news.cense_level>={$this->this_site_info['cense_level']}
                          AND news.site_id={$this->this_site_info['id']}
@@ -560,6 +577,7 @@ class CategoryNews {
         $query = "SELECT SQL_CALC_FOUND_ROWS
                    news.id
                   ,news.lang
+                  ,news.site_id
                   ,news.title
                   ,news.news_code
                   ,news.site_id
@@ -567,6 +585,15 @@ class CategoryNews {
                   ,news.last_change_date
                   ,news.expiration_date
                   ,news.tags
+                  ,news.content
+                  ,news.cense_level
+                  ,news.category_id
+                  ,news.weight
+                  ,news.creation_date
+                  ,news.news_code
+                  ,news.news_meta_info
+                  ,news.news_extra_1
+                  ,news.news_extra_2
                   ,IF(LENGTH(TRIM(news.content))>0,1,0) as content_present
             FROM {$GLOBALS['table_prefix']}news news
             WHERE site_id=$site_id

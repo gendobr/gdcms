@@ -80,7 +80,13 @@ $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$sit
 if (!$this_site_info)
     die($txt['Site_not_found']);
 $this_site_info['title'] = get_langstring($this_site_info['title'], $input_vars['lang']);
-$this_site_info['URL_to_view_news'] = url_prefix_news_list . "site_id={$this_site_info['id']}&lang={$input_vars['lang']}";
+
+// define('url_template_news_list', site_public_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}");
+//$this_site_info['URL_to_view_news'] = url_prefix_news_list . "site_id={$this_site_info['id']}&lang={$input_vars['lang']}";
+$this_site_info['URL_to_view_news'] = str_replace(
+    ['{site_id}','{lang}','{other_parameters}'],
+    [$this_site_info['id'],$input_vars['lang'],''],
+    url_template_news_list);
 
 # ------------------- get site info - end --------------------------------------
 //
@@ -210,7 +216,11 @@ function show_news_categories($params) {
     $this_news_info['categories'] = db_getrows($query);
     $tmp = '';
     foreach ($this_news_info['categories'] as $cat) {
-        $category_url = url_prefix_news_list . "site_id={$site_id}&lang={$_REQUEST['lang']}&category_id={$cat['category_id']}";
+        // $category_url = url_prefix_news_list . "site_id={$site_id}&lang={$_REQUEST['lang']}&category_id={$cat['category_id']}";
+        $category_url = str_replace(
+            ['{site_id}','{lang}','{other_parameters}'],
+            [$site_id,$_REQUEST['lang'],"category_id={$cat['category_id']}"],
+            url_template_news_list);
         $tmp.="<span class=\"level{$cat['deep']}\"><a href=\"{$category_url}\">" . get_langstring($cat['category_title'], $_REQUEST['lang']) . "</a></span>\n";
     }
     return $tmp;

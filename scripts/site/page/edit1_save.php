@@ -179,7 +179,8 @@
 
     //-------------------------- check page path - end -------------------------
 
-
+    // read page_meta_tags
+    $this_page_info['page_meta_tags']=trim($input_vars['page_meta_tags']);
 
     $this_page_info['category_id']=(int)$input_vars['page_category'];
     //prn($this_page_info);

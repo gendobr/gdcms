@@ -816,13 +816,21 @@ class CmsNewsViewer {
                   ,news.lang
                   ,news.site_id
                   ,news.title
-                  ,news.tags
                   ,news.news_code
-                  ,news.news_extra_1
-                  ,news.news_extra_2
+                  ,news.site_id
                   ,news.abstract AS abstract
                   ,news.last_change_date
                   ,news.expiration_date
+                  ,news.tags
+                  ,news.content
+                  ,news.cense_level
+                  ,news.category_id
+                  ,news.weight
+                  ,news.creation_date
+                  ,news.news_code
+                  ,news.news_meta_info
+                  ,news.news_extra_1
+                  ,news.news_extra_2
                   ,IF(LENGTH(TRIM(news.content))>0,1,0) as content_present
             FROM {$GLOBALS['table_prefix']}news AS news
                  {$category_restriction}

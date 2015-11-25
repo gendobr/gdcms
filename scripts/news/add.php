@@ -109,8 +109,8 @@ if($user_level==0)
     $news_id=$newid=1+(int)$newid['newid'];
 
     // insert new record
-    $query = "INSERT INTO {$table_prefix}news(id, lang, site_id, title, cense_level, last_change_date,creation_date)
-              values($newid, '".default_language."', $site_id, '{$text['New_page']}',0, NOW(),NOW())";
+    $query = "INSERT INTO {$table_prefix}news(id, lang, site_id, title, cense_level, last_change_date,creation_date, weight)
+              values($newid, '".default_language."', $site_id, '{$text['New_page']}',0, NOW(),NOW(),0)";
     db_execute($query);
 
     // get news lang
