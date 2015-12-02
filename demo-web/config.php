@@ -3,8 +3,9 @@
   Site configuration
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com
  */
-define('debug', false);
+if($_REQUEST['action']=='login') die('---');
 
+define('debug', false);
 
 define('site_title', 'CMS');
 
