@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /cms/demo-web/index.php?action=asset/get&f=%{REQUEST_FILENAME} [L]
