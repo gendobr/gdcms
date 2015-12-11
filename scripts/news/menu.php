@@ -263,7 +263,7 @@ class CategoryNews {
 
         // get list of tags
         // cache info as file in the site dir
-        $tmp = get_cached_info(sites_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
+        $tmp = get_cached_info(template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
         if ($tmp) {
             $this->tagSelector = $tmp;
         } else {
@@ -296,7 +296,7 @@ class CategoryNews {
                        ORDER BY news_tags.lang, news_tags.tag";
             //prn($query);
             $this->tagSelector = db_getrows($query);
-            set_cached_info(sites_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->tagSelector);
+            set_cached_info(template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->tagSelector);
         }
         $cnt=count($this->tagSelector);
         for($i=0; $i<$cnt; $i++){

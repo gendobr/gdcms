@@ -50,13 +50,13 @@ $news=new CmsNewsViewer($input_vars);
   
 # -------------------- get list of page languages - begin --------------------
 
-$tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
+$tmp = get_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
 if (!$tmp) {
     $tmp = db_getrows("SELECT DISTINCT lang
                      FROM {$table_prefix}news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
-    set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
+    set_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
 }
 
 $existing_languages = Array();

@@ -565,7 +565,7 @@ class CmsNewsViewer {
             );
 
 
-            $cachefilepath = sites_root . '/' . $this->this_site_info['dir'] . "/cache/news_months_site{$this->site_id}_lang{$this->lang}_year{$this->year}.cache";
+            $cachefilepath = template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_months_site{$this->site_id}_lang{$this->lang}_year{$this->year}.cache";
             $tmp = get_cached_info($cachefilepath, cachetime);
             if (!$tmp) {
                 $tmp = db_getrows("SELECT DISTINCT month(last_change_date) AS month
@@ -590,7 +590,7 @@ class CmsNewsViewer {
                 , 'innerHTML' => text('All_dates')
             );
 
-            $cachefilepath = sites_root . '/' . $this->this_site_info['dir'] . "/cache/news_years_site{$this->site_id}_lang{$this->lang}.cache";
+            $cachefilepath = template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_years_site{$this->site_id}_lang{$this->lang}.cache";
             $tmp = get_cached_info($cachefilepath, cachetime);
             if (!$tmp) {
                 $tmp = db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$GLOBALS['table_prefix']}news as news WHERE news.site_id={$this->site_id} AND  news.cense_level>={$this->this_site_info['cense_level']} AND news.lang='{$this->lang}' ORDER BY year ASC");
@@ -611,7 +611,7 @@ class CmsNewsViewer {
 
         // get list of tags
         // cache info as file in the site dir
-        $tmp = get_cached_info(sites_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
+        $tmp = get_cached_info(template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
         if ($tmp) {
             $this->_tagSelector = $tmp;
         } else {
@@ -627,7 +627,7 @@ class CmsNewsViewer {
                        ORDER BY news_tags.lang, news_tags.tag";
             //prn($query);
             $this->_tagSelector = db_getrows($query);
-            set_cached_info(sites_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->_tagSelector);
+            set_cached_info(template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->_tagSelector);
         }
         $cnt = count($this->_tagSelector);
         for ($i = 0; $i < $cnt; $i++) {

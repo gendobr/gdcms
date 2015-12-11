@@ -89,7 +89,7 @@ if ($cnt == 0) {
 }
 
 // cache file path
-$cache_file_path = sites_root . '/' . $this_site_info['dir'] . "/cache/rss_aggregator_" . md5(join('::', $feed));
+$cache_file_path = template_cache_root . '/' . $this_site_info['dir'] . "/cache/rss_aggregator_" . md5(join('::', $feed));
 
 
 // try read data from cache

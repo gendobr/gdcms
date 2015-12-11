@@ -53,8 +53,7 @@ if (is_valid_url($url = trim($this_category_info['category_description']))) {
 
 run('lib/file_functions');
 // cache info as file in the site dir
-//$tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 0);
-$tmp = get_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 600);
+$tmp = get_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 600);
 
 if ($tmp) {
     // prn($tmp);
@@ -129,7 +128,7 @@ if ($tmp) {
     //prn($this_category_info['children']);
     // ------------------- get children - end ----------------------------------
     $tmp = Array('parents' => $this_category_info['parents'], 'children' => $this_category_info['children']);
-    set_cached_info(sites_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tmp);
+    set_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tmp);
 }
 
 // get attached news - delayed feature
