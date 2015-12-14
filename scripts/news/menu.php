@@ -571,7 +571,19 @@ class CategoryNews {
             foreach($this->selectedTags as $selectedTag){
                 $query[]="'".DbStr($selectedTag)."'";
             }
-            $tag_restriction = "AND news.id IN(SELECT news_tags.news_id FROM {$GLOBALS['table_prefix']}news_tags AS news_tags WHERE news_tags.tag in(".join(',',$query).") )";
+            $query=  array_unique($query);
+            //$tag_restriction = "AND news.id IN( 
+            //        SELECT news_tags.news_id
+            //        FROM {$GLOBALS['table_prefix']}news_tags AS news_tags
+            //        WHERE news_tags.tag in(".join(',',$query).")
+            // )";
+                    
+            $tag_restriction = "AND news.id IN(
+                select news_id from ( SELECT news_tags.news_id, count(distinct news_tags.tag) nt 
+                FROM {$GLOBALS['table_prefix']}news_tags AS news_tags 
+                WHERE news_tags.tag in(".join(',',$query).")  group by news_tags.news_id having nt=".count($query)." ) fre
+            )";
+            
         }
 
         // get all the visible news attached to visible children
