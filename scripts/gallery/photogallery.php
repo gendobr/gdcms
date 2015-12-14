@@ -71,8 +71,8 @@ if ($rozdilizformy != '') {
 
     $url_details_prefix = str_replace(Array('{site_id}', '{lang}', '{start}','{keywords}'), Array($this_site_info['id'], $lang, 0,''), url_pattern_gallery_category);
     $url_thumbnail_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']) . '/gallery';
-    $query="SELECT * FROM {$table_prefix}photogalery_rozdil WHERE rozdil='".  DbStr($rozdilizformy)."'";
-    $this_category_info=  db_getonerow($query);
+    $query="SELECT * FROM {$table_prefix}photogalery_rozdil WHERE rozdil='".  DbStr($rozdilizformy)."' OR rozdil='" . DbStr(rawurldecode($rozdilizformy)) . "'";
+    $this_category_info=db_getonerow($query);
     $this_category_info['url_details'] = str_replace(
             Array('{rozdilizformy}','{rozdil2}'),
             Array(rawurlencode($this_category_info['rozdil']),  encode_dir_name($this_category_info['rozdil'])),
