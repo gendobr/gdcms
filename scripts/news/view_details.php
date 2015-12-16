@@ -59,7 +59,8 @@ $this_news_info['categories'] = db_getrows($query);
 $tmp = Array();
 foreach ($this_news_info['categories'] as $cat) {
     $tmp[] = Array(
-        'category_id' => $cat['category_id']
+          'category_id' => $cat['category_id']
+        , 'category_code' => $cat['category_code']
         , 'category_title' => "<div style=\"padding-left:" . (10 * $cat['deep']) . "pt\">" . get_langstring($cat['category_title']) . "</div>"
         , 'category_url' => url_prefix_news_list . "site_id={$this_news_info['site_id']}&category_id={$cat['category_id']}"
         , 'deep' => $cat['deep']
