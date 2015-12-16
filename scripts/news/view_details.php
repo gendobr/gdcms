@@ -47,7 +47,7 @@ if (!$this_news_info) {
 
 
 // get news categories
-$query = "SELECT DISTINCT pa.category_id, pa.category_title, pa.deep
+$query = "SELECT DISTINCT pa.category_id, pa.category_code,pa.category_title, pa.deep
           FROM {$table_prefix}category as pa
               ,{$table_prefix}news_category as nc
           WHERE nc.category_id=pa.category_id
