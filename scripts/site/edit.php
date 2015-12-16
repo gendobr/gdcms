@@ -81,7 +81,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
            $tmp = $site_dir_path = trim($this->field['site_dir']['value']);
            $tmp = preg_replace("/^\\/+/",'',$tmp);
            $tmp = preg_replace("/\\/+$/",'',$tmp);
-           $tmp = str_replace('.','',$tmp);
+           //$tmp = str_replace('.','',$tmp);
            $tmp = preg_replace("/[^0-9a-z\\/_.-]/i",'',$tmp);
            //prn($site_dir_path,substr($site_dir_path,0,strlen(local_root)),local_root);
            if($site_dir_path!=$tmp || strlen($tmp)==0)
