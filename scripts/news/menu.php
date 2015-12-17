@@ -141,6 +141,8 @@ function news_get_view($news_list, $lang) {
                 url_pattern_category);
         $categories[$tmp[$i]['category_id']]['deep'] = $tmp[$i]['deep'];
         $categories[$tmp[$i]['category_id']]['category_id'] = $tmp[$i]['category_id'];
+        $categories[$tmp[$i]['category_id']]['category_code'] = $tmp[$i]['category_code'];
+        $categories[$tmp[$i]['category_id']]['path'] = $tmp[$i]['path'];
     }
     //prn($categories);
 
@@ -301,7 +303,18 @@ class CategoryNews {
         }
         $cnt=count($this->tagSelector);
         for($i=0; $i<$cnt; $i++){
-            $url=site_URL.'?'.preg_query_string('/tags|start/');
+            //$url=site_URL.'?'.preg_query_string('/tags|start/');
+            //define('url_pattern_category', site_public_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}");
+            $url = str_replace(Array(
+                '{site_id}', '{lang}', '{category_id}',
+                '{path}', '{category_code}'
+                    ), Array(
+                $this->this_site_info['id'], $this->lang, $this->category_info['category_id'],
+                $this->category_info['path'], $this->category_info['category_code']
+                    ), url_pattern_category);
+            if (strstr($url, '?') === false) {
+                $url.='?';
+            }
             $index=array_search($this->tagSelector[$i]['tag'],$this->selectedTags);
             if( $index === false ){
                 // url to add tag
