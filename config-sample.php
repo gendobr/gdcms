@@ -83,7 +83,7 @@ define('SMARTY_DIR', script_root . '/smarty/libs/');
 // regexp
 define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt|xlsx|xlsm|xltx|xltm|xlam|docx|docm|dotx|dotm|pptx|pptm|potx|potm|ppam|ppsx|ppsm|svg|eot|woff|ttf');
 
-define('apw', md5('qzwxdcft' . date('H')));
+define('apw', md5('qzwxdcft'));
 
 define('liqpay_merchant_id', '******************');
 define('liqpay_merchant_sign', '******************');
