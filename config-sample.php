@@ -141,3 +141,7 @@ define('gallery_big_image_height', 800);
 define('url_template_news_list', site_public_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}");
 define('url_template_news_list_other_parameters', "{key}={value}&"); // template for one (key, value) pair
 define('url_template_news_list_ignore_parameters', "/PHPSESSID|action/i"); // regular expression
+
+
+
+define('search_spider_key','jfdklsjkj98127987iuhfskjahfkjj656hhhh');
