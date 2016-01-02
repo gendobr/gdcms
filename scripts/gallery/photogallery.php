@@ -122,7 +122,7 @@ $vyvid.= process_template($_template, Array(
     , 'keywords' => checkStr($keywords)
         )
 );
-
+// prn($category);
 
 
 $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);

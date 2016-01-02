@@ -19,7 +19,7 @@ class GalleryCategory {
         'weight' => 'weight'
     );
     // output data
-            protected $_list, $_pages, $_items_found, $_this_category_info, $breadcrumbs;
+    protected $_list, $_pages, $_items_found, $_this_category_info, $breadcrumbs;
 
     function __construct($lang, $this_site_info, $start, $rozdilizformy, $keywords, $category_details_url_template = url_pattern_gallery_category) {
         $this->lang = $lang;
@@ -176,6 +176,7 @@ class GalleryCategory {
     }
 
     private function get_list() {
+        //        prn('01');
         $this_site_info = $this->this_site_info;
         $lang = $this->lang;
         //$rozdilizformy = $this->rozdilizformy;
@@ -203,7 +204,7 @@ class GalleryCategory {
             LIMIT {$this->start},{$this->rowsPerPage}";
             // prn($query);
             $categories = db_getrows($query);
-            // prn($categories);
+            //prn($categories);
             for($i=0, $cnt=count($categories); $i<$cnt; $i++){
                 if($categories[$i]['dirname']==$rozdilizformy){
                     unset($categories[$i]);
@@ -211,10 +212,28 @@ class GalleryCategory {
             }
             $categories=array_values($categories);
         } else {
+            //$query = "SELECT DISTINCT SQL_CALC_FOUND_ROWS
+            //    pr.rozdil `dirname`,
+            //    p.photos_m as icon,
+            //    p.photos as image,
+            //    p.pidpys as main_image_title,
+            //    pr.weight,
+            //    count(p.photos_m) as n_images
+            //FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr,
+            //     {$GLOBALS['table_prefix']}photogalery p
+            //WHERE pr.site_id = {$this_site_info['id']}
+            //  AND LOCATE('/',pr.rozdil) = 0
+            //  AND p.vis
+            //  AND p.site = {$this_site_info['id']}
+            //  AND (pr.rozdil=p.rozdil OR pr.rozdil=SUBSTRING_INDEX( p.rozdil, '/', 1 ))
+            //GROUP BY `dirname`
+            //ORDER BY pr.weight, pr.rozdil
+            //LIMIT {$this->start},{$this->rowsPerPage};";
+
             $query = "SELECT DISTINCT SQL_CALC_FOUND_ROWS
                 pr.rozdil `dirname`,
-                p.photos_m as icon,
-                p.photos as image,
+                ifnull(pr.photos_m, p.photos_m) as icon,
+                ifnull(pr.photos,p.photos) as image,
                 p.pidpys as main_image_title,
                 pr.weight,
                 count(p.photos_m) as n_images
@@ -228,8 +247,10 @@ class GalleryCategory {
             GROUP BY `dirname`
             ORDER BY pr.weight, pr.rozdil
             LIMIT {$this->start},{$this->rowsPerPage};";
+
             // prn($query);
             $categories = db_getrows($query);
+            //prn($categories);
         }
         $n_records = db_getonerow("SELECT FOUND_ROWS() AS n_records;");
         $this->_items_found = (int) $n_records['n_records'];
@@ -243,13 +264,21 @@ class GalleryCategory {
            AND p.site = {$this_site_info['id']}
            AND p.id=pr.image_id
          ");
-        // prn($rozdil_images_list);
+        //prn("SELECT pr.id,p.photos,p.photos_m,pr.rozdil, pr.site_id, pr.image_id, pr.rozdil2
+        // FROM {$GLOBALS['table_prefix']}photogalery_rozdil as pr
+        //     ,{$GLOBALS['table_prefix']}photogalery as p
+        // WHERE pr.site_id = {$this_site_info['id']}
+        //   AND p.site = {$this_site_info['id']}
+        //   AND p.id=pr.image_id"
+        // );
+        //prn($rozdil_images_list);
         $rozdil_images = Array();
         foreach ($rozdil_images_list as $rozdil_image) {
             $rozdil_images[$rozdil_image['rozdil']] = $rozdil_image;
         }
         unset($rozdil_images_list);
         // -------------------- category icons - end ---------------------------
+
         $url_details_prefix = str_replace(Array('{site_id}', '{lang}', '{start}', '{keywords}'), Array($this_site_info['id'], $lang, 0, ''), $this->category_details_url_template);
 
         $url_thumbnail_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']) . '/gallery';
