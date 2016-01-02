@@ -2,8 +2,8 @@
 
 
 
-$key=md5(local_root);
-if(!isset($input_vars['key']) || $input_vars['key']!=$key){
+
+if(!isset($input_vars['key']) || $input_vars['key']!=search_spider_key){
     exit('Invalid key');
 }
 $timestart = microtime(true);

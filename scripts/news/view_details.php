@@ -47,7 +47,7 @@ if (!$this_news_info) {
 
 
 // get news categories
-$query = "SELECT DISTINCT pa.category_id, pa.category_title, pa.deep
+$query = "SELECT DISTINCT pa.category_id, pa.category_code,pa.category_title, pa.deep
           FROM {$table_prefix}category as pa
               ,{$table_prefix}news_category as nc
           WHERE nc.category_id=pa.category_id
@@ -59,7 +59,8 @@ $this_news_info['categories'] = db_getrows($query);
 $tmp = Array();
 foreach ($this_news_info['categories'] as $cat) {
     $tmp[] = Array(
-        'category_id' => $cat['category_id']
+          'category_id' => $cat['category_id']
+        , 'category_code' => $cat['category_code']
         , 'category_title' => "<div style=\"padding-left:" . (10 * $cat['deep']) . "pt\">" . get_langstring($cat['category_title']) . "</div>"
         , 'category_url' => url_prefix_news_list . "site_id={$this_news_info['site_id']}&category_id={$cat['category_id']}"
         , 'deep' => $cat['deep']

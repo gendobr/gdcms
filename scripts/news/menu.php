@@ -141,6 +141,8 @@ function news_get_view($news_list, $lang) {
                 url_pattern_category);
         $categories[$tmp[$i]['category_id']]['deep'] = $tmp[$i]['deep'];
         $categories[$tmp[$i]['category_id']]['category_id'] = $tmp[$i]['category_id'];
+        $categories[$tmp[$i]['category_id']]['category_code'] = $tmp[$i]['category_code'];
+        $categories[$tmp[$i]['category_id']]['path'] = $tmp[$i]['path'];
     }
     //prn($categories);
 
@@ -263,7 +265,8 @@ class CategoryNews {
 
         // get list of tags
         // cache info as file in the site dir
-        $tmp = get_cached_info(template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
+        $cachefilepath=template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_category{$this->category_info['category_id']}_lang{$this->lang}.cache";
+        $tmp = get_cached_info($cachefilepath, cachetime);
         if ($tmp) {
             $this->tagSelector = $tmp;
         } else {
@@ -296,11 +299,22 @@ class CategoryNews {
                        ORDER BY news_tags.lang, news_tags.tag";
             //prn($query);
             $this->tagSelector = db_getrows($query);
-            set_cached_info(template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->tagSelector);
+            set_cached_info($cachefilepath, $this->tagSelector);
         }
         $cnt=count($this->tagSelector);
         for($i=0; $i<$cnt; $i++){
-            $url=site_URL.'?'.preg_query_string('/tags|start/');
+            //$url=site_URL.'?'.preg_query_string('/tags|start/');
+            //define('url_pattern_category', site_public_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}");
+            $url = str_replace(Array(
+                '{site_id}', '{lang}', '{category_id}',
+                '{path}', '{category_code}'
+                    ), Array(
+                $this->this_site_info['id'], $this->lang, $this->category_info['category_id'],
+                $this->category_info['path'], $this->category_info['category_code']
+                    ), url_pattern_category);
+            if (strstr($url, '?') === false) {
+                $url.='?';
+            }
             $index=array_search($this->tagSelector[$i]['tag'],$this->selectedTags);
             if( $index === false ){
                 // url to add tag
@@ -570,7 +584,19 @@ class CategoryNews {
             foreach($this->selectedTags as $selectedTag){
                 $query[]="'".DbStr($selectedTag)."'";
             }
-            $tag_restriction = "AND news.id IN(SELECT news_tags.news_id FROM {$GLOBALS['table_prefix']}news_tags AS news_tags WHERE news_tags.tag in(".join(',',$query).") )";
+            $query=  array_unique($query);
+            //$tag_restriction = "AND news.id IN( 
+            //        SELECT news_tags.news_id
+            //        FROM {$GLOBALS['table_prefix']}news_tags AS news_tags
+            //        WHERE news_tags.tag in(".join(',',$query).")
+            // )";
+                    
+            $tag_restriction = "AND news.id IN(
+                select news_id from ( SELECT news_tags.news_id, count(distinct news_tags.tag) nt 
+                FROM {$GLOBALS['table_prefix']}news_tags AS news_tags 
+                WHERE news_tags.tag in(".join(',',$query).")  group by news_tags.news_id having nt=".count($query)." ) fre
+            )";
+            
         }
 
         // get all the visible news attached to visible children

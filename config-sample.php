@@ -83,7 +83,7 @@ define('SMARTY_DIR', script_root . '/smarty/libs/');
 // regexp
 define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt|xlsx|xlsm|xltx|xltm|xlam|docx|docm|dotx|dotm|pptx|pptm|potx|potm|ppam|ppsx|ppsm|svg|eot|woff|ttf');
 
-define('apw', md5('qzwxdcft' . date('H')));
+define('apw', md5('qzwxdcft'));
 
 define('liqpay_merchant_id', '******************');
 define('liqpay_merchant_sign', '******************');
@@ -141,3 +141,7 @@ define('gallery_big_image_height', 800);
 define('url_template_news_list', site_public_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}");
 define('url_template_news_list_other_parameters', "{key}={value}&"); // template for one (key, value) pair
 define('url_template_news_list_ignore_parameters', "/PHPSESSID|action/i"); // regular expression
+
+
+
+define('search_spider_key','jfdklsjkj98127987iuhfskjahfkjj656hhhh');
