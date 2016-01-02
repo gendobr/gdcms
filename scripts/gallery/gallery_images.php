@@ -171,6 +171,7 @@ class GalleryImages {
                 Array(encode_dir_name($this->rozdilizformy),rawurlencode($this->rozdilizformy), $this->this_site_info['id'], $this->lang, rawurlencode($this->keywords)), url_pattern_gallery_category);
 
         $this->paging_links = $this->get_paging_links($this->start, $this->_items_found, $this->rowsPerPage, $url_template);
+        //prn($images);
         return $images;
     }
 

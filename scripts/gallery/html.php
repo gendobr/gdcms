@@ -64,10 +64,6 @@ $images->rowsPerPage = $rows;
 if ($orderBy) {
     $images->setOrderBy($orderBy);
 }
-// prn($images->list);
-// $result = db_getrows("SELECT * FROM {$table_prefix}photogalery WHERE rozdil = '".mysql_escape_string($rozdilizformy)."' AND vis = 1 AND site = '$site_id' ORDER BY rik DESC limit 0,12");
-
-
 if ($images->items_found > 0) {
     $vyvid = process_template($_template
             , Array(
