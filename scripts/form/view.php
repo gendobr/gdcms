@@ -416,9 +416,11 @@ if ($form_data_posted) {
         # ----------------------- get email address - begin -------------------
         $emails = Array();
         if (isset($form_attributes['action'])) {
-            $tmp = trim(preg_replace('/mailto:/', '', $form_attributes['action']));
-            if (is_valid_email($tmp)) {
-                $emails[] = $tmp;
+            $tmp = preg_split("/ *, */",trim(preg_replace('/mailto:/', '', $form_attributes['action'])));
+            foreach($tmp as $tm){
+                if (is_valid_email($tm)) {
+                    $emails[] = $tm;
+                }
             }
         }
 

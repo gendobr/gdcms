@@ -122,7 +122,7 @@ $vyvid.= process_template($_template, Array(
     , 'keywords' => checkStr($keywords)
         )
 );
-
+//prn($category);
 
 
 $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
@@ -157,13 +157,11 @@ foreach ($menu_groups as $kmg => $mg) {
 $lang_list = list_of_languages();
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
-    $lang_list[$i]['url'] = $lang_list[$i]['href'];
-
-    $lang_list[$i]['url'] = str_replace('action=gallery%2Fgallery', '', $lang_list[$i]['url']);
-    $lang_list[$i]['url'] = str_replace('index.php', 'gallery.php', $lang_list[$i]['url']);
-    $lang_list[$i]['url'] = str_replace(site_root_URL, sites_root_URL, $lang_list[$i]['url']);
-    $lang_list[$i]['url'] = str_replace('?&', '?', $lang_list[$i]['url']);
-    $lang_list[$i]['url'] = str_replace('&&', '&', $lang_list[$i]['url']);
+   $lang_list[$i]['href'] =
+   $lang_list[$i]['url'] = str_replace(
+       Array('{site_id}', '{lang}', '{start}', '{keywords}','{rozdilizformy}'), 
+       Array($this_site_info['id'], $lang_list[$i]['name'], 0, '',$category->category_info['rozdil']), 
+       url_pattern_gallery_category);
 
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }
