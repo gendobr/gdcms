@@ -32,11 +32,12 @@ run('site/menu');
 
 
 $vyvid="
-<form action=search.php method=post>
-<input type=hidden name=site_id value='{$this_site_info['id']}'>
-<input type=hidden name=lang value='{$input_vars['lang']}'>
-<INPUT type=text NAME=keywords SIZE=40 value=''>
-<input type=submit value='{$txt['Search']}'>
+<form method=\"post\" action=\"".site_public_URL."/index.php\">
+<input type=\"hidden\" value=\"search/query/query\" name=\"action\">
+<input type=\"hidden\" value=\"{$this_site_info['id']}\" name=\"site_id\">
+<input type=\"hidden\" value=\"{$input_vars['lang']}\" name=\"lang\">
+<input type=\"text\" value=\"\" size=\"40\" name=\"keywords\">
+<input type=\"submit\" value=\"{$txt['Search']}\">
 </form>
 ";
 
