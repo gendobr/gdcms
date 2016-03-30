@@ -1,8 +1,8 @@
 <?php
 run('category/functions');
-//------------------- site info - begin ----------------------------------------
 run('site/menu');
 
+//------------------- site info - begin ----------------------------------------
 $site_id = isset($input_vars['site_id']) ? ((int) $input_vars['site_id']) : 0;
 $this_site_info = get_site_info($site_id);
 //prn($this_site_info);
@@ -14,21 +14,14 @@ if (!$this_site_info['id']) {
 }
 $input_vars['site_id'] = $this_site_info['id'];
 //------------------- site info - end ------------------------------------------
+//
+//
+//
 // ------------------ get language - begin -------------------------------------
-if (isset($input_vars['interface_lang'])) {
-    if ($input_vars['interface_lang']) {
-        $input_vars['lang'] = $input_vars['interface_lang'];
-    }
-}
-if (!isset($input_vars['lang'])) {
-    $input_vars['lang'] = default_language;
-}
-if (strlen($input_vars['lang']) == 0) {
-    $input_vars['lang'] = default_language;
-}
+$input_vars['lang'] = $lang = get_language('lang,interface_lang');
 global $txt;
 $txt = load_msg($input_vars['lang']);
-$input_vars['lang'] = $lang = get_language('lang');
+// prn($lang);
 // ------------------ get language - end ---------------------------------------
 
 
@@ -50,101 +43,25 @@ if (is_valid_url($url = trim($this_category_info['category_description']))) {
 // -------------------- do redirect if needed - end ----------------------------
 
 
-
 run('lib/file_functions');
-// cache info as file in the site dir
-$tmp = get_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 600);
-
-if ($tmp) {
-    // prn($tmp);
-    $this_category_info['children'] = $tmp['children'];
-    $this_category_info['parents'] = $tmp['parents'];
-} else {
-    // ---------------------------- get parents - begin ------------------------
-    $query = "select pa.category_id, pa.site_id, pa.category_code, pa.category_title,
-                      pa.start, pa.finish, pa.is_deleted, pa.deep, pa.is_part_of,
-                      pa.see_also, pa.is_visible, pa.path
-               from {$table_prefix}category pa, {$table_prefix}category ch
-               WHERE ch.category_id={$category_id} and ch.site_id={$site_id} and pa.site_id={$site_id}
-                 and pa.start<ch.start and ch.finish<pa.finish
-               order by pa.start asc";
-    $this_category_info['parents'] = db_getrows($query);
-
-    // all parents should be visible
-    $parents_are_visible = true;
-    $cnt = count($this_category_info['parents']);
-    for ($i = 0; $i < $cnt; $i++) {
-        $pa = &$this_category_info['parents'][$i];
-        if ($pa['is_visible'] != 1) {
-            $parents_are_visible = false;
-            break;
-        }
-        $pa['category_title'] = get_langstring($pa['category_title'], $lang);
-        //$pa['category_description'] = get_langstring($pa['category_description'], $lang);
-        $pa['URL'] = str_replace(
-                Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
-                Array($pa['path'],$lang   ,$site_id   ,$pa['category_id'],$pa['category_code']),
-                url_pattern_category);
-    }
-    if (!$parents_are_visible) {
-        die('Category is hidden');
-    }
-    // echo '<!-- '; prn($this_category_info['parents']); echo ' -->';
-    // ---------------------------- get parents - end --------------------------
-    // ------------------- get children - begin --------------------------------
-    $query = "select ch.category_id, ch.site_id, ch.category_code, ch.category_title,
-                      ch.start, ch.finish, ch.is_deleted, ch.deep, ch.is_part_of,
-                      ch.see_also, ch.is_visible, ch.path, ch.category_description
-               from {$table_prefix}category pa, {$table_prefix}category ch
-               WHERE pa.category_id={$category_id} and ch.site_id={$site_id} and ch.is_visible
-                 and pa.site_id={$site_id} and ch.deep=" . ($this_category_info['deep'] + 1 ) . "
-                 and pa.start<ch.start and ch.finish<pa.finish
-               order by ch.start asc";
-    //prn(checkStr($query));
-    $this_category_info['children'] = db_getrows($query);
-
-    $cnt = count($this_category_info['children']);
-    for ($i = 0; $i < $cnt; $i++) {
-        $ch_category_title = get_langstring($this_category_info['children'][$i]['category_title'], $lang, true);
-        if(!$ch_category_title){
-            unset($this_category_info['children'][$i]);
-            continue;
-        }
-        
-        $ch = &$this_category_info['children'][$i];
-        $ch['category_title'] = get_langstring($ch['category_title'], $lang, true);
-        $ch['category_description'] = get_langstring($ch['category_description'], $lang);
-        //prn($ch['category_description']);
-        //if(is_valid_url($url=trim($ch['category_description']))){
-        // $ch['URL'] = $url;
-        //}else{
-        $ch['URL'] = str_replace(
-                Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
-                Array($ch['path'],$lang   ,$site_id   ,$ch['category_id'],$ch['category_code']),
-                url_pattern_category);
-        //}
-    }
-    $this_category_info['children']=array_values($this_category_info['children']);
-    //prn($this_category_info['children']);
-    // ------------------- get children - end ----------------------------------
-    $tmp = Array('parents' => $this_category_info['parents'], 'children' => $this_category_info['children']);
-    set_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tmp);
-}
-
-// get attached news - delayed feature
 run('news/menu');
-
-// get attached calendar events - delayed feature
 run('calendar/functions');
-// get attached pages - delayed feature
-// ---------------------- draw - begin -----------------------------------------
 run('site/page/page_view_functions');
+
+
+$categoryViewModel=new CategoryViewModel(
+        $this_site_info,
+        $this_category_info,
+        $lang);
+
+
+// ---------------------- draw - begin -----------------------------------------
+
 $menu_groups = get_menu_items($site_id, 0, $lang);
 
 // ------------- mark menu items - begin ---------------------------------------
-// $this_category_info['parents']
 $urls = Array();
-foreach ($this_category_info['parents'] as $tmp) {
+foreach ($categoryViewModel->parents as $tmp) {
     $UP = parse_url($tmp['URL']);
     if (isset($UP['query'])) {
         parse_str($UP['query'], $out);
@@ -230,7 +147,11 @@ for ($i = 0; $i < $cnt; $i++) {
         continue;
     }
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
-    $lang_list[$i]['url'] = $lang_list[$i]['href'];
+    $lang_list[$i]['url'] = $lang_list[$i]['href']=
+        str_replace(
+            Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), 
+            Array($this_category_info['path'], $lang_list[$i]['lang'], $this_category_info['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), 
+            url_pattern_category);
 }
 $lang_list=array_values($lang_list);
 //prn($lang_list);
@@ -245,7 +166,7 @@ if(!is_file($_template)){
     $_template='';
 }
 if(!$_template){
-    $prnts=array_reverse($this_category_info['parents']);
+    $prnts=array_reverse($categoryViewModel->parents);
     foreach ($prnts as $tmp) {
         $_template = sites_root.'/'.$this_site_info['dir']."/{$template_name}_{$tmp['category_id']}.html";
         if(is_file($_template)){
@@ -279,9 +200,11 @@ $category_news=new CategoryNews(
         isset($input_vars['news_start']) ? ( (int) $input_vars['news_start']) : 0,
         $input_vars);
 
+
+
 $vyvid = process_template($_template
     , Array(
-      'category' => $this_category_info
+      'category' => $categoryViewModel
     , 'news' => $category_news
     , 'events' => $category_events
     , 'text' => $txt
@@ -306,4 +229,4 @@ $file_content = process_template($this_site_info['template']
         ));
 echo $file_content;
 // ---------------------- draw - end -------------------------------------------
-?>
+

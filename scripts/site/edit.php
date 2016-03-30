@@ -318,7 +318,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
   $input_vars['page_content'] = $rep->draw($form);
 
 
-  $list_of_languages=list_of_languages($exclude_pattern='');
+  $list_of_languages=list_of_languages();
   // prn($list_of_languages);
   $js_lang=Array();
   foreach($list_of_languages as $l){

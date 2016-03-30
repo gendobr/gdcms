@@ -581,6 +581,7 @@ function text($string_name) {
 function list_of_languages($exclude_pattern='') {
     $ex='^interface_lang$|^'.session_name().'$';
     if(strlen($exclude_pattern)>0) $ex.='|'.$exclude_pattern;
+    $ex="/$ex/i";
 
     $files=Array();
     $dirname = local_root .'/msg';
@@ -592,7 +593,9 @@ function list_of_languages($exclude_pattern='') {
         if (substr($fl, -4) == '.ini') {
             $tmp = str_replace('.ini', '', $fl);
 
-            $href=site_root_URL . '/index.php?' . query_string($ex) . "&interface_lang={$tmp}";
+            //$href=site_root_URL . '/index.php?' . query_string($ex) . "&interface_lang={$tmp}";
+            $href=site_root_URL . '/index.php?' . preg_query_string($ex) . "&interface_lang={$tmp}";
+            
             $files[] = Array(
                 'name' => $tmp,
                 'lang' => $tmp,
@@ -1034,7 +1037,23 @@ function tohistory() {
 
 function get_language($varname){
     global $input_vars;
-    return isset($input_vars[$varname])?preg_replace("/\\W/",'', $input_vars[$varname] ):default_language;
+    
+    $names=explode(",",$varname);
+    $availableLanguages=list_of_languages();
+    
+    $lang=default_language;
+    foreach($names as $name){
+        if(!isset($input_vars[$name])){
+            continue;
+        }
+        $candidate=preg_replace("/\\W/",'', $input_vars[$name] );
+        foreach($availableLanguages as $lng){
+            if($lng['lang']==$candidate){
+                $lang=$candidate;
+            }
+        }
+    }
+    return $lang;
 }
 
 

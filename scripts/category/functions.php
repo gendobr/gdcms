@@ -69,7 +69,13 @@ function adjust($_info, $category_id) {
 
     $tor['category_title'] = get_langstring($tor['category_title']);
 
-    $tor['title_short'] = shorten($tor['category_title']);
+    $tor['category_title_short'] = get_langstring($tor['category_title_short']);
+    if (strlen($tor['category_title_short'])) {
+        $tor['category_title_short'] = shorten($tor['category_title']);
+    }
+
+    $tor['title_short'] = $tor['category_title_short'];
+
     $tor['padding'] = 20 * $tor['deep'];
     $tor['URL'] = "index.php?action=category/list&category_id={$tor['category_id']}&site_id={$_info['site_id']}";
     $tor['URL_move_up'] = "index.php?action=category/list&category_id=$category_id&move_up={$tor['category_id']}&site_id={$_info['site_id']}";
@@ -94,9 +100,9 @@ function adjust($_info, $category_id) {
     // prn('date_lang_update',$tor['date_lang_update_array']);
     # prn($query,$this_page_info);
     //prn('    tor= ',$tor);
-    
-    if(!is_array($tor['category_icon'])){
-        $tor['category_icon']=json_decode($tor['category_icon'],true);
+
+    if (!is_array($tor['category_icon'])) {
+        $tor['category_icon'] = json_decode($tor['category_icon'], true);
     }
     return $tor;
 }
@@ -123,8 +129,8 @@ function category_public_list($site_id, $lang) {
         $caterory_list[$i]['category_description'] = get_langstring($caterory_list[$i]['category_description'], $lang);
         $caterory_list[$i]['URL'] = str_replace('{category_id}', $caterory_list[$i]['category_id'], $category_url_pattern);
         $caterory_list[$i]['number_of_news'] = 0;
-        
-        $caterory_list[$i]['category_icon']=json_decode($caterory_list[$i]['category_icon'],true);
+
+        $caterory_list[$i]['category_icon'] = json_decode($caterory_list[$i]['category_icon'], true);
     }
     // prn($caterory_list);
     // ------------------ adjust list of categories - end ----------------------
@@ -160,14 +166,13 @@ function category_public_list($site_id, $lang) {
     return $caterory_list;
 }
 
-
 // ------------ get category info - begin --------------------------------------
 /*
-    $this_category_info=category_info([
-      'category_id'=> '...' | 'path' =>'...' | 'category_code'=''
-      'site_id'=>''
-      'lang'=>''
-    ]);
+  $this_category_info=category_info([
+  'category_id'=> '...' | 'path' =>'...' | 'category_code'=''
+  'site_id'=>''
+  'lang'=>''
+  ]);
  */
 function category_info($options) {
     //prn($options);
@@ -198,13 +203,193 @@ function category_info($options) {
 
     $this_category_info['category_title_orig'] = $this_category_info['category_title'];
     $this_category_info['category_title'] = get_langstring($this_category_info['category_title'], $options['lang']);
-    
+
     $this_category_info['category_description'] = get_langstring($this_category_info['category_description'], $options['lang']);
-    $this_category_info['URL'] = str_replace( Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), Array($this_category_info['path'], $options['lang'], $options['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), url_pattern_category);
+    $this_category_info['URL'] = str_replace(Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), Array($this_category_info['path'], $options['lang'], $options['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), url_pattern_category);
     $this_category_info['date_lang_update'] = get_langstring($this_category_info['date_lang_update'], $options['lang']);
     //prn($this_category_info);
-    
-    $this_category_info['category_icon']=json_decode($this_category_info['category_icon'],true);
+    // $this_category_info['category_icon'] = json_decode($this_category_info['category_icon'], true);
+    if (!is_array($this_category_info['category_icon'])) {
+        $this_category_info['category_icon'] = json_decode($this_category_info['category_icon'], true);
+    }
     return $this_category_info;
 }
+
 // ------------ get category info - end ----------------------------------------
+
+
+
+class CategoryViewModel {
+
+    protected $lang;
+    protected $site_info;
+    protected $category_info;
+    private $category_parents;
+    private $category_children;
+    private $deep = 1;
+    private $cache_path;
+    private $useCache=false;
+
+    public function __construct($site_info, $category_info, $lang) {
+        $this->lang = $lang;
+        $this->site_info = $site_info;
+        $this->category_info = $category_info;
+
+        $this->cache_path=$this->site_info['site_root_dir'] . "/cache/category_{$this->category_info['category_id']}_{$this->lang}.cache";
+        path_create($this->site_info['site_root_dir'], $this->cache_path);
+        
+        $tmp = get_cached_info($this->cache_path, 600);
+        if ($tmp) {
+            $this->deep=$tmp->deep;
+            $this->category_parents=$tmp->category_parents;
+            $this->category_children=$tmp->category_children;
+            $this->useCache=true;
+        }
+    }
+
+    public function setDeep($val) {
+        $val = (int) $val;
+        if($val!=$this->deep){
+            $this->deep = (int) $val;
+            if ($this->deep < 1) {
+                $this->deep = 1;
+            }
+            $this->useCache=false;
+            unset($this->category_children);
+        }
+        return '';
+    }
+
+    public function __get($attr) {
+
+        switch ($attr) {
+            case 'current':
+            case 'info':
+                return $this->category_info;
+
+            case 'parents':
+                if (!isset($this->category_parents)) {
+                    $this->loadParents();
+                }
+                return $this->category_parents;
+
+            case 'children':
+                if (!isset($this->category_children)) {
+                    $this->loadChildren();
+                }
+                return $this->category_children;
+
+            default: return Array();
+        }
+    }
+
+    private function getView($_info) {
+        $tor = $_info;
+
+        $tor['category_title_orig'] = $tor['category_title'];
+        $tor['category_title'] = get_langstring($tor['category_title'], $this->lang);
+        $tor['category_title_short'] = get_langstring($tor['category_title_short'], $this->lang);
+        if (strlen($tor['category_title_short'])==0) {
+            $tor['category_title_short'] = shorten($tor['category_title']);
+        }
+        if (!is_array($tor['category_icon'])) {
+            $tor['category_icon'] = json_decode($tor['category_icon'], true);
+        }
+        $tor['category_description'] = get_langstring($tor['category_description'], $this->lang);
+        $tor['category_description_exists'] = strlen($tor['category_description']) > 0;
+        $tor['URL'] = str_replace(
+                Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), 
+                Array($tor['path'], $this->lang, $this->site_info['id'], $tor['category_id'], $tor['category_code']), url_pattern_category);
+
+        return $tor;
+    }
+
+    private function loadParents() {
+        // ---------------------------- get parents - begin ------------------------
+        $query = "select pa.category_id, pa.site_id, pa.category_code, pa.category_title,
+                      pa.start, pa.finish, pa.is_deleted, pa.deep, pa.is_part_of,
+                      pa.see_also, pa.is_visible, pa.path, pa.category_icon,
+                      pa.category_title_short, pa.category_description
+               from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
+               WHERE ch.category_id={$this->category_info['category_id']} 
+                 and ch.site_id={$this->site_info['id']} 
+                 and pa.site_id={$this->site_info['id']}
+                 and pa.start<ch.start and ch.finish<pa.finish
+               order by pa.start asc";
+        $this->category_parents = db_getrows($query);
+
+        // all parents should be visible
+        $parents_are_visible = true;
+        $cnt = count($this->category_parents);
+        for ($i = 0; $i < $cnt; $i++) {
+            $this->category_parents[$i] = $this->getView($this->category_parents[$i]);
+            if ($this->category_parents[$i]['is_visible'] != 1) {
+                $parents_are_visible = false;
+                break;
+            }
+        }
+        if (!$parents_are_visible) {
+            die('Category is hidden');
+        }
+        // echo '<!-- '; 
+        //prn($this->category_parents); 
+        // echo ' -->';
+        // ---------------------------- get parents - end --------------------------
+        if(!$this->useCache && $this->category_children && $this->category_parents){
+            set_cached_info($this->cache_path, $this);
+        }
+    }
+
+    private function loadChildren() {
+
+        // ------------------- get children - begin --------------------------------
+        $query = "select ch.category_id, ch.site_id, ch.category_code, ch.category_title,
+                      ch.start, ch.finish, ch.is_deleted, ch.deep, ch.is_part_of,
+                      ch.see_also, ch.is_visible, ch.path, ch.category_description,
+                      ch.category_icon, ch.category_title_short
+               from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
+               WHERE pa.category_id={$this->category_info['category_id']} and ch.site_id={$this->site_info['id']} and ch.is_visible
+                 and pa.site_id={$this->site_info['id']} 
+                 and ( ch.deep between " . ($this->category_info['deep'] + 1 ) . " AND " . ($this->category_info['deep'] + $this->deep ) . " )
+                 and pa.start<ch.start and ch.finish<pa.finish
+               order by ch.start asc";
+        // prn(checkStr($query));
+        $this->category_children = db_getrows($query);
+        // prn($this->category_children);
+        $cnt = count($this->category_children);
+        for ($i = 0; $i < $cnt; $i++) {
+            $this->category_children[$i] = $this->getView($this->category_children[$i]);
+            $this->category_children[$i]['category_description']='';
+            if (!$this->category_children[$i]['category_title_short']) {
+                unset($this->category_children[$i]);
+                continue;
+            }
+            $this->category_children[$i]['children']=[];
+        }
+        $this->category_children = array_values($this->category_children);
+        
+        if($this->deep > 1){
+            $root_deep=$this->category_info['deep'] + 1;
+            for($i=count($this->category_children)-1;$i>=0;$i--){
+                $child_deep=$this->category_children[$i]['deep'];
+                if($child_deep>$root_deep){
+                    for($j=$i-1;$j>=0; $j-- ){
+                        if($this->category_children[$j] && $this->category_children[$j]['deep']<$child_deep){
+                           array_unshift($this->category_children[$j]['children'], $this->category_children[$i] );
+                           unset($this->category_children[$i]);
+                           break;
+                        }
+                    }
+                }
+            }
+        }
+        $this->category_children = array_values($this->category_children);
+        // prn($this->category_children);
+        // ------------------- get children - end ----------------------------------
+        
+        if(!$this->useCache && $this->category_children && $this->category_parents){
+            set_cached_info($this->cache_path, $this);
+        }
+    }
+
+}

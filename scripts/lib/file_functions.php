@@ -142,32 +142,41 @@ function unzip($from_file, $to_dir) {
 function path_create($root, $dir) {
     $rt = preg_replace('/\/+$/', '', $root);
     $len = strlen($rt);
-    if (substr($dir, 0, $len + 1) == $rt . '/')
-        $path = substr($dir, $len); else
-        $path=$dir;
+    if (substr($dir, 0, $len + 1) == $rt . '/') {
+        $path = substr($dir, $len);
+    } else {
+        $path = $dir;
+    }
     $path = preg_replace('/^\/+/', '', $path);
     $path = preg_replace('/\/+$/', '', $path);
     //prn($root,$dir);
     $dirlist = explode('/', $path);
 
-    if (preg_match('/\/$/', $dir))
-        $file_name = ''; else
-        $file_name=array_pop($dirlist);
+    if (preg_match('/\/$/', $dir)) {
+        $file_name = '';
+    } else {
+        $file_name = array_pop($dirlist);
+    }
     $path = $rt;
-    foreach ($dirlist as $dr)
-        if (!is_dir($path = $path . '/' . rawurlencode($dr)))
+    foreach ($dirlist as $dr) {
+        if (!is_dir($path = $path . '/' . rawurlencode($dr))) {
             mkdir($path);
-    if (strlen($file_name) > 0)
+        }
+    }
+    if (strlen($file_name) > 0) {
         write_to_file($path . '/' . $file_name, '');
+    }
 }
 
 function path_delete($root, $dir, $verbose=false) {
     //$rt = ereg_replace('/+$', '', $root);
     $rt = preg_replace("/\\/+$/", '', $root);
     $len = strlen($rt);
-    if (substr($dir, 0, $len + 1) == $rt . '/')
-        $path = substr($dir, $len); else
-        $path=$dir;
+    if (substr($dir, 0, $len + 1) == $rt . '/') {
+        $path = substr($dir, $len);
+    } else {
+        $path = $dir;
+    }
     // $path = $rt . '/' . ereg_replace('^/+', '', $path);
     $path = $rt . '/' . preg_replace("/^\\/+/", '', $path);
 
@@ -207,12 +216,14 @@ function encode_file_name($str) {
                     , $tor);
     // prn($tor);
     $tor = preg_replace('/[^a-z0-9_=-]/i', '-', $tor);
-    if (strlen($tor) > 200)
+    if (strlen($tor) > 200) {
         $tor = substr($tor, 0, 99) . '--' . substr($str, -1, 99);
+    }
 
     $tor = Array($tor);
-    if (strlen($extension) > 0)
+    if (strlen($extension) > 0) {
         $tor[] = strtolower($extension);
+    }
     return join('.', $tor);
 }
 
