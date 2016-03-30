@@ -109,7 +109,10 @@ define('defaultToVisualEditor', 1);
 
 # ----------------------------- urls without mod_rewrite - begin ---------------------------
 // ++++++++++++
-define('url_pattern_category', site_public_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}");
+//define('url_pattern_category', site_public_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}");
+define('url_pattern_category', 'http://gen.znu.edu.ua/_sites/znu_main/{lang}/{path}');
+
+
 define('url_pattern_gallery_category', site_public_URL . "/index.php?action=gallery/photogallery&rozdilizformy={rozdilizformy}&site_id={site_id}&lang={lang}&start={start}&keywords={keywords}");
 define('url_pattern_ec_category', site_public_URL . "/index.php?action=ec/item/browse&site_id={site_id}&lang={lang}&ec_category_id={ec_category_id}");
 
