@@ -94,6 +94,10 @@ function adjust($_info, $category_id) {
     // prn('date_lang_update',$tor['date_lang_update_array']);
     # prn($query,$this_page_info);
     //prn('    tor= ',$tor);
+    
+    if(!is_array($tor['category_icon'])){
+        $tor['category_icon']=json_decode($tor['category_icon'],true);
+    }
     return $tor;
 }
 
@@ -119,6 +123,8 @@ function category_public_list($site_id, $lang) {
         $caterory_list[$i]['category_description'] = get_langstring($caterory_list[$i]['category_description'], $lang);
         $caterory_list[$i]['URL'] = str_replace('{category_id}', $caterory_list[$i]['category_id'], $category_url_pattern);
         $caterory_list[$i]['number_of_news'] = 0;
+        
+        $caterory_list[$i]['category_icon']=json_decode($caterory_list[$i]['category_icon'],true);
     }
     // prn($caterory_list);
     // ------------------ adjust list of categories - end ----------------------
@@ -198,6 +204,7 @@ function category_info($options) {
     $this_category_info['date_lang_update'] = get_langstring($this_category_info['date_lang_update'], $options['lang']);
     //prn($this_category_info);
     
+    $this_category_info['category_icon']=json_decode($this_category_info['category_icon'],true);
     return $this_category_info;
 }
 // ------------ get category info - end ----------------------------------------

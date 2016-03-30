@@ -69,9 +69,29 @@ if(isset($_REQUEST['debug'])) prn($this_category);
   )
   {
     $_ids=Array();
-    foreach($input_vars['category'] as $_id) $this_category->delete_branch((int)$_id);
+    foreach ($input_vars['category'] as $_id) {
+        $_id=(int) $_id;
+        $deleCat=  db_getonerow("SELECT category_id, category_icon FROM {$table_prefix}category WHERE site_id={$site_id} && category_id={$_id}");
+        // ---------------- delete previous icons - begin ------------------
+        if($deleCat['category_icon']){
+            $deleCat['category_icon']=json_decode($deleCat['category_icon']);
+            if($deleCat['category_icon'] && is_array($deleCat['category_icon'])){
+                foreach($deleCat['category_icon'] as $pt){
+                    $pt=trim($pt);
+                    if(strlen($pt)>0){
+                        $path=realpath("{$this_site_info['site_root_dir']}/{$pt}");
+                        if($path && strncmp( $path , $this_site_info['site_root_dir'] , strlen($this_site_info['site_root_dir']) )==0){
+                            unlink($path);
+                        }
+                    }
+                }
+            }
+        }
+        // ---------------- delete previous icons - end --------------------
+        $this_category->delete_branch($_id);
+    }
 
-    // документы из удалённых категорий перемещать в родительскую категорию? 
+    //TODO: документы из удалённых категорий перемещать в родительскую категорию? 
   }
 # ------------------------- delete - end ---------------------------------------
 

@@ -29,9 +29,10 @@ if (get_level($site_id) == 0) {
     return 0;
 }
 //------------------- check permission - end -----------------------------------
+// if wyswyg is enabled
+$input_vars['aed'] = (isset($input_vars['aed'])) ? ((int) $input_vars['aed']) : 0;
 
-$input_vars['aed']=(isset($input_vars['aed']))?((int)$input_vars['aed']):0;
-
+// save preview URL
 $this_category_url_prefix = site_root_URL . "/index.php?action=category/browse&site_id={$site_id}&lang={$_SESSION['lang']}&category_id=";
 
 #------------------------ get category info - begin ----------------------------
@@ -50,16 +51,18 @@ if (isset($input_vars['category_id'])) {
 
     $this_category->load_node($category_id);
 
-    $this_category->info=adjust($this_category->info, $category_id);
+    $this_category->info = adjust($this_category->info, $category_id);
     // prn('$this_category->info',$this_category->info);
-    if (!$this_category->info)
+    if (!$this_category->info) {
         unset($input_vars['category_id']);
+    }
 
     $this_category_url = $this_category_url_prefix . $this_category->id;
 }
 
-if (!isset($input_vars['category_id']))
+if (!isset($input_vars['category_id'])) {
     redirect_to('index.php?action=category/list');
+}
 #------------------------ get category info - end ------------------------------
 
 
@@ -86,20 +89,25 @@ run('lib/class_edit/db_record_editor_field_unix_timestamp');
 run('lib/class_edit/db_record_editor_field_textarea');
 run('lib/class_edit/db_record_editor_field_email');
 run('lib/class_edit/db_record_editor_2');
-db_record_editor_field::$text=db_record_editor_2::$text=$GLOBALS['text'];
+db_record_editor_field::$text = db_record_editor_2::$text = $GLOBALS['text'];
 
 
 
 if (isset($input_vars['db_record_editor_is_submitted']) && $input_vars['db_record_editor_is_submitted'] == 'yes') {
     $db_record_editor_category_description = '';
+    $db_record_editor_category_meta = '';
     //prn($list_of_languages);
     foreach ($list_of_languages as $lng) {
         $db_record_editor_category_description.="<{$lng['name']}>" . $_REQUEST['db_record_editor_category_description_' . $lng['name']] . "</{$lng['name']}>";
+        $db_record_editor_category_meta.="<{$lng['name']}>" . $_REQUEST['db_record_editor_category_meta_' . $lng['name']] . "</{$lng['name']}>";
     }
     $_REQUEST['db_record_editor_category_description'] = & $db_record_editor_category_description;
     $_POST['db_record_editor_category_description'] = & $db_record_editor_category_description;
     $input_vars['db_record_editor_category_description'] = & $db_record_editor_category_description;
     //prn(checkStr($tmp));
+    $_REQUEST['db_record_editor_category_meta'] = & $db_record_editor_category_meta;
+    $_POST['db_record_editor_category_meta'] = & $db_record_editor_category_meta;
+    $input_vars['db_record_editor_category_meta'] = & $db_record_editor_category_meta;
 }
 //prn($input_vars);
 
@@ -112,24 +120,34 @@ $rep->set_table("{$table_prefix}category");
 
 # category_id           bigint(20)
 $rep->field['category_id'] = new db_record_editor_field_integer(
-                'category_id'
-                , 'category_id'
-                , 'integer:hidden=yes'
-                , '#');
+        'category_id'
+        , 'category_id'
+        , 'integer:hidden=yes'
+        , '#');
 
 # category_code         varchar(50)
 $rep->field['category_code'] = new db_record_editor_field_string(
-                'category_code'
-                , 'category_code'
-                , 'string:maxlength=500&required=no&html_denied=yes'
-                , text('Category_code'));
+        'category_code'
+        , 'category_code'
+        , 'string:maxlength=500&required=no&html_denied=yes'
+        , text('Category_code'));
 
 # category_title        varchar(255)
 $rep->field['category_title'] = new db_record_editor_field_string(
-                'category_title'
-                , 'category_title'
-                , 'string:maxlength=800&required=yes&html_denied=no'
-                , text('Category_title'));
+        'category_title'
+        , 'category_title'
+        , 'string:maxlength=800&required=yes&html_denied=no'
+        , text('Category_title'));
+
+
+$rep->field['category_title_short'] = new db_record_editor_field_string(
+        'category_title_short'
+        , 'category_title_short'
+        , 'string:maxlength=800&required=no&html_denied=no'
+        , text('Category_title_short'));
+
+
+
 
 ## is_deleted            tinyint(1)
 #$rep->field['is_deleted']=new db_record_editor_field_integer(
@@ -149,27 +167,35 @@ if ($this_category->info['start'] > 0) {
     $list_of_categories = join('&', $tmp);
 
     $rep->field['is_part_of'] = new db_record_editor_field_integer(
-                    'is_part_of'
-                    , 'is_part_of'
-                    , "integer($list_of_categories)"
-                    , text('Category_move_into'));
+            'is_part_of'
+            , 'is_part_of'
+            , "integer($list_of_categories)"
+            , text('Category_move_into'));
 }
 
 # category_description  text
 $rep->field['category_description'] = new db_record_editor_field_textarea(
-                  'category_description'
-                , 'category_description'
-                , 'textarea'
-                , text('category_description'));
+        'category_description'
+        , 'category_description'
+        , 'textarea'
+        , text('category_description'));
 //prn($rep->field['category_description']);
 
 
-if ($this_category->info['start'] > 0)
+$rep->field['category_meta'] = new db_record_editor_field_textarea(
+        'category_meta'
+        , 'category_meta'
+        , 'textarea'
+        , text('category_meta'));
+
+
+if ($this_category->info['start'] > 0) {
     $rep->field['is_visible'] = new db_record_editor_field_integer(
-                    'is_visible'
-                    , 'is_visible'
-                    , "integer(0=" . rawurlencode(text('negative_answer')) . "&1=" . rawurlencode(text('positive_answer')) . ")"
-                    , text('category_is_visible'));
+            'is_visible'
+            , 'is_visible'
+            , "integer(0=" . rawurlencode(text('negative_answer')) . "&1=" . rawurlencode(text('positive_answer')) . ")"
+            , text('category_is_visible'));
+}
 
 
 //prn($rep);
@@ -179,15 +205,15 @@ $rep->set_primary_key('category_id', $category_id);
 
 #------------------------------ create object - end ----------------------------
 #------------------------------ pre-process - begin ----------------------------
-  if($rep->form_is_posted()){
-      // check if category_code is unique
-      $query="SELECT count(*) as n FROM {$table_prefix}category WHERE category_id<>{$category_id} AND category_code='".  DbStr($rep->field['category_code']->value)."'";
-      $n_category_code=db_getonerow($query);
-      if($n_category_code['n']>0){
-          $rep->field['category_code']->posted_data=$rep->field['category_code']->value."-{$category_id}";
-          $rep->field['category_code']->set_value($rep->field['category_code']->posted_data);
-      }
-  }
+if ($rep->form_is_posted()) {
+    // check if category_code is unique
+    $query = "SELECT count(*) as n FROM {$table_prefix}category WHERE category_id<>{$category_id} AND category_code='" . DbStr($rep->field['category_code']->value) . "'";
+    $n_category_code = db_getonerow($query);
+    if ($n_category_code['n'] > 0) {
+        $rep->field['category_code']->posted_data = $rep->field['category_code']->value . "-{$category_id}";
+        $rep->field['category_code']->set_value($rep->field['category_code']->posted_data);
+    }
+}
 #------------------------------ pre-process - end ------------------------------
 # process form data (update category properties)
 $success = $rep->process();
@@ -195,7 +221,8 @@ $success = $rep->process();
 
 # --------------------- post-process - begin -----------------------------------
 if ($success) {
-    function re_create_path($category_id, $site_id){
+
+    function re_create_path($category_id, $site_id) {
         global $table_prefix;
         $query = "select pa.*
                  from {$table_prefix}category pa, {$table_prefix}category ch
@@ -217,21 +244,19 @@ if ($success) {
     }
 
     #  ----------------------- move branch - begin ------------------------------
-    if ($this_category->info['start'] > 0)
-        if ($this_category->info['is_part_of'] != $rep->value_of('is_part_of')) {
-            // вставить перемещение ветки №  $category_id
-            // внутрь ветки $rep->value_of('is_part_of')
-            if (!$this_category->move_to($rep->value_of('is_part_of'))) {
-                // some errors occur
-                // change to previous value
-                $query = "UPDATE {$table_prefix}category
+    if ($this_category->info['start'] > 0 && $this_category->info['is_part_of'] != $rep->value_of('is_part_of')) {
+        // вставить перемещение ветки №  $category_id
+        // внутрь ветки $rep->value_of('is_part_of')
+        if (!$this_category->move_to($rep->value_of('is_part_of'))) {
+            // some errors occur
+            // change to previous value
+            $query = "UPDATE {$table_prefix}category
                     SET is_part_of=" . ((int) $this_category->info['is_part_of']) . "
                     WHERE category_id={$category_id}";
-                db_execute($query);
-            }
+            db_execute($query);
         }
+    }
     #  ----------------------- move branch - end -------------------------------
-
     // re_create_path($category_id, $site_id);
     // recreate paths for all the children
     //re_create_path($category_id, $site_id);
@@ -240,19 +265,19 @@ if ($success) {
              WHERE pa.category_id={$category_id} and ch.site_id={$site_id} and pa.site_id={$site_id}
                and pa.start<=ch.start and ch.finish<=pa.finish";
     $child_or_self = db_getrows($query);
-    foreach($child_or_self as $ch){
+    foreach ($child_or_self as $ch) {
         re_create_path($ch['category_id'], $site_id);
     }
     //prn($child_or_self);
     # ----------------- re-create modification time - begin ------------
-    $date_lang_update="";
+    $date_lang_update = "";
     //prn($this_category->info['date_lang_update_array']);
     foreach ($list_of_languages as $lng) {
-        if(!isset($this_category->info['date_lang_update_array'][$lng['name']])){
-            $this_category->info['date_lang_update_array'][$lng['name']]=date('Y-m-d H:i:s');
+        if (!isset($this_category->info['date_lang_update_array'][$lng['name']])) {
+            $this_category->info['date_lang_update_array'][$lng['name']] = date('Y-m-d H:i:s');
         }
-        if(isset($input_vars['important_changes'][$lng['name']])){
-            $this_category->info['date_lang_update_array'][$lng['name']]=date('Y-m-d H:i:s');
+        if (isset($input_vars['important_changes'][$lng['name']])) {
+            $this_category->info['date_lang_update_array'][$lng['name']] = date('Y-m-d H:i:s');
         }
         $date_lang_update.="<{$lng['name']}>{$this_category->info['date_lang_update_array'][$lng['name']]}</{$lng['name']}>";
     }
@@ -266,14 +291,53 @@ if ($success) {
 
     // TODO re-create paths of the children
     # ----------------- re-create modification time - end --------------
-
     # ----------------- save date of important changes - begin -----------------
     // $this_category->info['date_lang_update_array'][$lng['name']]=$this_category->info['date_last_changed'];
     # ----------------- save date of important changes - end -------------------
+    # 
+    # ----------------- upload icon - begin ------------------------------------
+    // prn($_FILES);
+    if(isset($_FILES['category_icon']) && $_FILES['category_icon']['error']==0){
+        run('lib/img');
+        $relative_dir="gallery/".date('Y').'/'.date('m');
+        $dir="{$this_site_info['site_root_dir']}/{$relative_dir}";
+        path_create($this_site_info['site_root_dir'], "{$dir}/");
 
+        $newFileName="category-{$category_id}-".encode_file_name($_FILES['category_icon']['name']);
+
+        if(move_uploaded_file($_FILES['category_icon']['tmp_name'], "{$dir}/{$newFileName}") ){
+            
+            // ---------------- delete previous icons - begin ------------------
+            if($this_category->info['category_icon'] && is_array($this_category->info['category_icon'])){
+                foreach($this_category->info['category_icon'] as $pt){
+                    $pt=trim($pt);
+                    if(strlen($pt)>0){
+                        $path=realpath("{$this_site_info['site_root_dir']}/{$pt}");
+                        if($path && strncmp( $path , $this_site_info['site_root_dir'] , strlen($this_site_info['site_root_dir']) )==0){
+                            unlink($path);
+                        }
+                    }
+                }
+            }
+            // ---------------- delete previous icons - end --------------------
+            
+            // ---------------- upload new icons - begin -----------------------
+            $smallFileName="category-{$category_id}-small-".encode_file_name($_FILES['category_icon']['name']);
+            img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", gallery_small_image_width, gallery_small_image_height, $type = "circumscribe");
+            $category_icon=['small'=>"{$relative_dir}/{$smallFileName}", "full"=>"{$relative_dir}/{$newFileName}"];
+            $query = "UPDATE {$table_prefix}category
+                      SET category_icon='" . DbStr(json_encode($category_icon)) . "'
+                      WHERE category_id={$category_id}";
+            db_execute($query);
+            // ---------------- upload new icons - end -------------------------
+        }
+    }
+    # ----------------- upload icon - end --------------------------------------
+    # 
+    # 
     #  reload category info
     $this_category->load_node($category_id);
-    $this_category->info=adjust($this_category->info, $category_id);
+    $this_category->info = adjust($this_category->info, $category_id);
 }
 # --------------------- post-process - end -------------------------------------
 #  ---------------------------- draw - begin -----------------------------------
@@ -301,21 +365,19 @@ $this_category->info['is_part_of_name'] = $this_category->info['is_part_of_name'
 $form = $rep->draw_form();
 $form['hidden_elements'].="<input type=hidden name=category_id value=\"{$rep->id}\">\n";
 
-$input_vars['page_title'] =
-        $input_vars['page_header'] = text('Category_edit');
+$input_vars['page_title'] = $input_vars['page_header'] = text('Category_edit');
 
 
 
 
 // prn($list_of_languages);
-$js_lang=Array();
-foreach($list_of_languages as $l){
-      $js_lang[]="\"{$l['name']}\":\"{$text[$l['name']]}\"";
+$js_lang = Array();
+foreach ($list_of_languages as $l) {
+    $js_lang[] = "\"{$l['name']}\":\"{$text[$l['name']]}\"";
 }
-$js_lang='{'.join(',',$js_lang).'}';
-$input_vars['page_content'] =
-        "
-  <form action='index.php' method='post' name='db_record_editor_' style='width:700px;'>
+$js_lang = '{' . join(',', $js_lang) . '}';
+$input_vars['page_content'] = "
+  <form action='index.php' method='post' name='db_record_editor_' enctype=\"multipart/form-data\">
   <input type=hidden name='action' value='category/edit'>
   <input type=hidden name='site_id' value='{$this_site_info['id']}'>
   <input type=hidden name='db_record_editor_is_submitted' value='yes'>
@@ -323,7 +385,8 @@ $input_vars['page_content'] =
   <input type=hidden name=category_id value='{$rep->id}'>
   <input type=hidden name=aed value='{$input_vars['aed']}'>
 
-
+  <div><!-- 
+   --><span class=blk8>
   <div class=label>{$form['elements']['category_title']->label}<sup style='color:red;weight:bold;'>*</sup></div>
   <div class=big>
     <input type=text
@@ -336,7 +399,21 @@ $input_vars['page_content'] =
             draw_langstring('{$form['elements']['category_title']->form_element_name}');
     </script>
 
-  </div>";
+  </div>   
+</span><!-- 
+   --><span class=blk4>
+    <div class=label>" . text('Icon') . " :</div>
+    <div class=category_icon>"
+         .( $this_category->info['category_icon']
+            ? "<a class=\"delete_link\" href=\"index.php?action=category/delete_icon&category_id=".
+               $this_category->info['category_id']."\">&times;</a>"
+            . "<a href=\"{$this_site_info['site_root_url']}/{$this_category->info['category_icon']['full']}\" target=_blank>"
+            . "<img src=\"{$this_site_info['site_root_url']}/{$this_category->info['category_icon']['small']}\" style=\"max-width:100%;\">"
+           :''  )."</a></div>
+    <input type=\"file\" name=\"category_icon\">
+   </span><!-- 
+--></div>
+";
 
 if (isset($form['elements']['is_part_of'])) {
     $input_vars['page_content'].=
@@ -354,25 +431,25 @@ if (isset($form['elements']['is_part_of'])) {
 foreach ($list_of_languages as $lng) {
     //prn($lng);
     //prn($form['elements']['category_description']->value);
-    if(!isset($this_category->info['date_lang_update_array'][$lng['name']])){
-        $this_category->info['date_lang_update_array'][$lng['name']]=$this_category->info['date_last_changed'];
+    if (!isset($this_category->info['date_lang_update_array'][$lng['name']])) {
+        $this_category->info['date_lang_update_array'][$lng['name']] = $this_category->info['date_last_changed'];
     }
     $input_vars['page_content'].="
     <div class=label style='font-size:110%;'>
       {$form['elements']['category_description']->label} ({$lng['name']})
-      ".text('Date').": {$this_category->info['date_lang_update_array'][$lng['name']]}
-      <label><input type=\"checkbox\" name=\"important_changes[{$lng['name']}]\" value=\"".date('Y-m-d H:i:s')."\">".text('Important_changes')."</label>
+      " . text('Date') . ": {$this_category->info['date_lang_update_array'][$lng['name']]}
+      <label><input type=\"checkbox\" name=\"important_changes[{$lng['name']}]\" value=\"" . date('Y-m-d H:i:s') . "\">" . text('Important_changes') . "</label>
     </div>
     <div class=big>
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
       </div>
      <textarea name='{$form['elements']['category_description']->form_element_name}_{$lng['name']}'
                id='{$form['elements']['category_description']->form_element_name}_{$lng['name']}'
-               style='width:100%;height:500px;' class=\"wysiswyg\">"
+               style='width:100%;height:300px;' class=\"wysiswyg\">"
             . checkStr(get_langstring($form['elements']['category_description']->value, $lng['name']))
             . "</textarea>
      <div align=right><input type=submit value='{$text['Save']}'></div>
@@ -391,25 +468,72 @@ $input_vars['page_content'].= ( isset($form['elements']['is_visible']) ? "
     <input type=text
            name='{$form['elements']['category_code']->form_element_name}'
            id='{$form['elements']['category_code']->form_element_name}'
-           value='".($form['elements']['category_code']->form_element_value?$form['elements']['category_code']->form_element_value:($rep->id))."'>
+           value='" . ($form['elements']['category_code']->form_element_value ? $form['elements']['category_code']->form_element_value : ($rep->id)) . "'>
    </div>
+   
+
+  <div class=label>{$form['elements']['category_title_short']->label}</div>
+  <div class=big>
+    <input type=text
+           name='{$form['elements']['category_title_short']->form_element_name}'
+           id='{$form['elements']['category_title_short']->form_element_name}'
+           value='{$form['elements']['category_title_short']->form_element_value}'>
+    <script type=\"text/javascript\">
+            langs=$js_lang;
+            draw_langstring('{$form['elements']['category_title_short']->form_element_name}');
+    </script>
+
+  </div> 
+";
+
+
+            
+            
+    $input_vars['page_content'].="
+<script type=\"text/javascript\" charset=\"utf-8\" src=\"".site_root_URL."/scripts/lib/meta-tags-insert.js\"></script>
+
+  ";
+
+//prn($list_of_languages);
+foreach ($list_of_languages as $lng) {
+
+    $input_vars['page_content'].="
+    <div class=label style='font-size:110%;'>
+      {$form['elements']['category_meta']->label} ({$lng['name']})
+    </div>
+    <div class=big>
+     <textarea name='{$form['elements']['category_meta']->form_element_name}_{$lng['name']}'
+               id='{$form['elements']['category_meta']->form_element_name}_{$lng['name']}'
+               style='width:100%;height:100px;'>"
+            . checkStr(get_langstring($form['elements']['category_meta']->value, $lng['name']))
+            . "</textarea>
+  <script type=\"text/javascript\">
+  $(document).ready(function(){
+     metaTagsButtons('{$form['elements']['category_meta']->form_element_name}_{$lng['name']}');
+  });
+  </script>
+    </div>
+    ";
+}
+
+
+$input_vars['page_content'].="
    <br/><input type=submit value='{$text['Save']}'>
    </form>
    ";
 
 #  ---------------------------- adjust nodes - begin ---------------------------
 $cnt = array_keys($this_category->parents);
-foreach ($cnt as $i)
+foreach ($cnt as $i) {
     $this_category->parents[$i] = adjust($this_category->parents[$i], $this_category->id);
+}
 
 $this_category->info = adjust($this_category->info, $this_category->id);
 #  ---------------------------- adjust nodes - end -----------------------------
-
-
 // enable TinyMCE or markitup
-if($input_vars['aed']==1){
+if ($input_vars['aed'] == 1) {
 
-$tor= "
+    $tor = "
            <!-- Load TinyMCE -->
            <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/tiny_mce/jquery.tinymce.js\"></script>
            <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/tiny_mce_start.js\"></script>
@@ -421,24 +545,28 @@ $tor= "
                   tinymce_init('textarea.wysiswyg',
                      { external_link_list_url : \"index.php?action=site/filechooser/tiny_mce_link_list&site_id={$site_id}\",
                        external_image_list_url : \"index.php?action=site/filechooser/tiny_mce_image_list&site_id={$site_id}\",
-                       language : \"".substr($_SESSION['lang'],0,2)."\"});
+                       language : \"" . substr($_SESSION['lang'], 0, 2) . "\"});
               });
            </script>
            <!-- /TinyMCE -->
     ";
-}else{
-$tor= "
+} else {
+    $tor = "
            <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/markitup/jquery.markitup.js\"></script>
            <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/markitup/sets/html/set.js\"></script>
            <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/markitup.js\"></script>
+           <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/jquery.ns-autogrow.min.js\"></script>
            <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/markitup/skins/simple/style.css\" />
            <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/markitup/sets/html/style.css\" />
+
+
 
            <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/choose_links.js\"></script>
            <script type=\"text/javascript\">
               $(function(){
                   init_links();
                   $('textarea.wysiswyg').markItUp(mySettings);
+                  $('textarea.wysiswyg').autogrow({vertical: true, horizontal: false});
               });
            </script>
     ";
@@ -501,20 +629,20 @@ foreach ($this_category->parents as $row) {
       <div style=\"padding-left:{$row['padding']}px;\">
          <a href=# style='margin-left:-25px;' class=context_menu_link onclick=\"report_change_state('cm{$row['category_id']}'); return false;\"><img src=img/context_menu.gif border=0 width=20 height=15></a>
          <a href=\"{$row['URL']}\" title=\"{$row['category_title']}\" "
-            . ( ($row['is_visible'] == '0')?" style='color:silver;'":'' ).'>'
+            . ( ($row['is_visible'] == '0') ? " style='color:silver;'" : '' ) . '>'
             . ($row['category_code'] ? $row['category_code'] : $row['category_id']) . " &nbsp;&nbsp;&nbsp; {$row['title_short']}</a><br/>
          <a href='{$parent_url}' style='color:silver;'>" . checkStr($parent_url) . "</a>
          <br>
           ";
 
-          $tor.="<div id=\"cm{$row['category_id']}\" class=menu_block style='display:none;'>";
-          foreach ($row['context_menu'] as $cm) {
-               if ($cm['url'] != '')
-                   $tor.="<nobr><a href=\"{$cm['url']}\" {$cm['attributes']}>{$cm['html']}</a></nobr><br>";
-               else
-                   $tor.="<nobr><b>{$cm['html']}</b></nobr><br>";
-          }
-          $tor.="</div>";
+    $tor.="<div id=\"cm{$row['category_id']}\" class=menu_block style='display:none;'>";
+    foreach ($row['context_menu'] as $cm) {
+        if ($cm['url'] != '')
+            $tor.="<nobr><a href=\"{$cm['url']}\" {$cm['attributes']}>{$cm['html']}</a></nobr><br>";
+        else
+            $tor.="<nobr><b>{$cm['html']}</b></nobr><br>";
+    }
+    $tor.="</div>";
     $tor.="</div>";
 }
 
@@ -530,13 +658,13 @@ $tor.="
     </span>
     <br>
     <div id=\"cm{$category['category_id']}\" class=menu_block style='display:none;'>";
-        foreach ($category['context_menu'] as $cm) {
-            if ($cm['url'] != '')
-                $tor.="<nobr><a href=\"{$cm['url']}\" {$cm['attributes']}>{$cm['html']}</a></nobr><br>";
-            else
-                $tor.="<nobr><b>{$cm['html']}</b></nobr><br>";
-        }
-       $tor.="
+foreach ($category['context_menu'] as $cm) {
+    if ($cm['url'] != '')
+        $tor.="<nobr><a href=\"{$cm['url']}\" {$cm['attributes']}>{$cm['html']}</a></nobr><br>";
+    else
+        $tor.="<nobr><b>{$cm['html']}</b></nobr><br>";
+}
+$tor.="
     </div>
 </div>
    ";

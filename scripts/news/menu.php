@@ -5,6 +5,14 @@
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com
  */
 
+function news_info($news_id, $lang){
+    global $table_prefix;
+    $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
+    $this_news_info = db_getonerow($query);
+    $this_news_info['news_icon']=  json_decode($this_news_info['news_icon'], true);
+    return $this_news_info;
+}
+
 function menu_news($news_info) {
     global $text, $db, $table_prefix;
     $tor = Array();
@@ -156,6 +164,8 @@ function news_get_view($news_list, $lang) {
         //url_prefix_news_details . "news_id={$news_list[$i]['id']}&lang={$lang}";
         
         $news_list[$i]['tag_links'] = news_tag_links($news_list[$i]['tags'],$news_list[$i]['site_id'],$lang);
+        
+        $news_list[$i]['news_icon']=  json_decode($news_list[$i]['news_icon'], true);
         $news_list[$i]['categories'] = Array();
         if (isset($_category[$news_list[$i]['id']])) {
             foreach ($_category[$news_list[$i]['id']] as $cat_id) {
@@ -189,6 +199,8 @@ function news_tag_links($tag_string,$site_id,$lang) {
     }
     return $tags;
 }
+
+
 
 
 function menu_news_comment($info){
@@ -651,8 +663,28 @@ class CategoryNews {
 
     function get_paging_links($records_found, $start, $rows_per_page) {
 
-        $url_prefix = site_URL . '?' . preg_query_string("/" . $this->startname . "|" . session_name() . "/") . "&{$this->startname}=";
+        // $url_prefix = site_URL . '?' . preg_query_string("/" . $this->startname . "|" . session_name() . "/") . "&{$this->startname}=";
 
+        
+        // define('url_pattern_category', site_public_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}");
+        $url_prefix = str_replace([
+            '{site_id}',
+            '{lang}',
+            '{category_id}',
+            '{path}',
+            '{category_code}'
+        ],[
+            $this->this_site_info['id'],
+            $this->lang,
+            $this->category_info['category_id'],
+            $this->category_info['path'],
+            $this->category_info['category_code']
+        ],url_pattern_category);
+        
+        if(strpos($url_prefix, '?')===false){
+            $url_prefix.="?";
+        }
+        
         $pages = Array();
         $imin = max(0, $start - 10 * $rows_per_page);
         $imax = min($records_found, $start + 10 * $rows_per_page);

@@ -138,9 +138,30 @@ div.big textarea{
     line-height:150%;
 }
 
-span.blk13,span.blk23{display:inline-block;}
-span.blk13{width:32%;}
-span.blk23{width:65%;}
+
+
+.blk13, .blk23, .blk14{display:inline-block;}
+.blk13{width:32%;}
+.blk14{width:24.5%;}
+.blk23{width:65%;}
+
+
+
+.blk1,.blk2,.blk3,.blk4,.blk5,.blk6,.blk7,.blk8,.blk9,.blk10,.blk11,.blk12 {display:inline-block; vertical-align:top;}
+.blk1{width:8.3%;}
+.blk2{width:16.6%;}
+.blk3{width:24.9%;}
+.blk4{width:33.3%;}
+.blk5{width:41.5%;}
+.blk6{width:49.8%;}
+.blk7{width:58.1%;}
+.blk8{width:66.4%;}
+.blk9{width:74.7%;}
+.blk10{width:83%;}
+.blk11{width:91.3%;}
+.blk12{width:99.6%;}
+
+
 
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -165,4 +186,12 @@ input[type="submit"],input[type="reset"]{font-size:150%;width:auto;}
     width:100%;
     height:100%;
     display:block;
+}
+
+.delete_link{
+    position:absolute;
+    background-color:white;
+    color:red;
+    padding:1px 5px;
+    display:inline-block;
 }

@@ -11,7 +11,9 @@ $debug = false;
 
 run('lib/file_functions');
 run('site/image/url_replacer');
+run('lib/img');
 
+run('news/menu');
 
 $message = '';
 //prn($_REQUEST);
@@ -19,8 +21,9 @@ $message = '';
 $news_id = checkInt((isset($input_vars['news_id']) ? $input_vars['news_id'] : 0));
 $lang = get_language('lang');
 
-$query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
-$this_news_info = db_getonerow($query);
+// $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
+//db_getonerow($query);
+$this_news_info = news_info($news_id, $lang);
 if ($debug) {
     prn(checkStr($query), $this_news_info);
 }
@@ -64,8 +67,9 @@ $tmp = db_getrows(
         where u.id = su.user_id AND su.site_id = {$this_site_info['id']}
         order by level desc");
 $this_site_info['managers'] = Array();
-foreach ($tmp as $tm)
+foreach ($tmp as $tm) {
     $this_site_info['managers'][$tm['id']] = $tm;
+}
 unset($tm, $tmp);
 # ----------------------- list of site managers - end --------------------------
 
@@ -214,11 +218,11 @@ function get_date_selector($form_element_name, $shown_date, $default_date='') {
     $minutes = range(0, 59);
 
     $date_selector = '<nobr>';
-    $date_selector.="<select name=\"{$form_element_name}[month]\" style='width:40%;'>" . draw_opt($date_posted['mon'], $months) . "</select>";
-    $date_selector.="<select name=\"{$form_element_name}[day]\"  style='width:10%;'>" . draw_opt($date_posted['mday'], $days) . "</select>";
+    $date_selector.="<select name=\"{$form_element_name}[month]\" style='width:35%;'>" . draw_opt($date_posted['mon'], $months) . "</select>";
+    $date_selector.="<select name=\"{$form_element_name}[day]\"  style='width:15%;'>" . draw_opt($date_posted['mday'], $days) . "</select>";
     // $date_selector.="<select name=\"{$form_element_name}[year]\"  style='width:25%;'>" . draw_opt($date_posted['year'], $years) . "</select>";
-    $date_selector.="<input type=text name=\"{$form_element_name}[year]\"  style='width:25%;' value=\"".htmlspecialchars($date_posted['year'])."\">";
-    $date_selector.="&nbsp;<select name=\"{$form_element_name}[hour]\"  style='width:10%;'>" . draw_opt($date_posted['hours'], $hours) . "</select>";
+    $date_selector.="<input type=text name=\"{$form_element_name}[year]\"  style='width:20%;' value=\"".htmlspecialchars($date_posted['year'])."\">";
+    $date_selector.="&nbsp;<select name=\"{$form_element_name}[hour]\"  style='width:15%;'>" . draw_opt($date_posted['hours'], $hours) . "</select>";
     $date_selector.=":<select name=\"{$form_element_name}[minute]\"  style='width:10%;'>" . draw_opt($date_posted['minutes'], $minutes) . "</select>";
     $date_selector.='</nobr>';
     return $date_selector;
@@ -367,42 +371,49 @@ $input_vars['page_content'] = "
   <div class=label>{$text['News_title']} :</div>
   <div class=big><input type=text name=news_title value=\"" . checkStr($this_news_info['title']) . "\"></div>
 
-  <span class=blk13>
-  <div class=label>{$text['Language']} : </div>
-  <div class=big>
-    <select name=news_lang>" .
-        draw_options($this_news_info['lang'], db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
-        . "</select>
-  </div>
-  </span>
-  <span class=blk23>
-    <div class=label>" . text('Date_start_publicaton') . " :</div>
+
+  <span class=blk8><!-- 
+ --><span class=blk4>
+    <div class=label>{$text['Language']} : </div>
     <div class=big>
-     {$date_selector}
+      <select name=news_lang>" .
+          draw_options($this_news_info['lang'], db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
+          . "</select>
     </div>
+    </span><!-- 
+ --><span class=blk8>
+       <div class=label>" . text('Date_start_publicaton') . " :</div>
+       <div class=big>{$date_selector}</div>
+    </span><!-- 
+ --><span class=blk4>    
+      <div class=label>{$text['Approve']} :</div>
+      <div class=big>
+        <select name=news_cense_level>" .
+          draw_options($this_news_info['cense_level'], Array(0 => $text['negative_answer'], $user_cense_level => $text['positive_answer']))
+          . "</select>
+      </div>
+    </span><!-- 
+   --><span class=blk8>
+      <div class=label>" . text('Expiration_Date') . " :</div>
+      <div class=big>{$expiration_date_selector}</div>
+    </span><!-- 
+ --><div class=label>{$text['News_tags']} ({$text['CSV']}):</div>
+    <div class=big><input type=text MAXLENGTH=255 name=tags value=\"" . checkStr($this_news_info['tags']) . "\"></div><!-- 
+ --></span><!-- 
+ --><span class=blk4>
+    <div class=label>" . text('Icon') . " :</div>
+    <div class=news_icon>".($this_news_info['news_icon']?"<a class=\"delete_link\" href=\"index.php?action=news/delete_icon&news_id={$this_news_info['id']}&lang={$this_news_info['lang']}\">&times;</a><a href=\"{$this_site_info['site_root_url']}/{$this_news_info['news_icon']['full']}\" target=_blank><img src=\"{$this_site_info['site_root_url']}/{$this_news_info['news_icon']['small']}\" style=\"max-width:100%;\">":''  )."</a></div>
+    <input type=\"file\" name=\"news_icon\">
   </span>
 
+
+
   <br/>
-  <span class=blk13>
-    <div class=label>{$text['Approve']} :</div>
-    <div class=big>
-      <select name=news_cense_level>" .
-        draw_options($this_news_info['cense_level'], Array(0 => $text['negative_answer'], $user_cense_level => $text['positive_answer']))
-        . "</select>
-  </div>
-  </span>
-  <span class=blk23>
-    <div class=label>" . text('Expiration_Date') . " :</div>
-    <div class=big>
-     {$expiration_date_selector}
-    </div>
-  </span>
   <div class=label>" . $text['News_Category'] . " : </div>
   <div id=categories_selector class=big>
      $news_categories_selector
   </div>
-  <div class=label>{$text['News_tags']} ({$text['CSV']}):</div>
-  <div class=big><input type=text MAXLENGTH=255 name=tags value=\"" . checkStr($this_news_info['tags']) . "\"></div>
+  
 
 
   <div class=label>
@@ -493,7 +504,7 @@ $input_vars['page_content'] = "
 //----------------------------- context menu - begin ---------------------------
 // current news menu
 $input_vars['page_menu']['page'] = Array('title' => $text['News'], 'items' => Array());
-run('news/menu');
+
 $input_vars['page_menu']['page']['items'] = menu_news($this_news_info);
 
 // ---------------------- list of translations - begin -------------------------

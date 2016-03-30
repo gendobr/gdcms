@@ -1,0 +1,5 @@
+ALTER TABLE `cms_category` 
+   ADD COLUMN `category_icon` TEXT NULL AFTER `date_lang_update`,
+   ADD COLUMN `category_meta` TEXT NULL AFTER `category_icon`; 
+
+ALTER TABLE `cms_category` ADD COLUMN `category_title_short` VARCHAR(1024) NULL AFTER `category_meta`; 

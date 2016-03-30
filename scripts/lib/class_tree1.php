@@ -434,8 +434,9 @@ class tree {
     //------------------------ get node info - begin ----------------------------
     function load_node($_id=0, $condition='') {
         $cond = '';
-        if (strlen($condition) > 0)
+        if (strlen($condition) > 0) {
             $cond = " AND " . $condition;
+        }
 
 
         $cid = (int) $_id;
@@ -444,9 +445,9 @@ class tree {
             $query = "SELECT * FROM {$this->name_table} WHERE {$this->name_id}=$cid {$cond} " . $this->sql_where();
             //prn($query);
             $this->info = db_getonerow($query);
-        }
-        else
+        } else {
             $this->info = false;
+        }
 
         if (!$this->info) {
             $query = "SELECT * FROM {$this->name_table} WHERE {$this->name_start}=0 " . $this->sql_where();
@@ -454,9 +455,11 @@ class tree {
             $this->info = db_getonerow($query);
         }
 
-        if ($this->info)
-            $this->id = $this->info[$this->name_id]; else
+        if ($this->info) {
+            $this->id = $this->info[$this->name_id];
+        } else {
             $this->id = 0;
+        }
 
         return $this->info;
     }

@@ -826,6 +826,7 @@ class CmsNewsViewer {
                   ,news.cense_level
                   ,news.category_id
                   ,news.weight
+                  ,news.news_icon
                   ,news.creation_date
                   ,news.news_code
                   ,news.news_meta_info
