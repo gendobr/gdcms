@@ -93,12 +93,12 @@ function menu_page($page_info) {
 function get_page_info($page_id, $page_lang) {
     global $table_prefix;
     $_id = (int) $page_id;
-    $_lang = DbStr($page_lang);
+    $_lang = \e::db_escape($page_lang);
     $query = "SELECT page.* ,site.url as site_url
               FROM {$table_prefix}page page
                   ,{$table_prefix}site as site
               WHERE page.id={$_id} AND page.lang='{$_lang}' AND page.site_id=site.id";
-    $this_page_info = db_getonerow($query);
+    $this_page_info = \e::db_getonerow($query);
 
     $this_page_info['file'] = $this_page_info['id'] . '.' . $this_page_info['lang'] . '.html';
     $this_page_info['path'] = preg_replace("/^\\/+|\\/+$/", '', $this_page_info['path']);

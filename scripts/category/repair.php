@@ -21,7 +21,7 @@ $site_id = (int) $input_vars['site_id'];
 // check the category tree
 
 $query = "set @site_id=$site_id";
-db_execute($query);
+\e::db_execute($query);
 
 //���� �� ���������, ������� ����������� ����� � ��������
 $query = "select @category_id:=category_id, @start:=`start`, @finish:=finish from {$GLOBALS['table_prefix']}category where site_id=@site_id and `start`=0";
@@ -44,7 +44,7 @@ and pa.site_id=@site_id
 and ch.site_id=@site_id
 and ch.category_id<>pa.category_id
 ";
-$rows = db_getrows($query);
+$rows = \e::db_getrows($query);
 if (count($rows) == 0) {
     echo "<h3>All category tree looks consistent</h3>";
 }
@@ -64,7 +64,7 @@ if (count($rows) == 0) {
  */
 
 $query = "select category_id, site_id,category_title,start,finish,deep,path from {$table_prefix}category where site_id=$site_id order by path asc";
-$categories = db_getrows($query);
+$categories = \e::db_getrows($query);
 
 // ���������� ��������
 function n_descendants($path, $categories) {

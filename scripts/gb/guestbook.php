@@ -41,7 +41,7 @@ if (checkInt($this_site_info['id']) <= 0 || $this_site_info['is_gb_enabled'] <= 
 }
 //------------------- site info - end ------------------------------------------
 //--------------------------- get site template - begin ------------------------
-$custom_page_template = sites_root . '/' . $this_site_info['dir'] . '/template_index.html';
+$custom_page_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/template_index.html';
 #prn('$news_template',$news_template);
 if (is_file($custom_page_template))
     $this_site_info['template'] = $custom_page_template;
@@ -50,22 +50,22 @@ if (is_file($custom_page_template))
 if (isset($input_vars['text']))
     if (strlen($input_vars['text']) > 0 && $_REQUEST['postedcode'] == $_SESSION['code'] && strlen($_SESSION['code']) > 0) {
 
-        $name = DbStr(strip_tags($input_vars['name']));
-        $email = is_valid_email($input_vars['email']) ? DbStr(strip_tags($input_vars['email'])) : '';
-        $adress = DbStr(strip_tags($input_vars['adress']));
-        $tema = DbStr(strip_tags($input_vars['tema']));
+        $name = \e::db_escape(strip_tags($input_vars['name']));
+        $email = is_valid_email($input_vars['email']) ? \e::db_escape(strip_tags($input_vars['email'])) : '';
+        $adress = \e::db_escape(strip_tags($input_vars['adress']));
+        $tema = \e::db_escape(strip_tags($input_vars['tema']));
 
         $text = str_replace("\r", '', $input_vars['text']);
         $text = strip_tags(preg_replace("/ +\\n/", "\n", $text));
         $text = strip_tags(preg_replace("/\\n+/", "\n", $text));
         $text = str_replace("\n", "<br>", $text);
-        $text = DbStr($text);
+        $text = \e::db_escape($text);
         $query = "INSERT INTO {$table_prefix}gb (name, email, adress, tema, text, data, site)
             VALUES ('$name', '$email', '$adress', '$tema',  '$text', '$data', '$site')";
-        db_execute($query);
+        \e::db_execute($query);
 
         //---------------- notify site admin - begin ---------------------------------
-        $site_admin = db_getonerow("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
+        $site_admin =\e::db_getonerow("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
         if (is_valid_email($site_admin['email']) && false) {
             run("lib/class.phpmailer");
             run("lib/mailing");
@@ -118,7 +118,7 @@ $start = abs(round(1 * $input_vars['start']));
 //$num = mysql_fetch_array($result);
 //$num=$num[0];
 
-$tmp = db_getonerow("SELECT count(*) as num FROM {$table_prefix}gb WHERE is_visible=1 AND site=$site");
+$tmp =\e::db_getonerow("SELECT count(*) as num FROM {$table_prefix}gb WHERE is_visible=1 AND site=$site");
 $num = $tmp['num'];
 
 $paging = Array();
@@ -134,7 +134,7 @@ for ($i = 0; $i < $num; $i = $i + 10) {
 
 
 // ------------------ load guestbook messages - begin --------------------------
-  $guestbook_messages = db_getrows(
+  $guestbook_messages = \e::db_getrows(
                       "SELECT name, email, adress, tema, text, UNIX_TIMESTAMP(data)  AS data, site
                        FROM {$table_prefix}gb
                        WHERE is_visible=1

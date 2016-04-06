@@ -46,7 +46,7 @@ run('site/menu');
                  SET to_export=1
                  WHERE site_id={$this_site_info['id']} AND cense_level>={$this_site_info['cense_level']}";
 //         prn($query);
-         db_execute($query);
+         \e::db_execute($query);
       }
       else
       {
@@ -58,7 +58,7 @@ run('site/menu');
            if(isset($pgs[0]) && isset($pgs[1]))
            {
               $pgs[0]=(int)$pgs[0];
-              $pgs[1]=DbStr($pgs[1]);
+              $pgs[1]=\e::db_escape($pgs[1]);
               $query[]= " ( id={$pgs[0]} AND lang='{$pgs[1]}') ";
            }
          }
@@ -70,13 +70,13 @@ run('site/menu');
                     WHERE site_id={$this_site_info['id']}
                       AND cense_level>={$this_site_info['cense_level']}
                       AND ($query) ";
-            db_execute($query);
+            \e::db_execute($query);
          }
       }
    }
 // ----------------------- mark pages to export - end --------------------------
 
-$this_page_info=db_getonerow(
+$this_page_info=\e::db_getonerow(
    "SELECT page.id, page.lang
     FROM {$table_prefix}page AS page
     WHERE site_id={$this_site_info['id']}
@@ -94,7 +94,7 @@ if($this_page_info)
           WHERE site_id={$this_site_info['id']}
             AND id={$this_page_info['id']}
             AND lang='{$this_page_info['lang']}'";
-  db_execute($query);
+  \e::db_execute($query);
 
   echo "<html>
         <head>

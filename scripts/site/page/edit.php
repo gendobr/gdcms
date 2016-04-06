@@ -87,7 +87,7 @@ if(strlen($input_vars['save_changes'])>0)
     {
       //-------------------- get existing page languages - begin ---------------
         $query="SELECT lang FROM {$table_prefix}page WHERE id={$this_page_info['id']}";
-        $tmp=db_getrows($query);
+        $tmp=\e::db_getrows($query);
         // prn($tmp);
         $existins_langs=Array();
         foreach($tmp as $ln) $existins_langs[]=$ln['lang'];
@@ -99,7 +99,7 @@ if(strlen($input_vars['save_changes'])>0)
                 FROM {$table_prefix}languages
                 WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."')";
         // prn($query);
-        $tmp=db_getrows($query);
+        $tmp=\e::db_getrows($query);
         $avail_lang=Array();
         foreach($tmp as $ln) $avail_lang[]=$ln['id'];
         //prn($avail_lang);
@@ -133,12 +133,7 @@ if(strlen($input_vars['save_changes'])>0)
 
 
     //------------------ check page content - begin ----------------------------
-      //$img_root_url=$this_site_info['url'];
-      //$img_root_url=sites_root_URL.'/'.$this_site_info['dir'].'/';
-      //$parsed_html=replace_src($input_vars['page_content'],$img_root_url);
-      //$this_page_info['content']=  $parsed_html['html'];
-      //prn($parsed_html['src']);
-      //$input_vars['page_content'];
+
       $this_page_info['content']=$input_vars['page_content'];
     //------------------ check page content - end ------------------------------
 
@@ -176,7 +171,7 @@ if(strlen($input_vars['save_changes'])>0)
             # --------------- check if directory exists - begin ----------------
               $dirs=explode('/',dirname($key));
               # prn($dirs);
-              $pt=sites_root."/{$this_site_info['dir']}";
+              $pt=\e::config('SITES_ROOT')."/{$this_site_info['dir']}";
               foreach($dirs as $dr)
               {
                 if(strlen($dr)>0)
@@ -209,7 +204,7 @@ if(strlen($input_vars['save_changes'])>0)
     //-------------------------- check page path - begin -----------------------
       // check if path syntax is correct
          // site root dir
-            $root=sites_root.'/'.preg_replace("/^\\/+|\\/+$/",'',$this_site_info['dir']);
+            $root=\e::config('SITES_ROOT').'/'.preg_replace("/^\\/+|\\/+$/",'',$this_site_info['dir']);
 
          // old page path
             $old_page_root=$root.'/'.preg_replace("/^\\/+|\\/+$/",'',$this_page_info['path']);
@@ -239,13 +234,13 @@ if(strlen($input_vars['save_changes'])>0)
             // ensure the page file path is unique
             $other_pages="SELECT count(*) as n_pages
                           FROM {$table_prefix}page
-                          WHERE path='".DbStr($this_page_info['path'])."'
-                            AND page_file_name='".DbStr($this_page_info['page_file_name'])."'
+                          WHERE path='".\e::db_escape($this_page_info['path'])."'
+                            AND page_file_name='".\e::db_escape($this_page_info['page_file_name'])."'
                             AND id<>{$this_page_info['id']}
                             AND site_id={$this_page_info['site_id']}
                           ";
             //prn($other_pages);
-            $other_pages=db_getonerow($other_pages);
+            $other_pages=\e::db_getonerow($other_pages);
             if($other_pages['n_pages']>0){
                 $message.="{$text['ERROR']} : ".text('Page_choose_other_file_name')."<br>\n";
                 $all_is_ok=false;
@@ -285,19 +280,19 @@ if(strlen($input_vars['save_changes'])>0)
          $query="UPDATE {$table_prefix}page
                  SET    is_home_page=0
                  WHERE  site_id='{$this_page_info['site_id']}'";
-         db_execute($query);
+         \e::db_execute($query);
        }
        //if(is_admin()) prn(checkStr($this_page_info['content']));
        $query="UPDATE {$table_prefix}page
                SET
                   lang='{$lng}'
                  ,site_id='{$this_page_info['site_id']}'
-                 ,title='".DbStr($this_page_info['title'])."'
-                 ,path='".DbStr($this_page_info['path'])."'
-                 ,content='".DbStr($this_page_info['content'])."'
-                 ,abstract='".DbStr($this_page_info['abstract'])."'
-                 ,page_meta_tags='".DbStr($this_page_info['page_meta_tags'])."'
-                 ,page_file_name='".DbStr($this_page_info['page_file_name'])."'
+                 ,title='".\e::db_escape($this_page_info['title'])."'
+                 ,path='".\e::db_escape($this_page_info['path'])."'
+                 ,content='".\e::db_escape($this_page_info['content'])."'
+                 ,abstract='".\e::db_escape($this_page_info['abstract'])."'
+                 ,page_meta_tags='".\e::db_escape($this_page_info['page_meta_tags'])."'
+                 ,page_file_name='".\e::db_escape($this_page_info['page_file_name'])."'
                  ,last_change_date='{$this_page_info['last_change_date']}'
                  ,is_under_construction={$this_page_info['is_under_construction']}
                  ,is_home_page={$this_page_info['is_home_page']}
@@ -305,7 +300,7 @@ if(strlen($input_vars['save_changes'])>0)
                  ,category_id = {$this_page_info['category_id']}
        WHERE id='{$this_page_info['id']}' AND lang='{$this_page_info['lang']}'";
        //prn($query);
-       db_execute($query);
+       \e::db_execute($query);
 
        $this_page_info['lang']=$lng;
 
@@ -324,7 +319,7 @@ if(strlen($input_vars['save_changes'])>0)
                    SET delete_file = '$delete_file'
                    WHERE id='{$this_page_info['id']}' AND lang='{$this_page_info['lang']}'";
            //prn($query);
-           db_execute($query);
+           \e::db_execute($query);
        }
 
        # ------------------ send notification - begin --------------------------
@@ -401,7 +396,7 @@ if(strlen($input_vars['save_changes'])>0)
       clearstatcache();
       foreach($parsed_html['src'] as $fname)
       {
-        if(!file_exists(sites_root."/{$this_site_info['dir']}/{$fname}"))
+        if(!file_exists(\e::config('SITES_ROOT')."/{$this_site_info['dir']}/{$fname}"))
         {
           $required_images[]=$fname;
         }
@@ -450,7 +445,7 @@ if(strlen($input_vars['save_changes'])>0)
 
  # ------------------------ list of categories - begin -------------------------
     $query="SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$this_page_info['site_id']} ORDER BY start ASC";
-    $tmp=db_getrows($query);
+    $tmp=\e::db_getrows($query);
     $list_of_categories=Array();
     foreach($tmp as $tm) $list_of_categories[$tm['category_id']]=str_repeat(' + ',$tm['deep']).get_langstring($tm['category_title']);
     unset($tmp,$tm);
@@ -499,7 +494,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
   <div class=label>{$text['Page_Language']}:</div>
   <div class=big>
     <select name=page_lang>".
-    draw_options($this_page_info['lang'],db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
+    draw_options($this_page_info['lang'],\e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
     ."</select>
   </div>
   </span>

@@ -15,32 +15,45 @@ define('site_charset', 'UTF-8');
 define('site_root_URL', "http" . (isset($_SERVER['HTTPS']) ? 's' : '') . "://{$_SERVER['HTTP_HOST']}/cms"); // ZSU
 define('site_public_URL', "http://{$_SERVER['HTTP_HOST']}/cms"); // ZSU
 
+$config->APPLICATION_URL=site_root_URL;
+
+
 define('site_URL', site_root_URL . '/index.php');
 define('sites_root_URL', 'http://127.0.0.1/_sites');
 //------------------------ URLs - end ------------------------------------------
 
 //----------------------- directories -- begin ---------------------------------
 // root directory of the site
-define('local_root', '/home/dobro/wwwroot/cms');
+// define('local_root', '/home/dobro/wwwroot/cms');
+$config->APP_ROOT='/home/dobro/wwwroot/cms';
 
 // where script are located
-define('script_root', local_root . '/scripts');
+// define('script_root', local_root . '/scripts');
+$config->SCRIPT_ROOT=$config->APP_ROOT . '/scripts';
 
 // where templates are located
-define('template_root', local_root . '/templates');
+// define('template_root', local_root . '/templates');
+$config->TEMPLATE_ROOT=$config->APP_ROOT . '/templates';
 
 // where sites are located
-define('sites_root', '/home/dobro/wwwroot/_sites');
-
+// define('sites_root', '/home/dobro/wwwroot/_sites');
+$config->SITES_ROOT='/home/dobro/wwwroot/_sites';
+        
+        
 // where template are cached
-define('template_cache_root', local_root . '/template_cache');
+// define('template_cache_root', $config->APP_ROOT . '/template_cache');
+$config->CACHE_ROOT=$config->APP_ROOT . '/template_cache';
+
+$config->LOGGER_CONFIG_FILE=$config->APP_ROOT.'/appender.properties';
 //----------------------- directories -- end -----------------------------------
+
 //----------------------- database parameters -- begin -------------------------
-define('db_name', "cms_utf8");
-define('db_user', "user");
-define('db_pass', "user");
-define('db_host', "localhost");
-define('db_encoding', "utf8");
+$config->db_host = "localhost";
+$config->db_user = "user";
+$config->db_pass = "user";
+$config->db_name = "cms_utf8";
+$config->db_charset = "utf8";
+$config->db_table_prefix = 'cms_';
 //----------------------- database parameters -- end ---------------------------
 // ---------------------------- mailer options -- begin ------------------------
 /*
@@ -75,10 +88,11 @@ define('default_language', 'ukr');
 
 define('rows_per_page', 10);
 
-define('use_custom_sessions', false);
+// define('use_custom_sessions', false);
+$config->PHPSESSID='PHPSESSID';
 
 // where SMARTY scripts are located
-define('SMARTY_DIR', script_root . '/smarty/libs/');
+define('SMARTY_DIR', $config->SCRIPT_ROOT . '/smarty/libs/');
 
 // regexp
 define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt|xlsx|xlsm|xltx|xltm|xlam|docx|docm|dotx|dotm|pptx|pptm|potx|potm|ppam|ppsx|ppsm|svg|eot|woff|ttf');
@@ -94,8 +108,8 @@ define('ec_order_status', 'new,completed,rejected,under_processing');
 define('ec_cart_check_product_amount', false);
 
 
-define('gallery_small_image_width', 150);
-define('gallery_small_image_height', 150);
+define('gallery_small_image_width', 300);
+define('gallery_small_image_height', 240);
 
 
 // number of emails which can be sent at once

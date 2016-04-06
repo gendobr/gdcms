@@ -32,7 +32,7 @@ if (get_level($site_id) == 0) {
 //------------------- this_forum_info - begin ----------------------------------
 $forum_id = checkInt($input_vars['forum_id']);
 $query = "SELECT * FROM {$table_prefix}forum_list WHERE id=" . checkInt($input_vars['forum_id']);
-$this_forum_info = db_getonerow($query);
+$this_forum_info =\e::db_getonerow($query);
 // prn('$this_forum_info=',$this_forum_info);
 if (checkInt($this_forum_info['id']) <= 0) {
     $input_vars['page_title'] = $text['Forum_not_found'];
@@ -43,7 +43,7 @@ if (checkInt($this_forum_info['id']) <= 0) {
 //------------------- this_forum_info - end ------------------------------------
 //------------------- get thread info - begin ----------------------------------
 $thread_id = checkInt($input_vars['thread_id']);
-$this_thread_info = db_getonerow("SELECT * FROM {$table_prefix}forum_thread WHERE id={$thread_id}");
+$this_thread_info =\e::db_getonerow("SELECT * FROM {$table_prefix}forum_thread WHERE id={$thread_id}");
 //prn('$this_thread_info=',$this_thread_info);
 if (checkInt($this_thread_info['id']) <= 0) {
     $input_vars['page_title'] = $text['Thread_not_found'];
@@ -81,7 +81,7 @@ $rep->add_field('forum_id'
         , '#');
 
 
-$tmp = db_getrows("SELECT * FROM {$table_prefix}forum_thread WHERE forum_id=$forum_id order by subject");
+$tmp = \e::db_getrows("SELECT * FROM {$table_prefix}forum_thread WHERE forum_id=$forum_id order by subject");
 $cmt = count($tmp);
 for ($i = 0; $i < $cmt; $i++)
     $tmp[$i] = $tmp[$i]['id'] . '=' . rawurlencode($tmp[$i]['subject']);
@@ -161,7 +161,7 @@ $reply_to_msg_text = '';
 if (isset($input_vars['reply_to_msg'])) {
     $reply_to_msg = (int) $input_vars['reply_to_msg'];
     // if(isset($input_vars['debug'])) prn($reply_to_msg);
-    $reply_to_msg_text = db_getonerow("SELECT msg FROM {$table_prefix}forum_msg WHERE id={$reply_to_msg}");
+    $reply_to_msg_text =\e::db_getonerow("SELECT msg FROM {$table_prefix}forum_msg WHERE id={$reply_to_msg}");
     if ($reply_to_msg_text) {
         $reply_to_msg_text = "[quote]{$reply_to_msg_text['msg']}[/quote]";
         // prn($reply_to_msg_text);
@@ -227,7 +227,7 @@ run('forum/menu');
 
 if ($rep->id > 0) {
     $query = "SELECT * FROM {$table_prefix}forum_msg WHERE id={$rep->id}";
-    $this_msg_info = db_getonerow($query);
+    $this_msg_info =\e::db_getonerow($query);
     $input_vars['page_menu']['thread'] = Array('title' => $text['Message'], 'items' => Array());
     $input_vars['page_menu']['thread']['items'] = menu_msg($this_msg_info);
 }

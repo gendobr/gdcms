@@ -38,7 +38,7 @@ switch($input_vars['view'])
 
 
         $tor.="
-        <a href=\"index.php?action=site/page/link_selector&site_id={$this_site_info['id']}\">Âèá³ð URL</a>/ {$text['News']}<br><br>
+        <a href=\"index.php?action=site/page/link_selector&site_id={$this_site_info['id']}\">ï¿½ï¿½ï¿½ï¿½ URL</a>/ {$text['News']}<br><br>
         <form action=index.php>
         ".hidden_form_elements('^filter_')."
         <input type=text name=filter_kw value=\"".checkStr(isset($input_vars['filter_kw'])?$input_vars['filter_kw']:'')."\">
@@ -58,7 +58,7 @@ switch($input_vars['view'])
              {
                   if(strlen($news_keywords_restriction[$i])>0)
                   {
-                     $news_keywords_restriction[$i]=sprintf($tmp,DbStr($news_keywords_restriction[$i]));
+                     $news_keywords_restriction[$i]=sprintf($tmp,\e::db_escape($news_keywords_restriction[$i]));
                   }
                   else unset($news_keywords_restriction[$i]);
              }
@@ -91,7 +91,7 @@ switch($input_vars['view'])
               $news_keywords_restriction
             ORDER BY ne.last_change_date $date_order
             LIMIT $start,$rows";
-        $list_of_news = db_getrows($query);
+        $list_of_news = \e::db_getrows($query);
         //prn($query,$list_of_news);
         //prn($query);
 
@@ -106,7 +106,7 @@ switch($input_vars['view'])
         # --------------------------- list of pages - begin --------------------------
           $url_prefix_list=site_root_URL.'/index.php?'.query_string('^start$|^'.session_name().'$').'&start=';
           $query="SELECT FOUND_ROWS() AS n_records;";
-          $num = db_getonerow($query);
+          $num = \e::db_getonerow($query);
           // prn($query,$num);
           $news_found = $num = (int)$num['n_records'];
           $pages = Array();
@@ -155,7 +155,7 @@ switch($input_vars['view'])
 
 
         $tor.="
-        <a href=\"index.php?action=site/page/link_selector&site_id={$this_site_info['id']}\">Âèá³ð URL</a>/ {$text['Pages']}<br><br>
+        <a href=\"index.php?action=site/page/link_selector&site_id={$this_site_info['id']}\">ï¿½ï¿½ï¿½ï¿½ URL</a>/ {$text['Pages']}<br><br>
 
         <form action=index.php>
         ".hidden_form_elements('^filter_')."
@@ -176,7 +176,7 @@ switch($input_vars['view'])
              {
                   if(strlen($page_keywords_restriction[$i])>0)
                   {
-                     $page_keywords_restriction[$i]=sprintf($tmp,DbStr($page_keywords_restriction[$i]));
+                     $page_keywords_restriction[$i]=sprintf($tmp,\e::db_escape($page_keywords_restriction[$i]));
                   }
                   else unset($page_keywords_restriction[$i]);
              }
@@ -211,7 +211,7 @@ switch($input_vars['view'])
          //     AND pg.cense_level>={$this_site_info['cense_level']}
          //     AND pg.lang='{$_SESSION['lang']}'
 
-        $list_of_pages = db_getrows($query);
+        $list_of_pages = \e::db_getrows($query);
         //prn($query,$list_of_news);
         //prn($query);
 
@@ -227,7 +227,7 @@ switch($input_vars['view'])
         # --------------------------- list of pages - begin --------------------------
           $url_prefix_list=site_root_URL.'/index.php?'.query_string('^start$|^'.session_name().'$').'&start=';
           $query="SELECT FOUND_ROWS() AS n_records;";
-          $num = db_getonerow($query);
+          $num = \e::db_getonerow($query);
           // prn($query,$num);
           $news_found = $num = (int)$num['n_records'];
           $pages = Array();
@@ -274,7 +274,7 @@ switch($input_vars['view'])
 
     default:
         $tor.="
-        <b>Âèá³ð URL</b><br><br>
+        <b>ï¿½ï¿½ï¿½ï¿½ URL</b><br><br>
         ";
         if($this_site_info['is_poll_enabled'])
         {

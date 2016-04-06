@@ -31,36 +31,36 @@ if (get_level($site_id) == 0) {
 # ------------------- check permission - end -----------------------------------
 
 
-if(isset($input_vars['setimage'])){
+if (isset($input_vars['setimage'])) {
     //prn($input_vars);
-    $setimage=(int)$input_vars['setimage'];
-    $image_info=db_getonerow("SELECT * FROM {$table_prefix}photogalery where id={$setimage} and site={$this_site_info['id']}");
+    $setimage = (int) $input_vars['setimage'];
+    $image_info = \e::db_getonerow("SELECT * FROM {$table_prefix}photogalery where id={$setimage} and site={$this_site_info['id']}");
 
-    if($image_info){
-        $rozdil_info=db_getonerow(
-                "SELECT *
+    if ($image_info) {
+        $rozdil_info = \e::db_getonerow(
+                        "SELECT *
                  FROM {$table_prefix}photogalery_rozdil
                  WHERE site_id={$this_site_info['id']}
-                 AND rozdil='".  DbStr($input_vars['rozdil'])."'");
+                 AND rozdil='" . \e::db_escape($input_vars['rozdil']) . "'");
         // prn($rozdil_info);
-        if($rozdil_info){
+        if ($rozdil_info) {
             // update record
-            $query="UPDATE {$table_prefix}photogalery_rozdil
-                   SET photos='".  DbStr($image_info['photos'])."',
-                       photos_m='".  DbStr($image_info['photos_m'])."',
-                       image_id=".((int)$image_info['id'])."
+            $query = "UPDATE {$table_prefix}photogalery_rozdil
+                   SET photos='" . \e::db_escape($image_info['photos']) . "',
+                       photos_m='" . \e::db_escape($image_info['photos_m']) . "',
+                       image_id=" . ((int) $image_info['id']) . "
                    WHERE site_id={$this_site_info['id']}
-                       AND rozdil='".  DbStr($input_vars['rozdil'])."'
-                       AND id=".((int)$rozdil_info['id'])."";
+                       AND rozdil='" . \e::db_escape($input_vars['rozdil']) . "'
+                       AND id=" . ((int) $rozdil_info['id']) . "";
             // prn($query);
-            db_execute($query);
-        }else{
+            \e::db_execute($query);
+        } else {
             // create record
-            $query="insert into {$table_prefix}photogalery_rozdil (photos,photos_m,rozdil,rozdil2,site_id,image_id)
-                SELECT photos,photos_m,'".  DbStr($input_vars['rozdil'])."','".md5($input_vars['rozdil'])."',site,id
+            $query = "insert into {$table_prefix}photogalery_rozdil (photos,photos_m,rozdil,rozdil2,site_id,image_id)
+                SELECT photos,photos_m,'" . \e::db_escape($input_vars['rozdil']) . "','" . md5($input_vars['rozdil']) . "',site,id
                 FROM {$table_prefix}photogalery where id={$setimage} and site={$this_site_info['id']}";
             // prn($query);
-            db_execute($query);
+            \e::db_execute($query);
         }
         echo "<html><body>
             <script type=\"text/javascript\">
@@ -85,16 +85,16 @@ run('gallery/gallery_images');
 //$images=new GalleryImages($_SESSION['lang'], $this_site_info, 0, $input_vars['rozdil'], '');
 //prn($images->list);
 //prn($n);
-$image_list = db_getrows(
-        "SELECT DISTINCT *
+$image_list = \e::db_getrows(
+                "SELECT DISTINCT *
          FROM {$GLOBALS['table_prefix']}photogalery
          WHERE site = {$this_site_info['id']}
-             AND SUBSTRING_INDEX( rozdil, '/', $n )='" . DbStr($input_vars['rozdil']) . "'
+             AND SUBSTRING_INDEX( rozdil, '/', $n )='" . \e::db_escape($input_vars['rozdil']) . "'
          ORDER BY rozdil");
 //prn($image_list);
 
 $url_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']) . '/gallery';
-$prefix = "index.php?action=gallery/admin/rozdilimages_selector&site_id={$this_site_info['id']}&rozdil=" . rawurlencode($input_vars['rozdil'])."&setimage=";
+$prefix = "index.php?action=gallery/admin/rozdilimages_selector&site_id={$this_site_info['id']}&rozdil=" . rawurlencode($input_vars['rozdil']) . "&setimage=";
 // prn('$prefix=',$prefix);
 foreach ($image_list as $image) {
     $vyvid.="<a href=\"{$prefix}{$image['id']}\"><img src=\"{$url_prefix}/{$image['photos_m']}\" class=\"imgRozdil2\" id=\"image_{$image['id']}\"></a> ";
@@ -102,8 +102,7 @@ foreach ($image_list as $image) {
 
 // prn($GLOBALS['main_template_name']);
 $GLOBALS['main_template_name'] = 'design/popup';
-$input_vars['page_title'] =
-        $input_vars['page_header'] = $this_site_info['title'] . ' - ' . text('image_rozdilimages');
+$input_vars['page_title'] = $input_vars['page_header'] = $this_site_info['title'] . ' - ' . text('image_rozdilimages');
 $input_vars['page_content'] = $vyvid;
 // echo $vyvid;
 ?>

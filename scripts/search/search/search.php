@@ -27,7 +27,7 @@ $txt=load_msg($input_vars['lang']);
   $list_of_sites=array_unique($list_of_sites);
 //------------------- main site info - end --------------------------------------
 //--------------------------- get site template - begin ------------------------
-  $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
   #prn('$news_template',$news_template);
   if (is_file($custom_page_template)) {
     $this_site_info['template'] = $custom_page_template;

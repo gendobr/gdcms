@@ -5,10 +5,10 @@
 global $main_template_name; $main_template_name='';
 header("Content-Type:text/html; charset=".site_charset);
 //echo "@@@@@ ".$input_vars['category_id'];
-$cat=db_getonerow("SELECT * FROM {$table_prefix}ec_category WHERE ec_category_id=".( (int)$input_vars['category_id'] ));
+$cat=\e::db_getonerow("SELECT * FROM {$table_prefix}ec_category WHERE ec_category_id=".( (int)$input_vars['category_id'] ));
 //prn($cat);
 if(!$cat) return '';
-$pa=db_getrows(
+$pa=\e::db_getrows(
 "SELECT *
  FROM {$table_prefix}ec_category_item_field
  WHERE site_id={$cat['site_id']}

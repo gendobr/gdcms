@@ -11,7 +11,7 @@
     it will be treated as Smarty template and used instead of default one.
 */
 
-include(script_root.'/news/get_public_list2.php');
+include(\e::config('SCRIPT_ROOT').'/news/get_public_list2.php');
 
 
 $site_id = checkInt($input_vars['site_id']);
@@ -50,13 +50,13 @@ $news=new CmsNewsViewer($input_vars);
   
 # -------------------- get list of page languages - begin --------------------
 
-$tmp = get_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
+$tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
 if (!$tmp) {
-    $tmp = db_getrows("SELECT DISTINCT lang
+    $tmp = \e::db_getrows("SELECT DISTINCT lang
                      FROM {$table_prefix}news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
-    set_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
+    set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
 }
 
 $existing_languages = Array();

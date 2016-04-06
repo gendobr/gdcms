@@ -8,7 +8,7 @@
 
   run('lib/file_functions');
 
-  $fl=ls(template_root.'/cms');
+  $fl=ls(\e::config('TEMPLATE_ROOT').'/cms');
   $fl=$fl['files'];
   sort($fl);
   //prn($fl['files']);

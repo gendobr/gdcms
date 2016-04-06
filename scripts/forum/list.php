@@ -39,15 +39,15 @@ if(get_level($site_id)==0)
   {
      $query="DELETE FROM {$table_prefix}forum_list   WHERE site_id={$site_id} AND id={$delete_forum_id}";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
 
      $query="DELETE FROM {$table_prefix}forum_thread WHERE site_id={$site_id} AND forum_id=$delete_forum_id";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
 
      $query="DELETE FROM {$table_prefix}forum_msg    WHERE site_id={$site_id} AND forum_id=$delete_forum_id";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
 
   }
   clear('delete_msg_id');
@@ -59,7 +59,7 @@ if(get_level($site_id)==0)
   {
      $query="UPDATE {$table_prefix}gb SET is_visible=1 WHERE id={$show_msg_id} AND site={$site_id}";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
   }
   clear('show_msg_id');
 //-------------------- show message - end --------------------------------------
@@ -70,7 +70,7 @@ if(get_level($site_id)==0)
   {
      $query="UPDATE {$table_prefix}gb SET is_visible=0 WHERE id={$hide_msg_id} AND site={$site_id}";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
   }
   clear('hide_msg_id');
 //-------------------- hide message - end --------------------------------------

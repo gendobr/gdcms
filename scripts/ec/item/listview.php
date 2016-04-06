@@ -33,16 +33,14 @@ run('site/page/page_view_functions');
 
 # --------------------------- get site template - begin ------------------------
   $custom_page_template = site_get_template($this_site_info,'template_index');
-  //$custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
-  //if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 # --------------------------- get site template - end --------------------------
 
 
 
 
 # --------------------------- get list of items - begin ------------------------
-  include(script_root.'/ec/item/get_public_list.php');
-  include(script_root.'/ec/item/adjust_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/ec/item/get_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
 # --------------------------- get list of items - end --------------------------
 
 
@@ -51,7 +49,7 @@ run('site/page/page_view_functions');
 //prn($pages);
 
 # -------------------- get list of page languages - begin ----------------------
-    $tmp=db_getrows("SELECT DISTINCT ec_item_lang as lang
+    $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
                      FROM {$table_prefix}ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");

@@ -55,7 +55,7 @@ if(isset($input_vars['ec_item_keywords']) && strlen($input_vars['ec_item_keyword
     ";
     for($i=0;$i<$cnt;$i++) {
         if(strlen($tmp[$i])>0) {
-            $restriction.=sprintf($pat,DbStr($tmp[$i]));
+            $restriction.=sprintf($pat,\e::db_escape($tmp[$i]));
         }
     }
 }
@@ -78,7 +78,7 @@ if(isset($input_vars['ec_category_id'])) {
                           FROM {$table_prefix}ec_category as ch,{$table_prefix}ec_category as pa
                                       WHERE pa.start<=ch.start and ch.finish<=pa.finish
                                         AND pa.ec_category_id=$category";
-            $category=db_getrows($children);
+            $category=\e::db_getrows($children);
             $cnt=count($category);
             for($i=0;$i<$cnt;$i++) {
                 $category[$i]=(int)$category[$i]['ec_category_id'];
@@ -92,25 +92,7 @@ if(isset($input_vars['ec_category_id'])) {
                OR ec_item.ec_item_id IN(SELECT ec_item_id FROM {$table_prefix}ec_item_category WHERE ec_category_id  IN({$category}) )
             )";
         }
-        //        $categories=join(',',$categories);
-        //
-        //        // get children
-        //        $children="SELECT ch.ec_category_id
-        //	              FROM {$table_prefix}ec_category as ch,{$table_prefix}ec_category as pa
-        //				  WHERE pa.start<=ch.start and ch.finish<=pa.finish
-        //				    AND pa.ec_category_id IN({$categories})";
-        //        $categories=db_getrows($children);
-        //        $cnt=count($categories);
-        //        for($i=0;$i<$cnt;$i++) {
-        //            $categories[$i]=(int)$categories[$i]['ec_category_id'];
-        //        }
-        //        $categories=join(',',$categories);
-        //
-        //        $restriction.="
-        //        AND (
-        //              ec_item.ec_category_id IN({$categories})
-        //           OR ec_item.ec_item_id IN(SELECT ec_item_id FROM {$table_prefix}ec_item_category WHERE ec_category_id  IN({$categories}) )
-        //        )";
+        
     }
     else {
         $restriction.="  AND ec_item.ec_category_id<>".abs((int)$input_vars['ec_category_id']);
@@ -133,7 +115,7 @@ if(    isset($input_vars['ec_item_tags'])
     $pat=" AND FIND_IN_SET('%s',ec_item.ec_item_tags) ";
     for($i=0;$i<$cnt;$i++) {
         if(strlen($tmp[$i])>0) {
-            $restriction.=sprintf($pat,DbStr($tmp[$i]));
+            $restriction.=sprintf($pat,\e::db_escape($tmp[$i]));
         }
     }
 }
@@ -162,13 +144,13 @@ if($ec_item_state==0) {
 
 # ec_item_title             varchar(255)
 if(isset($input_vars['ec_item_title']) && strlen($input_vars['ec_item_title'])>0) {
-    $restriction.=" and locate('".DbStr(trim($input_vars['ec_item_title']))."',ec_item.ec_item_title)>0 ";
+    $restriction.=" and locate('".\e::db_escape(trim($input_vars['ec_item_title']))."',ec_item.ec_item_title)>0 ";
 }
 
 # ec_item_content           longtext
 # ec_item_abstract          text
 if(isset($input_vars['ec_item_content']) && strlen($input_vars['ec_item_content'])>0) {
-    $restriction.=" and locate('".DbStr(trim($input_vars['ec_item_content']))."',concat(ec_item.ec_item_content,' ',ec_item.ec_item_abstract)) >0 ";
+    $restriction.=" and locate('".\e::db_escape(trim($input_vars['ec_item_content']))."',concat(ec_item.ec_item_content,' ',ec_item.ec_item_abstract)) >0 ";
 }
 
 # ec_item_price             float
@@ -192,7 +174,7 @@ if(isset($input_vars['extrafld'])) {
                           INNER JOIN {$table_prefix}ec_item AS it
                           ON it.ec_item_id=ifv.ec_item_id
                      WHERE ifv.ec_category_item_field_id={$key}
-                       AND ifv.ec_category_item_field_value>='".DbStr(trim($val['min']))."'
+                       AND ifv.ec_category_item_field_value>='".\e::db_escape(trim($val['min']))."'
                 )";
             }
             $val['max']=trim($val['max']);
@@ -203,7 +185,7 @@ if(isset($input_vars['extrafld'])) {
                           INNER JOIN {$table_prefix}ec_item AS it
                           ON it.ec_item_id=ifv.ec_item_id
                      WHERE ifv.ec_category_item_field_id={$key}
-                       AND ifv.ec_category_item_field_value<='".DbStr(trim($val['max']))."'
+                       AND ifv.ec_category_item_field_value<='".\e::db_escape(trim($val['max']))."'
                 )";
             }
         }else {
@@ -215,7 +197,7 @@ if(isset($input_vars['extrafld'])) {
                           INNER JOIN {$table_prefix}ec_item AS it
                           ON it.ec_item_id=ifv.ec_item_id
                      WHERE ifv.ec_category_item_field_id={$key}
-                       AND locate('".DbStr(trim($val))."',ifv.ec_category_item_field_value)>0
+                       AND locate('".\e::db_escape(trim($val))."',ifv.ec_category_item_field_value)>0
                 )";
             }
         }
@@ -344,11 +326,11 @@ $query="SELECT SQL_CALC_FOUND_ROWS
               $restriction
               $orderby
             LIMIT $start,$rows";
-$list_of_ec_items = db_getrows($query);
+$list_of_ec_items = \e::db_getrows($query);
 //prn($query);
 
 $query="SELECT FOUND_ROWS() AS n_records;";
-$num = db_getonerow($query);
+$num =\e::db_getonerow($query);
 // prn($query,$num);
 $rows_found = (int)$num['n_records'];
 

@@ -47,10 +47,10 @@ if($user_cense_level==0)
          $ec_item_lang=preg_replace("/\\W/",'',$val['ec_item_lang']);
          unset($val['ec_item_lang']);
          $query=Array();
-         foreach($val as $fl=>$va) $query[]="$fl='".DbStr($va)."'";
+         foreach($val as $fl=>$va) $query[]="$fl='".\e::db_escape($va)."'";
          $query="UPDATE {$table_prefix}ec_item SET ".join(',',$query).",cached_info=null,cache_datetime='2000-01-01 00:00:00' WHERE ec_item_id=$ec_item_id AND ec_item_lang='{$ec_item_lang}' LIMIT 1";
          //if(is_admin()) prn($query);
-         db_execute($query);
+         \e::db_execute($query);
       }
    }
    if(isset($input_vars['ec_item_delete']) && isset($input_vars['ec_item_checked']))
@@ -99,7 +99,7 @@ if($user_cense_level==0)
                  ,$_group_operation=false);
 
   //---------------- list of languages - begin ---------------------------------
-    $LL = join('&',db_get_associated_array("SELECT ec_item_lang,CONCAT(ec_item_lang,'=',ec_item_lang) FROM {$table_prefix}ec_item WHERE site_id={$site_id}"));
+    $LL = join('&',\e::db_get_associated_array("SELECT ec_item_lang,CONCAT(ec_item_lang,'=',ec_item_lang) FROM {$table_prefix}ec_item WHERE site_id={$site_id}"));
     $re->add_field( $field='ec_item.ec_item_lang'
                    ,$alias='ec_item_lang'
                    ,$type ='enum:'.$LL
@@ -131,7 +131,7 @@ if($user_cense_level==0)
                  ,$_group_operation=false);
  # ------------------------ list of currency - begin ---------------------------
     $query="SELECT ec_currency_code, ec_curency_title FROM {$table_prefix}ec_currency ORDER BY ec_curency_title";
-    $tmp=db_getrows($query);
+    $tmp=\e::db_getrows($query);
     $list_of_currency=Array();
     foreach($tmp as $tm) $list_of_currency[]=$tm['ec_currency_code'].'='.rawurlencode($tm['ec_curency_title']);
     unset($tmp,$tm);
@@ -184,7 +184,7 @@ if($user_cense_level==0)
 
  # ------------------------ list of producers - begin --------------------------
     $query="SELECT ec_producer_id, ec_producer_title FROM {$table_prefix}ec_producer WHERE site_id={$site_id} ORDER BY ec_producer_title ASC";
-    $tmp=db_getrows($query);
+    $tmp=\e::db_getrows($query);
     $list_of_producers=Array();
     foreach($tmp as $tm) $list_of_producers[]=$tm['ec_producer_id'].'='.rawurlencode($tm['ec_producer_title']);
     unset($tmp,$tm);
@@ -359,7 +359,7 @@ $input_vars['page_header'] = $this_site_info['title'] .' - '. text('EC_items');
 
     # ------------------------ list of categories - begin -------------------------
     $query="SELECT ec_category_id, ec_category_title, deep FROM {$table_prefix}ec_category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
-    $tmp=db_getrows($query);
+    $tmp=\e::db_getrows($query);
     $list_of_categories=Array();
     foreach($tmp as $tm) $list_of_categories[$tm['ec_category_id']]=str_repeat(' + ',$tm['deep']-1).get_langstring($tm['ec_category_title']);
     unset($tmp,$tm);

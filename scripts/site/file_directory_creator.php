@@ -42,11 +42,8 @@ if (!isset($input_vars['newdir']) || strlen($input_vars['newdir']) == 0) {
     return '';
 }
 
-if(defined('template_cache_root')){
-    $log_file_path=template_cache_root."/directory_creator.log.txt";
-}else{
-    $log_file_path=local_root . '/template_cache/directory_creator.log.txt';
-}
+
+$log_file_path=\e::config('CACHE_ROOT')."/directory_creator.log.txt";
 
 
 // save log

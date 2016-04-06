@@ -64,17 +64,17 @@ if( isset($input_vars['ec_order_history_status']) && $input_vars['ec_order_histo
     if($input_vars['ec_order_history_status']=='Ec_order_is_paid_successfully') {
         $history_message=text('Changed_ec_order_status_to').' <b>'.text('Ec_order_is_paid_successfully').'</b><br/>';
         $query="UPDATE {$table_prefix}ec_order SET ec_order_paid=1 where ec_order_id=$ec_order_id";
-        db_execute($query);
+        \e::db_execute($query);
     }
     elseif($input_vars['ec_order_history_status']=='Ec_order_is_not_paid') {
         $history_message=text('Changed_ec_order_status_to').' <b>'.text('Ec_order_is_not_paid').'</b><br/>';
         $query="UPDATE {$table_prefix}ec_order SET ec_order_paid=0 where ec_order_id=$ec_order_id";
-        db_execute($query);
+        \e::db_execute($query);
     }
     elseif(isset($ec_order_status_options[$input_vars['ec_order_history_status']])) {
         $history_message=text('Changed_ec_order_status_to').' <b>'.$ec_order_status_options[$input_vars['ec_order_history_status']].'</b><br/>';
-        $query="UPDATE {$table_prefix}ec_order SET ec_order_status='".DbStr($input_vars['ec_order_history_status'])."' where ec_order_id=$ec_order_id";
-        db_execute($query);
+        $query="UPDATE {$table_prefix}ec_order SET ec_order_status='".\e::db_escape($input_vars['ec_order_history_status'])."' where ec_order_id=$ec_order_id";
+        \e::db_execute($query);
     }
     //prn($query);
     if(mysql_affected_rows()>0) {
@@ -242,7 +242,7 @@ if($user['ec_user_delivery_suburb'])
 if($user['ec_user_delivery_region'])
     $tor.="<tr><td>".text('ec_user_delivery_region').":</td><td>{$user['ec_user_delivery_region']}</td></tr>";
 
-// просмотр дополнительных полей из формы заказа
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 $tor.="<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
 foreach($this_ec_order_info['custom'] as $key=>$val){
     if(!isset($this_ec_order_info['shipping'][$key])){

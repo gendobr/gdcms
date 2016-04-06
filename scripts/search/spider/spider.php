@@ -34,12 +34,12 @@ $getSiteId = function($el) {
 };
 
 $query = "SELECT s.id site_id FROM  {$table_prefix}site AS s WHERE s.is_search_enabled=1";
-$site_ids = array_map($getSiteId, db_getrows($query));
+$site_ids = array_map($getSiteId, \e::db_getrows($query));
 sort($site_ids);
 $site_ids[] = 0;
 
 $query = "SELECT DISTINCT site_id FROM {$table_prefix}search_index WHERE site_id IN (" . join(',', $site_ids) . ");";
-$real_site_ids = array_map($getSiteId, db_getrows($query));
+$real_site_ids = array_map($getSiteId, \e::db_getrows($query));
 sort($real_site_ids);
 
 $to_add = array_diff($site_ids, $real_site_ids);
@@ -50,7 +50,7 @@ if (count($to_add) > 0) {
               FROM  {$table_prefix}site AS s
               WHERE s.id IN (" . join(',', $to_add) . ")";
     // prn($query);
-    db_execute($query);
+    \e::db_execute($query);
 }
 # ----------- check if all sites are taken into account - end ------------------
 # 
@@ -64,11 +64,11 @@ if (count($to_add) > 0) {
 # ------------------------- get url to index - begin ---------------------------
 
 $query = "SELECT @date1:=MIN(date_indexed) AS md FROM {$table_prefix}search_index;";
-db_execute($query);
-//prn(db_getrows("SELECT @date1"));
+\e::db_execute($query);
+//prn(\e::db_getrows("SELECT @date1"));
 
 $query = "SELECT * FROM {$table_prefix}search_index WHERE date_indexed=@date1 LIMIT 0,100;";
-$this_url_info = db_getrows($query);
+$this_url_info = \e::db_getrows($query);
 
 $max = count($this_url_info);
 prn($max.' URLs');
@@ -80,15 +80,15 @@ prn($this_url_info);
 if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
 
     $query = "UPDATE {$table_prefix}search_index SET date_indexed=now(), is_valid=5 WHERE id={$this_url_info['id']}";
-    db_execute($query);
+    \e::db_execute($query);
 
     // index URL
     # ------------------------- get site info - begin --------------------------
-    $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE is_search_enabled=1 AND id=" . ( (int) $this_url_info['site_id'] ));
+    $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE is_search_enabled=1 AND id=" . ( (int) $this_url_info['site_id'] ));
     // prn($this_site_info); exit();
     if (!$this_site_info) {
         $query = "DELETE FROM {$table_prefix}search_index WHERE id=" . ( (int) $this_url_info['id'] );
-        db_execute($query);
+        \e::db_execute($query);
         exit('Site not found ( ' . (microtime(true) - $time_start) . 's )');
     }
     # ------------------------- get site info - end ----------------------------
@@ -98,7 +98,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
     # -------------------- check if the URL is valid - begin -------------------
     if (!is_searchable($this_url_info['url'], $this_site_info)) {
         $query = "DELETE FROM {$table_prefix}search_index WHERE id=" . ( (int) $this_url_info['id'] );
-        db_execute($query);
+        \e::db_execute($query);
         exit('URL is forbidden by site setings (' . (microtime(true) - $time_start) . 's )');
     }
     // prn($this_site_info); exit();
@@ -139,7 +139,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
     $headers = $headers[0];
     if (!preg_match("/Content-Type: *text/i", $headers)) {
         $query = "UPDATE {$table_prefix}search_index SET date_indexed=now(), is_valid=0 WHERE id={$this_url_info['id']}";
-        db_execute($query);
+        \e::db_execute($query);
         exit('Wrong Content-Type (' . (microtime(true) - $time_start) . 's )');
     }
     # --------- check http headers - end ---------------------------------------
@@ -176,32 +176,14 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
     $html = str_get_html(str_replace('<',' <',$body));
     if (!$html) {
         $query = "UPDATE {$table_prefix}search_index SET date_indexed=now(), is_valid=is_valid-1 WHERE id={$this_url_info['id']}";
-        db_execute($query);
+        \e::db_execute($query);
         exit('Error: cannot parse html (' . (microtime(true) - $time_start) . 's )');
     }
 
 
 
 
-//    include(script_root . '/search/charset/charset.php');
-//    $charsetDataDir = script_root . '/search/charset/data';
-//    $detector = new charsetdetector(Array(
-//        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-utf8.stats"))),
-//        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-utf8.stats"))),
-//        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-utf8.stats"))),
-//        Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-utf8.stats"))),
-//        Array('charset' => 'WINDOWS-1251', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp1251.stats"))),
-//        Array('charset' => 'KOI8-R', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-koi8.stats"))),
-//        Array('charset' => 'CP866', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-cp866.stats"))),
-//        Array('charset' => 'ISO-8859-5', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-iso-8859-5.stats"))),
-//        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-cp1252.stats"))),
-//        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-cp1252.stats"))),
-//        Array('charset' => 'WINDOWS-1252', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-cp1252.stats"))),
-//        Array('charset' => 'ISO-8859-1', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-iso-8859-1.stats"))),
-//        Array('charset' => 'ISO-8859-1', 'stats' => unserialize(file_get_contents("$charsetDataDir/eng-iso-8859-1.stats"))),
-//        Array('charset' => 'ISO-8859-1', 'stats' => unserialize(file_get_contents("$charsetDataDir/fra-iso-8859-1.stats"))),
-//    ));
-//    $encoding = strtoupper($detector->detect($html->plaintext));
+
     $encoding=site_charset;
 
     // prn($encoding, htmlspecialchars($html->plaintext));
@@ -235,28 +217,28 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
     //exit('12');
 
 
-    include (script_root . "/search/tokenizer/tokenizer2.php");
-    include (script_root . "/search/tokenizer/tokenizer2_ukr.php");
-    include (script_root . "/search/tokenizer/tokenizer2_rus.php");
-    include (script_root . "/search/tokenizer/tokenizer2_eng.php");
-    include (script_root . "/search/tokenizer/greedytokenizer.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/tokenizer/tokenizer2.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/tokenizer/tokenizer2_ukr.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/tokenizer/tokenizer2_rus.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/tokenizer/tokenizer2_eng.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/tokenizer/greedytokenizer.php");
     
     
-    include (script_root . "/search/getlanguage/getlanguage.php");
-    include (script_root . "/search/commonwords/commonwords.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/getlanguage/getlanguage.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/commonwords/commonwords.php");
 
-    include (script_root . "/search/stemming/stemmer.class.php");
-    include (script_root . "/search/stemming/porter_eng.class.php");
-    include (script_root . "/search/stemming/porter_rus.class.php");
-    include (script_root . "/search/stemming/porter_ukr.class.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/stemming/stemmer.class.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/stemming/porter_eng.class.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/stemming/porter_rus.class.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/stemming/porter_ukr.class.php");
 
 
 
     $langSelector = new getlanguage(Array(
         'files' => Array(
-            'eng' => script_root . "/search/getlanguage/stats_eng.txt",
-            'rus' => script_root . "/search/getlanguage/stats_rus.txt",
-            'ukr' => script_root . "/search/getlanguage/stats_ukr.txt",
+            'eng' => \e::config('SCRIPT_ROOT') . "/search/getlanguage/stats_eng.txt",
+            'rus' => \e::config('SCRIPT_ROOT') . "/search/getlanguage/stats_rus.txt",
+            'ukr' => \e::config('SCRIPT_ROOT') . "/search/getlanguage/stats_ukr.txt",
         // 'slov' => '../getlanguage/stats_slov.txt',
         // 'češ' => '../getlanguage/stats_ces.txt',
         )
@@ -304,7 +286,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
     $tokens = $greedytokenizer->getTokens($plaintext);
     //echo "<hr>"; print_r(join(' ',$tokens));echo "<hr>";
     
-    $commonwords = new commonwords(script_root . "/search/commonwords/commonwords.txt");
+    $commonwords = new commonwords(\e::config('SCRIPT_ROOT') . "/search/commonwords/commonwords.txt");
     $tokens = $commonwords->removeCommonWords($tokens);
     //prn($commonwords);
     
@@ -339,23 +321,23 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
 
     // update db record
     $query = "UPDATE {$table_prefix}search_index
-            SET url='" . DbStr($this_url_info['url']) . "',
+            SET url='" . \e::db_escape($this_url_info['url']) . "',
                 size=" . ( (int) $this_url_info['size']) . ",
-                title='" . DbStr($this_url_info['title']) . "',
-                words='" . DbStr($this_url_info['words']) . "',
+                title='" . \e::db_escape($this_url_info['title']) . "',
+                words='" . \e::db_escape($this_url_info['words']) . "',
                 date_indexed=now(),
                 is_valid=" . max_spider_trials . ",
-                checksum='" . DbStr($this_url_info['checksum']) . "',
-                lang='" . DbStr($this_url_info['lang']) . "'
+                checksum='" . \e::db_escape($this_url_info['checksum']) . "',
+                lang='" . \e::db_escape($this_url_info['lang']) . "'
             WHERE id=" . ( (int) $this_url_info['id']) . "
     ";
     // prn($query);
-    db_execute($query);
+    \e::db_execute($query);
     
     
     # mark other rows with the same checksum as invalid
-    $query = "UPDATE {$table_prefix}search_index SET is_valid=0 WHERE checksum='" . DbStr($this_url_info['checksum']) . "' AND id<> ".( (int) $this_url_info['id']);
-    db_execute($query);
+    $query = "UPDATE {$table_prefix}search_index SET is_valid=0 WHERE checksum='" . \e::db_escape($this_url_info['checksum']) . "' AND id<> ".( (int) $this_url_info['id']);
+    \e::db_execute($query);
 
     echo "<hr>";
 
@@ -371,21 +353,21 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
         $query = "SELECT url FROM {$table_prefix}search_index WHERE url IN ('" . join("','", $links) . "');";
         $existing_links = array_map(function($el) {
             return $el['url'];
-        }, db_getrows($query));
+        }, \e::db_getrows($query));
         $urls_to_add = array_diff($links, $existing_links);
         if (count($urls_to_add) > 0) {
             $insertSql = Array();
             foreach ($urls_to_add as $url_to_add) {
-                $insertSql[] = "({$this_url_info['site_id']},'" . DbStr($url_to_add) . "', " . max_spider_trials . ",'" . date('Y-m-d H:i:s', time() - rand(1000, 2000)) . "')";
+                $insertSql[] = "({$this_url_info['site_id']},'" . \e::db_escape($url_to_add) . "', " . max_spider_trials . ",'" . date('Y-m-d H:i:s', time() - rand(1000, 2000)) . "')";
             }
             $query = "insert into {$table_prefix}search_index(site_id,url,is_valid,date_indexed) values " . join(',', $insertSql);
-            db_execute($query);
+            \e::db_execute($query);
         }
     }
     exit('<hr>OK (' . (microtime(true) - $time_start) . 's )');
 } else {
     $query = "UPDATE {$table_prefix}search_index SET date_indexed=now() WHERE id=" . ( (int) $this_url_info['id'] );
-    db_execute($query);
+    \e::db_execute($query);
     exit('Invalid URL (' . (microtime(true) - $time_start) . 's )');
 }
 # ------------------------- get url to index - end -----------------------------

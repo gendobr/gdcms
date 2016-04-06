@@ -20,7 +20,7 @@
     {
       //-------------------- get existing page languages - begin ---------------
         $query="SELECT lang FROM {$table_prefix}page WHERE id={$this_page_info['id']}";
-        $tmp=db_getrows($query);
+        $tmp=\e::db_getrows($query);
         // prn($tmp);
         $existins_langs=Array();
         foreach($tmp as $ln) $existins_langs[]=$ln['lang'];
@@ -31,7 +31,7 @@
         $query="SELECT id
                 FROM {$table_prefix}languages
                 WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."')";
-        $tmp=db_getrows($query);
+        $tmp=\e::db_getrows($query);
         $avail_lang=Array();
         foreach($tmp as $ln) $avail_lang[]=$ln['id'];
       //-------------------- get available languages - end ---------------------
@@ -90,45 +90,10 @@
     $this_page_info['is_home_page']=($input_vars['page_is_home_page']==1)?1:0;
 
 
-    //    //-------------------------- check page path - begin -----------------------
-    //      // check if path syntax is correct
-    //         // site root dir
-    //            $root=sites_root.'/'.preg_replace("/^\\/+|\\/+\$/",'',$this_site_info['dir']);
-    //
-    //         // old page path
-    //            $dir=$root.'/'.preg_replace("/^\\/+|\\/+\$/",'',$this_page_info['path']).'/'.$this_page_info['id'].'.'.$this_page_info['lang'].'.html';
-    //
-    //      //-------------------- remove empty dir - begin --------------------------
-    //        $input_vars['page_path']=strip_tags($input_vars['page_path']);
-    //        if($this_page_info['path']!=$input_vars['page_path'])
-    //        {
-    //           // delete page file if page path is changed
-    //           // path_delete($root,$dir);
-    //
-    //           // mark page file to be deleted during export
-    //           $query="UPDATE {$table_prefix}page
-    //                   SET delete_file = '$dir'
-    //                   WHERE id='{$this_page_info['id']}' AND lang='{$this_page_info['lang']}'";
-    //           db_execute($query);
-    //        }
-    //      //-------------------- remove empty dir - end ----------------------------
-    //
-    //
-    //
-    //      $this_page_info['path']=strip_tags($input_vars['page_path']);
-    //      // delete exported page if publication is forbidden
-    //         if($this_page_info['cense_level']<$this_site_info['cense_level'])
-    //         {
-    //            $new_dir=$dir=$root.'/'.preg_replace("/^\\/+|\\/+\$/",'',$this_page_info['path']).'/'.$this_page_info['id'].'.'.$this_page_info['lang'].'.html';
-    //            path_delete($root,$dir);
-    //         }
-    //
-    //
-    //    //-------------------------- check page path - end -------------------------
     //-------------------------- check page path - begin -----------------------
       // check if path syntax is correct
          // site root dir
-            $root=sites_root.'/'.preg_replace("/^\\/+|\\/+$/",'',$this_site_info['dir']);
+            $root=\e::config('SITES_ROOT').'/'.preg_replace("/^\\/+|\\/+$/",'',$this_site_info['dir']);
 
          // old page path
             $old_page_root=$root.'/'.preg_replace("/^\\/+|\\/+$/",'',$this_page_info['path']);
@@ -158,13 +123,13 @@
             // ensure the page file path is unique
             $other_pages="SELECT count(*) as n_pages
                           FROM {$table_prefix}page
-                          WHERE path='".DbStr($this_page_info['path'])."'
-                            AND page_file_name='".DbStr($this_page_info['page_file_name'])."'
+                          WHERE path='".\e::db_escape($this_page_info['path'])."'
+                            AND page_file_name='".\e::db_escape($this_page_info['page_file_name'])."'
                             AND id<>{$this_page_info['id']}
                             AND site_id={$this_page_info['site_id']}
                           ";
             //prn($other_pages);
-            $other_pages=db_getonerow($other_pages);
+            $other_pages=\e::db_getonerow($other_pages);
             if($other_pages['n_pages']>0){
                 $message.="{$text['ERROR']} : ".text('Page_choose_other_file_name')."<br>\n";
                 $all_is_ok=false;
@@ -196,19 +161,19 @@
          $query="UPDATE {$table_prefix}page
                  SET    is_home_page=0
                  WHERE  site_id='{$this_page_info['site_id']}'";
-         db_execute($query);
+         \e::db_execute($query);
        }
 
        $query="UPDATE {$table_prefix}page
                SET
                   lang='{$lng}'
                  ,site_id='{$this_page_info['site_id']}'
-                 ,title='".DbStr($this_page_info['title'])."'
-                 ,path='".DbStr($this_page_info['path'])."'
-                 ,content='".DbStr($this_page_info['content'])."'
-                 ,abstract='".DbStr($this_page_info['abstract'])."'
-                 ,page_meta_tags='".DbStr($this_page_info['page_meta_tags'])."'
-                 ,page_file_name='".DbStr($this_page_info['page_file_name'])."'
+                 ,title='".\e::db_escape($this_page_info['title'])."'
+                 ,path='".\e::db_escape($this_page_info['path'])."'
+                 ,content='".\e::db_escape($this_page_info['content'])."'
+                 ,abstract='".\e::db_escape($this_page_info['abstract'])."'
+                 ,page_meta_tags='".\e::db_escape($this_page_info['page_meta_tags'])."'
+                 ,page_file_name='".\e::db_escape($this_page_info['page_file_name'])."'
                  ,last_change_date='{$this_page_info['last_change_date']}'
                  ,is_under_construction={$this_page_info['is_under_construction']}
                  ,is_home_page={$this_page_info['is_home_page']}
@@ -216,7 +181,7 @@
                  ,category_id = {$this_page_info['category_id']}
        WHERE id='{$this_page_info['id']}' AND lang='{$this_page_info['lang']}'";
        //prn($query);
-       db_execute($query);
+       \e::db_execute($query);
 
        $this_page_info['lang']=$lng;
 
@@ -235,7 +200,7 @@
                    SET delete_file = '$delete_file'
                    WHERE id='{$this_page_info['id']}' AND lang='{$this_page_info['lang']}'";
            //prn($query);
-           db_execute($query);
+           \e::db_execute($query);
        }
 
        # ------------------ send notification - begin --------------------------

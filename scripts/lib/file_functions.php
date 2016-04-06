@@ -260,7 +260,7 @@ function get_cached_info($path, $cachetime=cachetime) {
 function set_cached_info($path, $info) {
     $filepath = $path;
     //prn('writing '.$filepath);
-    path_create(template_cache_root, $filepath);
+    path_create(\e::config('CACHE_ROOT'), $filepath);
     file_put_contents($filepath, serialize($info));
 }
 

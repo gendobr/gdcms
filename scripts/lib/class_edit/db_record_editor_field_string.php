@@ -60,7 +60,7 @@ class db_record_editor_field_string extends db_record_editor_field
 
 
 
-  function sql_value(){ return "'".mysql_real_escape_string($this->value)."'"; }
+  function sql_value(){ return "'".\e::db_escape($this->value)."'"; }
 
 
 

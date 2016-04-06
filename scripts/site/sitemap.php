@@ -47,7 +47,7 @@ $query="SELECT id, page_file_name, last_change_date, path
         WHERE site_id={$site_id}
         AND cense_level>={$this_site_info['cense_level']}
         AND is_under_construction=0";
-$rows=  db_getrows($query);
+$rows=  \e::db_getrows($query);
 
 foreach ($rows as $pg){
     // prn(preg_replace("/\\/+\$/",'',$this_site_info['url']),preg_replace("/^\\/+/", "", $pg['path']."/".$pg['page_file_name']));
@@ -70,7 +70,7 @@ $query="SELECT id, lang, news_code, last_change_date
         ";
 // prn($query);
 // define('url_template_news_details',sites_root_URL."/news_details.php?news_id={news_id}&lang={lang}&news_code={news_code}");
-$rows=  db_getrows($query);
+$rows=  \e::db_getrows($query);
 foreach ($rows as $row){
     $loc=str_replace(
             Array('{news_id}','{lang}','{news_code}'),
@@ -89,7 +89,7 @@ $query="SELECT site_id,  category_code, date_lang_update,category_id,path,catego
         WHERE site_id={$site_id}
         ORDER BY start
         ";
-$rows=  db_getrows($query);
+$rows=  \e::db_getrows($query);
 
 // get site languages
 $languages=list_of_languages();

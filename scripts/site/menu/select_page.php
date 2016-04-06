@@ -11,7 +11,7 @@ global $main_template_name; $main_template_name = '';
 
 $site_id = (int)($input_vars['site_id']);
 
-$this_site_info=db_getonerow("SELECT * FROM {$table_prefix}site WHERE id=$site_id");
+$this_site_info=\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id=$site_id");
 $this_site_info['url']=ereg_replace('^/+|/+$','',$this_site_info['url']);
 
 // $lang    = DbStr($input_vars['lang']);
@@ -23,7 +23,7 @@ $query="SELECT pa.id, pa.lang, pa.title, pa.path
         FROM {$table_prefix}page AS pa
         WHERE pa.site_id={$site_id} ";
 // prn($query);
-$page_list=db_getrows($query);
+$page_list=\e::db_getrows($query);
 $cnt=count($page_list);
 for($i=0; $i<$cnt; $i++)
 {

@@ -38,7 +38,7 @@ $this_page_url = 'index.php?' . preg_query_string('/^op_/');
 // delete category
 if (isset($input_vars['op_delete'])) {
     $op_delete_id = (int) $input_vars['op_delete'];
-    $photogalery_rozdil_info = db_getonerow(
+    $photogalery_rozdil_info =\e::db_getonerow(
             "SELECT pr.*, count(p.id) as n_images
              FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
                   LEFT JOIN {$GLOBALS['table_prefix']}photogalery p
@@ -49,11 +49,11 @@ if (isset($input_vars['op_delete'])) {
              ORDER BY pr.rozdil ASC");
     if ($photogalery_rozdil_info && $photogalery_rozdil_info['n_images'] == 0) {
         // deleting empty category ...
-        $delete_list = db_getrows(
+        $delete_list = \e::db_getrows(
                 "SELECT pr.*
                  FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
                  WHERE pr.site_id = {$this_site_info['id']}
-                  AND (pr.rozdil='" . DbStr($photogalery_rozdil_info['rozdil']) . "' OR LOCATE('" . DbStr($photogalery_rozdil_info['rozdil']) . "/',pr.rozdil))
+                  AND (pr.rozdil='" . \e::db_escape($photogalery_rozdil_info['rozdil']) . "' OR LOCATE('" . \e::db_escape($photogalery_rozdil_info['rozdil']) . "/',pr.rozdil))
                 ");
         // prn($delete_list);
         $cnt = count($delete_list);
@@ -61,7 +61,7 @@ if (isset($input_vars['op_delete'])) {
             for ($i = 0; $i < $cnt; $i++) {
                 $delete_list[$i] = (int) $delete_list[$i]['id'];
             }
-            db_execute("DELETE FROM {$GLOBALS['table_prefix']}photogalery_rozdil WHERE site_id = {$this_site_info['id']} AND id IN(".join(',',$delete_list).") ");
+            \e::db_execute("DELETE FROM {$GLOBALS['table_prefix']}photogalery_rozdil WHERE site_id = {$this_site_info['id']} AND id IN(".join(',',$delete_list).") ");
         }
     }
     header("Location: $this_page_url");
@@ -72,7 +72,7 @@ if (isset($input_vars['op_delete'])) {
 if (isset($input_vars['op_create'])) {
     $query = "INSERT INTO {$GLOBALS['table_prefix']}photogalery_rozdil (rozdil,site_id)
           VALUES ('new category',{$this_site_info['id']})";
-    db_execute($query);
+    \e::db_execute($query);
     header("Location: $this_page_url");
     exit();
 }
@@ -88,11 +88,7 @@ $vyvid = "
 </p><br/>
 ";
 
-//$photogalery_rozdil_list = db_getrows(
-//        "SELECT *
-//         FROM {$GLOBALS['table_prefix']}photogalery_rozdil
-//         WHERE site_id = {$this_site_info['id']}
-//         ORDER BY rozdil ASC");
+
 $start=isset($input_vars['start'])?( (int)$input_vars['start'] ):0;
 if($start<=0){
     $start=0;
@@ -103,11 +99,11 @@ $filter='';
 if(isset($input_vars['namefilter'])){
     $namefilter=trim($input_vars['namefilter']);
     if(strlen($namefilter)>0){
-        $filter=" AND LOCATE('".  DbStr($namefilter)."',pr.rozdil)>0 ";
+        $filter=" AND LOCATE('".  \e::db_escape($namefilter)."',pr.rozdil)>0 ";
     }
 }
 
-$photogalery_rozdil_list = db_getrows(
+$photogalery_rozdil_list = \e::db_getrows(
         "SELECT SQL_CALC_FOUND_ROWS pr.*, count(p.id) as n_images
          FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
               LEFT JOIN {$GLOBALS['table_prefix']}photogalery p
@@ -130,7 +126,7 @@ $photogalery_rozdil_list = db_getrows(
 
 // get total number of categories
 $query = "SELECT FOUND_ROWS() AS n_records;";
-$n_records = db_getonerow($query);
+$n_records = \e::db_getonerow($query);
 $n_records=$n_records['n_records'];
 
 // paging url template

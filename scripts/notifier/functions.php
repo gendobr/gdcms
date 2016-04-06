@@ -14,7 +14,7 @@ if(!function_exists('site_get_template')) {
 
 function notify($event,$site_info,$data) {
     $site_templates=Array();
-    $listeners=db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}listener WHERE site_id={$site_info['id']} AND listener_event='{$event}'");
+    $listeners=\e::db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}listener WHERE site_id={$site_info['id']} AND listener_event='{$event}'");
     //prn("SELECT * FROM {$GLOBALS['table_prefix']}listener WHERE site_id={$site_info['id']} AND listener_event='{$event}'",$listeners);
 
     foreach($listeners as $ls) {
@@ -40,14 +40,14 @@ function notify($event,$site_info,$data) {
                     notification_queue_attempts,
                     notification_queue_function)
                 VALUES(
-                    '".DbStr($ls['listener_sendto'])."',
-                    '".DbStr($notification_queue_subject)."',
-                    '".DbStr($notification_queue_body)."',
+                    '".\e::db_escape($ls['listener_sendto'])."',
+                    '".\e::db_escape($notification_queue_subject)."',
+                    '".\e::db_escape($notification_queue_body)."',
                     0,
-                    '".DbStr($function_name)."')
+                    '".\e::db_escape($function_name)."')
         ";
         //prn($query);
-        db_execute($query);
+        \e::db_execute($query);
     }
 }
 
@@ -60,15 +60,15 @@ function notification_queue($sendto,$subj,$body,$handler,$site_id=0) {
                     notification_queue_function,
                     site_id)
                 VALUES(
-                    '".DbStr($sendto)."',
-                    '".DbStr($subj)."',
-                    '".DbStr($body)."',
+                    '".\e::db_escape($sendto)."',
+                    '".\e::db_escape($subj)."',
+                    '".\e::db_escape($body)."',
                     0,
-                    '".DbStr($handler)."',
+                    '".\e::db_escape($handler)."',
                     '".((int)$site_id)."')
         ";
     //prn($query);
-    db_execute($query);
+    \e::db_execute($query);
 
 }
 
@@ -91,12 +91,12 @@ function notification_queue_next($n_messages=1) {
             FROM {$GLOBALS['table_prefix']}notification_queue
             WHERE notification_queue_attempts<$max_attempts
             ORDER BY notification_queue_id ASC LIMIT 0,$n_messages";
-    $rows=db_getrows($query);
+    $rows=\e::db_getrows($query);
     foreach($rows as $row) {
         $query="UPDATE {$GLOBALS['table_prefix']}notification_queue
                 SET notification_queue_attempts=notification_queue_attempts+1
                 WHERE notification_queue_id={$row['notification_queue_id']}";
-        db_execute($query);
+        \e::db_execute($query);
 
         if( function_exists($row['notification_queue_function']) ) {
             $success=call_user_func(
@@ -115,7 +115,7 @@ function notification_queue_next($n_messages=1) {
             $query="DELETE FROM {$GLOBALS['table_prefix']}notification_queue
                     WHERE notification_queue_id={$row['notification_queue_id']}
                     ";
-                    db_execute($query);
+                    \e::db_execute($query);
         }
         //echo $query;
         prn($row['notification_queue_id'],$row['notification_queue_subject'],$row['notification_queue_attempts'],$row['notification_queue_function'],'sucess='.$success);

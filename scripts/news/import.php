@@ -7,7 +7,7 @@
 $debug=false;
 //------------------- get site info - begin ------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
   if($debug) prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -55,7 +55,7 @@ run('lib/file_functions');
    if(isset($_FILES['userfile']))
    {
        //prn($_FILES);
-       $pt=sites_root."/{$this_site_info['dir']}"."/".encode_file_name($_FILES['userfile']['name']);
+       $pt=\e::config('SITES_ROOT')."/{$this_site_info['dir']}"."/".encode_file_name($_FILES['userfile']['name']);
        //prn($pt);
        @move_uploaded_file($_FILES['userfile']['tmp_name'] , $pt);
        $dt=join('',file($pt));
@@ -88,13 +88,13 @@ run('lib/file_functions');
           $cnt=count($vals);
           for($i=0;$i<$cnt;$i++)
           {
-              $vals[$i]="'".DbStr($vals[$i])."'";
+              $vals[$i]="'".\e::db_escape($vals[$i])."'";
           }
           $flds=join(',',$flds);
           $vals=join(',',$vals);
           $query="INSERT INTO {$table_prefix}news($flds) VALUES($vals)";
           //prn($query);
-          db_execute($query);
+          \e::db_execute($query);
       }
       //prn($input_vars['import_row']);
       //prn($input_vars['import_colname']);

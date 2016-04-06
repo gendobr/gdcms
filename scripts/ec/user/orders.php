@@ -155,13 +155,13 @@ run('site_visitor/functions');
     
     if(strlen($filter['ec_date_created']))
     {
-        $sql_filter[]=" ( LOCATE('".DbStr($filter['ec_date_created'])."',ec_order.ec_date_created)>0 ) ";
+        $sql_filter[]=" ( LOCATE('".\e::db_escape($filter['ec_date_created'])."',ec_order.ec_date_created)>0 ) ";
     }
 
 
     if(strlen($filter['ec_order_status']))
     {
-        $sql_filter[]=" ( ec_order.ec_order_status='".DbStr($filter['ec_order_status'])."' ) ";
+        $sql_filter[]=" ( ec_order.ec_order_status='".\e::db_escape($filter['ec_order_status'])."' ) ";
     }
 
     if(strlen($filter['ec_order_total_from']))
@@ -176,47 +176,47 @@ run('site_visitor/functions');
 
     if(strlen($filter['ec_order_paid']))
     {
-        $sql_filter[]=" ( '".DbStr($filter['ec_order_paid'])."'=ec_order.ec_order_paid  ) ";
+        $sql_filter[]=" ( '".\e::db_escape($filter['ec_order_paid'])."'=ec_order.ec_order_paid  ) ";
     }
 
     if(strlen($filter['ec_user_name']))
     {
-        $sql_filter[]=" ( LOCATE('".DbStr($filter['ec_user_name'])."',ec_user.ec_user_name)>0 ) ";
+        $sql_filter[]=" ( LOCATE('".\e::db_escape($filter['ec_user_name'])."',ec_user.ec_user_name)>0 ) ";
     }
 
     if(strlen($filter['ec_user_telephone']))
     {
-        $sql_filter[]=" ( LOCATE('".DbStr($filter['ec_user_telephone'])."',ec_user.ec_user_telephone)>0 ) ";
+        $sql_filter[]=" ( LOCATE('".\e::db_escape($filter['ec_user_telephone'])."',ec_user.ec_user_telephone)>0 ) ";
     }
 
     if(strlen($filter['ec_user_icq']))
     {
-        $sql_filter[]=" ( LOCATE('".DbStr($filter['ec_user_icq'])."',ec_user.ec_user_icq)>0 ) ";
+        $sql_filter[]=" ( LOCATE('".\e::db_escape($filter['ec_user_icq'])."',ec_user.ec_user_icq)>0 ) ";
     }
 
     if(strlen($filter['ec_user_delivery_city']))
     {
-        $sql_filter[]=" ( LOCATE('".DbStr($filter['ec_user_delivery_city'])."',ec_user.ec_user_delivery_city)>0 ) ";
+        $sql_filter[]=" ( LOCATE('".\e::db_escape($filter['ec_user_delivery_city'])."',ec_user.ec_user_delivery_city)>0 ) ";
     }
 
     if(strlen($filter['ec_user_delivery_street_address']))
     {
-        $sql_filter[]=" ( LOCATE('".DbStr($filter['ec_user_delivery_region'])."',ec_user.ec_user_delivery_region)>0 ) ";
+        $sql_filter[]=" ( LOCATE('".\e::db_escape($filter['ec_user_delivery_region'])."',ec_user.ec_user_delivery_region)>0 ) ";
     }
 
     if(strlen($filter['ec_user_delivery_street_address']))
     {
-        $sql_filter[]=" ( LOCATE('".DbStr($filter['ec_user_delivery_street_address'])."',ec_user.ec_user_delivery_street_address)>0 ) ";
+        $sql_filter[]=" ( LOCATE('".\e::db_escape($filter['ec_user_delivery_street_address'])."',ec_user.ec_user_delivery_street_address)>0 ) ";
     }
 
     if(strlen($filter['ec_user_delivery_suburb']))
     {
-        $sql_filter[]=" ( LOCATE('".DbStr($filter['ec_user_delivery_suburb'])."',ec_user.ec_user_delivery_suburb)>0 ) ";
+        $sql_filter[]=" ( LOCATE('".\e::db_escape($filter['ec_user_delivery_suburb'])."',ec_user.ec_user_delivery_suburb)>0 ) ";
     }
 
     if(strlen($filter['site_visitor_email']))
     {
-        $sql_filter[]=" ( LOCATE('".DbStr($filter['site_visitor_email'])."',site_visitor.site_visitor_email)>0 ) ";
+        $sql_filter[]=" ( LOCATE('".\e::db_escape($filter['site_visitor_email'])."',site_visitor.site_visitor_email)>0 ) ";
     }
 
     if(strlen($filter['site_visitor_id']))
@@ -228,7 +228,7 @@ run('site_visitor/functions');
     }
     if(strlen($filter['site_visitor_email']))
     {
-        $sql_filter[]=" (LOCATE('".DbStr($filter['site_visitor_email'])."',site_visitor.site_visitor_email)>0 ) ";
+        $sql_filter[]=" (LOCATE('".\e::db_escape($filter['site_visitor_email'])."',site_visitor.site_visitor_email)>0 ) ";
     }
 
     if(count($sql_filter)>0) $sql_filter=' AND ('.join(' AND ',$sql_filter).') '; else $sql_filter='';
@@ -253,7 +253,7 @@ run('site_visitor/functions');
             ORDER BY ec_order.ec_date_created DESC
             LIMIT $start,$rows_per_page";
     //prn($query);
-    $orders=db_getrows($query);
+    $orders=\e::db_getrows($query);
   # -------------------- extract data from database - end ----------------------
 
   # ---------------- adjust list - begin ---------------------------------------
@@ -270,7 +270,7 @@ run('site_visitor/functions');
 
   # ---------------- paging links - begin --------------------------------------
     $url_page_refix=site_root_URL.'/index.php?'.query_string('^start$|^'.session_name().'$').'&start=';
-    $n_records=db_getonerow("SELECT FOUND_ROWS() AS n_records");
+    $n_records=\e::db_getonerow("SELECT FOUND_ROWS() AS n_records");
     $n_records=$n_records['n_records'];
     $pages = Array();
     $imin=max(0,$start-10*$rows_per_page);
@@ -318,10 +318,6 @@ run('site_visitor/functions');
 # ----------------- draw site visitor orders - begin ---------------------------
 # get site template
   $ec_item_template = site_get_template($this_site_info,'template_ec_order_customer_list');
-  ## -------------------- search for template - begin ---------------------------
-  #  $ec_item_template = sites_root.'/'.$this_site_info['dir'].'/template_ec_order_customer_list.html';
-  #  if(!is_file($ec_item_template)) $ec_item_template = 'cms/template_ec_order_customer_list';
-  ## -------------------- search for template - end -----------------------------
 
 
 if(isset($_SESSION['site_visitor_info']['is_logged']) && $_SESSION['site_visitor_info']['is_logged'])

@@ -19,7 +19,7 @@ and pa.ec_category_id=$ec_category_id
 and ".ec_item_show."&ec_item.ec_item_cense_level
 order by ec_item.ec_item_last_change_date DESC
 limit 0,1";
-$img=db_getonerow($query);
+$img=\e::db_getonerow($query);
 
 //------------------- site info - begin ----------------------------------------
   run('site/menu');
@@ -36,7 +36,7 @@ $img=db_getonerow($query);
 //------------------- site info - end ------------------------------------------
 
 
-$site_root_dir=sites_root.'/'.$this_site_info['dir'];
+$site_root_dir=\e::config('SITES_ROOT').'/'.$this_site_info['dir'];
 $path=$site_root_dir.'/'.$img["img"];
 
 //prn($path);

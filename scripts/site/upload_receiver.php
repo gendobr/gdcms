@@ -42,11 +42,8 @@ if (!isset($_FILES) || count($_FILES) == 0) {
     return '';
 }
 
-if(defined('template_cache_root')){
-    $log_file_path=template_cache_root."/multiple_upload_receiver.log.txt";
-}else{
-    $log_file_path=local_root . '/template_cache/multiple_upload_receiver.log.txt';
-}
+
+$log_file_path=\e::config('CACHE_ROOT')."/multiple_upload_receiver.log.txt";
 
 
 // save log

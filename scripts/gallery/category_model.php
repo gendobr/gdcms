@@ -104,9 +104,9 @@ class GalleryCategory {
 
         //$query = "SELECT * FROM {$GLOBALS['table_prefix']}photogalery_rozdil WHERE rozdil='" . DbStr($this->rozdilizformy) . "'";
         $query = "SELECT * FROM {$GLOBALS['table_prefix']}photogalery_rozdil 
-                  WHERE rozdil='" . DbStr($this->rozdilizformy) . "' 
-                     OR rozdil2='" . DbStr($this->rozdilizformy) . "'";
-        $this_category_info = db_getonerow($query);
+                  WHERE rozdil='" . \e::db_escape($this->rozdilizformy) . "' 
+                     OR rozdil2='" . \e::db_escape($this->rozdilizformy) . "'";
+        $this_category_info =\e::db_getonerow($query);
         if ($this_category_info) {
             $this_category_info['url_details'] = str_replace(
                     Array('{rozdilizformy}','{rozdil2}'), 
@@ -196,14 +196,14 @@ class GalleryCategory {
             WHERE pr.site_id = {$this_site_info['id']}
               AND p.vis
               AND p.site = {$this_site_info['id']}
-              AND SUBSTRING_INDEX( pr.rozdil, '/', ".($n-1)." ) ='" . DbStr($rozdilizformy) . "'
+              AND SUBSTRING_INDEX( pr.rozdil, '/', ".($n-1)." ) ='" . \e::db_escape($rozdilizformy) . "'
               AND SUBSTRING_INDEX( pr.rozdil, '/', $n )=pr.rozdil
               AND (pr.rozdil=p.rozdil OR pr.rozdil=SUBSTRING_INDEX( p.rozdil, '/', $n ))
             GROUP BY `dirname`
             ORDER BY pr.weight, pr.rozdil
             LIMIT {$this->start},{$this->rowsPerPage}";
             // prn($query);
-            $categories = db_getrows($query);
+            $categories = \e::db_getrows($query);
             //prn($categories);
             for($i=0, $cnt=count($categories); $i<$cnt; $i++){
                 if($categories[$i]['dirname']==$rozdilizformy){
@@ -249,14 +249,14 @@ class GalleryCategory {
             LIMIT {$this->start},{$this->rowsPerPage};";
 
             // prn($query);
-            $categories = db_getrows($query);
+            $categories = \e::db_getrows($query);
             //prn($categories);
         }
-        $n_records = db_getonerow("SELECT FOUND_ROWS() AS n_records;");
+        $n_records =\e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
         $this->_items_found = (int) $n_records['n_records'];
         // prn($n_records);
         // -------------------- category icons - begin -------------------------
-        $rozdil_images_list = db_getrows(
+        $rozdil_images_list = \e::db_getrows(
                 "SELECT pr.id,p.photos,p.photos_m,pr.rozdil, pr.site_id, pr.image_id, pr.rozdil2
          FROM {$GLOBALS['table_prefix']}photogalery_rozdil as pr
              ,{$GLOBALS['table_prefix']}photogalery as p
@@ -346,12 +346,12 @@ function gallery_get_children_of($this_site_info, $lang, $rozdilizformy = false)
             WHERE pr.site_id = {$this_site_info['id']}
               AND p.vis
               AND p.site = {$this_site_info['id']}
-              AND SUBSTRING_INDEX( pr.rozdil, '/', ".($n-1)." ) ='" . DbStr($rozdilizformy) . "'
+              AND SUBSTRING_INDEX( pr.rozdil, '/', ".($n-1)." ) ='" . \e::db_escape($rozdilizformy) . "'
               AND SUBSTRING_INDEX( pr.rozdil, '/', $n )=pr.rozdil
               AND (pr.rozdil=p.rozdil OR pr.rozdil=SUBSTRING_INDEX( p.rozdil, '/', $n ))
             GROUP BY `dirname`
             ORDER BY pr.weight, pr.rozdil";
-        $categories = db_getrows($query);
+        $categories = \e::db_getrows($query);
     } else {
         $query = "SELECT DISTINCT
             pr.rozdil `dirname`,
@@ -370,10 +370,10 @@ function gallery_get_children_of($this_site_info, $lang, $rozdilizformy = false)
         GROUP BY `dirname`
         ORDER BY pr.weight, pr.rozdil;";
         // prn($query);
-        $categories = db_getrows($query);
+        $categories = \e::db_getrows($query);
     }
     // -------------------- category icons - begin ---------------------------------
-    $rozdil_images_list = db_getrows(
+    $rozdil_images_list = \e::db_getrows(
             "SELECT pr.id,p.photos,p.photos_m,pr.rozdil, pr.site_id, pr.image_id, pr.rozdil2
          FROM {$GLOBALS['table_prefix']}photogalery_rozdil as pr
              ,{$GLOBALS['table_prefix']}photogalery as p
@@ -464,7 +464,7 @@ function gallery_breadcrumbs($rozdilizformy, $site_id, $lang, $keywords) {
 }
 
 function gallery_get_all_categories($site_id, $parent = false) {
-    $rozdil_list_tmp = db_getrows(
+    $rozdil_list_tmp = \e::db_getrows(
             "SELECT DISTINCT rozdil, rozdil2
              FROM {$GLOBALS['table_prefix']}photogalery
              WHERE site = {$site_id}
@@ -512,7 +512,7 @@ function gallery_synchronize_categories($site_id) {
     $existing_categories = gallery_get_all_categories($site_id);
     // prn('$existing_categories=',$existing_categories);//###
     // get categories from photogalery_rozdil
-    $photogalery_rozdil_list = db_getrows(
+    $photogalery_rozdil_list = \e::db_getrows(
             "SELECT *
              FROM {$GLOBALS['table_prefix']}photogalery_rozdil
              WHERE site_id = {$site_id}
@@ -533,41 +533,19 @@ function gallery_synchronize_categories($site_id) {
 
     $photogalery_rozdil_list = array_values($photogalery_rozdil_list);
     $existing_categories = array_values($existing_categories);
-    // prn($photogalery_rozdil_list,$existing_categories); exit();
-    //    // delete categories
-    //    $deletable = Array();
-    //    $cnt = count($photogalery_rozdil_list);
-    //    for ($i = 0; $i < $cnt; $i++) {
-    //        $deletable[] = $photogalery_rozdil_list[$i]['id'];
-    //    }
-    //    if (count($deletable) > 0) {
-    //        $query = "DELETE FROM {$GLOBALS['table_prefix']}photogalery_rozdil WHERE id IN(" . join(',', $deletable) . ")";
-    //        db_execute($query);
-    //    }
+
     // add categories
     $cnt = count($existing_categories);
     $new = Array();
     for ($i = 0; $i < $cnt; $i++) {
-        $new[] = "({$site_id},'" . DbStr($existing_categories[$i]) . "','" . DbStr(encode_dir_name($existing_categories[$i])) . "')";
+        $new[] = "({$site_id},'" . \e::db_escape($existing_categories[$i]) . "','" . \e::db_escape(encode_dir_name($existing_categories[$i])) . "')";
     }
     if (count($new) > 0) {
         $query = "INSERT INTO {$GLOBALS['table_prefix']}photogalery_rozdil(site_id,rozdil,rozdil2) VALUES " . join(',', $new) . "";
         // prn($query);
-        db_execute($query);
+        \e::db_execute($query);
     }
     
-    // ------------------ re-create rozdil2 fields - begin ---------------------
-    //    $photogalery_rozdil_list = db_getrows(
-    //            "SELECT *
-    //             FROM {$GLOBALS['table_prefix']}photogalery_rozdil
-    //             WHERE site_id = {$site_id}
-    //             ORDER BY rozdil");
-    //    for($i=0,$cnt=count($photogalery_rozdil_list);$i<$cnt;$i++){
-    //        $query = "UPDATE {$GLOBALS['table_prefix']}photogalery_rozdil SET rozdil2='" . DbStr(encode_dir_name($photogalery_rozdil_list[$i]['rozdil'])) . "' WHERE site_id={$site_id} AND id={$photogalery_rozdil_list[$i]['id']} ";
-    //        //prn($query);
-    //        db_execute($query);
-    //    }
-    // ------------------ re-create rozdil2 fields - end -----------------------
 }
 
 ?>

@@ -91,7 +91,7 @@ $input_vars['page_content'] = '';
 
 # ------------------------ list of categories - begin -------------------------
 $query = "SELECT ec_category_id, ec_category_title, deep FROM {$table_prefix}ec_category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
-$tmp = db_getrows($query);
+$tmp = \e::db_getrows($query);
 $list_of_categories = Array();
 foreach ($tmp as $tm) {
     $list_of_categories[$tm['ec_category_id']] = str_repeat(' + ', $tm['deep'] - 1) . get_langstring($tm['ec_category_title']);
@@ -101,7 +101,7 @@ unset($tmp, $tm);
 # ------------------------ list of categories - end ---------------------------
 # ------------------------ list of producers - begin --------------------------
 $query = "SELECT ec_producer_id, ec_producer_title  FROM {$table_prefix}ec_producer WHERE site_id={$site_id} ORDER BY ec_producer_title ASC";
-$tmp = db_getrows($query);
+$tmp = \e::db_getrows($query);
 $list_of_producers = Array();
 foreach ($tmp as $tm) {
     $list_of_producers[$tm['ec_producer_id']] = get_langstring($tm['ec_producer_title']);
@@ -111,7 +111,7 @@ unset($tmp, $tm);
 # ------------------------ list of producers - end ----------------------------
 # ------------------------ list of curency_titles - begin ---------------------
 $query = "SELECT ec_currency_code, ec_curency_title  FROM {$table_prefix}ec_currency ORDER BY ec_curency_title ASC";
-$tmp = db_getrows($query);
+$tmp = \e::db_getrows($query);
 $list_of_currencies = Array();
 foreach ($tmp as $tm) {
     $list_of_currencies[$tm['ec_currency_code']] = get_langstring($tm['ec_curency_title']);
@@ -444,7 +444,7 @@ $input_vars['page_content'].="
   <tr>
     <td>" . text('Language') . ":</td>
     <td><select name=ec_item_lang_new style='width:100%;'>" .
-        draw_options($this_ec_item_info['ec_item_lang'], db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
+        draw_options($this_ec_item_info['ec_item_lang'], \e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
         . "</select></td>
 
 

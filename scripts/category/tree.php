@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Показывает полный список категорий для заданного сайта
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
  */
 
 
@@ -47,7 +47,7 @@ $lang = get_language('lang');
 //group by ch.category_id
 //having visible>0
 //order by  ch.start";
-//$caterory_list = db_getrows($query);
+//$caterory_list = \e::db_getrows($query);
 //// ------------------ get list of categories - end -----------------------------
 //
 //// ------------------ adjust list of categories - begin ------------------------

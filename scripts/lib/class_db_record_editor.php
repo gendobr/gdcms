@@ -317,7 +317,7 @@ class db_record_editor {
 
             $query = "SELECT count({$this->field[$_keyname]['field']}) AS n_records FROM {$this->table} {$this->where_str};";
             ///prn($query);
-            $resp = db_getrows($query);
+            $resp = \e::db_getrows($query);
             if ($resp) {
                 $this->field[$_keyname]['primary_key'] = true;
                 $this->record_is_found = ($resp[0]['n_records'] == 1);
@@ -369,7 +369,7 @@ class db_record_editor {
             }
             // ------------------- create query -- end --------------------------------
 
-            $result = db_getrows($query);
+            $result = \e::db_getrows($query);
             ///if($result===false) echo "<hr><font color=red><b>ERROR:</b></font><br><b>Query</b>:\n<br>".$this->checkStr($query)."\n\n<br><br>\n\n<b>Message : </b>".$this->db->ErrorMsg()."\n\n<hr>\n\n";
             //prn($result);
             //$num_records=$result->_numOfRows;
@@ -524,7 +524,7 @@ class db_record_editor {
                         case 'enum':
                         case 'datetime':
                             $fff[] = $fld['field'];
-                            $vvv[] = "'" . DbStr($fld['value']) . "'";
+                            $vvv[] = "'" . \e::db_escape($fld['value']) . "'";
                             break;
 
                         case 'integer':
@@ -541,10 +541,10 @@ class db_record_editor {
                 if ($this->debug)
                     $this->prn($query);
                 else {
-                    $retcode = db_execute($query);
+                    $retcode = \e::db_execute($query);
                     if ($retcode) {
                         ///prn(' NEW ID ='.$this->db->Insert_ID());
-                        $new_ID = db_getonerow("SELECT LAST_INSERT_ID() AS newid;");
+                        $new_ID =\e::db_getonerow("SELECT LAST_INSERT_ID() AS newid;");
                         $this->field[$primary_key_alias]['value'] = $this->field[$primary_key_alias]['form_element_value'] = $this->id = $new_ID['newid'];
                     } else {
                         ///echo "<hr><font color=red><b>ERROR:</b></font><br><b>Query</b>:\n<br>".$this->checkStr($query)."\n\n<br><br>\n\n<b>Message : </b>".$this->db->ErrorMsg()."\n\n<hr>\n\n";
@@ -572,7 +572,7 @@ class db_record_editor {
                         case 'string':
                         case 'datetime':
                         case 'enum':
-                            $fff[] = "{$fld['field']}='" . DbStr($fld['value']) . "'";
+                            $fff[] = "{$fld['field']}='" . \e::db_escape($fld['value']) . "'";
                             break;
 
                         case 'integer':
@@ -589,7 +589,7 @@ class db_record_editor {
                 if ($this->debug)
                     $this->prn($query);
                 else {
-                    $retcode = db_execute($query);
+                    $retcode = \e::db_execute($query);
                     if ($retcode === false) {
                         ///echo "<hr><font color=red><b>ERROR:</b></font><br><b>Query</b>:\n<br>".$this->checkStr($query)."\n\n<br><br>\n\n<b>Message : </b>".$this->db->ErrorMsg()."\n\n<hr>\n\n";
                     }

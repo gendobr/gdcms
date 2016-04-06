@@ -412,7 +412,7 @@ class CmsNewsViewer {
         }
 
         // get children
-        $children = db_getrows(
+        $children = \e::db_getrows(
                 "SELECT * FROM {$GLOBALS['table_prefix']}category 
                  WHERE site_id=" . ( (int) $this->_categoryselector['site_id']) . "  
                      AND is_visible
@@ -430,7 +430,7 @@ class CmsNewsViewer {
         $this->_categoryselector['children'] = $children;
 
         // get parents
-        $parents = db_getrows(
+        $parents = \e::db_getrows(
                 "SELECT * FROM {$GLOBALS['table_prefix']}category 
                  WHERE site_id=" . ( (int) $this->_categoryselector['site_id']) . "  
                      AND is_visible
@@ -527,7 +527,7 @@ class CmsNewsViewer {
                 , 'innerHTML' => $month_names[$this->month]
             );
 
-            $tmp = db_getrows("SELECT DISTINCT DAYOFMONTH(last_change_date) AS day
+            $tmp = \e::db_getrows("SELECT DISTINCT DAYOFMONTH(last_change_date) AS day
                                FROM {$GLOBALS['table_prefix']}news as news
                                WHERE news.site_id={$this->site_id}
                                  AND news.cense_level>={$this->this_site_info['cense_level']}
@@ -565,10 +565,10 @@ class CmsNewsViewer {
             );
 
 
-            $cachefilepath = template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_months_site{$this->site_id}_lang{$this->lang}_year{$this->year}.cache";
+            $cachefilepath = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_months_site{$this->site_id}_lang{$this->lang}_year{$this->year}.cache";
             $tmp = get_cached_info($cachefilepath, cachetime);
             if (!$tmp) {
-                $tmp = db_getrows("SELECT DISTINCT month(last_change_date) AS month
+                $tmp = \e::db_getrows("SELECT DISTINCT month(last_change_date) AS month
                                           FROM {$GLOBALS['table_prefix']}news as news
                                           WHERE news.site_id={$this->site_id}
                                            AND  news.cense_level>={$this->this_site_info['cense_level']}
@@ -590,10 +590,10 @@ class CmsNewsViewer {
                 , 'innerHTML' => text('All_dates')
             );
 
-            $cachefilepath = template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_years_site{$this->site_id}_lang{$this->lang}.cache";
+            $cachefilepath = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_years_site{$this->site_id}_lang{$this->lang}.cache";
             $tmp = get_cached_info($cachefilepath, cachetime);
             if (!$tmp) {
-                $tmp = db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$GLOBALS['table_prefix']}news as news WHERE news.site_id={$this->site_id} AND  news.cense_level>={$this->this_site_info['cense_level']} AND news.lang='{$this->lang}' ORDER BY year ASC");
+                $tmp = \e::db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$GLOBALS['table_prefix']}news as news WHERE news.site_id={$this->site_id} AND  news.cense_level>={$this->this_site_info['cense_level']} AND news.lang='{$this->lang}' ORDER BY year ASC");
                 set_cached_info($cachefilepath, $tmp);
             }
             foreach ($tmp as $tm) {
@@ -611,7 +611,7 @@ class CmsNewsViewer {
 
         // get list of tags
         // cache info as file in the site dir
-        $tmp = get_cached_info(template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
+        $tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
         if ($tmp) {
             $this->_tagSelector = $tmp;
         } else {
@@ -626,8 +626,8 @@ class CmsNewsViewer {
                        GROUP BY news_tags.tag
                        ORDER BY news_tags.lang, news_tags.tag";
             //prn($query);
-            $this->_tagSelector = db_getrows($query);
-            set_cached_info(template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->_tagSelector);
+            $this->_tagSelector = \e::db_getrows($query);
+            set_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->_tagSelector);
         }
         $cnt = count($this->_tagSelector);
         for ($i = 0; $i < $cnt; $i++) {
@@ -658,7 +658,7 @@ class CmsNewsViewer {
 
     private function lang($options) {
         $lang = isset($options['lang']) ? preg_replace("/\\W/", '', $options['lang']) : default_language;
-        if (strlen($lang) == 0 || !file_exists(local_root . "/msg/{$lang}.ini")) {
+        if (strlen($lang) == 0 || !file_exists(\e::config('APP_ROOT') . "/msg/{$lang}.ini")) {
             $lang = default_language;
         }
         return $lang;
@@ -697,13 +697,13 @@ class CmsNewsViewer {
         # ------------------------- category restriction - begin ---------------
         if ($this->category_id !== false) {
             if ($this->filtermode) {
-                $current_category = db_getonerow("SELECT category_id, start, finish FROM {$GLOBALS['table_prefix']}category WHERE site_id={$this->site_id} AND category_id={$this->category_id}");
+                $current_category = \e::db_getonerow("SELECT category_id, start, finish FROM {$GLOBALS['table_prefix']}category WHERE site_id={$this->site_id} AND category_id={$this->category_id}");
                 if ($current_category) {
                     
 
                     $category_ids = array_map(
                             function($el) { return $el['category_id']; }, //
-                            db_getrows("SELECT category_id FROM {$GLOBALS['table_prefix']}category 
+                            \e::db_getrows("SELECT category_id FROM {$GLOBALS['table_prefix']}category 
                                         WHERE site_id={$this->site_id}
                                           AND {$current_category['start']}<=start AND finish <= {$current_category['finish']}"));
 
@@ -711,10 +711,10 @@ class CmsNewsViewer {
                     `id` BIGINT(20) UNSIGNED NOT NULL,
                      PRIMARY KEY (`id`)
                     ) ENGINE MEMORY;";
-                    db_execute($query);
+                    \e::db_execute($query);
                     
                     $query="INSERT INTO nwsid(id) SELECT news_id FROM {$GLOBALS['table_prefix']}news_category WHERE category_id IN (" . join(',', $category_ids) . ")";
-                    db_execute($query);
+                    \e::db_execute($query);
 
                     $category_restriction = " INNER JOIN nwsid ON nwsid.id=news.id ";
                     //header('Cms-Info-01: filtermode');
@@ -726,10 +726,10 @@ class CmsNewsViewer {
                 `id` BIGINT(20) UNSIGNED NOT NULL,
                  PRIMARY KEY (`id`)
                 ) ENGINE MEMORY;";
-                db_execute($query);
+                \e::db_execute($query);
 
                 $query="INSERT INTO nwsid(id) SELECT news_id FROM {$GLOBALS['table_prefix']}news_category WHERE category_id={$this->category_id}";
-                db_execute($query);
+                \e::db_execute($query);
 
                 $category_restriction = " INNER JOIN nwsid ON nwsid.id=news.id ";
             }
@@ -748,29 +748,29 @@ class CmsNewsViewer {
                     `news_id` BIGINT(20) DEFAULT NULL,
                     `tag` VARCHAR(100) DEFAULT NULL
                   ) ENGINE=MEMORY DEFAULT CHARSET=utf8";
-            db_execute($query);
+            \e::db_execute($query);
 
             $query = "DELETE FROM `tags_query`";
-            db_execute($query);
+            \e::db_execute($query);
 
             $query = Array();
             foreach ($this->selectedTags as $tg) {
-                $query[] = "SELECT news_id, tag FROM {$GLOBALS['table_prefix']}news_tags WHERE lang='{$this->lang}' AND tag='" . DbStr(trim($tg)) . "'";
+                $query[] = "SELECT news_id, tag FROM {$GLOBALS['table_prefix']}news_tags WHERE lang='{$this->lang}' AND tag='" . \e::db_escape(trim($tg)) . "'";
             }
             $query = "INSERT INTO tags_query(news_id, tag) " . join("\nUNION\n", $query);
-            db_execute($query);
+            \e::db_execute($query);
 
             $query = "CREATE TEMPORARY TABLE IF NOT EXISTS `ids` (
                     `news_id` BIGINT(20) DEFAULT NULL,
                     `n` BIGINT(20) DEFAULT NULL,
                      PRIMARY KEY (`news_id`)
                   ) ENGINE=MEMORY DEFAULT CHARSET=utf8";
-            db_execute($query);
+            \e::db_execute($query);
             $query = "DELETE FROM `ids`";
-            db_execute($query);
+            \e::db_execute($query);
 
             $query = "INSERT INTO ids(news_id, n) SELECT news_id, COUNT(*) AS n FROM tags_query GROUP BY news_id HAVING n=" . count($this->selectedTags);
-            db_execute($query);
+            \e::db_execute($query);
 
             //$news_tags_restriction.=" AND news.id IN( SELECT news_id FROM `ids`) ";
             $news_tags_restriction =" INNER JOIN ids ON ids.news_id=news.id ";
@@ -788,7 +788,7 @@ class CmsNewsViewer {
             $tmp = " ( LOCATE('{s}',ifnull(news.title,'')) OR LOCATE('{s}',ifnull(news.content,''))  OR LOCATE('{s}',ifnull(news.abstract,'')) )  ";
             for ($i = 0; $i < $cnt; $i++) {
                 if (strlen($news_keywords_restriction[$i]) > 0) {
-                    $news_keywords_restriction[$i] = str_replace('{s}',DbStr($news_keywords_restriction[$i]), $tmp);
+                    $news_keywords_restriction[$i] = str_replace('{s}',\e::db_escape($news_keywords_restriction[$i]), $tmp);
                 } else {
                     unset($news_keywords_restriction[$i]);
                 }
@@ -850,12 +850,12 @@ class CmsNewsViewer {
             //
         // prn(htmlspecialchars($query));
         $startTime=  microtime(true);
-        $this->_list = Array('rows' => db_getrows($query));
+        $this->_list = Array('rows' => \e::db_getrows($query));
         header('Cms-Timing: '. (microtime(true)-$startTime));
         
         
         # --------------------------- list of pages - begin --------------------
-        $num = db_getonerow("SELECT FOUND_ROWS() AS n_records;");
+        $num = \e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
         // prn($query,$num);
         $num = (int) $num['n_records'];
         $pages = Array();

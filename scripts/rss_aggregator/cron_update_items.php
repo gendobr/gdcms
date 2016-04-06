@@ -39,7 +39,7 @@ run('lib/file_functions');
 // load one source with teh least date
 //$query = "SELECT * FROM {$table_prefix}rsssource WHERE rsssource_is_visible AND site_id={$site_id} ORDER BY rsssource_last_updated ASC limit 0,1";
 $query = "SELECT * FROM {$table_prefix}rsssource WHERE rsssource_is_visible ORDER BY rsssource_last_updated ASC limit 0,1";
-$rsssource_info = db_getonerow($query);
+$rsssource_info = \e::db_getonerow($query);
 if (!$rsssource_info) {
     exit("There are not RSS sources to update");
 }
@@ -48,7 +48,7 @@ prn($rsssource_info);
 $rsssource_id = $rsssource_info['rsssource_id'];
 $site_id = $rsssource_info['site_id'];
 $query="UPDATE {$table_prefix}rsssource SET rsssource_last_updated=now() WHERE rsssource_id=$rsssource_id AND site_id=$site_id";
-db_execute($query);
+\e::db_execute($query);
 
 $site_id = checkInt($rsssource_info['site_id']);
 // ------------------ get feed URL - end ---------------------------------------
@@ -130,27 +130,27 @@ foreach ($x as $item) {
             FROM {$table_prefix}rsssourceitem
             WHERE site_id={$site_id}
               AND rsssource_id={$rsssource_id}
-              AND rsssourceitem_guid='" . DbStr($rsssourceitem_guid) . "'";
-    $item_info = db_getonerow($query);
+              AND rsssourceitem_guid='" . \e::db_escape($rsssourceitem_guid) . "'";
+    $item_info = \e::db_getonerow($query);
     if($item_info){
         $query="UPDATE {$table_prefix}rsssourceitem
                 SET
-                    rsssourceitem_lang='".  DbStr($rsssourceitem_lang)."',
-                    rsssourceitem_datetime='".  DbStr($rsssourceitem_datetime)."',
+                    rsssourceitem_lang='".  \e::db_escape($rsssourceitem_lang)."',
+                    rsssourceitem_datetime='".  \e::db_escape($rsssourceitem_datetime)."',
 
-                    rsssourceitem_title='".  DbStr($rsssourceitem_title)."',
-                    rsssourceitem_abstract='".  DbStr($rsssourceitem_abstract)."',
-                    rsssourceitem_url='".  DbStr($rsssourceitem_url)."',
-                    rsssourceitem_src='".  DbStr($rsssourceitem_src)."',
-                    rsssourceitem_guid='".  DbStr($rsssourceitem_guid)."',
-                    rsssourceitem_hash='".  DbStr($rsssourceitem_hash)."'
+                    rsssourceitem_title='".  \e::db_escape($rsssourceitem_title)."',
+                    rsssourceitem_abstract='".  \e::db_escape($rsssourceitem_abstract)."',
+                    rsssourceitem_url='".  \e::db_escape($rsssourceitem_url)."',
+                    rsssourceitem_src='".  \e::db_escape($rsssourceitem_src)."',
+                    rsssourceitem_guid='".  \e::db_escape($rsssourceitem_guid)."',
+                    rsssourceitem_hash='".  \e::db_escape($rsssourceitem_hash)."'
                 WHERE site_id=$site_id
                   AND rsssource_id=$rsssource_id
                   AND rsssourceitem_id={$item_info['rsssourceitem_id']}
                ";
         // do not change visibility if updating item
         // rsssourceitem_is_visiblle=".  ($rsssourceitem_is_visiblle?1:0).",
-        db_execute($query);
+        \e::db_execute($query);
     }else{
         $query="INSERT INTO {$table_prefix}rsssourceitem(
                     site_id,
@@ -168,17 +168,17 @@ foreach ($x as $item) {
                 VALUES(
                     $site_id,
                     $rsssource_id,
-                    '".  DbStr($rsssourceitem_lang)."',
-                    '".  DbStr($rsssourceitem_datetime)."',
+                    '".  \e::db_escape($rsssourceitem_lang)."',
+                    '".  \e::db_escape($rsssourceitem_datetime)."',
                     ".  ($rsssourceitem_is_visiblle?1:0).",
-                    '".  DbStr($rsssourceitem_title)."',
-                    '".  DbStr($rsssourceitem_abstract)."',
-                    '".  DbStr($rsssourceitem_url)."',
-                    '".  DbStr($rsssourceitem_src)."',
-                    '".  DbStr($rsssourceitem_guid)."',
-                    '".  DbStr($rsssourceitem_hash)."'
+                    '".  \e::db_escape($rsssourceitem_title)."',
+                    '".  \e::db_escape($rsssourceitem_abstract)."',
+                    '".  \e::db_escape($rsssourceitem_url)."',
+                    '".  \e::db_escape($rsssourceitem_src)."',
+                    '".  \e::db_escape($rsssourceitem_guid)."',
+                    '".  \e::db_escape($rsssourceitem_hash)."'
                 )";
-        db_execute($query);
+        \e::db_execute($query);
     }
 
 

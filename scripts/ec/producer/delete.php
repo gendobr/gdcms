@@ -41,7 +41,7 @@ if($this_site_info['admin_level']==0 && !is_admin())
 //------------------- check permission - end -----------------------------------
 
 # ---------------- delete image - begin ----------------------------------------
-  $site_root_dir=sites_root.'/'.$this_site_info['dir'];
+  $site_root_dir=\e::config('SITES_ROOT').'/'.$this_site_info['dir'];
   //prn($input_vars);
   $path=$site_root_dir.'/'.$this_producer_info["ec_producer_img"];
   if(is_file($path)) unlink($path);
@@ -49,7 +49,7 @@ if($this_site_info['admin_level']==0 && !is_admin())
 
 
 $query="DELETE FROM {$table_prefix}ec_producer WHERE ec_producer_id=$ec_producer_id";
-db_execute($query);
+\e::db_execute($query);
 
 $main_template_name='';
 

@@ -10,8 +10,8 @@ $error_msg = (isset($input_vars['msg']) ? $input_vars['msg'] : '' );
 if (isset($input_vars['user_login']) && strlen($input_vars['user_login']) > 0) {
 //-------------------------- check info -- begin -------------------------------
     //------------------- get user info -- begin -------------------------------
-    $tmp_user_info = db_getonerow(
-            "SELECT * FROM {$table_prefix}user WHERE user_login='" . DbStr($input_vars['user_login']) . "'"
+    $tmp_user_info =\e::db_getonerow(
+            "SELECT * FROM {$table_prefix}user WHERE user_login='" . \e::db_escape($input_vars['user_login']) . "'"
     );
     //------------------- get user info -- end ---------------------------------
     if ($tmp_user_info['id'] > 0) {
@@ -20,15 +20,15 @@ if (isset($input_vars['user_login']) && strlen($input_vars['user_login']) > 0) {
         $tmp_user_info['user_password'] = substr(md5(session_id() . time()), 0, 8);
         $query = "UPDATE {$table_prefix}user
                 SET user_password='" . md5($tmp_user_info['user_password']) . "'
-                WHERE user_login='" . DbStr($tmp_user_info['user_login']) . "'";
+                WHERE user_login='" . \e::db_escape($tmp_user_info['user_login']) . "'";
         //prn($query);
-        db_execute($query);
+        \e::db_execute($query);
 
         //----------------- send mail - begin ----------------------------------
         // prn("{$prefix}/mailer/class.phpmailer.php");
-        require_once(script_root . "/lib/class.phpmailer.php");
-        require_once(script_root . "/lib/class.smtp.php");
-        include(script_root . "/lib/mailing.php");
+        require_once(\e::config('SCRIPT_ROOT') . "/lib/class.phpmailer.php");
+        require_once(\e::config('SCRIPT_ROOT') . "/lib/class.smtp.php");
+        include(\e::config('SCRIPT_ROOT') . "/lib/mailing.php");
         // prn($tmp_user_info);
         my_mail(
                 $tmp_user_info['email']  // receiver

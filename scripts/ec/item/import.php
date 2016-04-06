@@ -314,7 +314,7 @@ if(isset($input_vars['row'])) {
             // ------------------ check types - begin --------------------------
             // ------------------ text or string - begin -----------------------
             if(preg_match('/char|text/i',$product_info[$name]['Type'])) {
-                $product_info[$name]['dbvalue']="'".DbStr(str_replace(Array("\\n"),Array("\n"),$data))."'";
+                $product_info[$name]['dbvalue']="'".\e::db_escape(str_replace(Array("\\n"),Array("\n"),$data))."'";
             }
             // ------------------ text or string - end -------------------------
             // ------------------ number - begin -------------------------------
@@ -340,7 +340,7 @@ if(isset($input_vars['row'])) {
             // ----------------- check if record exists - begin ---------------
             $found_ec_item_id=false;
             if(isset($product_info['ec_item_uid'])) {
-                $found_ec_item_id=db_getonerow("SELECT ec_item_id,ec_item_lang FROM {$table_prefix}ec_item WHERE ec_item_uid<>'' AND ec_item_uid={$product_info['ec_item_uid']['dbvalue']}");
+                $found_ec_item_id=\e::db_getonerow("SELECT ec_item_id,ec_item_lang FROM {$table_prefix}ec_item WHERE ec_item_uid<>'' AND ec_item_uid={$product_info['ec_item_uid']['dbvalue']}");
             }
             // ----------------- check if record exists - end -----------------
 
@@ -356,7 +356,7 @@ if(isset($input_vars['row'])) {
                 }
                 $query="update {$table_prefix}ec_item set ".join(',',$fld).",cache_datetime='2000-01-01 00:00:00' WHERE ec_item_id={$found_ec_item_id['ec_item_id']}  and ec_item_lang='{$found_ec_item_id['ec_item_lang']}'";
                 //prn($query);
-                db_execute($query);
+                \e::db_execute($query);
 
 
 
@@ -388,8 +388,8 @@ if(isset($input_vars['row'])) {
                 }
                 $query="insert into {$table_prefix}ec_item (".join(',',$fld).") values(".join(',',$val).")";
                 //prn($query);
-                db_execute($query);
-                $found_ec_item_id=db_getonerow("SELECT ec_item_id, ec_item_lang FROM {$table_prefix}ec_item WHERE LAST_INSERT_ID() = ec_item_id");
+                \e::db_execute($query);
+                $found_ec_item_id=\e::db_getonerow("SELECT ec_item_id, ec_item_lang FROM {$table_prefix}ec_item WHERE LAST_INSERT_ID() = ec_item_id");
             }
 
 

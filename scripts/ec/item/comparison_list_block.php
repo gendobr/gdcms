@@ -65,8 +65,8 @@ if(count($_SESSION['items_to_compare'])>0) {
               AND ec_item.ec_item_lang='{$lang}'
               AND ec_item.ec_item_id IN($q)
             ";
-       $list_of_ec_items=db_getrows($query);
-       include(script_root.'/ec/item/adjust_public_list.php');
+       $list_of_ec_items=\e::db_getrows($query);
+       include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
 }
 # --------------------------- get list of items - end --------------------------
 

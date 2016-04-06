@@ -1,7 +1,7 @@
 <?php
 
 $potochnyjrik = date('Y');
-include(script_root . '/gallery/admin/trumbalis0.php');
+include(\e::config('SCRIPT_ROOT') . '/gallery/admin/trumbalis0.php');
 run('lib/file_functions');
 
 function clear_str($str) {
@@ -10,7 +10,7 @@ function clear_str($str) {
     return $tot;
 }
 
-//----------------------Гена придумал ---------------------------------
+//----------------------пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ---------------------------------
 $link = $db;
 $data = date("Y-m-d H:i");
 
@@ -49,7 +49,7 @@ if (get_level($site_id) == 0) {
     return 0;
 }
 # ------------------- check permission - end -----------------------------------
-//--------------------------- Гена допридумывал --------------------------
+//--------------------------- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ --------------------------
 
 
 
@@ -91,7 +91,7 @@ while ($qq < 5) {
 
             # create directory
             $relative_dir = date('Y') . '/' . date('m');
-            $site_root_dir = sites_root . '/' . $this_site_info['dir'];
+            $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
             path_create($site_root_dir, "/gallery/$relative_dir/");
 
             # copy uploaded file
@@ -113,24 +113,24 @@ while ($qq < 5) {
             }
 
             # save to database
-            $icon_insert = db_execute(
+            $icon_insert = \e::db_execute(
                     "INSERT INTO {$table_prefix}photogalery(id,photos,photos_m,rozdil,rozdil2,pidpys,autor,rik,site,vis)
                  VALUES
                  ( NULL
-                  ,'" . DbStr("$relative_dir/$big_image_file_name") . "'
-                  ,'" . DbStr("$relative_dir/$small_image_file_name") . "'
-                  ,'" . DbStr($rozdil) . "'
-                  ,'" . DbStr($rozdil2) . "'
-                  ,'" . DbStr($pidpys) . "'
-                  ,'" . DbStr($autor) . "'
-                  ,'" . DbStr($rik) . "'
-                  ,'" . DbStr($site) . "'
-                  ,'" . DbStr($vis) . "'
+                  ,'" . \e::db_escape("$relative_dir/$big_image_file_name") . "'
+                  ,'" . \e::db_escape("$relative_dir/$small_image_file_name") . "'
+                  ,'" . \e::db_escape($rozdil) . "'
+                  ,'" . \e::db_escape($rozdil2) . "'
+                  ,'" . \e::db_escape($pidpys) . "'
+                  ,'" . \e::db_escape($autor) . "'
+                  ,'" . \e::db_escape($rik) . "'
+                  ,'" . \e::db_escape($site) . "'
+                  ,'" . \e::db_escape($vis) . "'
                  )");
 
             # show report
             $url_prefix = preg_replace("/\\/+\$/i", '', $this_site_info['url']) . '/gallery';
-            $result = db_execute("SELECT * FROM {$table_prefix}photogalery WHERE photos = '" . DbStr("$relative_dir/$big_image_file_name") . "'");
+            $result = \e::db_execute("SELECT * FROM {$table_prefix}photogalery WHERE photos = '" . \e::db_escape("$relative_dir/$big_image_file_name") . "'");
             $a = mysql_num_rows($result);
             $row = mysql_fetch_array($result);
             if ($row) {
@@ -152,7 +152,7 @@ while ($qq < 5) {
 run('gallery/category_model');
 gallery_synchronize_categories($this_site_info['id']);
 
-$list_rozdil = db_getrows("SELECT DISTINCT rozdil FROM {$table_prefix}photogalery_rozdil WHERE site_id = '$site_id' ORDER BY `rozdil` ASC");
+$list_rozdil = \e::db_getrows("SELECT DISTINCT rozdil FROM {$table_prefix}photogalery_rozdil WHERE site_id = '$site_id' ORDER BY `rozdil` ASC");
 
 
 
@@ -228,7 +228,7 @@ $vyvid .="
 
 
 
-//--------------------------- Гена придумал --------------------------
+//--------------------------- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ --------------------------
 $input_vars['page_title'] =
         $input_vars['page_header'] = $this_site_info['title'] . ' - ' . $text['Gallery_manage'];
 $input_vars['page_content'] = $vyvid;
@@ -239,5 +239,5 @@ $Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------
-//--------------------------- Гена допридумывал --------------------------
+//--------------------------- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ --------------------------
 ?>

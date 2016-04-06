@@ -11,9 +11,10 @@ if(!$this_site_info) die($txt['Site_not_found']);
 //------------------- get site info - end --------------------------------------
 
 //--------------------------- get site template - begin ------------------------
-$custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
-#prn('$news_template',$news_template);
-if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
+$custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
+if (is_file($custom_page_template)) {
+    $this_site_info['template'] = $custom_page_template;
+}
 //--------------------------- get site template - end --------------------------
 
 
@@ -28,14 +29,14 @@ $poll_id=isset($input_vars['poll_id'])?(int)$input_vars['poll_id']:0;
 if($poll_id>0) $get_poll=" AND id=$poll_id"; else $get_poll='';
 
 
-$polls=db_getrows( "SELECT *  FROM {$table_prefix}golos_pynannja  WHERE site_id={$site_id} $is_guest $get_poll ORDER BY ordering ASC");
+$polls=\e::db_getrows( "SELECT *  FROM {$table_prefix}golos_pynannja  WHERE site_id={$site_id} $is_guest $get_poll ORDER BY ordering ASC");
 if(!$polls) return '';
 //prn('$polls',$polls);
 
 $poll_ids=Array();
 foreach($polls as $key=>$val) $poll_ids[$key]=(int)$val['id'];
 
-$vidpovidi=db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
+$vidpovidi=\e::db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
 
 $poll_ids=array_flip($poll_ids);
 foreach($vidpovidi as $val) {

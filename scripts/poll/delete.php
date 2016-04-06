@@ -5,7 +5,7 @@ global $main_template_name; $main_template_name='';
 $debug=false;
 //------------------- site info - begin ----------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
   // prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -35,12 +35,12 @@ if(get_level($site_id)==0)
      $query="DELETE FROM {$table_prefix}golos_pynannja WHERE id={$delete_poll_id} AND site_id={$site_id}";
      if($debug) prn(checkStr($query));
      #prn($query);
-     db_execute($query);
+     \e::db_execute($query);
 
      $query="DELETE FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id={$delete_poll_id} AND site_id={$site_id}";
      if($debug) prn(checkStr($query));
      #prn($query);
-     db_execute($query);
+     \e::db_execute($query);
   }
   clear('delete_news_id','delete_news_lang');
   }

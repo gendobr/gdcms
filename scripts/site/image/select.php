@@ -11,7 +11,7 @@ $main_template_name = '';
 
 //------------------- check site id - begin ------------------------------------
   $site_id=checkInt($input_vars['site_id']);
-  $this_site_info=db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info=\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
   if(checkInt($this_site_info['id'])<=0)
   {
      echo $text['Site_not_found'];
@@ -43,7 +43,7 @@ $main_template_name = '';
   </script>
   ";
   run('lib/file_functions');
-  $site_dir=sites_root."/".$this_site_info['dir'];
+  $site_dir=\e::config('SITES_ROOT')."/".$this_site_info['dir'];
   $filelist=ls_r($site_dir);
   // $filelist=$filelist['files'];
   // prn($filelist); 

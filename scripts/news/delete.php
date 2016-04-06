@@ -2,7 +2,7 @@
 
 //------------------- site info - begin ----------------------------------------
 $site_id = checkInt($input_vars['site_id']);
-$this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+$this_site_info =\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
 // prn($this_site_info);
 if (checkInt($this_site_info['id']) <= 0) {
     $input_vars['page_title'] = $text['Site_not_found'];
@@ -22,7 +22,7 @@ if (get_level($site_id) == 0) {
 //-------------------- delete news - begin -------------------------------------
 if (isset($input_vars['delete_news_id'])) {
     $delete_news_id = checkInt($input_vars['delete_news_id']);
-    $delete_news_lang = DbStr($input_vars['delete_news_lang']);
+    $delete_news_lang = \e::db_escape($input_vars['delete_news_lang']);
 
     $news_info = news_info($delete_news_id, $delete_news_lang);
     if ($news_info > 0) {
@@ -42,35 +42,35 @@ if (isset($input_vars['delete_news_id'])) {
 
         // check if there are news translations in database
         $query = "SELECT count(*) as n FROM {$table_prefix}news WHERE id={$delete_news_id} AND lang<>'$delete_news_lang' AND site_id={$site_id}";
-        $nTranslations = db_getonerow($query);
+        $nTranslations = \e::db_getonerow($query);
         if ($nTranslations['n'] == 0) {
             // delete news categories if there are no translations
             $query = "DELETE FROM {$table_prefix}news_category WHERE news_id={$delete_news_id}";
             if ($debug) {
                 prn(checkStr($query));
             }
-            db_execute($query);
+            \e::db_execute($query);
         }
         
         $query = "DELETE FROM {$table_prefix}news WHERE id={$delete_news_id} AND lang='$delete_news_lang' AND site_id={$site_id}";
         if ($debug) {
             prn(checkStr($query));
         }
-        db_execute($query);
+        \e::db_execute($query);
 
         $query = "DELETE FROM {$table_prefix}news_tags WHERE news_id={$delete_news_id} AND lang='$delete_news_lang'";
         if ($debug) {
             prn(checkStr($query));
         }
-        db_execute($query);
+        \e::db_execute($query);
 
         // delete news comments
-        if (!db_getonerow("SELECT id FROM {$table_prefix}news WHERE id={$delete_news_id} AND site_id={$site_id} LIMIT 0,1")) {
+        if (!\e::db_getonerow("SELECT id FROM {$table_prefix}news WHERE id={$delete_news_id} AND site_id={$site_id} LIMIT 0,1")) {
             $query = "DELETE FROM {$table_prefix}news_comment WHERE news_id={$delete_news_id} AND site_id={$site_id}";
             if ($debug) {
                 prn(checkStr($query));
             }
-            db_execute($query);
+            \e::db_execute($query);
         }
 
     }

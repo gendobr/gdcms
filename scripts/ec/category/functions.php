@@ -121,7 +121,9 @@ function move_down($parent_id,$category_id)
 		 WHERE site_id=@site_id AND start<0 AND finish<0",
 		'COMMIT' );
   //prn($query);
-  foreach($query as $q) db_execute($q);
+  foreach ($query as $q) {
+        \e::db_execute($q);
+    }
 }
 
 
@@ -173,7 +175,7 @@ function move_up($parent_id,$category_id)
   foreach($query as $q)
   {
   	 //prn(checkStr($q));
-  	 db_execute($q);
+  	 \e::db_execute($q);
   }
 
 }

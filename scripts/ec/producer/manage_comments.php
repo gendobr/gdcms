@@ -44,7 +44,7 @@ if($user_cense_level==0)
       {
          $query="DELETE FROM {$table_prefix}ec_producer_comment WHERE ec_producer_comment_id IN(".join(',',$query).")";
          // prn($query);
-         db_execute($query);
+         \e::db_execute($query);
       }
    }
 

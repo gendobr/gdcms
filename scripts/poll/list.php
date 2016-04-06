@@ -37,7 +37,7 @@ if(get_level($site_id)==0) {
           $query="UPDATE {$table_prefix}golos_pynannja
                   SET ordering=".( (int)$val )."
                   WHERE site_id=$site_id AND id=".( (int)$key );
-          db_execute($query);
+          \e::db_execute($query);
       }
    }
 // ------------------ update poll ordering - end -------------------------------
@@ -85,7 +85,7 @@ $page_content="
       </script>
 ";
 
-//$page_content.="<h4>Список попередніх опитувань</h4>";
+//$page_content.="<h4>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</h4>";
 $page_content.="
 <style type=text/css>
 .ordering{background-image:url(img/ordering_arrows.gif);background-position:center right;background-repeat:no-repeat;}
@@ -98,7 +98,7 @@ $page_content.="<tr><td></td><td></td><td><b><a href=index.php?action=poll/edit&
 
 $start=(isset($input_vars['start']))?abs(round(1*$input_vars['start'])):0;
 
-$result =db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} ORDER BY `ordering` ASC LIMIT $start, 100");
+$result =\e::db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} ORDER BY `ordering` ASC LIMIT $start, 100");
 $row_id=0;
 foreach ($result as $row) {
     $row_id++;
@@ -134,7 +134,7 @@ $page_content.="
     </form>";
 
 
-$result1 = db_getonerow("SELECT count(*) as n FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id}");
+$result1 = \e::db_getonerow("SELECT count(*) as n FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id}");
 $num = $result1['n'];
 $pages='';
 $url_prefix=site_root_URL.'/index.php?'.query_string("ordering|start").'&start=';

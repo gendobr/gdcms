@@ -45,7 +45,7 @@ if($user_cense_level==0)
          foreach($val as $fl=>$va) $query[]="$fl='".DbStr($va)."'";
          $query="UPDATE {$table_prefix}ec_item SET ".join(',',$query)." WHERE ec_item_id=$ec_item_id LIMIT 1";
          //prn($query);
-         db_execute($query);
+         \e::db_execute($query);
       }
    }
 // ------------------ update - end ---------------------------------------------

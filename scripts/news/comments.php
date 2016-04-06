@@ -33,12 +33,12 @@ if (get_level($site_id) == 0) {
 // hide comment
 if(isset($input_vars['hide_comment'])){
     $news_comment_id=(int)$input_vars['hide_comment'];
-    db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=0 WHERE site_id={$site_id} AND news_comment_id={$news_comment_id}");
+    \e::db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=0 WHERE site_id={$site_id} AND news_comment_id={$news_comment_id}");
 }
 // show comment
 if(isset($input_vars['show_comment'])){
     $news_comment_id=(int)$input_vars['show_comment'];
-    db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=1 WHERE site_id={$site_id} AND news_comment_id={$news_comment_id}");
+    \e::db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=1 WHERE site_id={$site_id} AND news_comment_id={$news_comment_id}");
 }
 
 //

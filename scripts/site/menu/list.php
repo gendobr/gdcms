@@ -40,7 +40,7 @@
   $lang=$input_vars['lang'] = get_language('lang');
 
   $query="SELECT * FROM {$table_prefix}page WHERE id={$page_id} AND lang='$lang'";
-  $this_page_info=db_getonerow($query);
+  $this_page_info=\e::db_getonerow($query);
   $this_page_info['id']=checkInt($this_page_info['id']);
   //prn('$this_page_info',$this_page_info);
 //------------------- page info - end ------------------------------------------
@@ -61,13 +61,13 @@
    if(isset($input_vars['ordering']) && is_array($input_vars['ordering'])){
        foreach($input_vars['ordering'] as $itid=>$itval){
            $query="UPDATE {$table_prefix}menu_item SET ordering=".( (int)$itval )." WHERE id=".( (int)$itid );
-           db_execute($query);
+           \e::db_execute($query);
        }
    }
    if(isset($input_vars['mord']) && is_array($input_vars['mord'])){
        foreach($input_vars['mord'] as $gid=>$gval){
            $query="UPDATE {$table_prefix}menu_group SET ordering=".( (int)$gval )." WHERE id=".( (int)$gid );
-           db_execute($query);
+           \e::db_execute($query);
        }
    }
 // --------------------- update ordering - end ---------------------------------
@@ -82,7 +82,7 @@
             WHERE mg.site_id={$this_site_info['id']}
               AND mg.id=mi.menu_group_id
               AND mi.id=".( (int)$input_vars['moveup'] );
-    $mi_id=db_getonerow($query);
+    $mi_id=\e::db_getonerow($query);
     #prn($query, $mi_id);
     if($mi_id)
     {
@@ -90,7 +90,7 @@
               SET ordering=IF(ordering-1>0,ordering-1,0)
               WHERE id={$mi_id['id']}";
       #prn($query);
-      db_execute($query);
+      \e::db_execute($query);
     }
   }
   if(isset($input_vars['movedown']))
@@ -102,7 +102,7 @@
             WHERE mg.site_id={$this_site_info['id']}
               AND mg.id=mi.menu_group_id
               AND mi.id=".( (int)$input_vars['movedown'] );
-    $mi_id=db_getonerow($query);
+    $mi_id=\e::db_getonerow($query);
     #prn($query, $mi_id);
     if($mi_id)
     {
@@ -110,7 +110,7 @@
               SET ordering=ordering+1
               WHERE id={$mi_id['id']}";
       #prn($query);
-      db_execute($query);
+      \e::db_execute($query);
     }
   }
   unset($input_vars['movedown'],$input_vars['moveup']);
@@ -124,28 +124,24 @@
      // check menu group id
         $ttt=Explode(';',$input_vars['add_item_to']);
         $ttt[0]=checkInt($ttt[0]);
-        $ttt[1]=DbStr($ttt[1]);
-        $menu_group_id=db_getonerow("SELECT count(*) AS df FROM {$table_prefix}menu_group WHERE id={$ttt[0]} AND lang='{$ttt[1]}'");
+        $ttt[1]=\e::db_escape($ttt[1]);
+        $menu_group_id=\e::db_getonerow("SELECT count(*) AS df FROM {$table_prefix}menu_group WHERE id={$ttt[0]} AND lang='{$ttt[1]}'");
         if($menu_group_id['df']>0)
         {
-         // lock table
-         // $query="LOCK TABLES {$table_prefix}menu_item WRITE";
-         // db_execute($query);
+
 
          // get new id
             $query="SELECT MAX(id) AS newid FROM  {$table_prefix}menu_item";
-            $newid=db_getonerow($query);
+            $newid=\e::db_getonerow($query);
             $newid=$newid['newid']+1;
 
          // create new item
             $query="INSERT INTO {$table_prefix}menu_item(id,html,url,menu_group_id,lang)
                     VALUES ({$newid},'{$text['New_menu_item']}','#',{$ttt[0]},'{$ttt[1]}')";
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
 
-         // unlock table
-         // $query="UNLOCK TABLES";
-         // db_execute($query);
+
         }
   }
   clear('add_item_to');
@@ -163,10 +159,10 @@
                    AND mg.id=mi.menu_group_id
                    AND mi.id=$delete_item_id
              ";
-     if(count(db_getrows($query))>0)
+     if(count(\e::db_getrows($query))>0)
      {
         $query="DELETE FROM {$table_prefix}menu_item WHERE id=$delete_item_id";
-        db_execute($query);
+        \e::db_execute($query);
      }
   }
   clear('delete_item_id');
@@ -178,23 +174,23 @@
   {
      $delete_group=explode(';',$input_vars['delete_group']);
      $delete_group[0] = checkInt($delete_group[0]);
-     $delete_group[1] = DbStr($delete_group[1])   ;
+     $delete_group[1] = \e::db_escape($delete_group[1])   ;
      $query="SELECT *
              FROM {$table_prefix}menu_group AS mg
              WHERE     mg.site_id={$this_site_info['id']}
                    AND mg.id={$delete_group[0]}
                    AND mg.lang='{$delete_group[1]}'
              ";
-     if(count(db_getrows($query))>0)
+     if(count(\e::db_getrows($query))>0)
      {
         $query="DELETE FROM {$table_prefix}menu_item
                 WHERE     menu_group_id={$delete_group[0]}
                       AND lang='{$delete_group[1]}'";
-        db_execute($query);
+        \e::db_execute($query);
         $query="DELETE FROM {$table_prefix}menu_group
                 WHERE     id={$delete_group[0]}
                       AND lang='{$delete_group[1]}'";
-        db_execute($query);
+        \e::db_execute($query);
      }
   }
   clear('delete_group_id');
@@ -208,14 +204,14 @@
 
      // get new id
         $query="SELECT MAX(id) AS newid FROM  {$table_prefix}menu_group";
-        $newid=db_getonerow($query);
+        $newid=\e::db_getonerow($query);
         $newid=$newid['newid']+1;
 
      // create new item
         $query="INSERT INTO {$table_prefix}menu_group(id,site_id,page_id,html)
                 VALUES ({$newid},{$this_site_info['id']},-1,'{$text['New_menu_item']}')";
         //prn($query);
-        db_execute($query);
+        \e::db_execute($query);
   }
   clear('add_group');
 //------------------- add group - end ------------------------------------------
@@ -231,14 +227,14 @@
                 FROM {$table_prefix}languages AS la LEFT JOIN {$table_prefix}menu_group AS mg ON(la.id=mg.lang  AND mg.id=$add_lang)
                 WHERE la.is_visible=1 AND mg.lang is null
                 LIMIT 0,1;";
-        $newid=db_getonerow($query);
+        $newid=\e::db_getonerow($query);
         // prn($newid);
 
      // create new item
         $query="INSERT INTO {$table_prefix}menu_group(id,site_id,page_id,html, lang)
                 VALUES ({$add_lang},{$this_site_info['id']},{$this_page_info['id']},'{$text['New_menu_item']}','{$newid['lang']}')";
         // prn($query);
-        db_execute($query);
+        \e::db_execute($query);
 
   }
   clear('add_group');
@@ -251,7 +247,7 @@
                FROM {$table_prefix}menu_group
                WHERE     site_id={$this_site_info['id']}
                ORDER BY ordering, id, lang ";
-     $tmp=db_getrows($query);
+     $tmp=\e::db_getrows($query);
      $menu_groups = Array();
      foreach($tmp as $tm)
      {
@@ -270,7 +266,7 @@
                FROM {$table_prefix}menu_item
                WHERE  menu_group_id IN($mmm)
                ORDER BY menu_group_id, ordering ASC";
-     $tmp=db_getrows($query);
+     $tmp=\e::db_getrows($query);
      foreach($tmp as $tm)
      {
         $menu_groups[$tm['menu_group_id'].':'.$tm['lang']]['items'][$tm['id']]=$tm;

@@ -21,13 +21,13 @@ if (get_level($site_id) == 0) {
 //------------------- check permission - end -----------------------------------
 // ------------------ get event info - begin -----------------------------------
 $event_id = isset($input_vars['event_id']) ? ((int) $input_vars['event_id']) : 0;
-$this_event_info = db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id = $event_id");
+$this_event_info =\e::db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id = $event_id");
 if (!$this_event_info['id']) {
     $input_vars['page_title'] = $input_vars['page_header'] = $input_vars['page_content'] = text('Calendar_event_not_found');
     return 0;
 }
 // get event dates
-$tmp = db_getrows("SELECT * FROM {$table_prefix}calendar_date WHERE calendar_id=$event_id");
+$tmp = \e::db_getrows("SELECT * FROM {$table_prefix}calendar_date WHERE calendar_id=$event_id");
 $this_event_info['dates'] = Array();
 foreach ($tmp as $tm) {
     $this_event_info['dates'][$tm['id']] = $tm;
@@ -71,14 +71,14 @@ if (isset($input_vars['upd'])) {
 
     if ($nazva1) {
         $query = "UPDATE {$table_prefix}calendar
-                  SET nazva = '" . DbStr($nazva1) . "',
-                      kartynka = '" . DbStr($kartynka1) . "',
-                      adresa = '" . DbStr($adresa1) . "',
-                      description = '" . DbStr($description) . "',
+                  SET nazva = '" . \e::db_escape($nazva1) . "',
+                      kartynka = '" . \e::db_escape($kartynka1) . "',
+                      adresa = '" . \e::db_escape($adresa1) . "',
+                      description = '" . \e::db_escape($description) . "',
                       vis = " . ( (int) $vis1) . "
                   WHERE id = '$event_id' and site_id={$site_id}";
         //prn(checkStr($query));exit();
-        db_execute($query);
+        \e::db_execute($query);
 
         // --------------- add new date - begin --------------------------------
         $new_pochrik = $input_vars['dt'][0]['pochrik'];
@@ -120,7 +120,7 @@ if (isset($input_vars['upd'])) {
                 VALUES  ( $site_id,  $event_id, $new_pochrik, $new_pochmis, $new_pochtyzh, $new_pochday, $new_pochgod, $new_pochhv, $new_kinrik, $new_kinmis, $new_kintyzh, $new_kinday, $new_kingod, $new_kinhv );
                 ";
             // prn($query); exit();
-            db_execute($query);
+            \e::db_execute($query);
             
             $new_pochrik = '';
             $new_pochmis = '';
@@ -148,7 +148,7 @@ if (isset($input_vars['upd'])) {
         }
         if(count($toDelete)>0){
             $query="DELETE FROM {$table_prefix}calendar_date WHERE site_id=$site_id AND calendar_id=$event_id AND id IN(".join(',',$toDelete).")";
-            db_execute($query);
+            \e::db_execute($query);
         }
         // --------------- delete - end ----------------------------------------
         
@@ -179,7 +179,7 @@ if (isset($input_vars['upd'])) {
                        AND calendar_id = $event_id
                     ";
             // prn($query);
-            db_execute($query);
+            \e::db_execute($query);
         }
         // 
         // --------------- update dates - end ----------------------------------
@@ -187,7 +187,7 @@ if (isset($input_vars['upd'])) {
         // save new categories
         if (isset($input_vars['event_category']) && is_array($input_vars['event_category'])) {
             $query = "DELETE FROM {$table_prefix}calendar_category WHERE event_id=$event_id";
-            db_execute($query);
+            \e::db_execute($query);
             $query = Array();
             foreach ($input_vars['event_category'] as $cat) {
                 $cat = (int) $cat;
@@ -198,12 +198,12 @@ if (isset($input_vars['upd'])) {
             }
             if (count($query) > 0) {
                 $query = "INSERT INTO {$table_prefix}calendar_category(event_id,category_id) VALUES " . join(',', $query);
-                db_execute($query);
+                \e::db_execute($query);
             }
         }
         // clear cache 
         $query = "DELETE FROM {$table_prefix}calendar_cache WHERE uid BETWEEN {$site_id}000000 AND {$site_id}999999";
-        db_execute($query);
+        \e::db_execute($query);
 
         
         event_recache_days($event_id);
@@ -224,7 +224,7 @@ if (isset($input_vars['upd'])) {
 
 if (isset($input_vars['upd'])) {
 
-    $this_event_info = db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id = '$new'");
+    $this_event_info =\e::db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id = '$new'");
     while ($row = mysql_fetch_array($result)) {
         
     }
@@ -242,7 +242,7 @@ $calendar_hv = calendar_minutes();
 
 # ------------------------ list of categories - begin -------------------------
 $query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
-$tmp = db_getrows($query);
+$tmp = \e::db_getrows($query);
 $list_of_categories = Array();
 foreach ($tmp as $tm) {
     $list_of_categories[$tm['category_id']] = str_repeat(' + ', $tm['deep']) . get_langstring($tm['category_title']);
@@ -250,7 +250,7 @@ foreach ($tmp as $tm) {
 unset($tmp, $tm);
 //prn($list_of_categories);
 
-$event_categories = db_getrows("SELECT category_id FROM {$table_prefix}calendar_category WHERE event_id={$event_id}");
+$event_categories = \e::db_getrows("SELECT category_id FROM {$table_prefix}calendar_category WHERE event_id={$event_id}");
 $cnt = count($event_categories);
 $event_categories_selector = "
     <div id=list_of_categories>

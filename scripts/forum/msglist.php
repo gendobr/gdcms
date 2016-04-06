@@ -28,14 +28,13 @@ if(checkInt($this_site_info['id'])<=0) {
 }
 //------------------- site info - end ------------------------------------------
 //--------------------------- get site template - begin ------------------------
-// $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
 $custom_page_template = site_get_template($this_site_info, "template_index.html", $verbose=false);
 if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 //--------------------------- get site template - end --------------------------
 
 //------------------- forum info - begin ---------------------------------------
 $forum_id = checkInt($input_vars['forum_id']);
-//$this_forum_info = db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$forum_id}");
+//$this_forum_info =\e::db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$forum_id}");
 $this_forum_info = get_forum_info($forum_id);
 
 //prn($this_forum_info); exit();
@@ -80,9 +79,9 @@ if($visitor['is_moderator'] && isset($input_vars['delete_thread_id'])) {
             WHERE site_id=$site_id
               AND forum_id=$forum_id
               AND thread_id=$delete_thread_id";
-    db_execute($query);
+    \e::db_execute($query);
     $query= "DELETE FROM {$table_prefix}forum_thread WHERE id={$delete_thread_id}";
-    db_execute($query);
+    \e::db_execute($query);
 }
 // ------------------ delete thread - end --------------------------------------
 
@@ -91,15 +90,15 @@ if($visitor['is_moderator'] && isset($input_vars['delete_thread_id'])) {
 if($visitor['is_moderator'] && isset($input_vars['msg_id'])) {
     $thread_id = checkInt($input_vars['thread_id']);
     $query="UPDATE {$GLOBALS['table_prefix']}forum_msg
-             SET   msg='".DbStr($input_vars['msg_text'])."'
+             SET   msg='".\e::db_escape($input_vars['msg_text'])."'
              WHERE id=".((int)$input_vars['msg_id'])."
                AND site_id=$site_id
                AND forum_id=$forum_id
                AND thread_id=$thread_id
-               AND (   `name`='".DbStr($visitor['site_visitor_login'])."'
+               AND (   `name`='".\e::db_escape($visitor['site_visitor_login'])."'
                     OR {$visitor['is_moderator']})";
     //prn($query);exit();
-    db_execute($query);
+    \e::db_execute($query);
 }
 //------------------- update message - end -------------------------------------
 
@@ -111,10 +110,10 @@ if($visitor['is_moderator'] && isset($input_vars['delete_msg_id'])) {
                AND site_id=$site_id
                AND forum_id=$forum_id
                AND thread_id=$thread_id
-               AND (   `name`='".DbStr($visitor['site_visitor_login'])."'
+               AND (   `name`='".\e::db_escape($visitor['site_visitor_login'])."'
                     OR {$visitor['is_moderator']})";
     //prn($query);exit();
-    db_execute($query);
+    \e::db_execute($query);
 }
 // ------------------ delete message - end -------------------------------------
 
@@ -127,37 +126,16 @@ if($visitor['is_moderator'] && isset($input_vars['hide_msg_id'])) {
                AND site_id=$site_id
                AND forum_id=$forum_id
                AND thread_id=$thread_id
-               AND (   `name`='".DbStr($visitor['site_visitor_login'])."'
+               AND (   `name`='".\e::db_escape($visitor['site_visitor_login'])."'
                     OR {$visitor['is_moderator']})";
     //prn($query);exit();
-    db_execute($query);
+    \e::db_execute($query);
 }
 //------------------- hide message - end ---------------------------------------
 
 
-////------------------- hide thread - begin --------------------------------------
-//if($visitor['is_moderator'] && isset($input_vars['hide_thread_id'])) {
-//    $query="UPDATE {$GLOBALS['table_prefix']}forum_thread
-//             SET   is_visible=0
-//             WHERE id=".((int)$input_vars['hide_thread_id'])."
-//               AND site_id=$site_id
-//               AND forum_id=$forum_id";
-//    //prn($query);exit();
-//    db_execute($query);
-//}
-////------------------- hide thread - end ----------------------------------------
-//
-////------------------- show thread - begin --------------------------------------
-//if($visitor['is_moderator'] && isset($input_vars['show_thread_id'])) {
-//    $query="UPDATE {$GLOBALS['table_prefix']}forum_thread
-//             SET   is_visible=1
-//             WHERE id=".((int)$input_vars['show_thread_id'])."
-//               AND site_id=$site_id
-//               AND forum_id=$forum_id";
-//    //prn($query);exit();
-//    db_execute($query);
-//}
-////------------------- show thread - end ----------------------------------------
+
+
 
 
 //------------------- show message - begin -------------------------------------
@@ -169,17 +147,17 @@ if($visitor['is_moderator'] && isset($input_vars['show_msg_id'])) {
                AND site_id=$site_id
                AND forum_id=$forum_id
                AND thread_id=$thread_id
-               AND (   `name`='".DbStr($visitor['site_visitor_login'])."'
+               AND (   `name`='".\e::db_escape($visitor['site_visitor_login'])."'
                     OR {$visitor['is_moderator']})";
     //prn($query);exit();
-    db_execute($query);
+    \e::db_execute($query);
 }
 //------------------- show message - end ---------------------------------------
 
 
 //------------------- thread info - begin --------------------------------------
 $thread_id = checkInt($input_vars['thread_id']);
-//$this_thread_info = db_getonerow(
+//$this_thread_info =\e::db_getonerow(
 //        "SELECT  th.*
 //           , ms.name  AS msg_sender_name
 //           , ms.email AS msg_sender_email
@@ -198,7 +176,7 @@ $thread_id = checkInt($input_vars['thread_id']);
 //    ORDER BY ms.id ASC
 //    LIMIT 0,1");
 
-$this_thread_info = db_getonerow(
+$this_thread_info =\e::db_getonerow(
         "SELECT  th.*
            , ms.name  AS msg_sender_name
            , ms.email AS msg_sender_email
@@ -249,7 +227,7 @@ if(isset($input_vars['msg'])) {
 
     if(count($errors)==0) {
         function ch($name) {
-            return DbStr(strip_tags($name));
+            return \e::db_escape(strip_tags($name));
         }
         $_SESSION['code']='';
 
@@ -278,8 +256,7 @@ if(isset($input_vars['msg'])) {
         run('notifier/functions');
 
         //---------------- notify site admin - begin ---------------------------
-        //$site_admin=db_getonerow("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
-        $site_admin_list=  db_getrows("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']}");
+        $site_admin_list=  \e::db_getrows("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']}");
         foreach($site_admin_list as $site_admin){
             if(is_valid_email($site_admin['email'])) {
                 $path=$this_site_info['title']."/".$this_forum_info['name']."/".$this_thread_info['subject'];
@@ -305,11 +282,11 @@ if(isset($input_vars['msg'])) {
         if($this_forum_info['moderators'] && is_array($this_forum_info['moderators']) && count($this_forum_info['moderators'])>0){
            $query=Array();
            foreach($this_forum_info['moderators'] as $moderator_login){
-               $query[]=  DbStr($moderator_login);
+               $query[]=  \e::db_escape($moderator_login);
            }
            //prn($query); exit();
            $query="SELECT * FROM {$table_prefix}site_visitor WHERE site_visitor_login in ('".join("','",$query)."')";
-           $moderators=  db_getrows($query);
+           $moderators=  \e::db_getrows($query);
            if($moderators){
                 $path=$this_site_info['title']."/".$this_forum_info['name']."/".$this_thread_info['subject'];
 
@@ -336,9 +313,9 @@ if(isset($input_vars['msg'])) {
 
         //------------------------ get the page to redirect - begin ------------------
         if($this_forum_info['is_premoderated']==1) {
-            $n_messages = db_getonerow("SELECT count(id) as n_messages FROM {$table_prefix}forum_msg WHERE forum_id='$forum_id' AND site_id='$site_id' AND thread_id='$thread_id'  AND is_first_msg=0 and is_visible=1");
+            $n_messages =\e::db_getonerow("SELECT count(id) as n_messages FROM {$table_prefix}forum_msg WHERE forum_id='$forum_id' AND site_id='$site_id' AND thread_id='$thread_id'  AND is_first_msg=0 and is_visible=1");
         }else {
-            $n_messages = db_getonerow("SELECT count(id) as n_messages FROM {$table_prefix}forum_msg WHERE forum_id='$forum_id' AND site_id='$site_id' AND thread_id='$thread_id'  AND is_first_msg=0");
+            $n_messages =\e::db_getonerow("SELECT count(id) as n_messages FROM {$table_prefix}forum_msg WHERE forum_id='$forum_id' AND site_id='$site_id' AND thread_id='$thread_id'  AND is_first_msg=0");
         }
         $n_messages = $n_messages['n_messages'];
         //prn($n_messages);
@@ -422,7 +399,7 @@ if($this_forum_info['is_premoderated']==1) {
               AND is_first_msg=0
             ORDER BY `data` ASC LIMIT $start, 10 ";
 }
-$messages = db_getrows($query);
+$messages = \e::db_getrows($query);
 // ----------------------- get messages - end ----------------------------------
 
 // ----------------------- adjust messages - begin -----------------------------

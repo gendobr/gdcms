@@ -27,14 +27,13 @@ if(checkInt($this_site_info['id'])<=0) {
 }
 // ------------------ site info - end ------------------------------------------
 // -------------------------- get site template - begin ------------------------
-//$custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
 $custom_page_template = site_get_template($this_site_info, "template_index.html", $verbose=false);
 if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 // -------------------------- get site template - end --------------------------
 
 // ------------------ forum info - begin ---------------------------------------
 $forum_id = checkInt($input_vars['forum_id']);
-//$this_forum_info = db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$forum_id}");
+//$this_forum_info = \e::db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$forum_id}");
 $this_forum_info = get_forum_info($forum_id);
 
 // prn($this_forum_info);
@@ -87,7 +86,7 @@ if(isset($input_vars['msg'])) {
 
     if(count($errors)==0) {
         run('notifier/functions');
-        function ch($name) {return DbStr(strip_tags(trim($name)));}
+        function ch($name) {return \e::db_escape(strip_tags(trim($name)));}
         $_SESSION['code']='';
         $name   = ch($_SESSION['site_visitor_info']['site_visitor_login']);
         $email  = ch($_SESSION['site_visitor_info']['site_visitor_email']);   if(!is_valid_email($email)) $email='';
@@ -118,8 +117,8 @@ if(isset($input_vars['msg'])) {
 
 
         //---------------- notify site admin - begin ---------------------------
-        //$site_admin=db_getonerow("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
-        $site_admin_list=  db_getrows("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']}");
+        //$site_admin=\e::db_getonerow("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
+        $site_admin_list=  \e::db_getrows("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']}");
         foreach($site_admin_list as $site_admin){
             if(is_valid_email($site_admin['email'])) {
 
@@ -145,10 +144,10 @@ if(isset($input_vars['msg'])) {
         if($this_forum_info['moderators'] && is_array($this_forum_info['moderators']) && count($this_forum_info['moderators'])>0){
            $query=Array();
            foreach($this_forum_info['moderators'] as $moderator_login){
-               $query[]=  DbStr($moderator_login);
+               $query[]=  \e::db_escape($moderator_login);
            }
            $query="SELECT * FROM {$table_prefix}site_visitor WHERE site_visitor_login in ('".join("','",$query)."')";
-           $moderators=  db_getrows($query);
+           $moderators=  \e::db_getrows($query);
            if($moderators){
                 $path=$this_site_info['title']."/".$this_forum_info['name'].'/'.$input_vars['subject'];
 
@@ -256,7 +255,7 @@ $start=isset($input_vars['start'])?( (int)$input_vars['start'] ):0;
 //     LIMIT $start, 10";
 //}
 //prn($query);
-$result = db_getrows($query);
+$result = \e::db_getrows($query);
 
 $cnt=count($result);
 for($i=0;$i<$cnt;$i++) {

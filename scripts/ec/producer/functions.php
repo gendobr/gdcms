@@ -6,7 +6,7 @@
 function get_producer_info($ec_producer_id)
 {
   global $table_prefix,$db,$input_vars;
-  $tor=db_getonerow("SELECT * FROM {$table_prefix}ec_producer WHERE ec_producer_id=$ec_producer_id");
+  $tor=\e::db_getonerow("SELECT * FROM {$table_prefix}ec_producer WHERE ec_producer_id=$ec_producer_id");
   if($tor)
   {
       $tor['ec_producer_url']=site_root_URL."/index.php?action=ec/producer/view&ec_producer_id=".$tor['ec_producer_id'];

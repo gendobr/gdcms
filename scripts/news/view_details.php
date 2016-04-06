@@ -32,10 +32,10 @@ $news_id = isset($input_vars['news_id']) ? ((int) $input_vars['news_id']) : 0;
 $news_code=isset($input_vars['news_code']) ? $input_vars['news_code'] : '';
 $this_news_info = false;
 if($news_id > 0){
-  $this_news_info = db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='" . DbStr($input_vars['lang']) . "'");    
+  $this_news_info = \e::db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='" . \e::db_escape($input_vars['lang']) . "'");    
 }
 if(!$this_news_info && strlen($news_code)>0){
-  $this_news_info = db_getonerow("SELECT * FROM {$table_prefix}news WHERE news_code='" . DbStr($news_code) . "' AND lang='" . DbStr($input_vars['lang']) . "'");
+  $this_news_info = \e::db_getonerow("SELECT * FROM {$table_prefix}news WHERE news_code='" . \e::db_escape($news_code) . "' AND lang='" . \e::db_escape($input_vars['lang']) . "'");
 }
 
 if (!$this_news_info) {
@@ -55,7 +55,7 @@ $query = "SELECT DISTINCT pa.category_id, pa.category_code,pa.category_title, pa
             AND pa.site_id={$this_news_info['site_id']}
           ORDER BY pa.start
           ";
-$this_news_info['categories'] = db_getrows($query);
+$this_news_info['categories'] = \e::db_getrows($query);
 $tmp = Array();
 foreach ($this_news_info['categories'] as $cat) {
     $tmp[] = Array(
@@ -75,7 +75,7 @@ $this_news_info['categories'] = $tmp;
 //
 # ------------------- get site info - begin ------------------------------------
 $site_id = checkInt($this_news_info['site_id']);
-$this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+$this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
 # prn($this_site_info);
 # prn($input_vars);
 if (!$this_site_info)
@@ -146,7 +146,7 @@ function show_related_news($params) {
     extract($params);
     $news_id*=1;
     $site_id*=1;
-    $lang= DbStr($lang);
+    $lang= \e::db_escape($lang);
     # required parameters are news_id, lang, site_id, count
     if (!isset($count) || ($count <= 0)){
         $count = 5;
@@ -155,12 +155,12 @@ function show_related_news($params) {
 
     # ---------------- get all tags of the current news - begin ------------
     $query = "select nt.tag from {$table_prefix}news_tags as nt where nt.lang='{$lang}' and nt.news_id={$news_id} ";
-    $tags = db_getrows($query);
+    $tags = \e::db_getrows($query);
     $cnt = count($tags);
     if ($cnt == 0)
         return '';
     for ($i = 0; $i < $cnt; $i++)
-        $tags[$i] = "'" . DbStr($tags[$i]['tag']) . "'";
+        $tags[$i] = "'" . \e::db_escape($tags[$i]['tag']) . "'";
     # prn($tags);
     # ---------------- get all tags of the current news - end --------------
     # ---------------- get news using tags - begin -------------------------
@@ -177,7 +177,7 @@ function show_related_news($params) {
               LIMIT 0,$count
          ";
     // prn($query);
-    $tmp = db_getrows($query);
+    $tmp = \e::db_getrows($query);
     $tor = '';
     foreach ($tmp as $row) {
         //url_template_news_details
@@ -214,7 +214,7 @@ function show_news_categories($params) {
                 AND pa.site_id={$site_id}
               ORDER BY pa.start
               ";
-    $this_news_info['categories'] = db_getrows($query);
+    $this_news_info['categories'] = \e::db_getrows($query);
     $tmp = '';
     foreach ($this_news_info['categories'] as $cat) {
         // $category_url = url_prefix_news_list . "site_id={$site_id}&lang={$_REQUEST['lang']}&category_id={$cat['category_id']}";
@@ -236,12 +236,12 @@ function show_news_categories($params) {
 // hide comment
 if (isset($input_vars['hide_comment']) && $visitor['is_moderator']) {
     $news_comment_id = (int) $input_vars['hide_comment'];
-    db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=0 WHERE news_id={$news_id} AND site_id={$site_id} AND news_comment_id={$news_comment_id}");
+    \e::db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=0 WHERE news_id={$news_id} AND site_id={$site_id} AND news_comment_id={$news_comment_id}");
 }
 // show comment
 if (isset($input_vars['show_comment']) && $visitor['is_moderator']) {
     $news_comment_id = (int) $input_vars['show_comment'];
-    db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=1 WHERE news_id={$news_id} AND site_id={$site_id} AND news_comment_id={$news_comment_id}");
+    \e::db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=1 WHERE news_id={$news_id} AND site_id={$site_id} AND news_comment_id={$news_comment_id}");
 }
 
 // add comment
@@ -255,9 +255,9 @@ if (isset($input_vars['news_comment_content'])) {
     $news_comment_sender = $visitor['site_visitor_login'];
     $news_comment_is_visible = isset($input_vars['news_comment_is_visible']) && $input_vars['news_comment_is_visible'] ? 1 : 0;
     if (strlen($news_comment_content) > 0 && !isset($errors)) {
-        db_execute("INSERT INTO {$GLOBALS['table_prefix']}news_comment
+        \e::db_execute("INSERT INTO {$GLOBALS['table_prefix']}news_comment
                           (  news_id  , news_lang                           ,  site_id  ,  news_comment_datetime, news_comment_content              , news_comment_is_visible   , news_comment_sender              ,  news_comment_parent_id    )
-                    VALUES( {$news_id}, '" . DbStr($this_news_info['lang']) . "', {$site_id},  now()                , '" . DbStr($news_comment_content) . "', {$news_comment_is_visible}, '" . DbStr($news_comment_sender) . "',  {$news_comment_parent_id} )
+                    VALUES( {$news_id}, '" . \e::db_escape($this_news_info['lang']) . "', {$site_id},  now()                , '" . \e::db_escape($news_comment_content) . "', {$news_comment_is_visible}, '" . \e::db_escape($news_comment_sender) . "',  {$news_comment_parent_id} )
                    ");
         // prn('$news_comment_parent_id='.$news_comment_parent_id);
         $_SESSION['code'] = '';
@@ -329,7 +329,7 @@ class NewsComments {
                   ORDER BY news_comment_datetime ASC
                   ";
         // prn($query);
-        $list = db_getrows($query);
+        $list = \e::db_getrows($query);
         if (count($list) == 0) {
             $this->_list = Array();
             $this->items_found = 0;
@@ -447,7 +447,7 @@ if ($news_template) {
 }
 # --------------------- draw news details - end --------------------------------
 
-$lang = DbStr($input_vars['lang']);
+$lang = \e::db_escape($input_vars['lang']);
 
 
 
@@ -456,7 +456,7 @@ $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 
 
 //------------------------ get list of languages - begin -----------------------
-$tmp = db_getrows("SELECT DISTINCT lang FROM {$table_prefix}news WHERE id={$news_id}");
+$tmp = \e::db_getrows("SELECT DISTINCT lang FROM {$table_prefix}news WHERE id={$news_id}");
 $this_news_languages = Array();
 foreach ($tmp as $tm) {
     $this_news_languages[$tm['lang']] = $tm['lang'];

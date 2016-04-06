@@ -50,7 +50,7 @@ define('email2sms',serialize(Array('%s@beeline.ua'=>'beeline','38096%s@sms.kyivs
 define('cachetime',300);
 
 
-define('custom_session_name','PHPSESSID');
+// define('custom_session_name','PHPSESSID');
 
 
 define('debug_level_show_sql_query',1);

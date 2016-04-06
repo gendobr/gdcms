@@ -4,8 +4,8 @@ $GLOBALS['main_template_name'] = '';
 
 $rel_file_path=substr($_SERVER['REQUEST_URI'],strlen(dirname($_SERVER['PHP_SELF']))+1);
 
-$filepath=realpath(local_root.'/'.$rel_file_path);
-if($filepath && strlen($filepath)>strlen(local_root)){
+$filepath=realpath(\e::config('APP_ROOT').'/'.$rel_file_path);
+if($filepath && strlen($filepath)>strlen(\e::config('APP_ROOT'))){
 
 	$arrayZips = array("text/css", "application/javascript",'image/png','image/jpeg','image/gif');
     $arrayExtensions = array(".css", ".js",'.png','.jpg','.gif');

@@ -103,7 +103,7 @@ if(   isset($input_vars['save_changes'])
  # ------------------------ list of categories - begin -------------------------
     $query="SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>=0 AND site_id={$this_page_info['site_id']} ORDER BY start ASC";
     // prn($query);
-    $tmp=db_getrows($query);
+    $tmp=\e::db_getrows($query);
     $list_of_categories=Array();
     foreach($tmp as $tm) $list_of_categories[$tm['category_id']]=str_repeat(' + ',$tm['deep']).get_langstring($tm['category_title']);
     unset($tmp,$tm);
@@ -149,7 +149,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
   <div class=label>{$text['Page_Language']}:</div>
   <div class=big>
     <select name=page_lang>".
-    draw_options($this_page_info['lang'],db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
+    draw_options($this_page_info['lang'],\e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
     ."</select>
   </div>
   </span>

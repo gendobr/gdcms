@@ -23,11 +23,11 @@ $GLOBALS['main_template_name'] = '';
 
 if (isset($input_vars['recheck'])) {
     if (rand(0, 100) < 5) {
-        db_execute("DELETE FROM {$table_prefix}oid WHERE expires >UNIX_TIMESTAMP() ");
+        \e::db_execute("DELETE FROM {$table_prefix}oid WHERE expires >UNIX_TIMESTAMP() ");
     }
-    $info = db_getonerow("SELECT * FROM {$table_prefix}oid WHERE cs='" . DbStr($input_vars['recheck']) . "' AND expires>UNIX_TIMESTAMP()");
+    $info = \e::db_getonerow("SELECT * FROM {$table_prefix}oid WHERE cs='" . \e::db_escape($input_vars['recheck']) . "' AND expires>UNIX_TIMESTAMP()");
     if(isset($_REQUEST['debug'])){
-        prn("SELECT * FROM {$table_prefix}oid WHERE cs='" . DbStr($input_vars['recheck']) . "' AND expires>UNIX_TIMESTAMP()",'=>',$info);
+        prn("SELECT * FROM {$table_prefix}oid WHERE cs='" . \e::db_escape($input_vars['recheck']) . "' AND expires>UNIX_TIMESTAMP()",'=>',$info);
     }
     if ($info) {
         exit('OK');
@@ -45,7 +45,7 @@ if (!isset($input_vars['user'])) {
 }
 // prn($input_vars);
 // check if data is valid
-$site_info = db_getonerow("SELECT salt,dir FROM {$table_prefix}site WHERE dir='" . DbStr($input_vars['site']) . "'");
+$site_info = \e::db_getonerow("SELECT salt,dir FROM {$table_prefix}site WHERE dir='" . \e::db_escape($input_vars['site']) . "'");
 
 $cs = "{$input_vars['site']}-{$site_info['salt']}";
 if (is_admin() && isset($_REQUEST['debug']))
@@ -55,7 +55,7 @@ if ($cs != $input_vars['cs'])
     exit('Invalid checksum');
 
 // check if user is logged
-$ui = db_getonerow("SELECT * FROM {$table_prefix}session WHERE user_login='" . DbStr($input_vars['user']) . "' and expires>NOW()");
+$ui = \e::db_getonerow("SELECT * FROM {$table_prefix}session WHERE user_login='" . \e::db_escape($input_vars['user']) . "' and expires>NOW()");
 // prn("SELECT * FROM {$table_prefix}session WHERE user_login='".DbStr($input_vars['user'])."' and expires>NOW()",$ui);
 if ($ui) {
     $ui['sess_data'] = unserialize($ui['sess_data']);
@@ -67,10 +67,10 @@ if ($ui) {
 
 if (isset($_POST['ul'])) {
 // get user info
-    $user_info = db_getonerow("SELECT *  FROM {$table_prefix}user WHERE user_login='" . DbStr($input_vars['ul']) . "'");
+    $user_info = \e::db_getonerow("SELECT *  FROM {$table_prefix}user WHERE user_login='" . \e::db_escape($input_vars['ul']) . "'");
     //prn($user_info);exit();
     if ($user_info) {
-        $user_info['sites'] = db_get_associated_array(
+        $user_info['sites'] = \e::db_get_associated_array(
                                 "SELECT site_id AS `key`, level AS `value`
                     FROM {$table_prefix}site_user
                     WHERE user_id='{$user_info['id']}'
@@ -111,7 +111,7 @@ if ($is_logged) {
     } else {
         $ret.="&user={$user_info['user_login']}&cs=" . rawurlencode($cs);
     }
-    db_execute("REPLACE {$GLOBALS['table_prefix']}oid(cs,expires) VALUES('$cs',UNIX_TIMESTAMP()+60)");
+    \e::db_execute("REPLACE {$GLOBALS['table_prefix']}oid(cs,expires) VALUES('$cs',UNIX_TIMESTAMP()+60)");
     if (isset($_REQUEST['debug'])) {
         echo "<a href=\"$ret&debug=yes\">$ret</a>";
     } else {

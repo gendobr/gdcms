@@ -21,7 +21,7 @@ if(strlen($category_root_ids)>0)
   for($i=0;$i<$cnt;$i++) $category_root_ids[$i]=(int)$category_root_ids[$i];
   $category_root_ids=join(',',array_unique($category_root_ids));
   $query="SELECT category_id, start, finish FROM {$table_prefix}category WHERE category_id IN($category_root_ids)";
-  $category_roots=db_getrows($query);
+  $category_roots=\e::db_getrows($query);
 }else $category_roots=Array();
 
 
@@ -84,7 +84,7 @@ $this_category->get_children("{$table_prefix}category.is_visible=1");
 
 #  ---------------------------- draw - begin -----------------------------------
   $input_vars['page']['title']   = 
-  $input_vars['page']['header']  = "Выбор категории";
+  $input_vars['page']['header']  = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
 
   $input_vars['page']['content'] = process_template('category/selector',Array(
     'parents' =>$this_category->parents

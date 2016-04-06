@@ -161,14 +161,14 @@ $lang_list=array_values($lang_list);
 $template_name='template_category_browse';
 
 
-$_template = sites_root.'/'.$this_site_info['dir']."/{$template_name}_{$category_id}.html";
+$_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/{$template_name}_{$category_id}.html";
 if(!is_file($_template)){
     $_template='';
 }
 if(!$_template){
     $prnts=array_reverse($categoryViewModel->parents);
     foreach ($prnts as $tmp) {
-        $_template = sites_root.'/'.$this_site_info['dir']."/{$template_name}_{$tmp['category_id']}.html";
+        $_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/{$template_name}_{$tmp['category_id']}.html";
         if(is_file($_template)){
             break;
         }else{

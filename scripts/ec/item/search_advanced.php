@@ -26,20 +26,20 @@ $this_site_info['title']=get_langstring($this_site_info['title'],$lang);
 # ------------------- get site info - end --------------------------------------
 
 # --------------------------- get site template - begin ------------------------
-$custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+$custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
 if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 # --------------------------- get site template - end --------------------------
 
 
-include(script_root.'/ec/item/get_public_list.php');
-include(script_root.'/ec/item/adjust_public_list.php');
+include(\e::config('SCRIPT_ROOT').'/ec/item/get_public_list.php');
+include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
 //prn($list_of_ec_items);
 
 
 
 
 # -------------------- get list of page languages - begin ----------------------
-$tmp=db_getrows("SELECT DISTINCT ec_item_lang as lang
+$tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
                      FROM {$table_prefix}ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
@@ -75,19 +75,18 @@ $ec_item_template_search = site_get_template($this_site_info,'template_ec_item_s
 # search for template of item list
 $ec_item_template_list = site_get_template($this_site_info,'template_ec_item_list');
 
-// prn(checkStr(draw_options((isset($input_vars['ec_producer_id'])?$input_vars['ec_producer_id']:''), db_getrows("SELECT ec_producer_id, ec_producer_title FROM {$table_prefix}ec_producer WHERE site_id={$site_id} ORDER BY ec_producer_title"))));
 $category=Array();
-$tmp=db_getrows("SELECT ec_category_id, ec_category_title,deep FROM {$table_prefix}ec_category WHERE site_id={$site_id} ORDER BY `start`");
+$tmp=\e::db_getrows("SELECT ec_category_id, ec_category_title,deep FROM {$table_prefix}ec_category WHERE site_id={$site_id} ORDER BY `start`");
 foreach($tmp as $tm) {
     $category[$tm['ec_category_id']]=str_repeat('...', $tm['deep']).get_langstring($tm['ec_category_title']);
 }
 
 $extrafld='';
 if(isset($input_vars['ec_category_id'])) {
-    $cat=db_getonerow("SELECT * FROM {$table_prefix}ec_category WHERE ec_category_id=".( (int)$input_vars['ec_category_id'] ));
+    $cat=\e::db_getonerow("SELECT * FROM {$table_prefix}ec_category WHERE ec_category_id=".( (int)$input_vars['ec_category_id'] ));
     //prn($cat);
     if($cat) {
-        $pa=db_getrows(
+        $pa=\e::db_getrows(
                 "SELECT *
              FROM {$table_prefix}ec_category_item_field
              WHERE site_id={$cat['site_id']}
@@ -147,7 +146,7 @@ $form=Array(
         'ec_item_price_min'=>(isset($input_vars['ec_item_price_min'])?$input_vars['ec_item_price_min']:''),
         'ec_item_price_max'=>(isset($input_vars['ec_item_price_max'])?$input_vars['ec_item_price_max']:''),
 
-        'ec_producer_id'=>draw_options((isset($input_vars['ec_producer_id'])?$input_vars['ec_producer_id']:''), db_getrows("SELECT ec_producer_id, ec_producer_title FROM {$table_prefix}ec_producer WHERE site_id={$site_id} ORDER BY ec_producer_title")),
+        'ec_producer_id'=>draw_options((isset($input_vars['ec_producer_id'])?$input_vars['ec_producer_id']:''), \e::db_getrows("SELECT ec_producer_id, ec_producer_title FROM {$table_prefix}ec_producer WHERE site_id={$site_id} ORDER BY ec_producer_title")),
         'ec_producer_id_set'=>isset($input_vars['ec_producer_id']) && $input_vars['ec_producer_id']>0,
 
         'ec_category_id'=>draw_options((isset($input_vars['ec_category_id'])?$input_vars['ec_category_id']:''), $category),

@@ -48,7 +48,7 @@ if(isset($input_vars['news_subscriber_name']) && isset($input_vars['news_subscri
     }elseif(!is_valid_email($input_vars['news_subscriber_email'])){
         $data_is_correct=false;
         $message.='<div>'.$txt['ERROR_email_has_invalid_format'].'</div>';
-    }elseif(db_getonerow("select news_subscriber_id from {$table_prefix}news_subscriber WHERE news_subscriber_is_valid AND news_subscriber_email='".DbStr($input_vars['news_subscriber_email'])."'")){
+    }elseif(\e::db_getonerow("select news_subscriber_id from {$table_prefix}news_subscriber WHERE news_subscriber_is_valid AND news_subscriber_email='".\e::db_escape($input_vars['news_subscriber_email'])."'")){
         $data_is_correct=false;
         $message.='<div>'.$txt['You_have_already_subscribed'].'</div>';
     }
@@ -67,21 +67,21 @@ if(isset($input_vars['news_subscriber_name']) && isset($input_vars['news_subscri
         $code=  md5(time().session_id().  rand(0, 10000));
 
         // check if code is unique
-        while(db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'")){
+        while(\e::db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'")){
             $code=  md5(time().session_id().  rand(0, 10000));
         }
 
         $confirmation_url=site_root_URL."/index.php?action=news_subscription/confirmation&site_id={$site_id}&code=".$code;
 
-        if(db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_email='".DbStr($input_vars['news_subscriber_email'])."'")){
+        if(\e::db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_email='".\e::db_escape($input_vars['news_subscriber_email'])."'")){
             // re-send confirmation link
             // update the subscriber
             $query="UPDATE {$table_prefix}news_subscriber
                     SET news_subscriber_code='{$code}'
                     WHERE site_id=$site_id
-                        AND news_subscriber_email='".  DbStr($input_vars['news_subscriber_email'])."'
+                        AND news_subscriber_email='".  \e::db_escape($input_vars['news_subscriber_email'])."'
                     ";
-            db_execute($query);
+            \e::db_execute($query);
             $message.='<div>'.$txt['Resending_confirmation_code'].'</div>';
         }else{
             // insert new subscriber
@@ -93,14 +93,14 @@ if(isset($input_vars['news_subscriber_name']) && isset($input_vars['news_subscri
                     news_subscriber_date,
                     site_id
                     ) VALUES (
-                    '".  DbStr($input_vars['news_subscriber_name'])."',
-                    '".  DbStr($input_vars['news_subscriber_email'])."',
+                    '".  \e::db_escape($input_vars['news_subscriber_name'])."',
+                    '".  \e::db_escape($input_vars['news_subscriber_email'])."',
                     '{$code}',
                     0,
                     NOW(),
                     $site_id
                 )";
-            db_execute($query);
+            \e::db_execute($query);
         }
 
         // send email to confirm

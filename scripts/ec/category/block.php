@@ -49,7 +49,7 @@ $category_info = false;
 if (isset($input_vars['ec_category_id'])) {
     $ec_category_id = (int) $input_vars['ec_category_id'];
     if ($ec_category_id > 0) {
-        $category_info = db_getonerow("SELECT ec_category_id, start, finish FROM {$GLOBALS['table_prefix']}ec_category WHERE ec_category_id={$ec_category_id} and site_id=" . $site_id . "");
+        $category_info =\e::db_getonerow("SELECT ec_category_id, start, finish FROM {$GLOBALS['table_prefix']}ec_category WHERE ec_category_id={$ec_category_id} and site_id=" . $site_id . "");
     }
 }
 
@@ -71,7 +71,7 @@ if ($category_info) {
               having visible>0
               order by  ch.start";
     // prn($query);
-    $caterory_list = db_getrows($query);
+    $caterory_list = \e::db_getrows($query);
     // ------------------ get list of categories - end -------------------------
 } else {
     // ------------------ get list of categories - begin -----------------------
@@ -86,7 +86,7 @@ if ($category_info) {
               having visible>0
               order by  ch.start";
     // prn($query);
-    $caterory_list = db_getrows($query);
+    $caterory_list = \e::db_getrows($query);
     // ------------------ get list of categories - end -------------------------
 }
 

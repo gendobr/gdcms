@@ -12,14 +12,18 @@ if (!function_exists('db_get_template')) {
 }
 
 //---------------------- load language - begin ---------------------------------
-if (isset($input_vars['interface_lang']) && strlen($input_vars['interface_lang']) > 0)
+if (isset($input_vars['interface_lang']) && strlen($input_vars['interface_lang']) > 0) {
     $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
+}
+if (!isset($input_vars['lang'])) {
     $input_vars['lang'] = $_SESSION['lang'];
-if (strlen($input_vars['lang']) == 0)
+}
+if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = $_SESSION['lang'];
-if (strlen($input_vars['lang']) == 0)
+}
+if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = default_language;
+}
 $input_vars['lang'] = get_language('lang');
 $txt = load_msg($input_vars['lang']);
 //---------------------- load language - end -----------------------------------
@@ -36,8 +40,9 @@ if (isset($input_vars['site_id'])) {
 }
 $this_site_info = get_site_info($site, $lang);
 
-if (checkInt($this_site_info['id']) <= 0)
+if (checkInt($this_site_info['id']) <= 0) {
     die($txt['Gallery_not_found']);
+}
 //------------------- site info - end ------------------------------------------
 
 $_template = false;
@@ -57,8 +62,9 @@ $start = isset($input_vars['start']) ? (int) $input_vars['start'] : 0;
 $rows = isset($input_vars['rows']) ? (int) $input_vars['rows'] : 0;
 $orderBy = isset($input_vars['orderBy']) ? $input_vars['orderBy'] : '';
 
-if ($rows <= 0)
+if ($rows <= 0) {
     $rows = rows_per_page;
+}
 $images = new GalleryImages($lang, $this_site_info, $start, $rozdilizformy, $keywords);
 $images->rowsPerPage = $rows;
 if ($orderBy) {

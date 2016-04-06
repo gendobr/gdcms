@@ -56,7 +56,7 @@ run('site/menu');
           GROUP BY ec_producer.ec_producer_id
           ORDER BY ec_producer.ec_producer_title ASC
   ";
-  $list_of_producers=db_getrows($query);
+  $list_of_producers=\e::db_getrows($query);
   //prn($query,$list_of_producers);
 # --------------------------- get list of producers - end ----------------------
 
@@ -64,15 +64,15 @@ run('site/menu');
 
 
 
-include(script_root.'/ec/item/get_public_list.php');
-include(script_root.'/ec/item/adjust_public_list.php');
+include(\e::config('SCRIPT_ROOT').'/ec/item/get_public_list.php');
+include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
 
 //prn($list_of_ec_items);
 
 //prn($pages);
 
 //# -------------------- get list of page languages - begin ----------------------
-//    $tmp=db_getrows("SELECT DISTINCT ec_item_lang as lang
+//    $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
 //                     FROM {$table_prefix}ec_item  AS ec_item
 //                     WHERE ec_item.site_id={$site_id}
 //                       AND ec_item.ec_item_cense_level&".ec_item_show."");

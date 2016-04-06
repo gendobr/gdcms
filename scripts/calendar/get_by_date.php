@@ -56,7 +56,7 @@ $query="SELECT *
         WHERE Y={$y} AND m={$m} AND d={$d} AND site_id={$this_site_info['id']}
         ORDER BY h ASC, i ASC;";
 //prn($query);
-$event_days=db_getrows($query);
+$event_days=\e::db_getrows($query);
 //prn($event_days);prn($event_days);
 // ------------------- filter time - begin -------------------------------------
 if($h>=0){
@@ -143,7 +143,7 @@ if(count($event_ids)>0 &&  isset($input_vars['category_id'])){
                       AND pa.start <= ch.start AND ch.finish <= pa.finish
             )
             AND event_id IN(".join(',',$ids).");";
-    $tmp = db_getrows($query);
+    $tmp = \e::db_getrows($query);
     $checked_id=Array();
     foreach($tmp as $tm){
         $checked_id[$tm['event_id']]=$tm['event_id'];
@@ -159,7 +159,7 @@ if(count($event_ids)>0 &&  isset($input_vars['category_id'])){
 // prn($event_ids);
 
 if(count($event_ids)>0){
-    $event_list = db_getrows("select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$event_ids).")");
+    $event_list = \e::db_getrows("select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$event_ids).")");
 }else{
     $event_list=Array();
 }

@@ -40,7 +40,7 @@ if($user_level==0)
 
 # ------------------- page info (optional) - begin -----------------------------
   $page_id=isset($input_vars['page_id'])?((int)$input_vars['page_id']):0;
-  $this_page_info=db_getonerow("SELECT * FROM {$table_prefix}page WHERE id={$page_id} AND site_id={$site_id}");
+  $this_page_info=\e::db_getonerow("SELECT * FROM {$table_prefix}page WHERE id={$page_id} AND site_id={$site_id}");
   $this_page_info['id'] = checkInt($this_page_info['id']);
   //prn('$this_page_info',$this_page_info);
 # ------------------- page info (optional) - end -------------------------------
@@ -52,7 +52,7 @@ if($user_level==0)
     
     //-------------------- get existing page languages - begin -----------------
       $query="SELECT lang FROM {$table_prefix}page WHERE id={$page_id}";
-      $tmp=db_getrows($query);
+      $tmp=\e::db_getrows($query);
       // prn($tmp);
       $existins_langs=Array(0=>'');
       foreach($tmp as $lng) $existins_langs[]=$lng['lang'];
@@ -61,7 +61,7 @@ if($user_level==0)
     //-------------------- get available languages - begin ---------------------
       $query="SELECT id FROM {$table_prefix}languages WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."') LIMIT 0,1";
       // prn($query);
-      $tmp=db_getonerow($query);
+      $tmp=\e::db_getonerow($query);
       // prn($tmp);
     //-------------------- get available languages - end -----------------------
     if(strlen($tmp['id'])>0)
@@ -69,19 +69,19 @@ if($user_level==0)
       $query = "INSERT INTO {$table_prefix}page(id, lang, site_id, title, cense_level, last_change_date, is_under_construction,path	)
                 values($page_id, '{$tmp['id']}', $site_id, '{$text['New_page']}', {$user_level}, NOW(), 1,''	)";
       // prn($query);
-      db_execute($query);
+      \e::db_execute($query);
     }
   }
   else
   {
     // create new page
     $query = "SELECT max(id) AS newid FROM {$table_prefix}page";
-    $newid=db_getonerow($query);
+    $newid=\e::db_getonerow($query);
     $newid=1+(int)$newid['newid'];
 
     $query = "INSERT INTO {$table_prefix}page(id, lang, site_id, title, cense_level, last_change_date, is_under_construction,path	)
               values($newid, '".default_language."', $site_id, '{$text['New_page']}', {$user_level}, NOW(), 1,	'')";
-    db_execute($query);
+    \e::db_execute($query);
   }
 # -------------------- add page - end ------------------------------------------
 

@@ -49,10 +49,10 @@ if($user_cense_level==0)
       {
          # --------------------- update record - begin -------------------------
          $tmp=Array();
-         foreach($val as $fl=>$va) $tmp[]="$fl='".DbStr($va)."'";
+         foreach($val as $fl=>$va) $tmp[]="$fl='".\e::db_escape($va)."'";
          $query="UPDATE {$table_prefix}ec_order SET ".join(',',$tmp)." WHERE ec_order_id=$ec_order_id LIMIT 1";
          // prn($query);
-         db_execute($query);
+         \e::db_execute($query);
          $affected_rows=mysql_affected_rows();
          //prn($query,$affected_rows);
 
@@ -184,7 +184,7 @@ if($user_cense_level==0)
     {
         $query=join(',',$order_ids);
         $query="SELECT * FROM {$table_prefix}ec_cart WHERE ec_order_id IN($query) AND site_id=$site_id";
-        $tmp=db_getrows($query);
+        $tmp=\e::db_getrows($query);
         //prn($tmp);
         $order_items=Array();
         foreach($order_ids as $oid) $order_items[$oid]=Array();

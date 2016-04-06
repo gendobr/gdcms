@@ -158,7 +158,7 @@ $rep->field['category_title_short'] = new db_record_editor_field_string(
 # is_part_of            bigint(20)
 if ($this_category->info['start'] > 0) {
     $list_of_categories = "SELECT * FROM {$table_prefix}category WHERE site_id={$site_id} ORDER BY start";
-    $list_of_categories = db_getrows($list_of_categories);
+    $list_of_categories = \e::db_getrows($list_of_categories);
     //prn($list_of_categories);
     $tmp = Array();
     foreach ($list_of_categories as $ct)
@@ -207,8 +207,8 @@ $rep->set_primary_key('category_id', $category_id);
 #------------------------------ pre-process - begin ----------------------------
 if ($rep->form_is_posted()) {
     // check if category_code is unique
-    $query = "SELECT count(*) as n FROM {$table_prefix}category WHERE category_id<>{$category_id} AND category_code='" . DbStr($rep->field['category_code']->value) . "'";
-    $n_category_code = db_getonerow($query);
+    $query = "SELECT count(*) as n FROM {$table_prefix}category WHERE category_id<>{$category_id} AND category_code='" . \e::db_escape($rep->field['category_code']->value) . "'";
+    $n_category_code =\e::db_getonerow($query);
     if ($n_category_code['n'] > 0) {
         $rep->field['category_code']->posted_data = $rep->field['category_code']->value . "-{$category_id}";
         $rep->field['category_code']->set_value($rep->field['category_code']->posted_data);
@@ -229,7 +229,7 @@ if ($success) {
                  WHERE ch.category_id={$category_id} and ch.site_id={$site_id} and pa.site_id={$site_id}
                    and pa.start<=ch.start and ch.finish<=pa.finish
                  order by pa.start asc";
-        $path = db_getrows($query);
+        $path = \e::db_getrows($query);
         // prn($path);
         $tmp = Array();
         foreach ($path as $pa) {
@@ -237,10 +237,10 @@ if ($success) {
         }
         $path = join('/', $tmp);
         $query = "UPDATE {$table_prefix}category
-                  SET path='" . DbStr($path) . "'
+                  SET path='" . \e::db_escape($path) . "'
                   WHERE category_id={$category_id}";
         //prn($query);
-        db_execute($query);
+        \e::db_execute($query);
     }
 
     #  ----------------------- move branch - begin ------------------------------
@@ -253,7 +253,7 @@ if ($success) {
             $query = "UPDATE {$table_prefix}category
                     SET is_part_of=" . ((int) $this_category->info['is_part_of']) . "
                     WHERE category_id={$category_id}";
-            db_execute($query);
+            \e::db_execute($query);
         }
     }
     #  ----------------------- move branch - end -------------------------------
@@ -264,7 +264,7 @@ if ($success) {
              from {$table_prefix}category pa, {$table_prefix}category ch
              WHERE pa.category_id={$category_id} and ch.site_id={$site_id} and pa.site_id={$site_id}
                and pa.start<=ch.start and ch.finish<=pa.finish";
-    $child_or_self = db_getrows($query);
+    $child_or_self = \e::db_getrows($query);
     foreach ($child_or_self as $ch) {
         re_create_path($ch['category_id'], $site_id);
     }
@@ -285,9 +285,9 @@ if ($success) {
 
     $query = "UPDATE {$table_prefix}category
               SET date_last_changed=now(),
-                  date_lang_update='" . DbStr($date_lang_update) . "'
+                  date_lang_update='" . \e::db_escape($date_lang_update) . "'
               WHERE category_id={$category_id}";
-    db_execute($query);
+    \e::db_execute($query);
 
     // TODO re-create paths of the children
     # ----------------- re-create modification time - end --------------
@@ -326,9 +326,9 @@ if ($success) {
             img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", gallery_small_image_width, gallery_small_image_height, $type = "circumscribe");
             $category_icon=['small'=>"{$relative_dir}/{$smallFileName}", "full"=>"{$relative_dir}/{$newFileName}"];
             $query = "UPDATE {$table_prefix}category
-                      SET category_icon='" . DbStr(json_encode($category_icon)) . "'
+                      SET category_icon='" . \e::db_escape(json_encode($category_icon)) . "'
                       WHERE category_id={$category_id}";
-            db_execute($query);
+            \e::db_execute($query);
             // ---------------- upload new icons - end -------------------------
         }
     }
@@ -356,7 +356,7 @@ foreach ($cnt as $i) {
 #prn($this_category);
 # -------------------- get category parents - end ---------------------------
 # -------------------- get name of the neares parent - begin ----------------
-$this_category->info['is_part_of_name'] = db_getonerow("SELECT category_title FROM {$table_prefix}category WHERE category_id=" . ( (int) $this_category->info['is_part_of'] ));
+$this_category->info['is_part_of_name'] =\e::db_getonerow("SELECT category_title FROM {$table_prefix}category WHERE category_id=" . ( (int) $this_category->info['is_part_of'] ));
 $this_category->info['is_part_of_name'] = $this_category->info['is_part_of_name']['category_title'];
 #prn($this_category->info['is_part_of_name']);
 # -------------------- get name of the neares parent - end ------------------
@@ -417,7 +417,7 @@ $input_vars['page_content'] = "
 
 if (isset($form['elements']['is_part_of'])) {
     $input_vars['page_content'].=
-            "<div class=label>{$form['elements']['is_part_of']->label}</div>
+       "<div class=label>{$form['elements']['is_part_of']->label}</div>
   	<div class=big>
             <select name='{$form['elements']['is_part_of']->form_element_name}' id='{$form['elements']['is_part_of']->form_element_name}'>
                 <option value=''></option>
@@ -526,8 +526,8 @@ $input_vars['page_content'].="
 $cnt = array_keys($this_category->parents);
 foreach ($cnt as $i) {
     $this_category->parents[$i] = adjust($this_category->parents[$i], $this_category->id);
+    //prn($this_category->parents[$i]);
 }
-
 $this_category->info = adjust($this_category->info, $this_category->id);
 #  ---------------------------- adjust nodes - end -----------------------------
 // enable TinyMCE or markitup
@@ -555,7 +555,7 @@ if ($input_vars['aed'] == 1) {
            <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/markitup/jquery.markitup.js\"></script>
            <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/markitup/sets/html/set.js\"></script>
            <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/markitup.js\"></script>
-           <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/jquery.ns-autogrow.min.js\"></script>
+           <!-- <script type=\"text/javascript\" charset=\"utf-8\" src=\"./scripts/lib/jquery.ns-autogrow.min.js\"></script> -->
            <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/markitup/skins/simple/style.css\" />
            <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/markitup/sets/html/style.css\" />
 
@@ -566,7 +566,7 @@ if ($input_vars['aed'] == 1) {
               $(function(){
                   init_links();
                   $('textarea.wysiswyg').markItUp(mySettings);
-                  $('textarea.wysiswyg').autogrow({vertical: true, horizontal: false});
+                  //$('textarea.wysiswyg').autogrow({vertical: true, horizontal: false});
               });
            </script>
     ";
@@ -630,7 +630,7 @@ foreach ($this_category->parents as $row) {
          <a href=# style='margin-left:-25px;' class=context_menu_link onclick=\"report_change_state('cm{$row['category_id']}'); return false;\"><img src=img/context_menu.gif border=0 width=20 height=15></a>
          <a href=\"{$row['URL']}\" title=\"{$row['category_title']}\" "
             . ( ($row['is_visible'] == '0') ? " style='color:silver;'" : '' ) . '>'
-            . ($row['category_code'] ? $row['category_code'] : $row['category_id']) . " &nbsp;&nbsp;&nbsp; {$row['title_short']}</a><br/>
+            . ($row['category_code'] ? $row['category_code'] : $row['category_id']) . " &nbsp;&nbsp;&nbsp; {$row['category_title_short']}</a><br/>
          <a href='{$parent_url}' style='color:silver;'>" . checkStr($parent_url) . "</a>
          <br>
           ";
@@ -653,7 +653,7 @@ $tor.="
 <div style=\"padding-left:{$category['padding']}px;\">
     <a href=\"#\" style='margin-left:-25px;' class=context_menu_link onclick=\"report_change_state('cm{$category['category_id']}'); return false;\"><img src=img/context_menu.gif border=0 width=20 height=15></a>
     <span title=\"{$category['category_title']}\" style='" . (($category['is_visible'] == 0) ? " color:silver;" : '') . ";font-size:150%;'>
-    " . ($category['category_code'] ? $category['category_code'] : $category['category_id']) . " &nbsp;&nbsp;&nbsp; {$category['title_short']}<br/>
+    " . ($category['category_code'] ? $category['category_code'] : $category['category_id']) . " &nbsp;&nbsp;&nbsp; {$category['category_title_short']}<br/>
     <a style='font-size:80%;color:silver;' href='{$this_category_url}'>" . checkStr($this_category_url) . "</a>
     </span>
     <br>

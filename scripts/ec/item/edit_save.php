@@ -16,7 +16,7 @@ $lng = $input_vars['ec_item_lang_new'];
 if ($lng != $this_ec_item_info['ec_item_lang']) {
     //-------------------- get existing page languages - begin -----------------
     $query = "SELECT ec_item_lang FROM {$table_prefix}ec_item WHERE ec_item_id={$this_ec_item_info['ec_item_id']}";
-    $tmp = db_getrows($query);
+    $tmp = \e::db_getrows($query);
     $existins_langs = Array();
     foreach ($tmp as $ln) {
         $existins_langs[] = $ln['ec_item_lang'];
@@ -27,7 +27,7 @@ if ($lng != $this_ec_item_info['ec_item_lang']) {
     $query = "SELECT id
                 FROM {$table_prefix}languages
                 WHERE is_visible=1 AND id NOT IN('" . join("','", $existins_langs) . "')";
-    $tmp = db_getrows($query);
+    $tmp = \e::db_getrows($query);
     $avail_lang = Array();
     foreach ($tmp as $ln) {
         $avail_lang[] = $ln['id'];
@@ -82,17 +82,7 @@ $this_ec_item_info['ec_item_amount'] = (int) $input_vars['ec_item_amount'];
 #}
 // check if other items has the same UID
 $this_ec_item_info['ec_item_uid'] = trim($input_vars['ec_item_uid']);
-//$n_uids=db_getonerow(
-//        "SELECT count(*) as n_uids
-//         FROM {$table_prefix}ec_item
-//         WHERE ec_item_uid='".DbStr($this_ec_item_info['ec_item_uid'])."'
-//           and site_id={$this_ec_item_info['site_id']}
-//           and ec_item_id<>{$this_ec_item_info['ec_item_id']}
-//        ");
-//if($n_uids['n_uids']>0) {
-//    $message.="{$text['ERROR']} : {$this_ec_item_info['ec_item_uid']} ".text('Set_other_UID_please')."<br>\n";
-//    $all_is_ok=false;
-//}
+
 # ------------------------ ec_item_tags - begin --------------------------------
 $this_ec_item_info['ec_item_tags'] = trim($input_vars['ec_item_tags']);
 if (strlen($this_ec_item_info['ec_item_tags']) > 0) {
@@ -129,11 +119,11 @@ if (strlen($this_ec_item_info['ec_item_code']) == 0) {
 }
 // ec_item_code must be unique
 $query = "SELECT * from  {$GLOBALS['table_prefix']}ec_item "
-        . "WHERE ec_item_code='" . DbStr($this_ec_item_info['ec_item_code']) . "'"
+        . "WHERE ec_item_code='" . \e::db_escape($this_ec_item_info['ec_item_code']) . "'"
         . " AND ec_item_id<>{$this_ec_item_info['ec_item_id']}";
 // prn($query);
 // prn($input_vars);
-$ec_item_code_duplicate = db_getonerow($query);
+$ec_item_code_duplicate =\e::db_getonerow($query);
 if ($ec_item_code_duplicate) {
     $this_ec_item_info['ec_item_code'].='-' . $this_ec_item_info['ec_item_id'] . '-' . $this_ec_item_info['ec_item_lang'];
 }
@@ -163,7 +153,7 @@ if ($all_is_ok) {
 
                 # create directory
                 $relative_dir = date('Y') . '/' . date('m');
-                $site_root_dir = sites_root . '/' . $this_site_info['dir'];
+                $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
                 path_create($site_root_dir, "/gallery/$relative_dir/");
 
                 # copy uploaded file
@@ -184,7 +174,7 @@ if ($all_is_ok) {
     //
     # ---------------- do file upload - end ---------------------------------
     # ---------------- delete files - begin ------------------------------------
-    $site_root_dir = sites_root . '/' . $this_site_info['dir'];
+    $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
     foreach ($input_vars as $key => $val) {
         if (preg_match('/^ec_item_imgdelete/', $key)) {
             $nimage = str_replace('ec_item_imgdelete', '', $key);
@@ -203,7 +193,7 @@ if ($all_is_ok) {
     }
     # ---------------- delete files - end --------------------------------------
     # ---------------- reorder images begin - begin ----------------------------
-    $site_root_dir = sites_root . '/' . $this_site_info['dir'];
+    $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
     //prn($input_vars);
     foreach ($input_vars as $key => $val) {
         if (preg_match('/^ec_item_imgup/', $key)) {
@@ -245,52 +235,52 @@ if ($all_is_ok) {
                    SET
                       ec_item_lang='{$lng}',
 	              site_id='{$this_ec_item_info['site_id']}',
-                      ec_item_title='" . DbStr($this_ec_item_info['ec_item_title']) . "',
-                      ec_item_mark='" . DbStr($this_ec_item_info['ec_item_mark']) . "',
-                      ec_item_content='" . DbStr($this_ec_item_info['ec_item_content']) . "',
+                      ec_item_title='" . \e::db_escape($this_ec_item_info['ec_item_title']) . "',
+                      ec_item_mark='" . \e::db_escape($this_ec_item_info['ec_item_mark']) . "',
+                      ec_item_content='" . \e::db_escape($this_ec_item_info['ec_item_content']) . "',
                       ec_item_cense_level='{$this_ec_item_info['ec_item_cense_level']}',
-                      ec_item_abstract='" . DbStr($this_ec_item_info['ec_item_abstract']) . "',
-                      ec_item_tags='" . DbStr($this_ec_item_info['ec_item_tags']) . "',
+                      ec_item_abstract='" . \e::db_escape($this_ec_item_info['ec_item_abstract']) . "',
+                      ec_item_tags='" . \e::db_escape($this_ec_item_info['ec_item_tags']) . "',
                       ec_item_price={$this_ec_item_info['ec_item_price']},
-                      ec_item_currency='" . DbStr($this_ec_item_info['ec_item_currency']) . "',
+                      ec_item_currency='" . \e::db_escape($this_ec_item_info['ec_item_currency']) . "',
                       ec_item_amount={$this_ec_item_info['ec_item_amount']},
                       ec_producer_id={$this_ec_item_info['ec_producer_id']},
                       ec_category_id={$this_ec_item_info['ec_category_id']},
-                      ec_item_code='" . DbStr($this_ec_item_info['ec_item_code']) . "',
-                      ec_item_onnullamount='" . DbStr($this_ec_item_info['ec_item_onnullamount']) . "',
-                      ec_item_uid='" . DbStr($this_ec_item_info['ec_item_uid']) . "',
-                      ec_item_material='" . DbStr($this_ec_item_info['ec_item_material']) . "',
+                      ec_item_code='" . \e::db_escape($this_ec_item_info['ec_item_code']) . "',
+                      ec_item_onnullamount='" . \e::db_escape($this_ec_item_info['ec_item_onnullamount']) . "',
+                      ec_item_uid='" . \e::db_escape($this_ec_item_info['ec_item_uid']) . "',
+                      ec_item_material='" . \e::db_escape($this_ec_item_info['ec_item_material']) . "',
                       ec_item_size='{$this_ec_item_info['ec_item_size'][0]}x{$this_ec_item_info['ec_item_size'][1]}x{$this_ec_item_info['ec_item_size'][2]} {$this_ec_item_info['ec_item_size'][3]}',
                       ec_item_weight='{$this_ec_item_info['ec_item_weight'][0]} {$this_ec_item_info['ec_item_weight'][1]}',
-                      ec_item_img='" . DbStr($ec_item_img) . "',
+                      ec_item_img='" . \e::db_escape($ec_item_img) . "',
                       cache_datetime='2001-01-01 00:00:00',
-                      ec_item_variants='" . DbStr($this_ec_item_info['ec_item_variants']) . "',
+                      ec_item_variants='" . \e::db_escape($this_ec_item_info['ec_item_variants']) . "',
                       ec_item_ordering={$this_ec_item_info['ec_item_ordering']}
 
            WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
         //prn(htmlspecialchars($query));
         //
-        db_execute($query);
+        \e::db_execute($query);
 
         // ------------- update language in related tables - begin -------------
         if ($this_ec_item_info['ec_item_lang'] != $lng) {
             // {$GLOBALS['table_prefix']}ec_item_comment
             $query = "UPDATE {$table_prefix}ec_item_comment SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
-            db_execute($query);
+            \e::db_execute($query);
 
             // {$GLOBALS['table_prefix']}ec_item_variant
             $query = "UPDATE {$table_prefix}ec_item_variant SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
-            db_execute($query);
+            \e::db_execute($query);
 
             // {$GLOBALS['table_prefix']}ec_category_item_field_value
             $query = "UPDATE {$table_prefix}ec_category_item_field_value SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
-            db_execute($query);
+            \e::db_execute($query);
         }
         // ------------- update language in related tables - end ---------------
         $this_ec_item_info['ec_item_lang'] = $lng;
     } else {
         $query = "SELECT max(ec_item_id) as newid FROM {$table_prefix}ec_item";
-        $newid = db_getonerow($query);
+        $newid =\e::db_getonerow($query);
         //prn($newid);
         $this_ec_item_info['ec_item_id'] = $newid['newid'] + 1;
         if (!isset($this_ec_item_info['ec_item_img'])) {
@@ -326,48 +316,48 @@ if ($all_is_ok) {
                            {$this_ec_item_info['ec_item_id']},
 	                   '{$lng}',
 	                   '{$this_ec_item_info['site_id']}',
-	                   '" . DbStr($this_ec_item_info['ec_item_title']) . "',
-	                   '" . DbStr($this_ec_item_info['ec_item_content']) . "',
+	                   '" . \e::db_escape($this_ec_item_info['ec_item_title']) . "',
+	                   '" . \e::db_escape($this_ec_item_info['ec_item_content']) . "',
 	                   '{$this_ec_item_info['ec_item_cense_level']}',
 	                   '" . $this_ec_item_info['ec_item_last_change_date'] . "',
-	                   '" . DbStr($this_ec_item_info['ec_item_abstract']) . "',
-	                   '" . DbStr($this_ec_item_info['ec_item_tags']) . "',
+	                   '" . \e::db_escape($this_ec_item_info['ec_item_abstract']) . "',
+	                   '" . \e::db_escape($this_ec_item_info['ec_item_tags']) . "',
                            {$this_ec_item_info['ec_item_price']},
-	                   '" . DbStr($this_ec_item_info['ec_item_currency']) . "',
+	                   '" . \e::db_escape($this_ec_item_info['ec_item_currency']) . "',
                            {$this_ec_item_info['ec_item_amount']},
                            {$this_ec_item_info['ec_producer_id']},
                            {$this_ec_item_info['ec_category_id']},
-	                   '" . DbStr($this_ec_item_info['ec_item_onnullamount']) . "',
-                           '" . DbStr($this_ec_item_info['ec_item_uid']) . "',
-                           '" . DbStr(join("\n", $this_ec_item_info['ec_item_img'])) . "',
+	                   '" . \e::db_escape($this_ec_item_info['ec_item_onnullamount']) . "',
+                           '" . \e::db_escape($this_ec_item_info['ec_item_uid']) . "',
+                           '" . \e::db_escape(join("\n", $this_ec_item_info['ec_item_img'])) . "',
                            '{$this_ec_item_info['ec_item_size'][0]}x{$this_ec_item_info['ec_item_size'][1]}x{$this_ec_item_info['ec_item_size'][2]} {$this_ec_item_info['ec_item_size'][3]}',
                            '{$this_ec_item_info['ec_item_weight'][0]} {$this_ec_item_info['ec_item_weight'][1]}',
-                           '" . DbStr($this_ec_item_info['ec_item_material']) . "',
-                           '" . DbStr($this_ec_item_info['ec_item_variants']) . "',
+                           '" . \e::db_escape($this_ec_item_info['ec_item_material']) . "',
+                           '" . \e::db_escape($this_ec_item_info['ec_item_variants']) . "',
                            {$this_ec_item_info['ec_item_ordering']},
-                           '" . DbStr($this_ec_item_info['ec_item_code']) . "'
+                           '" . \e::db_escape($this_ec_item_info['ec_item_code']) . "'
 	               )
            ";
         //prn($query);
         // ec_item_mark,
         // '".DbStr($this_ec_item_info['ec_item_mark'])."',
-        db_execute($query);
+        \e::db_execute($query);
         $this_ec_item_info['ec_item_lang'] = $lng;
     }
 
     # ---------------- update tags - begin -------------------------------------
-    db_execute("DELETE FROM {$table_prefix}ec_item_tags WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
+    \e::db_execute("DELETE FROM {$table_prefix}ec_item_tags WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
     $tmp = preg_split('/,|;/', $this_ec_item_info['ec_item_tags']);
     $query = Array();
     foreach ($tmp as $tag) {
         $tag = trim($tag);
         if (strlen($tag) > 0) {
-            $query[] = "({$this_ec_item_info['ec_item_id']},'" . DbStr($tag) . "',{$this_ec_item_info['site_id']})";
+            $query[] = "({$this_ec_item_info['ec_item_id']},'" . \e::db_escape($tag) . "',{$this_ec_item_info['site_id']})";
         }
     }
     if (count($query) > 0) {
         $query = "INSERT INTO {$table_prefix}ec_item_tags(ec_item_id,ec_item_tag,site_id) values " . join(',', $query);
-        db_execute($query);
+        \e::db_execute($query);
     }
     # ---------------- update tags - end ---------------------------------------
     # ---------------- save variants - begin -----------------------------------
@@ -437,7 +427,7 @@ if ($all_is_ok) {
         // prn($ec_item_variants);
         // exit();
         // extract old variants
-        $tmp = db_getrows("SELECT * FROM {$table_prefix}ec_item_variant
+        $tmp = \e::db_getrows("SELECT * FROM {$table_prefix}ec_item_variant
                                     WHERE ec_item_id={$this_ec_item_info['ec_item_id']}
                                       AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'");
         $old_item_variants = Array();
@@ -460,7 +450,7 @@ if ($all_is_ok) {
     }
 
     // delete old variants
-    db_execute("DELETE FROM {$table_prefix}ec_item_variant
+    \e::db_execute("DELETE FROM {$table_prefix}ec_item_variant
                 WHERE ec_item_id={$this_ec_item_info['ec_item_id']}
                   AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'");
 
@@ -479,19 +469,19 @@ if ($all_is_ok) {
         ) VALUES(
             " . abs((int) $val['ec_item_variant_ordering']) . ",
             " . abs((int) $val['ec_item_variant_indent']) . ",
-            '" . DbStr($val['ec_item_variant_code']) . "',
-            '" . DbStr($val['ec_item_variant_price_correction']) . "',
-            '" . DbStr($val['ec_item_variant_description']) . "',
+            '" . \e::db_escape($val['ec_item_variant_code']) . "',
+            '" . \e::db_escape($val['ec_item_variant_price_correction']) . "',
+            '" . \e::db_escape($val['ec_item_variant_description']) . "',
             " . abs((int) $val['ec_item_variant_id']) . ",
             " . abs((int) $val['ec_item_id']) . ",
-            '" . DbStr($val['ec_item_lang']) . "'
+            '" . \e::db_escape($val['ec_item_lang']) . "'
         )";
-        db_execute($query);
+        \e::db_execute($query);
     }
     $this_ec_item_info['ec_item_variant'] = $ec_item_variants;
     # ---------------- save variants - end -------------------------------------
     # ---------------- save additional fields - begin --------------------------
-    db_execute("DELETE FROM {$table_prefix}ec_category_item_field_value
+    \e::db_execute("DELETE FROM {$table_prefix}ec_category_item_field_value
                 WHERE ec_item_id={$this_ec_item_info['ec_item_id']}
                   and ec_item_lang='{$this_ec_item_info['ec_item_lang']}'");
     //prn($input_vars['ec_item_extra_field']); die();
@@ -512,10 +502,10 @@ if ($all_is_ok) {
                     {$this_ec_item_info['ec_item_id']},
                      '{$this_ec_item_info['ec_item_lang']}',
                     {$key},
-                     '" . DbStr($val['value']) . "'
+                     '" . \e::db_escape($val['value']) . "'
                     )";
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
         }
     }
 
@@ -525,12 +515,12 @@ if ($all_is_ok) {
                 WHERE ec_item_id={$this_ec_item_info['ec_item_id']}
                       and ec_item_lang='{$this_ec_item_info['ec_item_lang']}'
                       and ec_category_item_field_id not in (" . join(',', $keep_keys) . ")";
-        db_execute($query);
+        \e::db_execute($query);
     }
     # ---------------------- delete unused fields - end ------------------------
     # ---------------- save additional fields - end ----------------------------
     # ---------------- save additional categories - begin ----------------------
-    db_execute("DELETE FROM {$table_prefix}ec_item_category WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
+    \e::db_execute("DELETE FROM {$table_prefix}ec_item_category WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
 
     if (isset($input_vars['additional_category']) && is_array($input_vars['additional_category'])) {
         $cats = Array();
@@ -543,7 +533,7 @@ if ($all_is_ok) {
         if (count($cats) > 0) {
             $query = "INSERT INTO {$table_prefix}ec_item_category(ec_item_id,ec_category_id)
                      VALUES " . join(',', $cats);
-            db_execute($query);
+            \e::db_execute($query);
             //prn($query);//die();
         }
     }
@@ -625,7 +615,7 @@ $search_index = str_replace(Array("\n", "\r"), ' ', $search_index);
 $search_index = preg_replace('/ +/', ' ', $search_index);
 //prn($search_index);
 //prn($this_ec_item_info);
-db_execute("UPDATE  {$table_prefix}ec_item SET ec_item_keywords='" . DbStr($search_index) . "' WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
+\e::db_execute("UPDATE  {$table_prefix}ec_item SET ec_item_keywords='" . \e::db_escape($search_index) . "' WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
 // ---------------------- update search index - end ----------------------------
 //die();
 

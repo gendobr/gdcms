@@ -14,7 +14,7 @@ $msg = '';
 
 // ------------- confirm new password - begin ----------------------------------
 if(isset($input_vars['site_visitor_code'])){
-    $site_visitor_code=DbStr(trim($input_vars['site_visitor_code']));
+    $site_visitor_code=\e::db_escape(trim($input_vars['site_visitor_code']));
 
     if(strlen($site_visitor_code)==strlen(md5(''))){
         $query = "SELECT site_visitor_id,
@@ -26,7 +26,7 @@ if(isset($input_vars['site_visitor_code'])){
                          site_visitor_code
                   FROM {$table_prefix}site_visitor
                   WHERE site_visitor_code like '{$site_visitor_code}.%'";
-        $info = db_getonerow($query);
+        $info =\e::db_getonerow($query);
         if($info){
             $new_password=explode('.',$info['site_visitor_code']);
             $new_password=md5($new_password[1]);
@@ -35,7 +35,7 @@ if(isset($input_vars['site_visitor_code'])){
                           site_visitor_password='{$new_password}'
                       WHERE site_visitor_id={$info['site_visitor_id']}";
                       prn($query);
-            db_execute($query);
+            \e::db_execute($query);
         }
     }
     if(isset($new_password)){
@@ -49,7 +49,7 @@ if(isset($input_vars['site_visitor_code'])){
 
 // ------------- create confirmation link - begin ------------------------------
 if (isset($input_vars['name'])) {
-    $user_login = DbStr(trim($input_vars['name']));
+    $user_login = \e::db_escape(trim($input_vars['name']));
     // ----------------- check if login name exists - begin ---------------------
     $query = "SELECT id as site_visitor_id,
                      user_login as site_visitor_login,
@@ -69,7 +69,7 @@ if (isset($input_vars['name'])) {
               FROM {$table_prefix}site_visitor
               WHERE site_visitor_login='{$user_login}'";
     //prn($query);
-    $info = db_getonerow($query);
+    $info =\e::db_getonerow($query);
     //prn($info);
     // ----------------- check if login name exists - begin ---------------------
     if ($info && $info['is_cms_user']==0) {
@@ -84,7 +84,7 @@ if (isset($input_vars['name'])) {
                 SET site_visitor_code='{$site_visitor_code}.{$new_password}'
                 WHERE site_visitor_login='{$user_login}'
                 AND site_visitor_id={$info['site_visitor_id']}";
-        db_execute($query);
+        \e::db_execute($query);
 
         // create email and confirmation link
         if(is_valid_email($info['site_visitor_email'])){

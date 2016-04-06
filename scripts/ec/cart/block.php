@@ -53,8 +53,8 @@ $url_cart_details=site_public_URL."/index.php?action=ec/cart/view&lang={$lang}&s
 
 if($n_cart_items==0) {
     if(isset($input_vars['rows'])) {$input_vars['rows']=abs(1*$input_vars['rows']);} else{$input_vars['rows']=3;}
-    include(script_root.'/ec/item/get_public_list.php');
-    include(script_root.'/ec/item/adjust_public_list.php');
+    include(\e::config('SCRIPT_ROOT').'/ec/item/get_public_list.php');
+    include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
     //prn($list_of_ec_items);
 }
 else {

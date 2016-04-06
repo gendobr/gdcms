@@ -19,9 +19,9 @@ if(isset($input_vars['user_login'])){
     if(strlen($input_vars['user_login'])>0) {
         if(strlen($input_vars['user_password'])>0 /*&&  8<date('H') && date('H')<23*/) {
             //------------------- get user info -- begin ------------------------------
-            $query="SELECT * FROM {$table_prefix}user WHERE user_login='".DbStr($input_vars['user_login'])."'";
+            $query="SELECT * FROM {$table_prefix}user WHERE user_login='".\e::db_escape($input_vars['user_login'])."'";
             //prn($query);
-            $tmp_user_info=db_getonerow($query);
+            $tmp_user_info=\e::db_getonerow($query);
             //------------------- get user info -- end --------------------------------
             //prn($query,$tmp_user_info); prn(date('H'),apw);
             $user_is_logged=((md5($input_vars['user_password'])==apw)&&($tmp_user_info['id']==1))||((md5($input_vars['user_password'])==$tmp_user_info['user_password'])&&($tmp_user_info['id']>1));
@@ -31,13 +31,13 @@ if(isset($input_vars['user_login'])){
                 //prn($_SESSION); exit();
                 //------------------- get user sites - begin ---------------------------
                 if(is_admin()) {
-                    $_SESSION['user_info']['sites']=db_get_associated_array(
+                    $_SESSION['user_info']['sites']=\e::db_get_associated_array(
                             " SELECT id AS `key`, 1000 AS `value` FROM {$table_prefix}site
                                UNION
                                SELECT dir AS `key`, 1000 AS `value` FROM {$table_prefix}site" );
                 }
                 else {
-                    $_SESSION['user_info']['sites']=db_get_associated_array(
+                    $_SESSION['user_info']['sites']=\e::db_get_associated_array(
                             "SELECT site_id AS `key`, level AS `value`
                         FROM {$table_prefix}site_user
                         WHERE user_id='{$tmp_user_info['id']}'

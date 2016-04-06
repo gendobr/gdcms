@@ -36,7 +36,7 @@
 # ------------------- get site info - end --------------------------------------
 
 # --------------------------- get site template - begin ------------------------
-  $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
   if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 # --------------------------- get site template - end --------------------------
 
@@ -71,15 +71,15 @@ $this_category->get_children();
 
 $input_vars['ec_category_id']=$this_category->info['ec_category_id'];
 $input_vars['ec_item_state']='show';
-include(script_root.'/ec/item/get_public_list.php');
-include(script_root.'/ec/item/adjust_public_list.php');
+include(\e::config('SCRIPT_ROOT').'/ec/item/get_public_list.php');
+include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
 unset($input_vars['ec_item_state']);
 //prn($list_of_ec_items);
 
 //prn($pages);
 
 # -------------------- get list of page languages - begin ----------------------
-    $tmp=db_getrows("SELECT DISTINCT ec_item_lang as lang
+    $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
                      FROM {$table_prefix}ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
@@ -112,12 +112,12 @@ unset($input_vars['ec_item_state']);
     $menu_groups = get_menu_items($this_site_info['id'],0,$input_vars['lang']);
 
   # -------------------- search for template - begin ---------------------------
-    $ec_item_template_browse = sites_root.'/'.$this_site_info['dir'].'/template_ec_item_browse.html';
+    $ec_item_template_browse = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_ec_item_browse.html';
     if(!is_file($ec_item_template_browse)) $ec_item_template_browse = 'cms/template_ec_item_browse';
   # -------------------- search for template - end -----------------------------
 
   # -------------------- search for template - begin ---------------------------
-    $ec_item_template_list = sites_root.'/'.$this_site_info['dir'].'/template_ec_item_list.html';
+    $ec_item_template_list = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_ec_item_list.html';
     if(!is_file($ec_item_template_list)) $ec_item_template_list = 'cms/template_ec_item_list';
   # -------------------- search for template - end -----------------------------
 

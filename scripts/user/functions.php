@@ -23,7 +23,7 @@ function check_surf_leader($affiliate_id)
    global $table_prefix, $db;
    //------------------ check $affiliate_id -- begin ---------------------------
       $a_id=checkInt($affiliate_id);
-      $affiliate_info=db_getonerow("SELECT * FROM {$table_prefix}affiliate WHERE id=$a_id");
+      $affiliate_info=\e::db_getonerow("SELECT * FROM {$table_prefix}affiliate WHERE id=$a_id");
       $a_id=$affiliate_info['id']=checkInt($affiliate_info['id']);
       if($affiliate_info['id']==0) return false;
    //------------------ check $affiliate_id -- end -----------------------------
@@ -33,7 +33,7 @@ function check_surf_leader($affiliate_id)
                  FROM {$table_prefix}affiliate AS af, {$table_prefix}account_type AS at
                  WHERE af.refered_by=$a_id AND af.account_type_id=at.id";
       //prn($n_points);
-      $n_points=db_getonerow($n_points);
+      $n_points=\e::db_getonerow($n_points);
       $n_points=$n_points['n_points'];
       //prn($n_points);
    //--------- calculate sum of points for personal referral -- end ------------
@@ -46,7 +46,7 @@ function check_surf_leader($affiliate_id)
         if($affiliate_info['is_surf_leader']==1)
         {
            // remove surf leader privileges
-              db_execute("UPDATE {$table_prefix}affiliate SET is_surf_leader=0 WHERE id={$affiliate_info['id']}");
+              \e::db_execute("UPDATE {$table_prefix}affiliate SET is_surf_leader=0 WHERE id={$affiliate_info['id']}");
            // notify user that surf leader privileges are removed
               notify( "id:{$affiliate_info['id']}" ,join('',file("{$GLOBALS['dir_scripts']}/user/you_cannot_be_surf_leader.txt")));
         }
@@ -60,7 +60,7 @@ function check_surf_leader($affiliate_id)
         if($affiliate_info['is_surf_leader']==0)
         {
            // assign surf leader privileges
-              db_execute("UPDATE {$table_prefix}affiliate SET is_surf_leader=1 WHERE id={$affiliate_info['id']}");
+              \e::db_execute("UPDATE {$table_prefix}affiliate SET is_surf_leader=1 WHERE id={$affiliate_info['id']}");
            // send notification "you_can_become_surf_leader"
               notify( "id:{$affiliate_info['id']}",join('',file("{$GLOBALS['dir_scripts']}/user/you_have_become_surf_leader.txt")) );
         }
@@ -76,7 +76,7 @@ function check_surf_leader($affiliate_id)
         else
         {
            // remove surf leader privileges
-              db_execute("UPDATE {$table_prefix}affiliate SET is_surf_leader=0 WHERE id={$affiliate_info['id']}");
+              \e::db_execute("UPDATE {$table_prefix}affiliate SET is_surf_leader=0 WHERE id={$affiliate_info['id']}");
            // notify user that surf leader privileges are removed
               notify( "id:{$affiliate_info['id']}" ,join('',file("{$GLOBALS['dir_scripts']}/user/you_cannot_be_surf_leader.txt")) );
         }

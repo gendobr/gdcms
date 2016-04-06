@@ -23,7 +23,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
     if ($input_vars['news_lang'] != $this_news_info['lang']) {
         # -------------------- get existing page languages - begin ---------------
         $query = "SELECT lang FROM {$table_prefix}news WHERE id={$this_news_info['id']}";
-        $tmp = db_getrows($query);
+        $tmp = \e::db_getrows($query);
         // prn($tmp);
         $existins_langs = Array();
         foreach ($tmp as $ln)
@@ -35,7 +35,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
                 FROM {$table_prefix}languages
                 WHERE is_visible=1 AND id NOT IN('" . join("','", $existins_langs) . "')";
         // prn($query);
-        $tmp = db_getrows($query);
+        $tmp = \e::db_getrows($query);
         $avail_lang = Array();
         foreach ($tmp as $ln) {
             $avail_lang[] = $ln['id'];
@@ -78,7 +78,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
                     # --------------- check if directory exists - begin ----------------
                     $dirs = explode('/', dirname($key));
                     # prn($dirs);
-                    $pt = sites_root . "/{$this_site_info['dir']}";
+                    $pt = \e::config('SITES_ROOT') . "/{$this_site_info['dir']}";
                     foreach ($dirs as $dr) {
                         if (strlen($dr) > 0) {
                             $pt.='/' . $dr;
@@ -183,7 +183,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
         $query = Array();
         foreach ($tmp as $cat)
             $query[] = (int) $cat;
-        db_execute("DELETE FROM  {$table_prefix}news_category WHERE news_id={$this_news_info['id']}");
+        \e::db_execute("DELETE FROM  {$table_prefix}news_category WHERE news_id={$this_news_info['id']}");
         if (count($query) > 0) {
             $query = "INSERT INTO {$table_prefix}news_category(news_id ,category_id)
                   SELECT {$this_news_info['id']} as news_id, category_id
@@ -191,7 +191,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
                   WHERE start>0
                     AND site_id={$site_id}
                     AND category_id in(" . join(',', $query) . ")";
-            db_execute($query);
+            \e::db_execute($query);
         }
     }
 
@@ -209,8 +209,8 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
     // news_code must be unique
     $this_news_info['news_code'] = encode_dir_name(trim($input_vars['news_code']));
     if (strlen($this_news_info['news_code']) > 0) {
-        $query = "SELECT count(id) as n_news FROM {$table_prefix}news WHERE id<>{$this_news_info['id']} AND news_code='" . DbStr($this_news_info['news_code']) . "'";
-        $n_other_news = db_getonerow($query);
+        $query = "SELECT count(id) as n_news FROM {$table_prefix}news WHERE id<>{$this_news_info['id']} AND news_code='" . \e::db_escape($this_news_info['news_code']) . "'";
+        $n_other_news = \e::db_getonerow($query);
         if ($n_other_news['n_news'] > 0) {
             $message.="{$text['ERROR']} : " . text('News_choose_other_code') . "<br>\n";
             $all_is_ok = false;
@@ -218,8 +218,8 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
     } else {
         $this_news_info['news_code'] = encode_dir_name(trim($this_news_info['title']));
 
-        $query = "SELECT count(id) as n_news FROM {$table_prefix}news WHERE id<>{$this_news_info['id']} AND news_code='" . DbStr($this_news_info['news_code']) . "'";
-        $n_other_news = db_getonerow($query);
+        $query = "SELECT count(id) as n_news FROM {$table_prefix}news WHERE id<>{$this_news_info['id']} AND news_code='" . \e::db_escape($this_news_info['news_code']) . "'";
+        $n_other_news = \e::db_getonerow($query);
         if ($n_other_news['n_news'] > 0) {
             $this_news_info['news_code'].=$this_news_info['id'] . '-' . $this_news_info['lang'];
         }
@@ -244,26 +244,26 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
                SET
                   lang='{$lng}'
                  ,site_id='{$this_news_info['site_id']}'
-                 ,title='" . DbStr($this_news_info['title']) . "'
-                 ,abstract='" . DbStr($this_news_info['abstract']) . "'
-                 ,content='" . DbStr($this_news_info['content']) . "'
+                 ,title='" . \e::db_escape($this_news_info['title']) . "'
+                 ,abstract='" . \e::db_escape($this_news_info['abstract']) . "'
+                 ,content='" . \e::db_escape($this_news_info['content']) . "'
                  ,last_change_date='{$this_news_info['last_change_date']}'
                  ,expiration_date =" . ($this_news_info['expiration_date'] == '' ? 'null' : "'{$this_news_info['expiration_date']}'") . "
                  ,cense_level={$this_news_info['cense_level']}
                  ,category_id = {$this_news_info['category_id']}
                  ,news_icon='".($this_news_info['news_icon']?json_encode($this_news_info['news_icon']):'')."'
-                 ,tags='" . DbStr($this_news_info['tags']) . "'
-                 ,news_meta_info='" . DbStr($this_news_info['news_meta_info']) . "'
-                 ,news_code='" . DbStr($this_news_info['news_code']) . "'
-                 ,news_extra_1='" . DbStr($this_news_info['news_extra_1']) . "'
-                 ,news_extra_2='" . DbStr($this_news_info['news_extra_2']) . "'
+                 ,tags='" . \e::db_escape($this_news_info['tags']) . "'
+                 ,news_meta_info='" . \e::db_escape($this_news_info['news_meta_info']) . "'
+                 ,news_code='" . \e::db_escape($this_news_info['news_code']) . "'
+                 ,news_extra_1='" . \e::db_escape($this_news_info['news_extra_1']) . "'
+                 ,news_extra_2='" . \e::db_escape($this_news_info['news_extra_2']) . "'
        WHERE id='{$this_news_info['id']}' AND lang='{$this_news_info['lang']}'";
         #if($debug)
         //prn($query);
-        db_execute($query);
+        \e::db_execute($query);
 
         # ------------------ rebuild tags - begin -------------------------------
-        db_execute("DELETE FROM {$table_prefix}news_tags WHERE news_id={$this_news_info['id']} AND lang='{$this_news_info['lang']}'");
+        \e::db_execute("DELETE FROM {$table_prefix}news_tags WHERE news_id={$this_news_info['id']} AND lang='{$this_news_info['lang']}'");
         if (strlen(trim($this_news_info['tags'])) > 0) {
             // $query=explode(',',$this_news_info['tags']);
             $query = preg_split("/,|;|\\./", $this_news_info['tags']);
@@ -272,10 +272,10 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
                 for ($i = 0; $i < $cnt; $i++) {
                     $query[$i] = trim($query[$i]);
                     if (strlen($query[$i]) > 0)
-                        $query[$i] = "({$this_news_info['id']},'{$lng}','" . DbStr($query[$i]) . "')";
+                        $query[$i] = "({$this_news_info['id']},'{$lng}','" . \e::db_escape($query[$i]) . "')";
                 }
                 $query = "INSERT INTO {$table_prefix}news_tags(news_id,lang,tag) VALUES" . join(',', $query);
-                db_execute($query);
+                \e::db_execute($query);
             }
         }
         # ------------------ rebuild tags - end ---------------------------------

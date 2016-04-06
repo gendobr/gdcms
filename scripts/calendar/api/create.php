@@ -114,11 +114,11 @@ $site_id = $this_site_info['id'];
 
 
 // * nazva             varchar(1024)           
-$nazva = DbStr($input_vars['nazva']);
+$nazva = \e::db_escape($input_vars['nazva']);
 
 
 //   description       text
-$description = DbStr($input_vars['description']);
+$description = \e::db_escape($input_vars['description']);
 
 // * vis               tinyint(2) = 1|0  опубликовано(1) или скрыто(0)
 $vis = $input_vars['vis'] ? 1 : 0;
@@ -152,8 +152,8 @@ INSERT INTO {$GLOBALS['table_prefix']}calendar
 	( `site_id`, `nazva`, `adresa`, `kartynka`, `vis`, `description`, `tags`)
 	VALUES ( {$site_id}, '{$nazva}', '{$adresa}',  '{$kartynka}', {$vis},  '{$description}', '{$tags}')";
 // prn($query);
-db_execute($query);
-$calendar_info = db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id=last_insert_id()");
+\e::db_execute($query);
+$calendar_info =\e::db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id=last_insert_id()");
 
 
 
@@ -199,7 +199,7 @@ foreach($input_vars['dates'] as $dt){
                 VALUES  ( $site_id, {$calendar_info['id']}, $new_pochrik, $new_pochmis, $new_pochtyzh, $new_pochday, $new_pochgod, $new_pochhv, $new_kinrik, $new_kinmis, $new_kintyzh, $new_kinday, $new_kingod, $new_kinhv );
                 ";
             //prn($query); exit();
-            db_execute($query);
+            \e::db_execute($query);
             
             
         }else{
@@ -216,7 +216,7 @@ foreach($input_vars['dates'] as $dt){
         if(!isset($year)) {$year=$new_pochrik;}
         if(!isset($day)) {$day=$new_pochday;}
 }
-$tmp = db_getrows("SELECT * FROM {$table_prefix}calendar_date WHERE calendar_id={$calendar_info['id']}");
+$tmp = \e::db_getrows("SELECT * FROM {$table_prefix}calendar_date WHERE calendar_id={$calendar_info['id']}");
 $calendar_info['dates'] = Array();
 foreach ($tmp as $tm) {
     $calendar_info['dates'][$tm['id']] = $tm;
@@ -237,22 +237,22 @@ if(isset($input_vars['categories'])){
             continue;
         }
         $categories[$i] = preg_replace("/ +/", " ", $categories[$i]);
-        $categories[$i] = DbStr($categories[$i]);    
+        $categories[$i] = \e::db_escape($categories[$i]);    
     }
     $categories=array_values($categories);
     if(count($categories)>0){
         $query="DELETE FROM {$GLOBALS['table_prefix']}calendar_category WHERE event_id={$calendar_id}";
-        db_execute($query);
+        \e::db_execute($query);
 
         $query="INSERT INTO {$GLOBALS['table_prefix']}calendar_category(category_id,event_id) SELECT category_id, {$calendar_id} FROM {$GLOBALS['table_prefix']}category WHERE category_code IN('".join("','", $categories)."')";
-        db_execute($query);
+        \e::db_execute($query);
     }    
 }
 // ----------------- re-create categories - end --------------------------------
 
 // clear cache
    $query="DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990";
-   db_execute($query);
+   \e::db_execute($query);
 
 $calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_id={$site_id}&month={$month}&year={$year}&day={$day}";
 

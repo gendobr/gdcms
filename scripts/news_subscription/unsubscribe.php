@@ -40,12 +40,12 @@ $message='';
 if(isset($input_vars['code'])){
 
     // get subscriber by code
-    $code=DbStr(trim($input_vars['code']));
-    $subscriber_info=  db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'");
+    $code=\e::db_escape(trim($input_vars['code']));
+    $subscriber_info=  \e::db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'");
     if($subscriber_info){
         // if subscriber is found change the is_valid value and clear code
         $query="DELETE FROM {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'";
-        db_execute($query);
+        \e::db_execute($query);
         // show message
         $message=str_replace(Array('{name}'), Array($subscriber_info['news_subscriber_name']),text('Your_subscription_is_successfully_cancelled'));
     }else{
@@ -62,21 +62,21 @@ if(isset($input_vars['news_subscriber_email']) && strlen($input_vars['news_subsc
     $code=  md5(time().session_id().  rand(0, 10000));
 
     // check if code is unique
-    while(db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'")){
+    while(\e::db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'")){
         $code=  md5(time().session_id().  rand(0, 10000));
     }
 
     $confirmation_url=site_root_URL."/index.php?action=news_subscription/unsubscribe&site_id={$site_id}&code=".$code;
-    $subscriber_info=db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_email='".DbStr($input_vars['news_subscriber_email'])."'");
+    $subscriber_info=\e::db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_email='".\e::db_escape($input_vars['news_subscriber_email'])."'");
     if($subscriber_info){
         // re-send confirmation link
         // update the subscriber
         $query="UPDATE {$table_prefix}news_subscriber
                 SET news_subscriber_code='{$code}'
                 WHERE site_id=$site_id
-                    AND news_subscriber_email='".  DbStr($input_vars['news_subscriber_email'])."'
+                    AND news_subscriber_email='".  \e::db_escape($input_vars['news_subscriber_email'])."'
                 ";
-        db_execute($query);
+        \e::db_execute($query);
         $message.='<div>'.$txt['Please_read_the_unsubscription_confirmation_email'].'</div>';
 
         // send email to confirm

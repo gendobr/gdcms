@@ -32,8 +32,6 @@ $this_site_info['title']=get_langstring($this_site_info['title'],$lang);
 
 # --------------------------- get site template - begin ------------------------
 $custom_page_template = site_get_template($this_site_info,'template_index');
-//$custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
-//if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 # --------------------------- get site template - end --------------------------
 
 
@@ -139,7 +137,7 @@ $menu_groups = get_menu_items($this_site_info['id'],0,$lang);
 $ec_item_template=site_get_template($this_site_info,'template_ec_cart');
 
 # -------------------- get list of page languages - begin ----------------------
-$tmp=db_getrows("SELECT DISTINCT ec_item_lang as lang
+$tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
                      FROM {$table_prefix}ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");

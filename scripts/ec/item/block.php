@@ -31,18 +31,18 @@ run('site/page/page_view_functions');
 # ------------------- get site info - end --------------------------------------
 
 # --------------------------- get list of items - begin ------------------------
-  include(script_root.'/ec/item/get_public_list.php');
-  include(script_root.'/ec/item/adjust_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/ec/item/get_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
 # --------------------------- get list of items - end --------------------------
 
 
 # ------------------ search for template - begin -------------------------------
   if(isset($_REQUEST['template']))
   {
-    $_template = sites_root.'/'.$this_site_info['dir'].'/'.$_REQUEST['template'].'.html';
+    $_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/'.$_REQUEST['template'].'.html';
     if(!is_file($_template)) $_template=false;
 
-    if(!$_template) $_template = sites_root.'/'.$this_site_info['dir'].'/'.$_REQUEST['template'];
+    if(!$_template) $_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/'.$_REQUEST['template'];
     if(!is_file($_template)) $_template=false;
   }
   else $_template=false;

@@ -41,18 +41,18 @@ run('site/page/menu');
 
 //------------------- site info - begin ----------------------------------------
   $site_id = $this_page_info['site_id'];
-  $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$this_page_info['site_id']}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$this_page_info['site_id']}");
   $this_site_info['url']=ereg_replace('/+$','',$this_site_info['url']);
 # prn('$this_site_info=',$this_site_info);
   
-  $this_site_info['absolute_path']=sites_root.$this_site_info['dir'];
+  $this_site_info['absolute_path']=\e::config('SITES_ROOT').$this_site_info['dir'];
   
 //------------------- site info - end ------------------------------------------
 
 //------------------- change page status - begin -------------------------------
   //----------------- get possible cense levels - begin ------------------------
     $query  = "SELECT level FROM {$table_prefix}site_user  WHERE site_id={$this_site_info['id']} AND level<={$user_cense_level} ORDER BY level DESC LIMIT 0,3";
-    $tmp    = db_getrows($query);
+    $tmp    = \e::db_getrows($query);
     $levels = Array();
     $levels[] = $user_cense_level;
     foreach($tmp as $_tm) $levels[] = $_tm['level'];
@@ -65,7 +65,7 @@ run('site/page/menu');
 
 
   // site root dir
-     $root=sites_root.'/'.ereg_replace('^/+|/+$','',$this_site_info['dir']);
+     $root=\e::config('SITES_ROOT').'/'.ereg_replace('^/+|/+$','',$this_site_info['dir']);
 
   // exported page path
      $dir=$root.'/'.ereg_replace('^/+|/+$','',$this_page_info['path']).'/'.$this_page_info['id'].'.'.$this_page_info['lang'].'.html';
@@ -107,7 +107,7 @@ run('site/page/menu');
           SET cense_level={$new_cense_level} 
           WHERE id={$this_page_info['id']} AND lang='{$this_page_info['lang']}'";
   //prn($query);
-  db_execute($query);
+  \e::db_execute($query);
 //------------------- change page status - end ---------------------------------
 
 

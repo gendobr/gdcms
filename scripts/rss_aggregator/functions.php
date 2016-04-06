@@ -23,7 +23,7 @@ function menu_rsssource($info){
 
 function get_rsssource_info($rsssource_id){
     $query = "SELECT * FROM {$GLOBALS['table_prefix']}rsssource WHERE rsssource_id=" . ( (int)$rsssource_id);
-    $info = db_getonerow($query);
+    $info = \e::db_getonerow($query);
     // prn($query, $info);
     return $info;
 }
@@ -54,7 +54,7 @@ function menu_rsssourceitem($info){
 
 function get_rsssourceitem_info($rsssourceitem_id){
     $query = "SELECT * FROM {$GLOBALS['table_prefix']}rsssourceitem WHERE rsssourceitem_id=" . ( (int)$rsssourceitem_id);
-    $info = db_getonerow($query);
+    $info = \e::db_getonerow($query);
     // prn($query, $info);
     return $info;
 }

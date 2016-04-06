@@ -44,7 +44,7 @@ if($user_cense_level==0)
       {
          $query="DELETE FROM {$table_prefix}ec_item_comment WHERE ec_item_comment_id IN(".join(',',$query).")";
          // prn($query);
-         db_execute($query);
+         \e::db_execute($query);
       }
    }
 
@@ -90,7 +90,7 @@ if($user_cense_level==0)
                  ,$_group_operation=false);
 
   //---------------- list of languages - begin ---------------------------------
-    $LL = join('&',db_get_associated_array("SELECT ec_item_lang,CONCAT(ec_item_lang,'=',ec_item_lang) FROM {$table_prefix}ec_item WHERE site_id={$site_id}"));
+    $LL = join('&',\e::db_get_associated_array("SELECT ec_item_lang,CONCAT(ec_item_lang,'=',ec_item_lang) FROM {$table_prefix}ec_item WHERE site_id={$site_id}"));
     $re->add_field( $field='ec_item.ec_item_lang'
                    ,$alias='ec_item_lang'
                    ,$type ='enum:'.$LL

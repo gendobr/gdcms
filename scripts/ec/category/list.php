@@ -51,7 +51,7 @@ $this_category->load_node(isset($input_vars['category_id'])?( (int)$input_vars['
 if($this_category->id==0)
 {
    $query="INSERT INTO {$table_prefix}ec_category(ec_category_title,start,finish, deep, site_id) VALUES ('EC root category',0,1,0,$site_id)";
-   db_execute($query);
+   \e::db_execute($query);
    $this_category->load_node(0);
 }
 
@@ -75,7 +75,7 @@ if(isset($_REQUEST['debug'])) prn($this_category);
     $_ids=Array();
     foreach($input_vars['category'] as $_id) $this_category->delete_branch((int)$_id);
 
-    // документы из удалённых категорий перемещать в родительскую категорию?
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
   }
 # ------------------------- delete - end ---------------------------------------
 
@@ -83,7 +83,7 @@ if(isset($input_vars['add_child']  ))
 {
    $new_child_category_id=$this_category->add_child();
    $query="UPDATE {$table_prefix}ec_category SET site_id={$site_id} WHERE ec_category_id={$new_child_category_id}";
-   db_execute($query);
+   \e::db_execute($query);
    $this_category->load_node($this_category->id);
 }
 

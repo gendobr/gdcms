@@ -8,7 +8,7 @@
 
 //-------------------------- check if item exists - begin ----------------------
 $menu_item_id=checkInt($input_vars['menu_item_id']);
-$menu_item_info=db_getonerow("SELECT * FROM {$table_prefix}menu_item WHERE id={$menu_item_id}");
+$menu_item_info=\e::db_getonerow("SELECT * FROM {$table_prefix}menu_item WHERE id={$menu_item_id}");
 $menu_item_info['id'] = checkInt($menu_item_info['id']);
 if($menu_item_info['id']<=0) {
     $input_vars['page_title']  =$text['Invalid_menu_item'];
@@ -24,7 +24,7 @@ if($menu_item_info['id']<=0) {
 //-------------------------- check args - begin --------------------------------
 $menu_group_id   = $menu_item_info['menu_group_id'];
 $menu_group_lang = $menu_item_info['lang'];
-$menu_group_info=db_getonerow("SELECT * FROM {$table_prefix}menu_group WHERE id={$menu_group_id} AND lang='{$menu_group_lang}'");
+$menu_group_info=\e::db_getonerow("SELECT * FROM {$table_prefix}menu_group WHERE id={$menu_group_id} AND lang='{$menu_group_lang}'");
 $menu_group_info['id'] = checkInt($menu_group_info['id']);
 if($menu_group_info['id']<=0) {
     $input_vars['page_title']  =$text['Invalid_menu_group_identifier'];
@@ -42,7 +42,7 @@ $site_id = checkInt($menu_group_info['site_id']);
 $this_site_info = get_site_info($site_id);
 
 # $site_id = checkInt($menu_group_info['site_id']);
-# $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+# $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
 # $this_site_info['id'] = checkInt($this_site_info['id']);
 if($this_site_info['id']<=0) {
     $input_vars['page_title']  =$text['Site_not_found'];
@@ -56,9 +56,9 @@ if($this_site_info['id']<=0) {
 
 //------------------- page info - begin ----------------------------------------
 $page_id   = checkInt($menu_group_info['page_id']);
-$lang      = DbStr($menu_group_info['lang']);
+$lang      = \e::db_escape($menu_group_info['lang']);
 $query="SELECT * FROM {$table_prefix}page WHERE id={$page_id} AND lang='$lang'";
-$this_page_info=db_getonerow($query);
+$this_page_info=\e::db_getonerow($query);
 $this_page_info['id']=checkInt($this_page_info['id']);
 //prn('$this_page_info',$this_page_info);
 //------------------- page info - end ------------------------------------------
@@ -79,9 +79,9 @@ if($user_cense_level<=0) {
    if(isset($input_vars['db_record_editor_menu_group_id'])){
       $new_menu_group=explode('-',$input_vars['db_record_editor_menu_group_id']);
       // check if menu group exists
-      if(db_getonerow("select * from {$table_prefix}menu_group WHERE site_id='{$site_id}' AND id=".( (int)$new_menu_group[0] )." and lang='".  DbStr($new_menu_group[1])."'" )){
-         $query="UPDATE {$table_prefix}menu_item SET menu_group_id=".( (int)$new_menu_group[0] ).", lang='".  DbStr($new_menu_group[1])."' WHERE id={$menu_item_id} ";
-         db_execute($query);
+      if(\e::db_getonerow("select * from {$table_prefix}menu_group WHERE site_id='{$site_id}' AND id=".( (int)$new_menu_group[0] )." and lang='".  \e::db_escape($new_menu_group[1])."'" )){
+         $query="UPDATE {$table_prefix}menu_item SET menu_group_id=".( (int)$new_menu_group[0] ).", lang='".  \e::db_escape($new_menu_group[1])."' WHERE id={$menu_item_id} ";
+         \e::db_execute($query);
          $menu_item_info['menu_group_id']=(int)$new_menu_group[0];
          $menu_item_info['lang']=$new_menu_group[1];
       }
@@ -134,7 +134,7 @@ $form=$rep->draw_form();
 
 
 //-------------------- list of menu groups - begin -----------------------------
-$tmp=db_getrows("SELECT * FROM {$table_prefix}menu_group WHERE site_id='{$site_id}' order by lang, id");
+$tmp=\e::db_getrows("SELECT * FROM {$table_prefix}menu_group WHERE site_id='{$site_id}' order by lang, id");
 $cnt=count($tmp);
 $db_record_editor_menu_group_id_options=Array();
 for($i=0;$i<$cnt;$i++) {

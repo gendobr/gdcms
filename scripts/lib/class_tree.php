@@ -20,7 +20,7 @@ class tree
         $query="SELECT {$this->start},{$this->finish} FROM {$this->table} WHERE {$this->id}=".checkInt($node_id)." AND {$this->start}>0;";
         if($this->debug) prn($query);
 
-        $drr=db_getrows($query);
+        $drr=\e::db_getrows($query);
 
         if(count($drr)!=1) return 0;
         $drr=$drr[0];
@@ -30,18 +30,18 @@ class tree
       //--------------------- delete branch -- begin ---------------------------
         $query="DELETE FROM {$this->table} WHERE {$this->start}>={$drr[$this->start]} AND {$this->finish}<={$drr[$this->finish]};";
         if($this->debug) prn($query);
-        else db_execute($query);
+        else \e::db_execute($query);
       //--------------------- delete branch -- end -----------------------------
 
       //--------------------- shift -- begin -----------------------------------
         $dr=$drr[$this->finish]+1-$drr[$this->start];
         $query="UPDATE {$this->table} SET {$this->start}={$this->start}-{$dr} WHERE {$this->start}>{$drr[$this->finish]};";
         if($this->debug) prn($query);
-        else db_execute($query);
+        else \e::db_execute($query);
 
         $query="UPDATE {$this->table} SET {$this->finish}={$this->finish}-{$dr} WHERE {$this->finish}>{$drr[$this->finish]};";
         if($this->debug) prn($query);
-        else db_execute($query);
+        else \e::db_execute($query);
       //--------------------- shift -- end -------------------------------------
    }
    // ------------------- remove branch -- end ---------------------------------
@@ -54,20 +54,20 @@ class tree
         $query="SELECT * FROM {$this->table} WHERE {$this->id}={$node_id}";
         if($this->debug) prn($query);
 
-        $is_allowed=db_getrows($query);
+        $is_allowed=\e::db_getrows($query);
         //prn($is_allowed);
         if(count($is_allowed)==0) return Array();
         $this_node_info=$is_allowed[0];
       //----------------------- check $node_id -- end --------------------------
 
 
-      //----------------------- освободить место -- начало ---------------------
+      //----------------------- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -- пїЅпїЅпїЅпїЅпїЅпїЅ ---------------------
         $query="UPDATE {$this->table} SET {$this->start}={$this->start}+2 WHERE {$this->start}>{$this_node_info[$this->start]};";
-        if($this->debug) prn($query);  else db_execute($query);
+        if($this->debug) prn($query);  else \e::db_execute($query);
 
         $query="UPDATE {$this->table} SET {$this->finish}={$this->finish}+2 WHERE {$this->finish}>{$this_node_info[$this->start]};";
-        if($this->debug) prn($query);  else db_execute($query);
-      //----------------------- освободить место -- конец ----------------------
+        if($this->debug) prn($query);  else \e::db_execute($query);
+      //----------------------- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -- пїЅпїЅпїЅпїЅпїЅ ----------------------
 
       //----------------------- add record -- begin ----------------------------
         $vals=Array();
@@ -87,14 +87,14 @@ class tree
         }
         $query="INSERT INTO {$this->table}(".join(',',$nams).") VALUES(".join(',',$vals).")";
         if($this->debug) prn($query);
-        else db_execute($query);
+        else \e::db_execute($query);
       //----------------------- add record -- end ------------------------------
 
       //----------------------- return inserted row -- begin -------------------
         $query="SELECT * FROM {$this->table} WHERE {$this->start}={$this_node_info[$this->start]};";
         if($this->debug) prn($query);
 
-        $toret=db_getrows($query);
+        $toret=\e::db_getrows($query);
         $toret=$toret[0];
         if($this->debug) prn($toret);
         return $toret;
@@ -127,7 +127,7 @@ class tree
         if($this->debug) prn($query);
 
 
-        $item_list=db_getrows($query);
+        $item_list=\e::db_getrows($query);
         if($this->debug) prn($item_list);
       //--------------------------- create query -- end ------------------------
       return $item_list;
@@ -168,7 +168,7 @@ class tree
                "ORDER BY c.{$this->start}";
         if($this->debug) prn(checkStr($query));
 
-        $item_list=db_getrows($query);
+        $item_list=\e::db_getrows($query);
 
         if($this->debug) prn($item_list);
       //--------------------------- create query -- end ------------------------
@@ -214,7 +214,7 @@ class tree
                "ORDER BY c.{$this->start}";
         if($this->debug) prn(checkStr($query));
 
-        $item_list=db_getrows($query);
+        $item_list=\e::db_getrows($query);
 
         if($this->debug) prn($item_list);
       //--------------------------- create query -- end ------------------------

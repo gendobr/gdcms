@@ -93,11 +93,11 @@ if (!class_exists('news_browse_tree')) {
                      STRAIGHT_JOIN {$table_prefix}news_category as nc
                      STRAIGHT_JOIN {$table_prefix}news as news
                 where pa.category_id in(" . join(',', $child_ids) . ")
-                  and news.lang='" . DbStr($input_vars['lang']) . "'
+                  and news.lang='" . \e::db_escape($input_vars['lang']) . "'
                   and news.id=nc.news_id
                   and nc.category_id=ch.category_id
                   and pa.start<=ch.start AND ch.finish<=pa.finish";
-                $visible_children = db_getrows($query);
+                $visible_children = \e::db_getrows($query);
                 //prn($visible_children);
                 $cnt = count($visible_children);
                 for ($i = 0; $i < $cnt; $i++) {
@@ -145,13 +145,13 @@ $categories = $news_browse_tree;
 # 
 # 
 # ---------------------- tag selector - begin ----------------------------------
-$lang = DbStr($input_vars['lang']);
+$lang = \e::db_escape($input_vars['lang']);
 
 run('lib/file_functions');
 
 // -------------------- get cached list of tags - begin ------------------------
 // cache info as file in the site dir
-$tmp = get_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", cachetime);
+$tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", cachetime);
 if ($tmp) {
     $tags = $tmp;
 } else {
@@ -163,8 +163,8 @@ if ($tmp) {
                  AND news.cense_level>={$this_site_info['cense_level']}
                  AND news.site_id={$site_id}
                  AND news.lang='{$lang}'";
-    $tags = db_getrows($query);
-    set_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", $tags);
+    $tags = \e::db_getrows($query);
+    set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", $tags);
 }
 // -------------------- get cached list of tags - end --------------------------
 
@@ -209,7 +209,7 @@ if (count($tags) > 0) {
 # 
 # --------------------- draw date selector - begin -----------------------------
 # site_id=1&lang=ukr&news_date_year=2007&news_date_month=1&news_date_day=29
-$lang = DbStr($input_vars['lang']);
+$lang = \e::db_escape($input_vars['lang']);
 
 # year
 if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']) > 0) {
@@ -234,7 +234,7 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
             $month_options = "<a href='{$href}{$news_date_month}'>{$month_names[$news_date_month]}</a>";
             $day_options = "<b>$news_date_day</b>";
         } else {
-            $tmp = db_getrows("SELECT DISTINCT DAYOFMONTH(last_change_date) AS day
+            $tmp = \e::db_getrows("SELECT DISTINCT DAYOFMONTH(last_change_date) AS day
                            FROM {$table_prefix}news as news
                            WHERE news.site_id={$site_id}
                              AND news.cense_level>={$this_site_info['cense_level']}
@@ -249,16 +249,16 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
             $day_options = join(' ', $days);
         }
     } else {
-        $tmp = get_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", cachetime);
+        $tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", cachetime);
         if (!$tmp) {
-            $tmp = db_getrows("SELECT DISTINCT month(last_change_date) AS month
+            $tmp = \e::db_getrows("SELECT DISTINCT month(last_change_date) AS month
                                       FROM {$table_prefix}news as news
                                       WHERE news.site_id={$site_id}
                                        AND  news.cense_level>={$this_site_info['cense_level']}
                                        AND news.lang='{$lang}'
                                        AND year(last_change_date)=$news_date_year
                                       ORDER BY month ASC");
-            set_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", $tmp);
+            set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", $tmp);
         }
         $months = Array();
         $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_day$|^news_keywords$|^action$') . "&news_date_month=";
@@ -274,10 +274,10 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
 
 
 
-    $tmp = get_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", cachetime);
+    $tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", cachetime);
     if (!$tmp) {
-        $tmp = db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$table_prefix}news as news WHERE news.site_id={$site_id} AND  news.cense_level>={$this_site_info['cense_level']} AND news.lang='{$lang}' ORDER BY year ASC");
-        set_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", $tmp);
+        $tmp = \e::db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$table_prefix}news as news WHERE news.site_id={$site_id} AND  news.cense_level>={$this_site_info['cense_level']} AND news.lang='{$lang}' ORDER BY year ASC");
+        set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", $tmp);
     }
 
 
@@ -327,7 +327,7 @@ $news_keywords_selector = "
 # 
 # ------------------- get list of news - begin ---------------------------------
 
-$lang = DbStr($input_vars['lang']);
+$lang = \e::db_escape($input_vars['lang']);
 
 
 # ------------------------- category restriction - begin -----------------------
@@ -394,7 +394,7 @@ if (strlen($news_keywords) > 0) {
     $tmp = "LOCATE('%s',concat(ifnull(ne.title,''),' ',ifnull(ne.content,''),' ',ifnull(ne.abstract,'')))";
     for ($i = 0; $i < $cnt; $i++) {
         if (strlen($news_keywords_restriction[$i]) > 0) {
-            $news_keywords_restriction[$i] = sprintf($tmp, DbStr($news_keywords_restriction[$i]));
+            $news_keywords_restriction[$i] = sprintf($tmp, \e::db_escape($news_keywords_restriction[$i]));
         } else {
             unset($news_keywords_restriction[$i]);
         }
@@ -415,7 +415,7 @@ if (count($selected_tags) > 0) {
     $news_tags_restriction = '';
     foreach ($selected_tags as $tg) {
         //$news_tags_restriction.=" AND FIND_IN_SET('" . DbStr($tg) . "',tags)>0 ";
-        $news_tags_restriction.=" AND LOCATE('" . DbStr(trim($tg)) . "',tags)>0 ";
+        $news_tags_restriction.=" AND LOCATE('" . \e::db_escape(trim($tg)) . "',tags)>0 ";
     }
 } else {
     $news_tags_restriction = '';
@@ -497,14 +497,14 @@ $query = "SELECT DISTINCT SQL_CALC_FOUND_ROWS
 
             
 $startTime=  microtime(true);
-$list_of_news = db_getrows($query);
+$list_of_news = \e::db_getrows($query);
 header('Cms-Timing: '. (microtime(true)-$startTime));
 // if(isset($input_vars['debug'])) prn($query,$list_of_news);
 // echo '<!-- '; prn($query); echo ' -->';
 # --------------------------- get list of news - end -------------------------
 # --------------------------- list of pages - begin --------------------------
 $query = "SELECT FOUND_ROWS() AS n_records;";
-$num = db_getonerow($query);
+$num = \e::db_getonerow($query);
 // prn($query,$num);
 $news_found = $num = (int) $num['n_records'];
 $pages = Array();
@@ -568,13 +568,13 @@ foreach ($menu_groups as $kmg => $mg) {
 //------------------------ get list of languages - begin -----------------------
 # -------------------- get list of page languages - begin --------------------
 
-$tmp = get_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
+$tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
 if (!$tmp) {
-    $tmp = db_getrows("SELECT DISTINCT lang
+    $tmp = \e::db_getrows("SELECT DISTINCT lang
                      FROM {$table_prefix}news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
-    set_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
+    set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
 }
 
 $existing_languages = Array();

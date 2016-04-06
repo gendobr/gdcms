@@ -13,7 +13,7 @@ run('site/menu');
 //------------------- site info - begin ----------------------------------------
   $site_id = (int)$input_vars['site_id'];
   $this_site_info = get_site_info($site_id);
-  #$this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  #$this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
   #//prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0) {
     echo "ERROR: Site not found";

@@ -6,7 +6,7 @@ $GLOBALS['main_template_name'] = '';
 //------------------- site info - begin ----------------------------------------
 $site_id = (int) $input_vars['site_id'];
 $this_site_info = get_site_info($site_id);
-#$this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+#$this_site_info =\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
 #//prn($this_site_info);
 if (checkInt($this_site_info['id']) <= 0) {
     $input_vars['page_title'] =
@@ -30,11 +30,7 @@ if (get_level($site_id) == 0) {
 // get list of pages
 
 // get list of pages
-//$pagelist = db_getrows("select distinct rozdil
-//                        from {$GLOBALS['table_prefix']}photogalery
-//                        WHERE site=$site_id ORDER BY rozdil ASC");
-
-$pagelist = db_getrows("select distinct rozdil
+$pagelist = \e::db_getrows("select distinct rozdil
                         from {$GLOBALS['table_prefix']}photogalery_rozdil
                         WHERE site_id=$site_id ORDER BY rozdil ASC");
                     

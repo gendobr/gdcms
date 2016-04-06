@@ -14,13 +14,13 @@ function get_order_info($order_id) {
                  INNER JOIN {$table_prefix}ec_user ec_user
                  ON ec_user.ec_user_id=ec_order.ec_user_id
             WHERE ec_order_id=$order_id";
-    $tor=db_getonerow($query);
+    $tor=\e::db_getonerow($query);
 
     $tor['ec_cart']=unserialize($tor['ec_order_details']);
     $tor['custom']=unserialize($tor['ec_order_custom_data']);
     // prn($tor);
     /*
-    $ec_cart=db_getrows("SELECT * FROM {$table_prefix}ec_cart WHERE ec_order_id=$order_id");
+    $ec_cart=\e::db_getrows("SELECT * FROM {$table_prefix}ec_cart WHERE ec_order_id=$order_id");
     foreach($ec_cart as $ec)
     {
         $tmp=unserialize($ec['ec_cart_item']);
@@ -30,7 +30,7 @@ function get_order_info($order_id) {
     $tor['total']=$tor['ec_cart']['total']+$tor['ec_cart']['delivery_cost'];
 
 
-    $tor['shipping']=db_getonerow("SELECT ec_user.* ,site_visitor.site_visitor_email
+    $tor['shipping']=\e::db_getonerow("SELECT ec_user.* ,site_visitor.site_visitor_email
                                    FROM {$table_prefix}ec_user ec_user
                                        INNER JOIN {$table_prefix}site_visitor site_visitor
                                        ON ec_user.site_visitor_id = site_visitor.site_visitor_id
@@ -43,13 +43,13 @@ function ec_order_delete($id) {
     global $text, $db,$table_prefix;
 
     $query="DELETE FROM {$table_prefix}ec_cart  WHERE ec_order_id={$id}";
-    db_execute($query);
+    \e::db_execute($query);
 
     $query="DELETE FROM {$table_prefix}ec_order WHERE ec_order_id={$id}";
-    db_execute($query);
+    \e::db_execute($query);
 
     $query="DELETE FROM {$table_prefix}ec_order_history WHERE ec_order_id={$id}";
-    db_execute($query);
+    \e::db_execute($query);
 }
 
 
@@ -95,8 +95,8 @@ function update_ec_order_history(
                    site_id,
                    user_id )
                 VALUES(
-                   '".DbStr($ec_order_history_title)."',
-                   '".DbStr($ec_order_history_details)."',
+                   '".\e::db_escape($ec_order_history_title)."',
+                   '".\e::db_escape($ec_order_history_details)."',
                       NOW(),
                    '$ec_order_history_action',
             $ec_order_id,
@@ -104,7 +104,7 @@ function update_ec_order_history(
             $site_id,
             ".( (int)$user_id )." )";
     //prn($query);
-    db_execute($query);
+    \e::db_execute($query);
 }
 
 
@@ -126,7 +126,7 @@ class order_history {
                    WHERE ec_order_id={$this->ec_order_id}
                    ORDER BY ec_order_history_date ASC
                     ";
-            return db_getrows($query);
+            return \e::db_getrows($query);
         }
         elseif($name=='form') {
             if(!isset($this->form)) {
@@ -150,7 +150,7 @@ function ec_order_sha($ec_order_id) {
            SET ec_order_hash=SHA1(CONCAT_WS(' ',ec_order_id,ec_date_created,site_id,ec_order_status,ec_order_total,ec_user_id,ec_order_paid,ec_order_details,ec_order_paid_amount))
            WHERE ec_order_id=$ec_order_id";
     //prn($query);
-    db_execute($query);
+    \e::db_execute($query);
 }
 
 

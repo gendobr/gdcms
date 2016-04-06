@@ -35,7 +35,7 @@ if(get_level($site_id)==0)
 
 //------------------- get forum info - begin -----------------------------------
   $forum_id = checkInt($input_vars['forum_id']);
-  $this_forum_info = db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$forum_id}");
+  $this_forum_info =\e::db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$forum_id}");
   //prn('$this_site_info=',$this_site_info);
   if(checkInt($this_forum_info['id'])<=0)
   {
@@ -53,10 +53,10 @@ if(get_level($site_id)==0)
   {
      $query="DELETE FROM {$table_prefix}forum_thread WHERE id={$delete_thread_id} AND site_id={$site_id} AND forum_id=$forum_id";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
      $query="DELETE FROM {$table_prefix}forum_msg    WHERE thread_id={$delete_thread_id} AND site_id={$site_id} AND forum_id=$forum_id";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
   }
   clear('delete_thread_id');
 //-------------------- delete thread - end -------------------------------------

@@ -42,24 +42,24 @@ if(isset($input_vars['site_visitor_login']))
                       email as site_visitor_email,
                       '' as site_visitor_home_page_url
                FROM {$table_prefix}user
-               WHERE user_login='".DbStr($input_vars['site_visitor_login'])."'
+               WHERE user_login='".\e::db_escape($input_vars['site_visitor_login'])."'
                UNION
                SELECT  site_visitor_id,
                        site_visitor_login,
                        site_visitor_email,
                        '' as site_visitor_home_page_url
                FROM {$table_prefix}site_visitor
-               WHERE site_visitor_login='".DbStr($input_vars['site_visitor_login'])."'";
-       $info=db_getonerow($query);
+               WHERE site_visitor_login='".\e::db_escape($input_vars['site_visitor_login'])."'";
+       $info=\e::db_getonerow($query);
        if($info) $errors[]="<b><font color=red>{$txt['ERROR']} : {$txt['Login_already_exists']}</font></b><br/>";
     // ----------------- check if login name exists - begin --------------------
 
    if(count($errors)==0)
    {
        $site_visitor_password=md5($input_vars['site_visitor_password']);
-       $site_visitor_login=DbStr($input_vars['site_visitor_login']);
-       $site_visitor_email=DbStr($input_vars['site_visitor_email']);
-       $site_visitor_home_page_url=DbStr($input_vars['site_visitor_home_page_url']);
+       $site_visitor_login=\e::db_escape($input_vars['site_visitor_login']);
+       $site_visitor_email=\e::db_escape($input_vars['site_visitor_email']);
+       $site_visitor_home_page_url=\e::db_escape($input_vars['site_visitor_home_page_url']);
        $query="insert into {$table_prefix}site_visitor (
                         site_visitor_password,
                         site_visitor_login,
@@ -74,13 +74,13 @@ if(isset($input_vars['site_visitor_login']))
                         '$site_visitor_home_page_url'
                         )
                 ";
-        db_execute($query);
+        \e::db_execute($query);
 
-        $_SESSION['site_visitor_info']=db_getonerow("SELECT * FROM {$table_prefix}site_visitor WHERE site_visitor_id=LAST_INSERT_ID()");
+        $_SESSION['site_visitor_info']=\e::db_getonerow("SELECT * FROM {$table_prefix}site_visitor WHERE site_visitor_id=LAST_INSERT_ID()");
         echo "
            <h1>{$txt['Signup']}</h1>
            <b><font color=green>{$txt['Signup_finished_successfully']}</font>
-           <a href='javascript:void(en())'>Продовжити</a>
+           <a href='javascript:void(en())'>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</a>
            <script>
               function en()
               {

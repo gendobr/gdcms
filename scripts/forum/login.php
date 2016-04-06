@@ -12,7 +12,7 @@ $txt = load_msg($input_vars['lang']);
 $msg = '';
 
 if (isset($input_vars['name'])) {
-    $user_login = DbStr(trim($input_vars['name']));
+    $user_login = \e::db_escape(trim($input_vars['name']));
     $user_password = md5(trim($input_vars['pswd']));
     // ----------------- check if login name exists - begin ---------------------
     $query = "SELECT id as site_visitor_id,
@@ -33,7 +33,7 @@ if (isset($input_vars['name'])) {
               FROM {$table_prefix}site_visitor
               WHERE site_visitor_login='{$user_login}'";
     //prn($query);
-    $info = db_getonerow($query);
+    $info =\e::db_getonerow($query);
     //prn($info);
     // ----------------- check if login name exists - begin ---------------------
     if ($info) {

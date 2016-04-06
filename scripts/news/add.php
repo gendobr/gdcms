@@ -13,7 +13,7 @@
 $debug=false;
 //------------------- get site info - begin ------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
   if($debug) prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -40,9 +40,9 @@ if($user_level==0)
   $news_lang = isset($input_vars['news_lang'])?get_language('news_lang'):'';
 
   $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND site_id={$site_id}";
-  if(strlen($news_lang)>0) $query .= " AND lang='".DbStr($news_lang)."'";
+  if(strlen($news_lang)>0) $query .= " AND lang='".\e::db_escape($news_lang)."'";
 
-  $this_news_info=db_getonerow($query);
+  $this_news_info=\e::db_getonerow($query);
   $this_news_info['id'] = checkInt($this_news_info['id']);
   if($debug) prn('$this_news_info',$this_news_info);
 //------------------- news info (optional) - end -------------------------------
@@ -54,7 +54,7 @@ if($user_level==0)
 
     //-------------------- get existing page languages - begin -----------------
       $query="SELECT lang FROM {$table_prefix}news WHERE id={$news_id}";
-      $tmp=db_getrows($query);
+      $tmp=\e::db_getrows($query);
       // prn($tmp);
       $existins_langs=Array(0=>'');
       foreach($tmp as $lng) $existins_langs[]=$lng['lang'];
@@ -63,7 +63,7 @@ if($user_level==0)
     //-------------------- get available languages - begin ---------------------
       $query="SELECT id FROM {$table_prefix}languages WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."') LIMIT 0,1";
       // prn($query);
-      $tmp=db_getonerow($query);
+      $tmp=\e::db_getonerow($query);
       // prn($tmp);
     //-------------------- get available languages - end -----------------------
     if(strlen($tmp['id'])>0)
@@ -83,16 +83,16 @@ if($user_level==0)
                     $news_id
                    ,'{$tmp['id']}'
                    ,$site_id
-                   ,'".DbStr($text['Add_translation'].' : '.$this_news_info['title'])."'
+                   ,'".\e::db_escape($text['Add_translation'].' : '.$this_news_info['title'])."'
                    , 0
-                   , '".DbStr($this_news_info['last_change_date'])."'
-                   ,'".DbStr($this_news_info['abstract'])."'
-                   ,'".DbStr($this_news_info['content'])."'
-                   ,'".DbStr($this_news_info['tags'])."'
+                   , '".\e::db_escape($this_news_info['last_change_date'])."'
+                   ,'".\e::db_escape($this_news_info['abstract'])."'
+                   ,'".\e::db_escape($this_news_info['content'])."'
+                   ,'".\e::db_escape($this_news_info['tags'])."'
                    ,NOW()
                    )";
       // prn($query);
-      db_execute($query);
+      \e::db_execute($query);
 
       // get news lang
       $news_lang=$tmp['id'];
@@ -105,13 +105,13 @@ if($user_level==0)
 
     // calculate news id
     $query = "SELECT max(id) AS newid FROM {$table_prefix}news";
-    $newid=db_getonerow($query);
+    $newid=\e::db_getonerow($query);
     $news_id=$newid=1+(int)$newid['newid'];
 
     // insert new record
     $query = "INSERT INTO {$table_prefix}news(id, lang, site_id, title, cense_level, last_change_date,creation_date, weight)
               values($newid, '".default_language."', $site_id, '{$text['New_page']}',0, NOW(),NOW(),0)";
-    db_execute($query);
+    \e::db_execute($query);
 
     // get news lang
     $news_lang=default_language;

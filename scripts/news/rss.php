@@ -15,7 +15,7 @@
   $category=<category_id> restrict category
  */
 
-include(script_root . '/news/get_public_list2.php');
+include(\e::config('SCRIPT_ROOT') . '/news/get_public_list2.php');
 
 
 $site_id = checkInt($input_vars['site_id']);
@@ -49,12 +49,12 @@ $txt = load_msg($news->getLang());
 # check if template name is posted
 if (isset($input_vars['template'])) {
     $input_vars['template']=preg_replace("/[^a-z0-9_-]/i",'_',$input_vars['template']);
-    $news_template = sites_root . '/' . $this_site_info['dir'] . '/' . $input_vars['template'] . '.html';
+    $news_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/' . $input_vars['template'] . '.html';
     if (!is_file($news_template)) {
         $news_template = false;
     }
     if (!$news_template) {
-        $news_template = sites_root . '/' . $this_site_info['dir'] . '/' . $input_vars['template'];
+        $news_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/' . $input_vars['template'];
     }
     if (!is_file($news_template)) {
         $news_template = false;

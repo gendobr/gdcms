@@ -60,9 +60,9 @@ class page_browse_tree extends browse_tree {
                    WHERE pa.category_id in(" . join(',', $child_ids) . ")
                      AND pa.start<=ch.start AND ch.finish<=pa.finish
                      AND page.category_id = ch.category_id
-                     AND page.lang = '" . DbStr($input_vars['lang']) . "'
+                     AND page.lang = '" . \e::db_escape($input_vars['lang']) . "'
                      and page.site_id={$this->site_id}";
-            $visible_children = db_getrows($query);
+            $visible_children = \e::db_getrows($query);
             //prn($visible_children);
             $cnt = count($visible_children);
             for ($i = 0; $i < $cnt; $i++)
@@ -101,7 +101,7 @@ run('site/page/page_view_functions');
 $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 # ----------------------- get page menu - end ----------------------------------
 # -------------------- get list of page languages - begin ----------------------
-$tmp = db_getrows(
+$tmp = \e::db_getrows(
                 "SELECT DISTINCT lang
                   FROM {$table_prefix}page  AS pg
                   WHERE pg.site_id={$site_id}
@@ -150,7 +150,7 @@ $query = "SELECT SQL_CALC_FOUND_ROWS
               $category_restriction
             ORDER BY pg.last_change_date DESC
             LIMIT $start," . rows_per_page;
-$list_of_pages = db_getrows($query);
+$list_of_pages = \e::db_getrows($query);
 //if($debug)
 # prn($query,$list_of_pages);
 # -------------------- adjust list - begin ---------------------------------
@@ -170,7 +170,7 @@ for ($i = 0; $i < $cnt; $i++) {
 # -------------------- adjust list - end -----------------------------------
 # --------------------------- paging links - begin -------------------------
 $query = "SELECT FOUND_ROWS() AS n_records";
-$num_rows = db_getonerow($query);
+$num_rows = \e::db_getonerow($query);
 $num_rows = $num_rows['n_records'];
 #prn('$num_rows='.$num_rows);
 # --------------------------- paging links - end ---------------------------
@@ -194,7 +194,7 @@ for ($i = $i_min; $i < $i_max; $i = $i + rows_per_page) {
 // --------------------- number of pages - end -----------------------
 //------------------------ draw using SMARTY template - begin ----------------
 
-$news_template = sites_root . '/' . $this_site_info['dir'] . '/template_page_browse.html';
+$news_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/template_page_browse.html';
 #prn('$news_template',$news_template);
 if (!is_file($news_template)) $news_template = 'cms/template_page_browse';
 

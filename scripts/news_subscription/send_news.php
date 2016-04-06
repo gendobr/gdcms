@@ -14,7 +14,7 @@ $news_id = checkInt((isset($input_vars['news_id']) ? $input_vars['news_id'] : 0)
 $lang = get_language('lang');
 
 $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
-$this_news_info = db_getonerow($query);
+$this_news_info = \e::db_getonerow($query);
 if ($debug) {
     prn(checkStr($query), $this_news_info);
 }
@@ -62,7 +62,7 @@ $txt = load_msg($input_vars['lang']);
 // get first $N subscribers starting from $start
 $start = isset($input_vars['start']) ? (int) $input_vars['start'] : 0;
 $query = "SELECT * FROM {$table_prefix}news_subscriber WHERE site_id={$site_id} AND news_subscriber_is_valid ORDER BY news_subscriber_id ASC LIMIT $start, $N";
-$subscribers = db_getrows($query);
+$subscribers = \e::db_getrows($query);
 $report='Emailing is finished';
 
 if($subscribers){
@@ -88,12 +88,12 @@ if($subscribers){
         // generate unique code
         $code=  md5(time().session_id().  rand(0, 10000));
         // check if code is unique
-        while(db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'")){
+        while(\e::db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'")){
             $code=  md5(time().session_id().  rand(0, 10000));
         }
 
         // save code to database
-        db_execute("UPDATE {$table_prefix}news_subscriber SET news_subscriber_code='$code' WHERE news_subscriber_id={$subscriber_info['news_subscriber_id']}");
+        \e::db_execute("UPDATE {$table_prefix}news_subscriber SET news_subscriber_code='$code' WHERE news_subscriber_id={$subscriber_info['news_subscriber_id']}");
 
         // compose "unsubscribe" link
         $unsubscribe_link=site_root_URL."/index.php?action=news_subscription/unsubscribe&site_id={$site_id}&code=".$code;

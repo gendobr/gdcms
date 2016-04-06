@@ -28,8 +28,8 @@
   function map_nick($str)
   {
     $tor=str_replace(
-      Array('е','Е','Т','і','о','О','р','Р','а','А','Н','К','х','Х','с','С','В','М') # русские символы
-     ,Array('e','E','T','i','o','O','p','P','a','A','H','K','x','X','c','C','B','M') # латинские символы
+      Array('пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ') # пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+     ,Array('e','E','T','i','o','O','p','P','a','A','H','K','x','X','c','C','B','M') # пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      ,$str
     );
     $tor=ereg_replace(' +',' ',$tor);
@@ -46,7 +46,7 @@
 function site_visitor_check_login($email,$password)
 {
     return site_visitor_load(
-              "    site_visitor_email='".DbStr($email)."'
+              "    site_visitor_email='".\e::db_escape($email)."'
                AND site_visitor_password='".md5($password)."' "
            );
 }
@@ -55,14 +55,14 @@ function site_visitor_check_login($email,$password)
 function site_visitor_load($condition)
 {
    global $table_prefix;
-   $user_data=db_getonerow("SELECT DISTINCT *,'' as site_visitor_password FROM {$table_prefix}site_visitor WHERE $condition");
+   $user_data=\e::db_getonerow("SELECT DISTINCT *,'' as site_visitor_password FROM {$table_prefix}site_visitor WHERE $condition");
    //prn("SELECT DISTINCT *,'' as site_visitor_password FROM {$table_prefix}site_visitor WHERE $condition");
    if(!$user_data) return false;
 
    $user_data['email']=$user_data['site_visitor_email'];
    $user_data['last_used_id']=0;
    $user_data['data']=Array();
-   $tmp=db_getrows(
+   $tmp=\e::db_getrows(
         "SELECT DISTINCT site_visitor.*, ec_user.*,'' as site_visitor_password
          FROM {$table_prefix}site_visitor as site_visitor,
               {$table_prefix}ec_user as ec_user

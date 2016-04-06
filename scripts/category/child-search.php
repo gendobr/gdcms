@@ -53,7 +53,7 @@ if (is_valid_url($url = trim($this_category_info['category_description']))) {
 
 run('lib/file_functions');
 // cache info as file in the site dir
-$tmp = get_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 600);
+$tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 600);
 
 if ($tmp) {
     // prn($tmp);
@@ -68,7 +68,7 @@ if ($tmp) {
                WHERE ch.category_id={$category_id} and ch.site_id={$site_id} and pa.site_id={$site_id}
                  and pa.start<ch.start and ch.finish<pa.finish
                order by pa.start asc";
-    $this_category_info['parents'] = db_getrows($query);
+    $this_category_info['parents'] = \e::db_getrows($query);
 
     // all parents should be visible
     $parents_are_visible = true;
@@ -101,7 +101,7 @@ if ($tmp) {
                  and pa.start<ch.start and ch.finish<pa.finish
                order by ch.start asc";
     //prn(checkStr($query));
-    $this_category_info['children'] = db_getrows($query);
+    $this_category_info['children'] = \e::db_getrows($query);
 
     $cnt = count($this_category_info['children']);
     for ($i = 0; $i < $cnt; $i++) {
@@ -128,7 +128,7 @@ if ($tmp) {
     //prn($this_category_info['children']);
     // ------------------- get children - end ----------------------------------
     $tmp = Array('parents' => $this_category_info['parents'], 'children' => $this_category_info['children']);
-    set_cached_info(template_cache_root . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tmp);
+    set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tmp);
 }
 
 // do search 
@@ -138,7 +138,7 @@ if(isset($input_vars['keywords'])){
     $words=preg_split("/[; ,.!\t-]+/",$input_vars['keywords']);
     $where=Array();
     foreach($words as $word){
-        $where[]=  " ( LOCATE('".DbStr($word)."',category_description) OR LOCATE('".DbStr($word)."',category_title) )";
+        $where[]=  " ( LOCATE('".\e::db_escape($word)."',category_description) OR LOCATE('".\e::db_escape($word)."',category_title) )";
     }
     if( count($where) > 0 ){
         $sql="SELECT *
@@ -150,7 +150,7 @@ if(isset($input_vars['keywords'])){
         
         
         
-        $search_results=db_getrows($sql);
+        $search_results=\e::db_getrows($sql);
         $cnt = count($search_results);
         
         for ($i = 0; $i < $cnt; $i++) {
@@ -291,14 +291,14 @@ $lang_list=array_values($lang_list);
 $template_name='template_category_search';
 
 
-$_template = sites_root.'/'.$this_site_info['dir']."/{$template_name}_{$category_id}.html";
+$_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/{$template_name}_{$category_id}.html";
 if(!is_file($_template)){
     $_template='';
 }
 if(!$_template){
     $prnts=array_reverse($this_category_info['parents']);
     foreach ($prnts as $tmp) {
-        $_template = sites_root.'/'.$this_site_info['dir']."/{$template_name}_{$tmp['category_id']}.html";
+        $_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/{$template_name}_{$tmp['category_id']}.html";
         if(is_file($_template)){
             break;
         }else{

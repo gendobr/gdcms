@@ -12,7 +12,7 @@
 // banner rotation script
 //------------------- get site info - begin ------------------------------------
 $site_id = checkInt($input_vars['site_id']);
-$this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+$this_site_info =\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
 //prn($this_site_info);
 if (checkInt($this_site_info['id']) <= 0){
     die();
@@ -45,7 +45,7 @@ $main_template_name = '';
 
 run("lib/file_functions");
 
-$banner_dir = ereg_replace('/$', '', sites_root . '/' . $this_site_info['dir']) . '/banners';
+$banner_dir = ereg_replace('/$', '', \e::config('SITES_ROOT') . '/' . $this_site_info['dir']) . '/banners';
 $files = ls($banner_dir);
 $files = $files['files'];
 

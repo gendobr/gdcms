@@ -22,7 +22,7 @@ $txt=load_msg($input_vars['lang']);
 //------------------- get site info - end --------------------------------------
 
 //--------------------------- get site template - begin ------------------------
-  $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
   #prn('$news_template',$news_template);
   if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 //--------------------------- get site template - end --------------------------
@@ -32,10 +32,10 @@ $txt=load_msg($input_vars['lang']);
   $query="SELECT pa.id, pa.lang, pa.title, pa.map_position, pa.map_indent
           FROM {$table_prefix}page AS  pa INNER JOIN {$table_prefix}site AS si ON(pa.site_id=si.id)
           WHERE     pa.site_id={$this_site_info['id']}
-                AND pa.lang='".DbStr($input_vars['lang'])."'
+                AND pa.lang='".\e::db_escape($input_vars['lang'])."'
 								AND pa.cense_level>=si.cense_level 
           ORDER BY pa.map_position, pa.id";
-  $page_list=db_getrows($query);
+  $page_list=\e::db_getrows($query);
   ///prn($query,$page_list);
   foreach($page_list as $page_info)
   {

@@ -17,7 +17,7 @@ $GLOBALS['main_template_name']='';
 
 
   $query="SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
-  $this_news_info=db_getonerow($query);
+  $this_news_info=\e::db_getonerow($query);
   if($debug) prn($query,$this_news_info);
   if(checkInt($this_news_info['id'])<=0)
   {
@@ -41,7 +41,7 @@ $GLOBALS['main_template_name']='';
 
 //------------------- site info - begin ----------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$this_news_info['site_id']}");
+  $this_site_info =\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$this_news_info['site_id']}");
   if($debug) prn('$this_site_info=',$this_site_info);
 //------------------- site info - end ------------------------------------------
 
@@ -53,7 +53,7 @@ $GLOBALS['main_template_name']='';
                WHERE     site_id={$this_site_info['id']}
                      AND level<={$user_cense_level}
                ORDER BY level DESC LIMIT 0,3";
-    $tmp    = db_getrows($query);
+    $tmp    = \e::db_getrows($query);
     $levels = Array();
     $levels[] = $user_cense_level;
     foreach($tmp as $_tm) $levels[] = $_tm['level'];
@@ -89,7 +89,7 @@ $GLOBALS['main_template_name']='';
           WHERE     id={$this_news_info['id']}
                 AND lang='{$this_news_info['lang']}';";
   if($debug) prn($query);
-  db_execute($query);
+  \e::db_execute($query);
 //------------------- change page status - end ---------------------------------
 
 echo $text['Changes_saved_successfully'];

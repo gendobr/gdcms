@@ -16,7 +16,7 @@ function my_mail($mail_to,$mail_subject,$mail_body,$options=Array()) {
   //$mail->SMTPDebug=10;
   $mail->Timeout=120;
 
-  $mail->PluginDir=script_root."/lib/";
+  $mail->PluginDir=\e::config('SCRIPT_ROOT')."/lib/";
 
   if (mail_IsSMTP)  {
     $mail->IsSMTP();

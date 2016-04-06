@@ -5,7 +5,7 @@ $GLOBALS['main_template_name'] = '';
 //------------------- site info - begin ----------------------------------------
 $site_id = (int) $input_vars['site_id'];
 $this_site_info = get_site_info($site_id);
-#$this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+#$this_site_info =\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
 #//prn($this_site_info);
 if (checkInt($this_site_info['id']) <= 0) {
     $input_vars['page_title'] = $text['Site_not_found'];
@@ -107,7 +107,7 @@ $json['files'][] = Array(
 
 
 // get list of pages
-$pagelist = db_getrows("SELECT id,lang,title,path FROM {$GLOBALS['table_prefix']}page WHERE site_id=$site_id ORDER BY id,lang");
+$pagelist = \e::db_getrows("SELECT id,lang,title,path FROM {$GLOBALS['table_prefix']}page WHERE site_id=$site_id ORDER BY id,lang");
 $cnt = count($pagelist);
 for ($i = 0; $i < $cnt; $i++) {
     $page_url=preg_replace("/\\/\$/", '', $site_root_url.'/'.$pagelist[$i]['path'])."/{$pagelist[$i]['id']}.{$pagelist[$i]['lang']}.html";

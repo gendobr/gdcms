@@ -53,7 +53,7 @@ foreach($this_news_info['news_icon'] as $pt){
 }
 
 $sql="UPDATE {$table_prefix}news SET news_icon=NULL WHERE id={$this_news_info['id']} AND lang='{$this_news_info['lang']}'";
-db_execute($sql);
+\e::db_execute($sql);
 
 
 header("Location: index.php?action=news/edit&site_id={$this_news_info['site_id']}&news_id={$this_news_info['id']}&lang={$this_news_info['lang']}");

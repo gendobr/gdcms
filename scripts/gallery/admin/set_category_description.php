@@ -13,7 +13,7 @@ $rozdil_id = (int) str_replace('rozdil_', '', $input_vars['id']);
 
 
 // get image info
-$category_info = db_getonerow("SELECT * FROM {$table_prefix}photogalery_rozdil  WHERE id=$rozdil_id");
+$category_info =\e::db_getonerow("SELECT * FROM {$table_prefix}photogalery_rozdil  WHERE id=$rozdil_id");
 if (!$category_info) {
     echo htmlspecialchars($category_description);
     exit();
@@ -34,8 +34,8 @@ if (get_level($site_id) == 0) {
 }
 # ------------------- check permission - end -----------------------------------
 
-$encoded_category_description  = DbStr($category_description);
-db_execute("UPDATE {$table_prefix}photogalery_rozdil SET description='$encoded_category_description' WHERE id=$rozdil_id AND site_id=$site_id");
+$encoded_category_description  = \e::db_escape($category_description);
+\e::db_execute("UPDATE {$table_prefix}photogalery_rozdil SET description='$encoded_category_description' WHERE id=$rozdil_id AND site_id=$site_id");
 //echo htmlspecialchars(iconv('cp1251'    ,'UTF-8',$category_description));
 //echo htmlspecialchars(iconv(site_charset,'UTF-8',$category_description));
 echo htmlspecialchars($category_description);

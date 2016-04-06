@@ -75,7 +75,7 @@ if(isset($input_vars['ec_item_id'])) {
 
 # get list of page languages
 # -------------------- get list of page languages - begin ----------------------
-$tmp=db_getrows("SELECT DISTINCT ec_item_lang as lang
+$tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
                      FROM {$table_prefix}ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
@@ -252,9 +252,9 @@ if(strlen($order_form_msg)==0) {
     // ----------- check if site visitor already registered - begin ------------
     $query="SELECT *
               FROM {$table_prefix}site_visitor
-              WHERE site_visitor_login='".DbStr($user_data_fields['ec_user_email'])."'
-                 OR site_visitor_email='".DbStr($user_data_fields['ec_user_email'])."'";
-    $site_visitor_info=db_getonerow($query);
+              WHERE site_visitor_login='".\e::db_escape($user_data_fields['ec_user_email'])."'
+                 OR site_visitor_email='".\e::db_escape($user_data_fields['ec_user_email'])."'";
+    $site_visitor_info=\e::db_getonerow($query);
     // ----------- check if site visitor already registered - end --------------
 
 
@@ -270,13 +270,13 @@ if(strlen($order_form_msg)==0) {
                       site_visitor_home_page_url)
                   values(
                      '".md5($site_visitor_password)."',
-                     '".DbStr($user_data_fields['ec_user_email'])."',
-                     '".DbStr($user_data_fields['ec_user_email'])."',
+                     '".\e::db_escape($user_data_fields['ec_user_email'])."',
+                     '".\e::db_escape($user_data_fields['ec_user_email'])."',
                      ''
                   )";
-        db_execute($query);
+        \e::db_execute($query);
         $query="SELECT * FROM {$table_prefix}site_visitor WHERE site_visitor_id=LAST_INSERT_ID()";
-        $site_visitor_info=db_getonerow($query);
+        $site_visitor_info=\e::db_getonerow($query);
     }
     // ----------- register site visitor - end ---------------------------------
 
@@ -298,7 +298,7 @@ if(strlen($order_form_msg)==0) {
     }
 
     $query="SELECT * FROM {$table_prefix}ec_user WHERE site_visitor_id={$site_visitor_info['site_visitor_id']}";
-    $ec_user_records=db_getrows($query);
+    $ec_user_records=\e::db_getrows($query);
 
     $ec_user_record_exists=false;
     foreach($ec_user_records as $ur) {
@@ -332,19 +332,19 @@ if(strlen($order_form_msg)==0) {
                     ec_user_uid,
                     site_visitor_id
               )values(
-                    '".DbStr($user_data_fields['ec_user_name'])."',
-                    '".DbStr($user_data_fields['ec_user_telephone'])."',
-                    '".DbStr($user_data_fields['ec_user_icq'])."',
-                    '".DbStr($user_data_fields['ec_user_delivery_city'])."',
-                    '".DbStr($user_data_fields['ec_user_delivery_region'])."',
-                    '".DbStr($user_data_fields['ec_user_delivery_street_address'])."',
-                    '".DbStr($user_data_fields['ec_user_delivery_suburb'])."',
+                    '".\e::db_escape($user_data_fields['ec_user_name'])."',
+                    '".\e::db_escape($user_data_fields['ec_user_telephone'])."',
+                    '".\e::db_escape($user_data_fields['ec_user_icq'])."',
+                    '".\e::db_escape($user_data_fields['ec_user_delivery_city'])."',
+                    '".\e::db_escape($user_data_fields['ec_user_delivery_region'])."',
+                    '".\e::db_escape($user_data_fields['ec_user_delivery_street_address'])."',
+                    '".\e::db_escape($user_data_fields['ec_user_delivery_suburb'])."',
                     '".md5(time().session_id())."',
                 {$site_visitor_info['site_visitor_id']}
               )";
         //prn('Saving new user data:'.$query);
-        db_execute($query);
-        $ec_user_id=db_getonerow("SELECT last_insert_id() as new_ec_user_id");
+        \e::db_execute($query);
+        $ec_user_id=\e::db_getonerow("SELECT last_insert_id() as new_ec_user_id");
         $ec_user_id=$ec_user_id['new_ec_user_id'];
     }
     // ----------------- create new user delivery data - begin -----------------
@@ -382,14 +382,14 @@ if(strlen($order_form_msg)==0) {
                    NOW(), $site_id,
                  '{$ec_order_status_default}',
                  '{$ec_order_total}', {$ec_user_id}, 0,
-                 '".DbStr(serialize($_SESSION['ec_cart']))."',
-                 '".DbStr(serialize($_SESSION['user_data_fields']))."')";
+                 '".\e::db_escape(serialize($_SESSION['ec_cart']))."',
+                 '".\e::db_escape(serialize($_SESSION['user_data_fields']))."')";
     //prn($query);alter table `{$GLOBALS['table_prefix']}ec_order` add column `ec_order_custom_data` text NULL after `ec_order_paid_amount`;
-    db_execute($query);
+    \e::db_execute($query);
 
     $query="SELECT LAST_INSERT_ID() AS ec_order_id";
     //prn($query);
-    $ec_order_id=db_getonerow($query);
+    $ec_order_id=\e::db_getonerow($query);
     $ec_order_id=$ec_order_id['ec_order_id'];
 
     // update order hash
@@ -402,16 +402,16 @@ if(strlen($order_form_msg)==0) {
     $query=Array();
     foreach($_SESSION['ec_cart']['items'] as $it) {
         $query[]="(
-            '".DbStr($it['info']['ec_item_uid'])."',
+            '".\e::db_escape($it['info']['ec_item_uid'])."',
             '".((int)$it['info']['ec_item_id'])."',
-            '".DbStr($it['info']['ec_item_lang'])."',
-            '".DbStr($it['info']['ec_item_title'])."',
+            '".\e::db_escape($it['info']['ec_item_lang'])."',
+            '".\e::db_escape($it['info']['ec_item_title'])."',
             '".((float)$it['info']['ec_item_price'])."',
-            '".DbStr($it['info']['ec_item_currency'])."',
-            '".DbStr("{$it['info']['ec_item_size'][0]}x{$it['info']['ec_item_size'][1]}x{$it['info']['ec_item_size'][2]} {$it['info']['ec_item_size'][3]}")."',
-            '".DbStr("{$it['info']['ec_item_weight'][0]} {$it['info']['ec_item_weight'][1]}")."',
-            '".DbStr($it['amount'])."',
-            '".DbStr(serialize($it))."',
+            '".\e::db_escape($it['info']['ec_item_currency'])."',
+            '".\e::db_escape("{$it['info']['ec_item_size'][0]}x{$it['info']['ec_item_size'][1]}x{$it['info']['ec_item_size'][2]} {$it['info']['ec_item_size'][3]}")."',
+            '".\e::db_escape("{$it['info']['ec_item_weight'][0]} {$it['info']['ec_item_weight'][1]}")."',
+            '".\e::db_escape($it['amount'])."',
+            '".\e::db_escape(serialize($it))."',
             '$ec_order_id',
                 $site_id
 	     )";
@@ -424,7 +424,7 @@ if(strlen($order_form_msg)==0) {
                  ec_order_id, site_id )
                values ".join(',',$query);
         //prn($query);
-        db_execute($query);
+        \e::db_execute($query);
     }
     // --------------------- save order items - end ----------------------------
 
@@ -438,7 +438,7 @@ if(strlen($order_form_msg)==0) {
                  SET ec_item_amount=ec_item_amount-1,
                      ec_item_purchases=ifnull(ec_item_purchases,0)+1
                  WHERE ec_item_id=".$it['info']['ec_item_id']." LIMIT 1";
-        db_execute($query);
+        \e::db_execute($query);
         if(    (($it['info']['ec_item_amount']-1)<=0)
                 && function_exists($it['info']['ec_item_onnullamount'])
                 && eregi('^onnullamount_',$it['info']['ec_item_onnullamount'])
@@ -594,10 +594,6 @@ $menu_groups = get_menu_items($this_site_info['id'],0,$lang);
 
 # search for template
 $ec_neworder_template=site_get_template($this_site_info,'template_ec_order_new');
-# -------------------- search for template - begin ---------------------------
-//  $ec_item_template = sites_root.'/'.$this_site_info['dir'].'/template_ec_order_new.html';
-//  if(!is_file($ec_item_template)) $ec_item_template = 'cms/template_ec_order_new';
-# -------------------- search for template - end -----------------------------
 
 //prn($_SESSION['ec_cart']);
 //prn($_SESSION);
@@ -627,8 +623,6 @@ $vyvid=
 
 # search for template
 $custom_page_template=site_get_template($this_site_info,'template_index');
-//  $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
-//  if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 # --------------------------- get site template - end --------------------------
 $file_content=process_template($custom_page_template//$this_site_info['template']
         ,Array(

@@ -26,7 +26,7 @@
 
 //------------------- check permission - begin ---------------------------------
 $this_site_info['admin_level']=get_level($site_id);
-$max_site_level=db_getonerow("SELECT max(level) as maxlevel FROM {$table_prefix}site_user WHERE site_id={$site_id} ");
+$max_site_level=\e::db_getonerow("SELECT max(level) as maxlevel FROM {$table_prefix}site_user WHERE site_id={$site_id} ");
 $max_site_level=$max_site_level['maxlevel'];
 // prn('$max_site_level='.$max_site_level,"this_site_info[admin_level]=".$this_site_info['admin_level']);
 if($this_site_info['admin_level']<$max_site_level && !is_admin())
@@ -58,7 +58,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
           {
              $query="SELECT count(*) AS ns FROM {$table_prefix}site WHERE dir='".$this->field['site_dir']['value']."' AND id<>'".checkInt($this->id)."'";
              // prn($query);
-             $count_site=db_getonerow($query);
+             $count_site=\e::db_getonerow($query);
              $count_site=$count_site['ns'];
              if($count_site>0)
              {
@@ -68,9 +68,8 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
           }
         // ------------------- site directory uniqueness - end -----------------
         // -------------------- protect site root dir - begin ------------------
-           $site_dir_path = sites_root.'/'.$this->field['site_dir']['value'];
-           //prn($site_dir_path,substr($site_dir_path,0,strlen(local_root)),local_root);
-           if(substr($site_dir_path,0,strlen(local_root))==local_root)
+           $site_dir_path = \e::config('SITES_ROOT').'/'.$this->field['site_dir']['value'];
+           if(substr($site_dir_path,0,strlen(\e::config('APP_ROOT')))==\e::config('APP_ROOT'))
            {
               $this->messages.= " <b><font color=red> {$text['ERROR']} : Change directory name</font></b><br>\n";
               $all_is_ok = false;
@@ -83,7 +82,6 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
            $tmp = preg_replace("/\\/+$/",'',$tmp);
            //$tmp = str_replace('.','',$tmp);
            $tmp = preg_replace("/[^0-9a-z\\/_.-]/i",'',$tmp);
-           //prn($site_dir_path,substr($site_dir_path,0,strlen(local_root)),local_root);
            if($site_dir_path!=$tmp || strlen($tmp)==0)
            {
               $this->messages.= " <b><font color=red> {$text['ERROR']} : Type in correct directory name [a-z0-9/_-]+</font></b><br>\n";
@@ -164,7 +162,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
 
   //-------------------- list of templates - begin -----------------------------
     run('lib/file_functions');
-    $template_files = ls(template_root);
+    $template_files = ls(\e::config('TEMPLATE_ROOT'));
     $template_files = $template_files['files'];
     $template_list  = Array();
     foreach($template_files as $fname)
@@ -213,7 +211,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
                   );
 
 
-  $tmp=db_getrows("SELECT ec_currency_code, ec_curency_title FROM {$table_prefix}ec_currency ORDER BY ec_curency_title");
+  $tmp=\e::db_getrows("SELECT ec_currency_code, ec_curency_title FROM {$table_prefix}ec_currency ORDER BY ec_curency_title");
   $list_of_currency=Array();
   foreach($tmp as $tm) $list_of_currency[]=$tm['ec_currency_code'].'='.rawurlencode($tm['ec_curency_title']);
   unset($tmp,$tm);
@@ -271,7 +269,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
     //--------------------- update site dir - begin ----------------------------
     if(is_admin())
     {
-      $site_dir_path = sites_root.'/'.$rep->field['site_dir']['value'];
+      $site_dir_path = \e::config('SITES_ROOT').'/'.$rep->field['site_dir']['value'];
       if(strlen($this_site_info['dir'])==0)
       {
         // create directory if not exists
@@ -284,7 +282,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
       else
       {
          // check if directory has to be renamed
-         $old_dir_path = sites_root.'/'.$this_site_info['dir'];
+         $old_dir_path = \e::config('SITES_ROOT').'/'.$this_site_info['dir'];
          if($old_dir_path != $site_dir_path)
          {
            //prn("Rename $old_dir_path to $site_dir_path");

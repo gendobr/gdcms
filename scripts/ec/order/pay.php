@@ -52,15 +52,15 @@ if($payment_reply->is_valid()) {
                     SET ec_order_paid=1 , ec_order_paid_amount=".$payment_reply->get_amount()."
                     WHERE ec_order_id=$ec_order_id";
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
 
             # update order hash
             ec_order_sha($ec_order_id);
 
             # update order history
             $order_history_query="SELECT
-                        '".DbStr(text('Ec_order_is_paid_successfully'))."' as ec_order_history_title,
-                        '".DbStr($payment_reply->get_human_readable_info())."' as ec_order_history_details,
+                        '".\e::db_escape(text('Ec_order_is_paid_successfully'))."' as ec_order_history_title,
+                        '".\e::db_escape($payment_reply->get_human_readable_info())."' as ec_order_history_details,
                            NOW() as ec_order_history_date,
                           'order_paid_successfully' as ec_order_history_action,
                            ec_order.ec_order_id,
@@ -133,8 +133,8 @@ if($payment_reply->is_valid()) {
         case 'failure':
         # update order history
             $order_history_query="SELECT
-                        '".DbStr(text('Ec_order_payment_failure'))."' as ec_order_history_title,
-                        '".DbStr($payment_reply->get_human_readable_info())."' as ec_order_history_details,
+                        '".\e::db_escape(text('Ec_order_payment_failure'))."' as ec_order_history_title,
+                        '".\e::db_escape($payment_reply->get_human_readable_info())."' as ec_order_history_details,
                            NOW() as ec_order_history_date,
                           'order_payment_failure' as ec_order_history_action,
                            ec_order.ec_order_id,
@@ -208,8 +208,8 @@ if($payment_reply->is_valid()) {
         case 'waiting':
         # update order history
             $order_history_query="SELECT
-                        '".DbStr(text('Ec_order_payment_waiting'))."' as ec_order_history_title,
-                        '".DbStr($payment_reply->get_human_readable_info())."' as ec_order_history_details,
+                        '".\e::db_escape(text('Ec_order_payment_waiting'))."' as ec_order_history_title,
+                        '".\e::db_escape($payment_reply->get_human_readable_info())."' as ec_order_history_details,
                            NOW() as ec_order_history_date,
                           'order_payment_failure' as ec_order_history_action,
                            ec_order.ec_order_id,
@@ -294,8 +294,8 @@ else {
 
     # update order history
     $order_history_query="SELECT
-                '".DbStr(text('Ec_order_payment_invalid'))."' as ec_order_history_title,
-                '".DbStr($payment_reply->get_human_readable_info())."' as ec_order_history_details,
+                '".\e::db_escape(text('Ec_order_payment_invalid'))."' as ec_order_history_title,
+                '".\e::db_escape($payment_reply->get_human_readable_info())."' as ec_order_history_details,
                    NOW() as ec_order_history_date,
                   'order_payment_invalid' as ec_order_history_action,
                    ec_order.ec_order_id,
@@ -376,7 +376,7 @@ $order_history_query="INSERT INTO {$table_prefix}ec_order_history(
                     user_id
                 ) ".$order_history_query ;
 //prn($order_history_query);
-db_execute($order_history_query);
+\e::db_execute($order_history_query);
 ?><html>
     <head>
         <meta http-equiv="Refresh" content="30;URL=index.php?action=ec/order/postpay&<?php echo query_string('^action$');?>">

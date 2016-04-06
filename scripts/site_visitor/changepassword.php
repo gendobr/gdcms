@@ -39,7 +39,7 @@ run('site/menu');
 # code is posted
   if(!$access_allowed && isset($input_vars['code']))
   {
-      $tmp_site_visitor_info=site_visitor_load(" site_visitor_code='".DbStr($input_vars['code'])."' ");
+      $tmp_site_visitor_info=site_visitor_load(" site_visitor_code='".\e::db_escape($input_vars['code'])."' ");
       if($tmp_site_visitor_info)
       {
          $_SESSION['site_visitor_info']=$tmp_site_visitor_info;
@@ -69,10 +69,10 @@ $error_msg='';
      if($input_vars['pw1']!=$input_vars['pw2']) $error_msg.='<br>'.text('ERROR').': '.text('Passwords_do_not_match');
      if($error_msg=='')
      {
-        db_execute(
+        \e::db_execute(
             "UPDATE {$table_prefix}site_visitor
              SET site_visitor_password='".md5($input_vars['pw1'])."'
-             WHERE site_visitor_id='".DbStr($_SESSION['site_visitor_info']['site_visitor_id'])."'
+             WHERE site_visitor_id='".\e::db_escape($_SESSION['site_visitor_info']['site_visitor_id'])."'
              LIMIT 1");
 //        prn("UPDATE {$table_prefix}site_visitor
 //             SET site_visitor_password='".md5($input_vars['pw1'])."'

@@ -24,6 +24,6 @@ $query="SELECT DISTINCT pa.*
         ";
 
 
-$smarty->_tpl_vars['ec_categories']=db_getrows($query);
+$smarty->_tpl_vars['ec_categories']=\e::db_getrows($query);
 //prn($smarty->_tpl_vars['ec_categories']);
 ?>

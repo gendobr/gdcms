@@ -16,7 +16,7 @@
             # --------------- check if directory exists - begin ----------------
               $dirs=explode('/',dirname($key));
               # prn($dirs);
-              $pt=sites_root."/{$this_site_info['dir']}";
+              $pt=\e::config('SITES_ROOT')."/{$this_site_info['dir']}";
               foreach($dirs as $dr)
               {
                 if(strlen($dr)>0)

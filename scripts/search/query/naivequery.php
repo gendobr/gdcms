@@ -40,25 +40,25 @@ $siteIds = array_unique($siteIds);
 
 $keywords = trim(isset($input_vars['keywords']) ? strip_tags($input_vars['keywords']) : '');
 if (strlen($keywords) > 0) {
-    include (script_root . "/search/tokenizer/tokenizer.php");
-    include (script_root . "/search/tokenizer/tokenizer_ukr.php");
-    include (script_root . "/search/tokenizer/tokenizer_rus.php");
-    include (script_root . "/search/tokenizer/tokenizer_eng.php");
-    include (script_root . "/search/getlanguage/getlanguage.php");
-    include (script_root . "/search/commonwords/commonwords.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/tokenizer/tokenizer.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/tokenizer/tokenizer_ukr.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/tokenizer/tokenizer_rus.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/tokenizer/tokenizer_eng.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/getlanguage/getlanguage.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/commonwords/commonwords.php");
 
-    include (script_root . "/search/stemming/stemmer.class.php");
-    include (script_root . "/search/stemming/porter_eng.class.php");
-    include (script_root . "/search/stemming/porter_rus.class.php");
-    include (script_root . "/search/stemming/porter_ukr.class.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/stemming/stemmer.class.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/stemming/porter_eng.class.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/stemming/porter_rus.class.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/stemming/porter_ukr.class.php");
 
-    $commonwords = new commonwords(script_root . "/search/commonwords/commonwords.txt");
+    $commonwords = new commonwords(\e::config('SCRIPT_ROOT') . "/search/commonwords/commonwords.txt");
 
     $langSelector = new getlanguage(Array(
         'files' => Array(
-            'eng' => script_root . "/search/getlanguage/stats_eng.txt",
-            'rus' => script_root . "/search/getlanguage/stats_rus.txt",
-            'ukr' => script_root . "/search/getlanguage/stats_ukr.txt",
+            'eng' => \e::config('SCRIPT_ROOT') . "/search/getlanguage/stats_eng.txt",
+            'rus' => \e::config('SCRIPT_ROOT') . "/search/getlanguage/stats_rus.txt",
+            'ukr' => \e::config('SCRIPT_ROOT') . "/search/getlanguage/stats_ukr.txt",
         // 'slov' => '../getlanguage/stats_slov.txt',
         // 'češ' => '../getlanguage/stats_ces.txt',
         )
@@ -129,7 +129,7 @@ if (strlen($keywords) > 0) {
     $where=Array();
     foreach($keywords as $kw){
         if(strlen($kw)>0){
-            $where[]=" LOCATE('" . DbStr($kw) . "', words)";
+            $where[]=" LOCATE('" . \e::db_escape($kw) . "', words)";
         }
     }
     if(count($where)>0){
@@ -142,13 +142,13 @@ if (strlen($keywords) > 0) {
             FROM {$GLOBALS['table_prefix']}search_index_cache AS ss
             WHERE $where
                 AND site_id IN(" . join(',', $siteIds) . ")
-                AND lang='".  DbStr($input_vars['lang'])."'
+                AND lang='".  \e::db_escape($input_vars['lang'])."'
             LIMIT 0,101;";
-    $search_result = db_getrows($query);
+    $search_result = \e::db_getrows($query);
     // echo '<!-- '; prn($query); echo ' -->';
 
     // extract site info
-    $tmp = db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}site WHERE id IN(" . join(',', $siteIds) . ")");
+    $tmp = \e::db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}site WHERE id IN(" . join(',', $siteIds) . ")");
     $sites = Array();
     foreach ($tmp as $tm) {
         $tm['title'] = get_langstring($tm['title'], $lang);

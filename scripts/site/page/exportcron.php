@@ -20,7 +20,7 @@ where page.site_id=site.id
 and page.cense_level>=site.cense_level
 and not is_under_construction
 ";
-$n_pages = db_getonerow($query1);
+$n_pages =\e::db_getonerow($query1);
 $n_pages = $n_pages['n_pages'];
 
 $report .= "n_pages = {$n_pages} <br/>";
@@ -36,7 +36,7 @@ where page.site_id=site.id
 and page.cense_level>=site.cense_level
 and not is_under_construction
 and rand() < {$export_probability}";
-$page_list = db_getrows($query2);
+$page_list = \e::db_getrows($query2);
 
 foreach ($page_list as $pg) {
     $this_site_info = get_site_info($pg['site_id']);

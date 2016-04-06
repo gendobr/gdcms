@@ -26,7 +26,7 @@ if (!$this_ec_item_info || $this_ec_item_info['ec_item_id'] == 0) {
 # -------------------- get ec item info - end ----------------------------------
 # update item satistics
 if (!is_logged()) {
-    db_execute("UPDATE {$table_prefix}ec_item SET ec_item_views=ifnull(ec_item_views,0)+1 WHERE ec_item_id={$this_ec_item_info['ec_item_id']} LIMIT 1");
+    \e::db_execute("UPDATE {$table_prefix}ec_item SET ec_item_views=ifnull(ec_item_views,0)+1 WHERE ec_item_id={$this_ec_item_info['ec_item_id']} LIMIT 1");
 }
 
 
@@ -47,13 +47,13 @@ $this_site_info['title'] = get_langstring($this_site_info['title'], $ec_item_lan
 //prn($input_vars);
 # ------------------- get site info - end --------------------------------------
 # --------------------------- get site template - begin ------------------------
-$custom_page_template = sites_root . '/' . $this_site_info['dir'] . '/template_index.html';
+$custom_page_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/template_index.html';
 if (is_file($custom_page_template)) {
     $this_site_info['template'] = $custom_page_template;
 }
 # --------------------------- get site template - end --------------------------
 # -------------------- get list of page languages - begin ----------------------
-$tmp = db_getrows("SELECT DISTINCT ec_item_lang as lang
+$tmp = \e::db_getrows("SELECT DISTINCT ec_item_lang as lang
                      FROM {$table_prefix}ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&" . ec_item_show . "");
@@ -116,14 +116,14 @@ if (isset($input_vars['comment_code'])) {
                     ec_item_lang,
                     ec_item_comment_datetime
                )values(
-                '" . DbStr($comment_sender) . "',
-                '" . DbStr($_body) . "',
+                '" . \e::db_escape($comment_sender) . "',
+                '" . \e::db_escape($_body) . "',
                 $site_id,
                 $ec_item_id,
                 '$ec_item_lang',
                 NOW()
                )";
-        db_execute($query);
+        \e::db_execute($query);
         $_SESSION['code'] = '';
         $comment_sender = '';
         $comment_body = '';
@@ -164,7 +164,7 @@ class ec_item_comments {
                     AND ec_item_id=$this->ec_item_id
                     AND ec_item_lang='$this->ec_item_lang'
                   ORDER BY ec_item_comment_datetime ASC";
-        return db_getrows($query);
+        return \e::db_getrows($query);
         # -------------------- get list of comments - end ------------------------------
     }
 
@@ -175,7 +175,7 @@ class ec_item_comments {
 $menu_groups = get_menu_items($this_site_info['id'], 0, $ec_item_lang);
 
 # -------------------- search for template - begin ---------------------------
-$ec_item_template = sites_root . '/' . $this_site_info['dir'] . '/template_ec_item_view.html';
+$ec_item_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/template_ec_item_view.html';
 if (!is_file($ec_item_template)) {
     $ec_item_template = 'cms/template_ec_item_view';
 }

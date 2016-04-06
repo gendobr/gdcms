@@ -31,7 +31,7 @@ if (get_level($site_id) == 0) {
 
 $potochnyjrik = date('Y');
 
-$list_rozdil = db_getrows("SELECT DISTINCT rozdil FROM {$table_prefix}photogalery_rozdil WHERE site_id = '$site_id' ORDER BY `rozdil` ASC");
+$list_rozdil = \e::db_getrows("SELECT DISTINCT rozdil FROM {$table_prefix}photogalery_rozdil WHERE site_id = '$site_id' ORDER BY `rozdil` ASC");
 
 $vyvid = '';
 $lang = $_SESSION['lang'];

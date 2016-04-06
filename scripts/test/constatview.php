@@ -4,7 +4,7 @@ global $main_template_name;
 $main_template_name = '';
 
 
-$log=file(script_root.'/test/dbload.txt');
+$log=file(\e::config('SCRIPT_ROOT').'/test/dbload.txt');
 
 $cnt=count($log);
 

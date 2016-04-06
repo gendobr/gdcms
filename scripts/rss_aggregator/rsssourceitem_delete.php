@@ -23,6 +23,6 @@ if (!$rsssourceitem_info || $rsssourceitem_info['site_id']!=$site_id) {
 
 // update visibility status
 $query = "DELETE FROM {$GLOBALS['table_prefix']}rsssourceitem WHERE site_id=$site_id AND rsssourceitem_id=" . ( (int)$rsssourceitem_id);
-db_execute($query);
+\e::db_execute($query);
 echo 'OK';
 ?>

@@ -40,7 +40,7 @@ if(get_level($site_id)==0)
                WHERE     id={$input_vars['move_up']} 
                      AND site_id={$this_site_info['id']}
                      AND map_position>0";
-       db_execute($query);
+       \e::db_execute($query);
        clear('move_up');
     }
     }
@@ -55,7 +55,7 @@ if(get_level($site_id)==0)
                SET map_position=map_position+1 
                WHERE     id={$input_vars['move_down']} 
                      AND site_id={$this_site_info['id']}";
-       db_execute($query);
+       \e::db_execute($query);
        clear('move_down');
     }
     }
@@ -71,7 +71,7 @@ if(get_level($site_id)==0)
                WHERE     id={$input_vars['move_left']} 
                      AND site_id={$this_site_info['id']}
                      AND map_indent>0";
-       db_execute($query);
+       \e::db_execute($query);
        clear('move_left');
     }
     }
@@ -87,7 +87,7 @@ if(get_level($site_id)==0)
                WHERE     id={$input_vars['move_right']} 
                      AND site_id={$this_site_info['id']}";
        //prn($query);
-       db_execute($query);
+       \e::db_execute($query);
        clear('move_right');
     }
     }
@@ -104,7 +104,7 @@ if(get_level($site_id)==0)
                WHERE     id='$key' 
                      AND site_id={$this_site_info['id']}";
        //prn($query);
-       db_execute($query);
+       \e::db_execute($query);
     }
   }
 //------------------- moving - end ---------------------------------------------
@@ -171,7 +171,7 @@ if(get_level($site_id)==0)
           FROM {$table_prefix}page
           WHERE site_id={$this_site_info['id']}
           ORDER BY map_position, id, lang";
-  $page_list=db_getrows($query);
+  $page_list=\e::db_getrows($query);
   ///prn($page_list);
   
   run('site/page/menu');

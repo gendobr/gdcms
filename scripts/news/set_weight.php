@@ -17,7 +17,7 @@ $debug=false;
   $lang = get_language('lang');
 
   $query="SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
-  $this_news_info=db_getonerow($query);
+  $this_news_info=\e::db_getonerow($query);
   if($debug) prn($query,$this_news_info);
   if(checkInt($this_news_info['id'])<=0)
   {
@@ -39,27 +39,17 @@ $debug=false;
   }
 //------------------- get permission - end -------------------------------------
 
-////------------------- site info - begin ----------------------------------------
-//  $site_id = $this_news_info['site_id'];
-//  $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$this_news_info['site_id']}");
-//  if($debug) prn('$this_site_info=',$this_site_info);
-////------------------- site info - end ------------------------------------------
+
 
 //------------------- change page status - begin -------------------------------
 
 $weight=(int)$input_vars['weight'];
 
 
-$query="UPDATE {$table_prefix}news SET weight=weight+{$weight} WHERE site_id={$this_news_info['site_id']} and id=$news_id and lang='".DbStr($lang)."'";
-db_execute($query);
+$query="UPDATE {$table_prefix}news SET weight=weight+{$weight} WHERE site_id={$this_news_info['site_id']} and id=$news_id and lang='".\e::db_escape($lang)."'";
+\e::db_execute($query);
 
-//$query="UPDATE {$table_prefix}news SET weight=weight+1 WHERE site_id={$this_news_info['site_id']} and weight>=$weight";
-//if($debug) prn($query);
-//db_execute($query);
-//
-//$query="UPDATE {$table_prefix}news SET weight=$weight WHERE site_id={$this_news_info['site_id']} and id=$news_id and lang='$lang'";
-//if($debug) prn($query);
-//db_execute($query);
+
 //------------------- change page status - end ---------------------------------
 
 echo "OK";

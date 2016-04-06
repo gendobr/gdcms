@@ -19,7 +19,7 @@ function export_page($_page_id, $_lang) {
 
     // ------------------ check page id - begin ----------------------------------
     $page_id = (int) $_page_id;
-    $lang = DbStr($_lang);
+    $lang = \e::db_escape($_lang);
     $this_page_info = get_page_info($page_id, $lang);
     if (!$this_page_info) {
         $input_vars['page_title'] =
@@ -58,7 +58,7 @@ function export_page($_page_id, $_lang) {
     //prn('$this_site_info[template]=',$this_site_info['template']);
     // -------------------------- get page template - end ------------------------
     //--------------------------- language selector - begin ----------------------
-    $lang_list = db_getrows("SELECT * FROM {$table_prefix}page WHERE id={$this_page_info['id']} AND cense_level>={$this_site_info['cense_level']}");
+    $lang_list = \e::db_getrows("SELECT * FROM {$table_prefix}page WHERE id={$this_page_info['id']} AND cense_level>={$this_site_info['cense_level']}");
     $cnt = count($lang_list);
     $url_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']);
     for ($i = 0; $i < $cnt; $i++) {
@@ -102,7 +102,7 @@ function export_page($_page_id, $_lang) {
     //------------------------ draw using SMARTY template - end ------------------
 
     // ----------------------- delete old files - begin ------------------------
-    $site_root_dir = sites_root . '/' . preg_replace('/' . "^\\/+|\\/+$" . '/', '', $this_site_info['dir']);
+    $site_root_dir = \e::config('SITES_ROOT') . '/' . preg_replace('/' . "^\\/+|\\/+$" . '/', '', $this_site_info['dir']);
     // prn($site_root_dir);
     // delete old file
     if (strlen($this_page_info['delete_file']) > 0) {

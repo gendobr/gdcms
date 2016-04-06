@@ -19,7 +19,7 @@ header('Access-Control-Allow-Origin: *');
 
 
 $input_vars['category_filter_mode']='yes';
-include(script_root.'/news/get_public_list.php');
+include(\e::config('SCRIPT_ROOT').'/news/get_public_list.php');
 if(isset($input_vars['debug'])) prn($list_of_news);
 /*
    'paging_links'=>$pages
@@ -42,16 +42,16 @@ global $main_template_name; $main_template_name='';
   if(isset($_REQUEST['template']))
   {
     $_REQUEST['template'] = str_replace(Array('/', "\\"), '_', $_REQUEST['template']); // to prevent template names like /etc/passwd
-    $news_template = sites_root.'/'.$this_site_info['dir'].'/'.$_REQUEST['template'].'.html';
+    $news_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/'.$_REQUEST['template'].'.html';
     if(!is_file($news_template)) $news_template=false;
-    if(!$news_template) $news_template = sites_root.'/'.$this_site_info['dir'].'/'.$_REQUEST['template'];
+    if(!$news_template) $news_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/'.$_REQUEST['template'];
     if(!is_file($news_template)) $news_template=false;
   }
   else $news_template=false;
 
 
 # check if site news template name exists
-  if(!$news_template) $news_template = sites_root.'/'.$this_site_info['dir'].'/template_news_view_block.html';
+  if(!$news_template) $news_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_news_view_block.html';
   if(!is_file($news_template)) $news_template=false;
 
 # use default system template

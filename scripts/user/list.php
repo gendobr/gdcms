@@ -12,10 +12,10 @@ $input_vars['delete_user_id']=isset($input_vars['delete_user_id'])?((int)$input_
 if($input_vars['delete_user_id']>1 && $input_vars['delete_user_id']!=$_SESSION['user_info']['id'])
 {
   $query="DELETE FROM {$table_prefix}site_user WHERE user_id={$input_vars['delete_user_id']}";
-  db_execute($query);
+  \e::db_execute($query);
 
   $query="DELETE FROM {$table_prefix}user WHERE id={$input_vars['delete_user_id']}";
-  db_execute($query);
+  \e::db_execute($query);
   
   $input_vars['delete_user_id']=0;
 }

@@ -8,7 +8,7 @@
 function news_info($news_id, $lang){
     global $table_prefix;
     $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
-    $this_news_info = db_getonerow($query);
+    $this_news_info = \e::db_getonerow($query);
     $this_news_info['news_icon']=  json_decode($this_news_info['news_icon'], true);
     return $this_news_info;
 }
@@ -121,7 +121,7 @@ function news_get_view($news_list, $lang) {
     }
 
     $query = "select * from {$GLOBALS['table_prefix']}news_category where news_id in (" . join(',', $ids) . ")";
-    $categories = db_getrows($query);
+    $categories = \e::db_getrows($query);
     // prn($categories);
     $category_ids = Array(0 => 1);
     $_category = Array();
@@ -135,7 +135,7 @@ function news_get_view($news_list, $lang) {
     // prn('$category_ids', $category_ids, '$_category', $_category);
 
     $query = "SELECT * FROM {$GLOBALS['table_prefix']}category WHERE category_id in(" . join(',', array_keys($category_ids)) . ")";
-    $tmp = db_getrows($query);
+    $tmp = \e::db_getrows($query);
     // prn($query,$tmp);
     $ncat = count($tmp);
     $categories = Array();
@@ -277,7 +277,7 @@ class CategoryNews {
 
         // get list of tags
         // cache info as file in the site dir
-        $cachefilepath=template_cache_root . '/' . $this->this_site_info['dir'] . "/cache/news_tags_category{$this->category_info['category_id']}_lang{$this->lang}.cache";
+        $cachefilepath=\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_category{$this->category_info['category_id']}_lang{$this->lang}.cache";
         $tmp = get_cached_info($cachefilepath, cachetime);
         if ($tmp) {
             $this->tagSelector = $tmp;
@@ -310,7 +310,7 @@ class CategoryNews {
                        GROUP BY news_tags.tag
                        ORDER BY news_tags.lang, news_tags.tag";
             //prn($query);
-            $this->tagSelector = db_getrows($query);
+            $this->tagSelector = \e::db_getrows($query);
             set_cached_info($cachefilepath, $this->tagSelector);
         }
         $cnt=count($this->tagSelector);
@@ -431,8 +431,8 @@ class CategoryNews {
             $query="SELECT max(news.last_change_date) as maxdate ,min(news.last_change_date) as mindate
                     FROM {$GLOBALS['table_prefix']}news news
                     WHERE site_id={$this->this_site_info['id']}
-                      AND lang='" . DbStr($this->lang) . "'";
-            $minmax=  db_getonerow($query);
+                      AND lang='" . \e::db_escape($this->lang) . "'";
+            $minmax=  \e::db_getonerow($query);
             $max=(int)date('Y',strtotime($minmax['maxdate']));
             $min=(int)date('Y',strtotime($minmax['mindate']));
             for ($i = $min; $i <= $max; $i++) {
@@ -558,7 +558,7 @@ class CategoryNews {
                 HAVING visible
             ";
             // prn($query);
-            $children = db_getrows($query);
+            $children = \e::db_getrows($query);
             $cnt = count($children);
             for ($i = 0; $i < $cnt; $i++) {
                 $children[$i] = $children[$i]['category_id'];
@@ -594,7 +594,7 @@ class CategoryNews {
         if(count($this->selectedTags)>0){
             $query=[];
             foreach($this->selectedTags as $selectedTag){
-                $query[]="'".DbStr($selectedTag)."'";
+                $query[]="'".\e::db_escape($selectedTag)."'";
             }
             $query=  array_unique($query);
             //$tag_restriction = "AND news.id IN( 
@@ -635,7 +635,7 @@ class CategoryNews {
                   ,IF(LENGTH(TRIM(news.content))>0,1,0) as content_present
             FROM {$GLOBALS['table_prefix']}news news
             WHERE site_id=$site_id
-              AND lang='" . DbStr($this->lang) . "'
+              AND lang='" . \e::db_escape($this->lang) . "'
               AND cense_level>={$this->this_site_info['cense_level']}
               AND last_change_date<=now()
               AND ( expiration_date is null OR now()<=expiration_date )
@@ -645,10 +645,10 @@ class CategoryNews {
             ".( $this->ordering ? "ORDER BY {$this->ordering}" : '')."
             LIMIT {$this->start},{$this->rows_per_page}";
         //prn($query);
-        $this->_list = db_getrows($query);
+        $this->_list = \e::db_getrows($query);
 
 
-        $this->items_found = db_getonerow("SELECT FOUND_ROWS() AS n_records");
+        $this->items_found = \e::db_getonerow("SELECT FOUND_ROWS() AS n_records");
         $this->items_found = $this->items_found['n_records'];
         //prn('$this->items_found=' . $this->items_found);
         # --------------------------- list of pages - begin --------------------------

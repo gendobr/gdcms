@@ -33,9 +33,9 @@ if(isset($input_vars['delete_fragment'])){
     $query="DELETE FROM {$table_prefix}fragment
             WHERE site_id={$site_id}
               AND fragment_id=".( (int)$delete_fragment[0] )."
-              AND fragment_lang='".DbStr($delete_fragment[1])."'
+              AND fragment_lang='".\e::db_escape($delete_fragment[1])."'
             LIMIT 1";
-    db_execute($query);
+    \e::db_execute($query);
     clear('delete_fragment');
 }
 // -------------------- delete fragment - end ----------------------------------
@@ -68,7 +68,7 @@ $re->add_field($field = 'fragment.fragment_id'
         , $_group_operation = false);
 
 //---------------- list of languages - begin ---------------------------------
-$LL = join('&', db_get_associated_array("SELECT fragment_lang,CONCAT(fragment_lang,'=',fragment_lang) FROM {$table_prefix}fragment WHERE site_id={$site_id}"));
+$LL = join('&', \e::db_get_associated_array("SELECT fragment_lang,CONCAT(fragment_lang,'=',fragment_lang) FROM {$table_prefix}fragment WHERE site_id={$site_id}"));
 $re->add_field($field = 'fragment.fragment_lang'
         , $alias = 'fragment_lang'
         , $type = 'enum:' . $LL

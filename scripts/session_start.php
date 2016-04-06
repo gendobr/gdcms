@@ -22,7 +22,7 @@ if(isset($input_vars[custom_session_name]) && strlen($input_vars[custom_session_
 //    setcookie(custom_session_name,$GLOBALS['_COOKIE'][custom_session_name],time()+1200);
 //
 //// extract sesison data
-//    $_SESSION=db_getonerow("SELECT * FROM {$table_prefix}session WHERE id='{$GLOBALS['_COOKIE'][custom_session_name]}'");
+//    $_SESSION=\e::db_getonerow("SELECT * FROM {$table_prefix}session WHERE id='{$GLOBALS['_COOKIE'][custom_session_name]}'");
 //    if(strlen($_SESSION['sess_data'])>0) $_SESSION=unserialize($_SESSION['sess_data']); else $_SESSION=Array();
 //}else {
 //session_name(session_cookie);

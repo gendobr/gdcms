@@ -496,12 +496,14 @@ function menu_site($site_info) {
 function get_site_info($site_id,$lang='') {
     static $this_site_info;
 
-    if(isset($this_site_info)) return $this_site_info;
+    if (isset($this_site_info)) {
+        return $this_site_info;
+    }
 
     global $table_prefix;
     $_id   = (int)$site_id;
 
-    $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$_id}");
+    $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$_id}");
 
     if(!$this_site_info) return false;
 
@@ -511,26 +513,30 @@ function get_site_info($site_id,$lang='') {
     # if user is logged in
     #if(is_logged())
     #{
-    $tmp=db_getrows(
+    $tmp=\e::db_getrows(
             "select u.id, u.full_name, u.user_login, u.email, su.level
           from {$table_prefix}user AS u, {$table_prefix}site_user AS su
           where u.id = su.user_id AND su.site_id = {$this_site_info['id']}
           order by level desc");
     $this_site_info['managers']=Array();
-    foreach($tmp as $tm) $this_site_info['managers'][$tm['id']] = $tm;
+    foreach ($tmp as $tm) {
+        $this_site_info['managers'][$tm['id']] = $tm;
+    }
     unset($tm, $tmp);
     #}
     #else $this_site_info['managers']=Array();
     # ----------------------- list of site managers - end ------------------------
 
-    $this_site_info['site_root_dir'] = str_replace("\\","/",realpath(preg_replace('/\/$/','',sites_root.'/'.$this_site_info['dir'])));
+    $this_site_info['site_root_dir'] = str_replace("\\","/",realpath(preg_replace('/\/$/','',\e::config('SITES_ROOT').'/'.$this_site_info['dir'])));
     $this_site_info['site_root_url'] = preg_replace('/\/$/','',$this_site_info['url']);
 
 
     # --------------------------- get site template - begin ----------------------
-    $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+    $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
     #prn('$news_template',$news_template);
-    if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
+    if (is_file($custom_page_template)) {
+        $this_site_info['template'] = $custom_page_template;
+    }
     # --------------------------- get site template - end ------------------------
 
     return $this_site_info;
@@ -544,16 +550,16 @@ function site_get_template($this_site_info,$template_name_, $verbose=false) {
 
     if($verbose) echo 'site_get_template ('.$template_name_.'=>'.$template_name.')<br/>';
 
-    $template_file = sites_root.'/'.$this_site_info['dir'].'/'.$template_name;
+    $template_file = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/'.$template_name;
     if($verbose) echo 'first_probe:'.$template_file.'<br/>';
 
     if(is_file($template_file)) return $template_file;
 
     if($template_name=='template_index.html') {
-        $template_file=template_root.'/'.$this_site_info['template'].'.html';
+        $template_file=\e::config('TEMPLATE_ROOT').'/'.$this_site_info['template'].'.html';
         if($verbose) echo 'template_index:'.$template_file.'<br/>';
     }else {
-        $template_file = template_root.'/cms/'.$template_name;
+        $template_file = \e::config('TEMPLATE_ROOT').'/cms/'.$template_name;
         if($verbose) echo 'use default:'.$template_file.'<br/>';
     }
     if($verbose) prn("last attempt: ".$template_file);

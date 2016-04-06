@@ -24,7 +24,7 @@ if(!is_admin())
 
 //------------------- site info - begin ----------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
   // prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -45,7 +45,7 @@ if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
     //-------------------- delete files - begin --------------------------------
       if(strlen($this_site_info['dir'])>0)
       {
-         $dir_to_delete=sites_root.'/'.$this_site_info['dir'];
+         $dir_to_delete=\e::config('SITES_ROOT').'/'.$this_site_info['dir'];
          if(is_dir($dir_to_delete))
          {
             run('lib/file_functions');
@@ -95,24 +95,24 @@ if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
         "DELETE FROM {$table_prefix}site WHERE id={$this_site_info['id']}"
         );
       foreach($sqls as $q){
-        db_execute($q);
+        \e::db_execute($q);
       }
 
 
       //------------------ delete menu - begin ---------------------------------
          $query="SELECT id,id FROM {$table_prefix}menu_group WHERE site_id={$this_site_info['id']}";
-         $menu_groups=join(',',db_get_associated_array($query));
+         $menu_groups=join(',',\e::db_get_associated_array($query));
          //prn($menu_groups);
          
          if(strlen($menu_groups)>0)
          {
            $query="DELETE FROM {$table_prefix}menu_item WHERE menu_group_id IN($menu_groups);";
            //prn($query);
-           db_execute($query);
+           \e::db_execute($query);
 
            $query="DELETE FROM {$table_prefix}menu_group WHERE id IN($menu_groups);";
            //prn($query);
-           db_execute($query);
+           \e::db_execute($query);
          }
       //------------------ delete menu - end -----------------------------------
 

@@ -42,7 +42,7 @@ $lang = $_SESSION['lang'];
 $row = false;
 if (isset($input_vars['new'])) {
     $new = abs((int) $input_vars['new']);
-    $row = db_getonerow("SELECT * FROM {$table_prefix}photogalery WHERE id = '$new' AND site=$site_id");
+    $row =\e::db_getonerow("SELECT * FROM {$table_prefix}photogalery WHERE id = '$new' AND site=$site_id");
 }
 if (!$row) {
     $input_vars['page_title'] = $text['Image_not_found'];
@@ -59,13 +59,13 @@ $vyvid = '';
 # ------------------------- update - begin -------------------------------------
 if (isset($input_vars['rozdil1'])) {
 
-    $rozdil1 = DbStr(trim($input_vars['rozdil1']));
+    $rozdil1 = \e::db_escape(trim($input_vars['rozdil1']));
     $rozdil21 = encode_dir_name(trim($input_vars['rozdil1']));
-    $pidpys1 = DbStr($input_vars['pidpys1']);
-    $autor1 = DbStr($input_vars['autor1']);
-    $rik1 = DbStr($input_vars['rik1']);
-    $vis1 = DbStr($input_vars['vis1']);
-    $description1=DbStr($input_vars['description1']);
+    $pidpys1 = \e::db_escape($input_vars['pidpys1']);
+    $autor1 = \e::db_escape($input_vars['autor1']);
+    $rik1 = \e::db_escape($input_vars['rik1']);
+    $vis1 = \e::db_escape($input_vars['vis1']);
+    $description1=\e::db_escape($input_vars['description1']);
     //$photos1 = $row['photos'];photos = '$photos1'             ,
     $query = "UPDATE {$table_prefix}photogalery
                 SET pidpys = '$pidpys1'
@@ -77,10 +77,10 @@ if (isset($input_vars['rozdil1'])) {
                   , vis = '$vis1'
                   , description='$description1'
                 WHERE id = '$new'";
-    db_execute($query);
+    \e::db_execute($query);
     $vyvid = "<b><font color=green>{$text['Gallery_changes_saved']}</font></b>" . $vyvid;
 
-    $row = db_getonerow( "SELECT * FROM {$table_prefix}photogalery WHERE id = '$new' AND site=$site_id" );
+    $row =\e::db_getonerow( "SELECT * FROM {$table_prefix}photogalery WHERE id = '$new' AND site=$site_id" );
 }
 
 # ------------------------- update - end ---------------------------------------
@@ -146,10 +146,8 @@ $vyvid .= ">{$text['positive_answer']}</OPTION>
          </script>
 				 <div style=\"font-size: 90%; height: 100pt; overflow:scroll; color:gray;\">
        ";
-$resulty = mysql_query("SELECT DISTINCT rozdil FROM {$table_prefix}photogalery WHERE site = '$site_id'  ORDER BY `rozdil` ASC", $link) or die("Query failed");
-
-$a = mysql_num_rows($resulty);
-if (!isset($a)) {
+$resulty = \e::db_getrows("SELECT DISTINCT rozdil FROM {$table_prefix}photogalery WHERE site = '$site_id'  ORDER BY `rozdil` ASC", $link) or die("Query failed");
+if (!count($resulty)) {
     $vyvid .= " <b>{$text['Gallery_no_categories']}</b></p>";
 }
 $vyvid .= "<br>";
@@ -160,7 +158,7 @@ function clear_str($str) {
     return $tot;
 }
 
-while ($roww = mysql_fetch_array($resulty)) {
+foreach ($resulty as $roww) {
     $vyvid .= "<b> - <a href=# onclick=\"select_rozdil('" . clear_str($roww['rozdil']) . "'); return false;\">{$roww['rozdil']}</a></b><br>";
 }
 

@@ -17,7 +17,7 @@ $custom_page_template = site_get_template($this_site_info, 'template_index');
 $start = isset($input_vars['start']) ? (int) $input_vars['start'] : 0;
 $separator = md5(time());
 
-$tmp = db_getrows($query = "select distinct poll_uid from {$table_prefix}golos_vidpovidi_details d where d.site_id={$site_id}  and poll_uid is not null");
+$tmp = \e::db_getrows($query = "select distinct poll_uid from {$table_prefix}golos_vidpovidi_details d where d.site_id={$site_id}  and poll_uid is not null");
 //prn($query, $combinations);
 $cnt = count($tmp);
 $combinations=Array();
@@ -35,7 +35,7 @@ $poll_id[] = 0;
 //prn($query, $combinations, $poll_id); // limit $start, 10
 
 
-$tmp = db_getrows("select * from {$table_prefix}golos_pynannja as p  where p.site_id={$site_id} and p.id in(" . join(',', $poll_id) . ")");
+$tmp = \e::db_getrows("select * from {$table_prefix}golos_pynannja as p  where p.site_id={$site_id} and p.id in(" . join(',', $poll_id) . ")");
 $poll=Array();
 foreach ($tmp as $tm){
     $poll[$tm['id']]=$tm;
@@ -58,7 +58,7 @@ foreach ($combinations as $poll_uid=>$cmb) {
     $cmb['titles'] = str_replace($separator, '</div><div class=sgrp>', strip_tags($cmb['titles']));
     $input_vars['page_content'].="
        <div class=grp>
-           <a target=_blank href=\"{$url_prefix}{$poll_uid}\">Просмотреть ответы</a>
+           <a target=_blank href=\"{$url_prefix}{$poll_uid}\">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ</a>
            ";
        foreach($cmb as $poll_id){
 
@@ -73,7 +73,7 @@ foreach ($combinations as $poll_uid=>$cmb) {
        </div>";
 }
 $input_vars['page_header'] =
-$input_vars['page_title'] = 'Просмотр протоколов опроса';
+$input_vars['page_title'] = 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ';
 
 //----------------------------- context menu - begin ---------------------------
 

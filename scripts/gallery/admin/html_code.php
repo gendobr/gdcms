@@ -96,7 +96,7 @@ if ($rozdilizformy != '') {
     # ----------------------------- draw HTML code - end ----------------------
 
     $vyvid.="<p>Subcategories:<div style='margin-top:5px;margin-bottom:5px; padding-left:5px;'>";
-    $result01 = db_getrows(
+    $result01 = \e::db_getrows(
                 "select distinct SUBSTRING_INDEX( rozdil, '/', $n )  rozdil
                  FROM {$table_prefix}photogalery
                  WHERE rozdil LIKE '$rozdilizformy/%'
@@ -126,7 +126,7 @@ if ($rozdilizformy != '') {
 
     # ----------------------------- draw HTML code - end ----------------------
 //127.0.0.1/cms/index.php?action=gallery/html&site_id=1&lang=ukr&cat=2008%2F%ED%EE%E2%E8%ED%E0%202&element=d1364883505&rows=15
-    $result00 = db_getrows("SELECT DISTINCT SUBSTRING_INDEX( rozdil, '/', 1 )  rozdil
+    $result00 = \e::db_getrows("SELECT DISTINCT SUBSTRING_INDEX( rozdil, '/', 1 )  rozdil
                                 	FROM {$table_prefix}photogalery
                                 	WHERE vis = 1 AND site = {$site_id}
                                 	GROUP BY rozdil2", $db);
@@ -145,7 +145,7 @@ if ($rozdilizformy != '') {
 
 
 
-$result = db_getrows("SELECT * FROM {$table_prefix}photogalery WHERE rozdil = '" . DbStr($rozdilizformy) . "' AND vis = 1 AND site = '$site_id' ORDER BY rik DESC");
+$result = \e::db_getrows("SELECT * FROM {$table_prefix}photogalery WHERE rozdil = '" . \e::db_escape($rozdilizformy) . "' AND vis = 1 AND site = '$site_id' ORDER BY rik DESC");
 if ($result) {
 
 

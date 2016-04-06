@@ -48,7 +48,7 @@ if ($dirname) {
 $scssFilepath = realpath("{$this_site_info['site_root_dir']}/{$scssRelativePath}");
 
 if (!$scssFilepath) {
-    $scssFilepath = realpath(template_root . "/{$scssRelativePath}");
+    $scssFilepath = realpath(\e::config('TEMPLATE_ROOT') . "/{$scssRelativePath}");
 }
 
 if (!$scssFilepath) {
@@ -58,11 +58,12 @@ if (!$scssFilepath) {
 
 
 $cachePath = "{$this_site_info['site_root_dir']}/cache/" . md5($scssFilepath) . '.css';
+echo "/* cache $cachePath */";
 if (!file_exists($cachePath) || filemtime($scssFilepath) > filemtime($cachePath)) {
 
     $cssRootDir = dirname($scssFilepath);
 
-    require script_root . "/scss/scss.inc.php";
+    require \e::config('SCRIPT_ROOT') . "/scss/scss.inc.php";
     $scss = new scssc();
     $scss->setImportPaths("$cssRootDir/");
 

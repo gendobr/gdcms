@@ -44,7 +44,7 @@ function ec_cart_additem($this_ec_item_info, $input_vars) {
     $this_ec_item_info['ec_item_abstract'] = '<!-- deleted -->';
     $this_ec_item_info['ec_item_content'] = '<!-- deleted -->';
 
-    $this_ec_item_info['ec_item_currency_title'] = db_getonerow("SELECT * FROM {$GLOBALS['table_prefix']}ec_currency WHERE ec_currency_code='{$this_ec_item_info['ec_item_currency']}'");
+    $this_ec_item_info['ec_item_currency_title'] =\e::db_getonerow("SELECT * FROM {$GLOBALS['table_prefix']}ec_currency WHERE ec_currency_code='{$this_ec_item_info['ec_item_currency']}'");
     $this_ec_item_info['ec_item_currency_title'] = $this_ec_item_info['ec_item_currency_title']['ec_curency_title'];
 
     //unset($_SESSION['ec_cart']);

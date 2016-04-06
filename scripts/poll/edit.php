@@ -33,10 +33,10 @@ if(get_level($site_id)==0) {
 //------------------- check poll_id - begin ------------------------------------
 if(isset($input_vars['poll_id'])) {
     $poll_id=(int)$input_vars['poll_id'];
-    $this_poll_info=db_getonerow("SELECT * FROM {$table_prefix}golos_pynannja WHERE id=$poll_id AND site_id={$site_id}");
+    $this_poll_info=\e::db_getonerow("SELECT * FROM {$table_prefix}golos_pynannja WHERE id=$poll_id AND site_id={$site_id}");
     if($this_poll_info) {
         $poll_id=(int)$this_poll_info['id'];
-        $this_poll_info['vidpovidi']=db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id=$poll_id");
+        $this_poll_info['vidpovidi']=\e::db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id=$poll_id");
     }else $poll_id=0;
 }
 else {
@@ -62,8 +62,8 @@ if(isset($input_vars['poll_save'])) {
         if($poll_id==0) {
             $query="INSERT INTO {$table_prefix}golos_pynannja(site_id,is_active,title,poll_type)
   			        VALUES($site_id,$is_active,'".mysql_escape_string($poll_title)."','{$poll_type}')";
-            db_execute($query);
-            $poll_id=db_getonerow("SELECT LAST_INSERT_ID() AS poll_id");
+            \e::db_execute($query);
+            $poll_id=\e::db_getonerow("SELECT LAST_INSERT_ID() AS poll_id");
             $poll_id=$poll_id['poll_id'];
         }
         else {
@@ -72,7 +72,7 @@ if(isset($input_vars['poll_save'])) {
   			           ,is_active=$is_active
   			           ,poll_type='{$poll_type}'
   			        WHERE id={$poll_id} AND site_id={$site_id}";
-            db_execute($query);
+            \e::db_execute($query);
         }
         # ----------------- save question - end --------------------------------
         # prn($query);
@@ -104,32 +104,32 @@ if(isset($input_vars['poll_save'])) {
         //prn('$to_add',$to_add,'$to_delete',$to_delete,'$to_update',$to_update);
         if(count($to_add)>0) {
             $query=Array();
-            foreach($to_add as $val) $query[]="($poll_id,$site_id,'".DbStr(trim($val))."')";
+            foreach($to_add as $val) $query[]="($poll_id,$site_id,'".\e::db_escape(trim($val))."')";
             $query="INSERT INTO {$table_prefix}golos_vidpovidi(pynannja_id, site_id, html) VALUES ".join(',',$query);
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
         }
 
         if(count($to_delete)>0) {
             $query=Array();
-            foreach($to_add as $val) $query[]="($poll_id,$site_id,'".DbStr(trim($val))."')";
+            foreach($to_add as $val) $query[]="($poll_id,$site_id,'".\e::db_escape(trim($val))."')";
             $query="DELETE FROM {$table_prefix}golos_vidpovidi
   	                  WHERE site_id={$site_id}
   	                    AND pynannja_id=$poll_id
   	                    AND id IN(".join(',',array_keys($to_delete)).")";
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
         }
 
         if(count($to_update)>0) {
             foreach($to_update as $key=>$val) {
                 $query="UPDATE {$table_prefix}golos_vidpovidi
-  	                     SET html='".DbStr($val)."'
+  	                     SET html='".\e::db_escape($val)."'
   	                     WHERE site_id={$site_id}
                            AND pynannja_id=$poll_id
                            AND id=$key";
                 //prn($query);
-                db_execute($query);
+                \e::db_execute($query);
             }
         }
 
@@ -232,7 +232,7 @@ $js[]="
      }
 
      var map=[];
-     var fr='à,á,â,ã,ä,å,æ,ç,è,é,ê,ë,ì,í,î,ï,ð,ñ,ò,ó,ô,õ,ö,÷,ø,ù,þ,ÿ,À,Á,Â,Ã,Ä,Å,Æ,Ç,È,É,Ê,Ë,Ì,Í,Î,Ï,Ð,Ñ,Ò,Ó,Ô,Õ,Ö,×,Ø,Ù,Þ,ß,û,Û';        fr=fr.split(/,/);
+     var fr='ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½';        fr=fr.split(/,/);
      var to='a,b,v,g,d,e,zh,z,i,j,k,l,m,n,o,p,r,s,t,u,f,h,ts,ch,sh,sch,yu,ya,a,b,v,g,d,e,zh,z,i,j,k,l,m,n,o,p,r,s,t,u,f,h,ts,ch,sh,sch,yu,ya,y,y'; to=to.split(/,/);
      for(var i in fr) map[fr[i]]=to[i];
 

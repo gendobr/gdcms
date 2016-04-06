@@ -179,7 +179,7 @@ foreach ($_FILES as $uploadedfile) {
 
         # create directory
         $relative_dir = date('Y/m');
-        $site_root_dir = sites_root . '/' . $this_site_info['dir'];
+        $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
         path_create($site_root_dir, "/gallery/$relative_dir/");
 
         # copy uploaded file
@@ -195,24 +195,24 @@ foreach ($_FILES as $uploadedfile) {
                 $rgb      = 0xFFFFFF, $quality = 100);
         # -------------- create small image - end ------------------------------
         # save to database
-        $icon_insert = db_execute(
+        $icon_insert = \e::db_execute(
                 "INSERT INTO {$table_prefix}photogalery(id,photos,photos_m,rozdil,rozdil2,pidpys,autor,rik,site,vis)
                  VALUES
                  ( NULL
-                  ,'" . DbStr("$relative_dir/$big_image_file_name") . "'
-                  ,'" . DbStr("$relative_dir/$small_image_file_name") . "'
-                  ,'" . DbStr($rozdil) . "'
-                  ,'" . DbStr($rozdil2) . "'
-                  ,'" . DbStr($pidpys) . "'
-                  ,'" . DbStr($autor) . "'
-                  ,'" . DbStr($rik) . "'
-                  ,'" . DbStr($site_id) . "'
-                  ,'" . DbStr($vis) . "'
+                  ,'" . \e::db_escape("$relative_dir/$big_image_file_name") . "'
+                  ,'" . \e::db_escape("$relative_dir/$small_image_file_name") . "'
+                  ,'" . \e::db_escape($rozdil) . "'
+                  ,'" . \e::db_escape($rozdil2) . "'
+                  ,'" . \e::db_escape($pidpys) . "'
+                  ,'" . \e::db_escape($autor) . "'
+                  ,'" . \e::db_escape($rik) . "'
+                  ,'" . \e::db_escape($site_id) . "'
+                  ,'" . \e::db_escape($vis) . "'
                  )");
 
         # show report
         $url_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']) . '/gallery';
-        $row = db_getonerow("SELECT * FROM {$table_prefix}photogalery WHERE photos = '" . DbStr("$relative_dir/$big_image_file_name") . "'");
+        $row =\e::db_getonerow("SELECT * FROM {$table_prefix}photogalery WHERE photos = '" . \e::db_escape("$relative_dir/$big_image_file_name") . "'");
         if ($row) {
             echo "
             <span style='display:inline-block; width:95%;'>

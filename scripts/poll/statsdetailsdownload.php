@@ -1,7 +1,7 @@
 <html>
 <head>
 <META content="text/html; charset=<?=site_charset?>" http-equiv=Content-Type>
-<title>Просмотр протоколов опроса</title>
+<title>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ</title>
 </head>
 <body leftmargin="5" topmargin="5">
 <?php
@@ -27,22 +27,22 @@ $query="SELECT ad.*,p.title,v.html
                ON p.id=ad.poll_id
                LEFT JOIN  {$table_prefix}golos_vidpovidi as v
                ON ad.answer_id=v.id
-        WHERE ad.site_id={$site_id} and poll_uid='".  DbStr($poll_uid)."'
+        WHERE ad.site_id={$site_id} and poll_uid='".  \e::db_escape($poll_uid)."'
         order by ad.session_id,ad.answer_date,ad.poll_id";
 //prn($query);
-$tmp=db_getrows($query);
+$tmp=\e::db_getrows($query);
 //prn($tmp);
 echo '
 <table border=1px celpadding=3pt cellspacing=0>
     <tr>
          <td>UID</td>
          <td>date</td>
-         <td>Вопрос</td>
-         <td>Ответ</td>
-         <td>Идентификатор клиента 1</td>
-         <td>Идентификатор клиента 2</td>
-         <td>IP клиента</td>
-         <td>Уровень доверия</td>
+         <td>пїЅпїЅпїЅпїЅпїЅпїЅ</td>
+         <td>пїЅпїЅпїЅпїЅпїЅ</td>
+         <td>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 1</td>
+         <td>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2</td>
+         <td>IP пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</td>
+         <td>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</td>
     </tr>
 ';
 $prev='';

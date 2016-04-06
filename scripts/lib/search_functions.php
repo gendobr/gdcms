@@ -249,7 +249,7 @@ function get_META_info($html) {
 
 // --------------------------- remove common words - begin ---------------
 function remove_common_words($ht) {
-  $symbol = file(local_root.'/scripts/lib/common_words.txt');
+  $symbol = file(\e::config('APP_ROOT').'/scripts/lib/common_words.txt');
   $cnt=count($symbol);
   for($i=0;$i<$cnt;$i++) $symbol[$i] = str_replace(Array("\n","\r"),'',$symbol[$i]);  
   $html_text = ' '.$ht.' ';

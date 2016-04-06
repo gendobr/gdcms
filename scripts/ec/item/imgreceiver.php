@@ -70,7 +70,7 @@ if ($photos['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/i", $photos['name'],
 
     # create directory
     $relative_dir = date('Y') . '/' . date('m');
-    $site_root_dir = sites_root . '/' . $this_site_info['dir'];
+    $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
     path_create($site_root_dir, "/gallery/$relative_dir/");
 
     # copy uploaded file
@@ -92,9 +92,9 @@ if ($photos['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/i", $photos['name'],
     }
     $ec_item_img=join("\n",$ec_item_img);
 
-    $query = "UPDATE {$table_prefix}ec_item SET ec_item_img='" . DbStr($ec_item_img) . "'
+    $query = "UPDATE {$table_prefix}ec_item SET ec_item_img='" . \e::db_escape($ec_item_img) . "'
               WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
-    db_execute($query);
+    \e::db_execute($query);
     echo '{"status":"success","message":"OK"}';
     return;
 }

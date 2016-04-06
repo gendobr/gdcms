@@ -56,7 +56,7 @@ $re->add_field($field = 'news.id'
 
 //---------------- list of languages - begin ---------------------------------
 //
-$LL = join('&', db_get_associated_array("SELECT DISTINCT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}news WHERE site_id={$site_id}"));
+$LL = join('&', \e::db_get_associated_array("SELECT DISTINCT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}news WHERE site_id={$site_id}"));
 $re->add_field($field = 'news.lang'
         , $alias = 'lang'
         , $type = 'enum:' . $LL
@@ -166,7 +166,7 @@ for ($i = 0; $i < $cnt; $i++) {
 $news_categories=Array();
 $news_translations=Array();
 if(count($news_ids)>0){
-    $tmp=db_getrows(
+    $tmp=\e::db_getrows(
             "SELECT news_category.news_id, category.category_title
              FROM {$table_prefix}news_category news_category 
                   INNER JOIN {$table_prefix}category category
@@ -182,7 +182,7 @@ if(count($news_ids)>0){
     $news_categories=array_map(function($el){return mb_wordwrap(join(',',$el), 10, "&shy;",true);}, $news_categories);
     //prn($news_categories);
     
-    $tmp=db_getrows(
+    $tmp=\e::db_getrows(
             "SELECT news.id, count(*) as n
              FROM {$table_prefix}news news 
              WHERE news.id IN(".join(',',$news_ids).")
@@ -290,7 +290,7 @@ $query = "SELECT category_id, category_title, deep
             FROM {$table_prefix}category
             WHERE start>0 AND site_id={$site_id}
             ORDER BY start ASC";
-$tmp = db_getrows($query);
+$tmp = \e::db_getrows($query);
 $list_of_categories = Array();
 $prev_deep = 0;
 $path = Array();
@@ -476,4 +476,3 @@ $Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------
-?>

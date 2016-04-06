@@ -36,7 +36,7 @@ if(get_level($site_id)==0)
   if(isset($input_vars['delete_page_id']))
   {
     $delete_page_id=checkInt($input_vars['delete_page_id']);
-    $delete_page_info=get_page_info($delete_page_id,DbStr($input_vars['delete_page_lang']));
+    $delete_page_info=get_page_info($delete_page_id,\e::db_escape($input_vars['delete_page_lang']));
 
     # --------------------- delete from DB - begin -----------------------------
       $query="DELETE FROM {$table_prefix}page
@@ -44,19 +44,19 @@ if(get_level($site_id)==0)
                 AND lang    ='{$delete_page_info['lang']}'
                 AND site_id = {$delete_page_info['site_id']}";
     # prn($query);
-      db_execute($query);
+      \e::db_execute($query);
 
       $query="DELETE FROM {$table_prefix}page_menu_group
               WHERE page_id = {$delete_page_info['id']}
                 AND lang    ='{$delete_page_info['lang']}'
                 AND site_id = {$delete_page_info['site_id']}";
     # prn($query);
-      db_execute($query);
+      \e::db_execute($query);
     # --------------------- delete from DB - end -------------------------------
 
     # --------------------- delete exported page - begin -----------------------
       run("lib/file_functions");
-      $site_root_dir = sites_root.'/'.$this_site_info['dir'];
+      $site_root_dir = \e::config('SITES_ROOT').'/'.$this_site_info['dir'];
       path_delete($site_root_dir,$delete_page_info['file']);
       if($delete_page_info['file2']) {
           //prn("path_delete($site_root_dir,{$delete_page_info['file2']})");
@@ -92,7 +92,7 @@ if(get_level($site_id)==0)
                  ,$_group_operation=false);
 
   //---------------- list of languages - begin ---------------------------------
-    $LL = join('&',db_get_associated_array("SELECT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}page WHERE site_id={$site_id}"));
+    $LL = join('&',\e::db_get_associated_array("SELECT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}page WHERE site_id={$site_id}"));
     $re->add_field( $field='page.lang'
                    ,$alias='lang'
                    ,$type ='enum:'.$LL
@@ -133,7 +133,7 @@ if(get_level($site_id)==0)
 
  # ------------------------ list of categories - begin -------------------------
     $query="SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
-    $tmp=db_getrows($query);
+    $tmp=\e::db_getrows($query);
     $list_of_categories=Array();
     foreach($tmp as $tm) $list_of_categories[]=$tm['category_id'].'='.rawurlencode(str_repeat(' + ',$tm['deep']).get_langstring($tm['category_title']));
     unset($tmp,$tm);

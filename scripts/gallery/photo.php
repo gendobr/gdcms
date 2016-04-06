@@ -1,5 +1,5 @@
 <?php
-//----------------------Гена придумал ---------------------------------
+//----------------------пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ---------------------------------
 $link = $db;
 $data=date ("Y-m-d H:i");
 
@@ -35,16 +35,16 @@ if(checkInt($this_site_info['id'])<=0) {
 
 
 //--------------------------- get site template - begin ------------------------
-$custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+$custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
 #prn('$news_template',$news_template);
 if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 //--------------------------- get site template - end --------------------------
 
-//--------------------------- Гена допридумывал --------------------------
+//--------------------------- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ --------------------------
 
 
 
-//--------------------------- я придумала --------------------------
+//--------------------------- пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ --------------------------
 
 $lang=$input_vars['lang'];
 
@@ -68,7 +68,7 @@ if (isset($input_vars['item'])) {
     $item=(int)$input_vars['item'];
 
     $link = $db;
-    $row = db_getonerow("SELECT * FROM {$table_prefix}photogalery WHERE id = '$item'");
+    $row =\e::db_getonerow("SELECT * FROM {$table_prefix}photogalery WHERE id = '$item'");
     if($row) {
         //prn($row);
         $url_prefix=preg_replace("/\\/+$/",'',$this_site_info['url']).'/gallery';
@@ -112,10 +112,10 @@ if (isset($input_vars['item'])) {
         // $psus.="<hr>";
 
         // ----------------- links to next and previous items - begin ----------
-           $query="SELECT min(id) as img_id, 'next' as type FROM {$table_prefix}photogalery WHERE id > '$item' AND rozdil='".DbStr($row['rozdil'])."' and site='$site_id'
+           $query="SELECT min(id) as img_id, 'next' as type FROM {$table_prefix}photogalery WHERE id > '$item' AND rozdil='".\e::db_escape($row['rozdil'])."' and site='$site_id'
                    UNION
-                   SELECT max(id) as img_id, 'prev' as type FROM {$table_prefix}photogalery WHERE id < '$item' AND rozdil='".DbStr($row['rozdil'])."' and site='$site_id'";
-           $siblings=db_getrows($query);
+                   SELECT max(id) as img_id, 'prev' as type FROM {$table_prefix}photogalery WHERE id < '$item' AND rozdil='".\e::db_escape($row['rozdil'])."' and site='$site_id'";
+           $siblings=\e::db_getrows($query);
            //prn($siblings);
         // ----------------- links to next and previous items - end ------------
         $link_to=Array(
@@ -149,7 +149,7 @@ if (isset($input_vars['item'])) {
 }else $vyvid .= $txt['Gallery_image_not_found'];
 
 
-//--------------------------- Гена придумал --------------------------
+//--------------------------- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ --------------------------
 
 $menu_groups = get_menu_items($this_site_info['id'],0,$input_vars['lang']);
 
@@ -186,7 +186,7 @@ global $main_template_name;
 $main_template_name='';
 
 
-//--------------------------- Гена допридумывал --------------------------
+//--------------------------- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ --------------------------
 
 
 

@@ -14,7 +14,7 @@
   $lang = get_language('lang');
   
   $query="SELECT * FROM {$table_prefix}page WHERE id={$page_id} AND lang='$lang'";
-  $this_page_info=db_getonerow($query);
+  $this_page_info=\e::db_getonerow($query);
   //prn($query,$this_page_info);
   if(checkInt($this_page_info['id'])<=0)
   {
@@ -44,7 +44,7 @@
   // prn('$this_site_info=',$this_site_info);
 //------------------- site info - end ------------------------------------------
 # ----------------------- list of site managers - begin ------------------------
-  $tmp=db_getrows(
+  $tmp=\e::db_getrows(
        "select u.id, u.full_name, u.user_login, u.email, su.level
         from {$table_prefix}user AS u, {$table_prefix}site_user AS su
         where u.id = su.user_id AND su.site_id = {$this_site_info['id']}
@@ -75,7 +75,7 @@
               AND lang='{$this_page_info['lang']}'
               AND page_id NOT IN (".join(',',$checked).")";
     #prn($query);
-    db_execute($query);
+    \e::db_execute($query);
     
     
     $query=Array();
@@ -90,7 +90,7 @@
       $query="INSERT INTO {$table_prefix}page_menu_group (site_id, page_id, menu_group_id, lang)
               VALUES ".join(',',$query);
       #prn($query);
-      db_execute($query);
+      \e::db_execute($query);
     }
   }
 # ----------------------- update page menus - end ------------------------------ 
@@ -110,7 +110,7 @@
             AND mg.page_id<>0
           ";
   #prn(checkStr($query));
-  $menu_list=db_getrows($query);
+  $menu_list=\e::db_getrows($query);
   #prn($menu_list);
 # ----------------------- list page menus - end --------------------------------
 

@@ -31,25 +31,25 @@ function toint($value) {
 // --------------------- delete - begin ----------------------------------------
 if (isset($input_vars['event_delete']) && isset($input_vars['event'])) {
     $ids = join(',', array_map('toint', $input_vars['event']));
-    db_execute("DELETE FROM {$table_prefix}calendar WHERE id in($ids)");
-    db_execute("DELETE FROM {$table_prefix}calendar_category WHERE event_id in($ids)");
-    db_execute("DELETE FROM {$table_prefix}calendar_date WHERE calendar_id in($ids)");
-    db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
-    db_execute("DELETE FROM {$table_prefix}calendar_days_cache WHERE calendar_id in($ids)");
+    \e::db_execute("DELETE FROM {$table_prefix}calendar WHERE id in($ids)");
+    \e::db_execute("DELETE FROM {$table_prefix}calendar_category WHERE event_id in($ids)");
+    \e::db_execute("DELETE FROM {$table_prefix}calendar_date WHERE calendar_id in($ids)");
+    \e::db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
+    \e::db_execute("DELETE FROM {$table_prefix}calendar_days_cache WHERE calendar_id in($ids)");
 }
 // --------------------- delete - end ------------------------------------------
 #---------------------------- hide - begin -------------------------------------
 if (isset($input_vars['event_hide']) && isset($input_vars['event'])) {
     $ids = join(',', array_map('toint', $input_vars['event']));
-    db_execute("UPDATE {$table_prefix}calendar SET vis=0 WHERE id in($ids) AND site_id={$site_id}");
-    db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
+    \e::db_execute("UPDATE {$table_prefix}calendar SET vis=0 WHERE id in($ids) AND site_id={$site_id}");
+    \e::db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
 }
 #---------------------------- hide - end ---------------------------------------
 #---------------------------- show - begin -------------------------------------
 if (isset($input_vars['event_show']) && isset($input_vars['event'])) {
     $ids = join(',', array_map('toint', $input_vars['event']));
-    db_execute("UPDATE {$table_prefix}calendar SET vis=1 WHERE id in($ids) AND site_id={$site_id}");
-    db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
+    \e::db_execute("UPDATE {$table_prefix}calendar SET vis=1 WHERE id in($ids) AND site_id={$site_id}");
+    \e::db_execute("DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990");
 }
 #---------------------------- show - end ---------------------------------------
 // ------------------ process search form parameters - begin -------------------
@@ -79,7 +79,7 @@ if (isset($input_vars['filter_id'])) {
 if (isset($input_vars['filter_title'])) {
     $input_vars['filter_title'] = trim($input_vars['filter_title']);
     if (strlen($input_vars['filter_title']) > 0) {
-        $where[] = " locate('" . DbStr($input_vars['filter_title']) . "',nazva)>0 ";
+        $where[] = " locate('" . \e::db_escape($input_vars['filter_title']) . "',nazva)>0 ";
     }
 } else {
     $input_vars['filter_title'] = '';
@@ -247,7 +247,7 @@ if (isset($input_vars['start'])) {
 } else {
     $start = 0;
 }
-$num = db_getonerow("SELECT count(*) as n FROM {$table_prefix}calendar WHERE site_id=$site_id $where");
+$num =\e::db_getonerow("SELECT count(*) as n FROM {$table_prefix}calendar WHERE site_id=$site_id $where");
 $num = $num['n'];
 
 $pages = '';
@@ -262,7 +262,7 @@ for ($i = 0; $i < $num; $i = $i + 100) {
 }
 
 
-$rows = db_getrows("SELECT * FROM {$table_prefix}calendar WHERE site_id='$site_id' $where ORDER BY `id` ASC LIMIT $start, 100");
+$rows = \e::db_getrows("SELECT * FROM {$table_prefix}calendar WHERE site_id='$site_id' $where ORDER BY `id` ASC LIMIT $start, 100");
 
 
 $input_vars['page_content'] = "
@@ -347,7 +347,7 @@ if ($rows) {
     if(count($ids)>0){
         $query="SELECT * FROM {$table_prefix}calendar_date WHERE calendar_id IN (".join(',',$ids).") ORDER BY calendar_id";
         
-        $tmp=  db_getrows($query);
+        $tmp=  \e::db_getrows($query);
         $dates=Array();
         foreach($tmp as $tm){
             if(!isset($dates[$tm['calendar_id']])){

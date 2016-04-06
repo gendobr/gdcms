@@ -25,7 +25,7 @@ if(!$this_site_info) die($txt['Site_not_found']);
 $poll_id=isset($input_vars['poll_id'])?(int)$input_vars['poll_id']:0;
 if($poll_id>0) $get_poll=" AND id=$poll_id"; else $get_poll='';
 
-$polls=db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1 $get_poll ORDER BY ordering ASC");
+$polls=\e::db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1 $get_poll ORDER BY ordering ASC");
 //if(!$polls) {
 //    echo '';
 //    return '';
@@ -36,7 +36,7 @@ $poll_ids=Array();
 $poll_ids[]=0;
 foreach($polls as $key=>$val) $poll_ids[$key]=(int)$val['id'];
 
-$vidpovidi=db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
+$vidpovidi=\e::db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
 
 $poll_ids=array_flip($poll_ids);
 foreach($vidpovidi as $val) {
@@ -69,16 +69,16 @@ setcookie('poll_last_answer', $_COOKIE['poll_last_answer'], time()+86400,dirname
 
 # check if template name is posted
 if(isset($_REQUEST['template'])) {
-    $poll_template = sites_root.'/'.$this_site_info['dir'].'/'.basename($_REQUEST['template']).'.html';
+    $poll_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/'.basename($_REQUEST['template']).'.html';
     if(!is_file($poll_template)) $poll_template=false;
-    if(!$poll_template) $poll_template = sites_root.'/'.$this_site_info['dir'].'/'.basename($_REQUEST['template']);
+    if(!$poll_template) $poll_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/'.basename($_REQUEST['template']);
     if(!is_file($poll_template)) $poll_template=false;
 }
 else $poll_template=false;
 
 
 # check if block template exists
-if(!$poll_template) $poll_template = sites_root.'/'.$this_site_info['dir'].'/template_poll_ask_block.html';
+if(!$poll_template) $poll_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_poll_ask_block.html';
 if(!is_file($poll_template)) $poll_template=false;
 
 # use default system template

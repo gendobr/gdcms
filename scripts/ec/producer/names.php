@@ -38,7 +38,7 @@ $this_site_info['title'] = get_langstring($this_site_info['title'], $lang);
 //prn($input_vars);
 # ------------------- get site info - end --------------------------------------
 # --------------------------- get site template - begin ------------------------
-$custom_page_template = sites_root . '/' . $this_site_info['dir'] . '/template_index.html';
+$custom_page_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/template_index.html';
 if (is_file($custom_page_template)) {
     $this_site_info['template'] = $custom_page_template;
 }
@@ -61,7 +61,7 @@ $query = "SELECT ec_producer.ec_producer_id,
           GROUP BY ec_producer.ec_producer_id
           ORDER BY ec_producer.ec_producer_title ASC
   ";
-$list_of_producers = db_getrows($query);
+$list_of_producers = \e::db_getrows($query);
 //prn($list_of_producers);
 # --------------------------- get list of producers - end ----------------------
 
@@ -69,13 +69,13 @@ $list_of_producers = db_getrows($query);
 
 
 
-include(script_root . '/ec/item/get_public_list.php');
-include(script_root . '/ec/item/adjust_public_list.php');
+include(\e::config('SCRIPT_ROOT') . '/ec/item/get_public_list.php');
+include(\e::config('SCRIPT_ROOT') . '/ec/item/adjust_public_list.php');
 
 //prn($list_of_ec_items);
 //prn($pages);
 # -------------------- get list of page languages - begin ----------------------
-$tmp = db_getrows("SELECT DISTINCT ec_item_lang as lang
+$tmp = \e::db_getrows("SELECT DISTINCT ec_item_lang as lang
                      FROM {$table_prefix}ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&" . ec_item_show . "");
@@ -106,7 +106,6 @@ $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 
 # -------------------- search for template - begin ---------------------------
 $template_ec_producer_list = site_get_template($this_site_info, 'template_ec_producer_list');
-#$template_ec_producer_list = sites_root.'/'.$this_site_info['dir'].'/template_ec_producer_list.html';
 #if(!is_file($template_ec_producer_list)) $template_ec_producer_list = 'cms/template_ec_producer_list';
 # -------------------- search for template - end -----------------------------
 

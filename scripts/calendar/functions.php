@@ -48,7 +48,7 @@ function event_recache_days($calendar_id){
     
     // get calendar dates
     $query="SELECT * FROM  {$GLOBALS['table_prefix']}calendar_date WHERE calendar_id=".( (int) $calendar_id);
-    $dates=db_getrows($query);
+    $dates=\e::db_getrows($query);
     if(count($dates)>0){
         $site_id=$dates[0]['site_id'];
     }else{
@@ -199,7 +199,7 @@ function event_recache_days($calendar_id){
     
     // remove old calendar dates
     $query="DELETE FROM {$GLOBALS['table_prefix']}calendar_days_cache WHERE calendar_id=".( (int) $calendar_id);
-    db_execute($query);
+    \e::db_execute($query);
 
     // create sql to insert new dates
     $query=Array();
@@ -208,7 +208,7 @@ function event_recache_days($calendar_id){
     }
     if(count($query)>0){
         $query="INSERT INTO {$GLOBALS['table_prefix']}calendar_days_cache(calendar_id,site_id,y,m,d, h, i, h2, i2) VALUES ".join(',',$query);
-        db_execute($query);
+        \e::db_execute($query);
     }
 }
 
@@ -237,48 +237,42 @@ function event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose =
     if ($verbose) {
         prn($query);
     }
-    db_execute($query);
+    \e::db_execute($query);
 
     $query = "DELETE FROM tt0;";
     if ($verbose) {
         prn($query);
     }
-    db_execute($query);
+    \e::db_execute($query);
 
 
 
-    //$query = "DROP TABLE tt1";
-    //if ($verbose) { prn($query); }
-    //db_execute($query);
 
     $query = "CREATE TEMPORARY TABLE  IF NOT EXISTS tt1(id INT(11), t  INT(11),KEY `tmst1` (`t`) ) ENGINE=MEMORY";
     if ($verbose) {
         prn($query);
     }
-    db_execute($query);
+    \e::db_execute($query);
 
     $query = "delete from tt1";
     if ($verbose) {
         prn($query);
     }
-    db_execute($query);
+    \e::db_execute($query);
 
 
-    //$query = "DROP TABLE tt2";
-    //if ($verbose) { prn($query); }
-    //db_execute($query);
 
     $query = "CREATE TEMPORARY TABLE  IF NOT EXISTS tt2( id INT(11), t  INT(11),KEY `tmst2` (`t`),KEY `tmst2d` (`id`) ) ENGINE=MEMORY";
     if ($verbose) {
         prn($query);
     }
-    db_execute($query);
+    \e::db_execute($query);
 
     $query = "DELETE FROM tt2";
     if ($verbose) {
         prn($query);
     }
-    db_execute($query);
+    \e::db_execute($query);
     // ---------- create temporary tables - end --------------------------------
     // --------------------- list of dates to check - begin --------------------
     // get exact unix timestamp
@@ -300,8 +294,8 @@ function event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose =
     if ($verbose) {
         prn($query);
     }
-    db_execute($query);
-    // prn(db_getrows("SELECT * FROM t0"));
+    \e::db_execute($query);
+    // prn(\e::db_getrows("SELECT * FROM t0"));
     // --------------------- list of dates to check - end ----------------------
     // events which
     //    - attached to site_id
@@ -325,14 +319,14 @@ function event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose =
     if ($verbose) {
         prn($query);
     }
-    db_execute($query);
+    \e::db_execute($query);
     if ($verbose) {
-        prn(db_getrows("SELECT * FROM tt1"));
+        prn(\e::db_getrows("SELECT * FROM tt1"));
     }
 
     // debug output: nearest start dates in the past
     if ($verbose) {
-        $tor = db_getrows("select * from tt1");
+        $tor = \e::db_getrows("select * from tt1");
         $cnt = count($tor);
         for ($i = 0; $i < $cnt; $i++) {
             $tor[$i]['date-begin'] = date('Y-m-d H:i:s', $tor[$i]['t']);
@@ -360,7 +354,7 @@ function event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose =
     if ($verbose) {
         prn($query);
     }
-    db_execute($query);
+    \e::db_execute($query);
 
 
 
@@ -392,7 +386,7 @@ function event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose =
     if ($verbose) {
         prn($query);
     }
-    $tor = db_getrows($query);
+    $tor = \e::db_getrows($query);
     //prn($tor);
     $ids = Array();
     foreach ($tor as $to) {
@@ -474,89 +468,6 @@ function calendar_minutes() {
     return $tor;
 }
 
-/**
- * Number of events for a given date
- */
-//function events_exist($year, $month, $day, $site_info) {
-//    static $cached_data;
-//
-//    if (!$cached_data) {
-//        $uid = $month + 100 * $year + 1000000 * $site_info['id'];
-//        $min_valid_date = date("Y-m-d H:i:s", time() - 3600);
-//        $tmp = db_getonerow("SELECT * FROM {$GLOBALS['table_prefix']}calendar_cache WHERE uid=$uid and updated>'$min_valid_date'");
-//        if ($tmp) {
-//            $cached_data = explode(',', $tmp['days']);
-//        } else {
-//            $cached_data = Array();
-//            $first_timestamp = mktime($hour = 12, $minute = 00, $second = 00, $month, $day = 1, $year);
-//            $dt = 24 * 3600; // 1 day
-//            for ($i = 0; $i < 32; ++$i) {
-//                $timestamp = $first_timestamp + $i * $dt;
-//                if (date('m', $timestamp) - $month == 0) {
-//                    $d = date('d', $timestamp);
-//                    //prn("event_get_by_date({$site_info['id']}, $year, $month, $d);");
-//                    //$events = event_get_by_date($site_info['id'], $year, $month, $d);
-//
-//                    $timestamp_start = mktime(00, 00, 1, $month, $d, $year);
-//                    $timestamp_end = mktime(23, 59, 59, $month, $d, $year);
-//                    $event_ids = event_get_inside($site_info['id'], $timestamp_start, $timestamp_end, $verbose = isset($input_vars['verbose']));
-//
-//                    //$events=Array(1);
-//                    if (count($event_ids) > 0) {
-//                        $cached_data[] = $d;
-//                    }
-//                }
-//            }
-//            db_execute("REPLACE {$GLOBALS['table_prefix']}calendar_cache(uid,days,updated) VALUES($uid,'" . join(',', $cached_data) . "' ,now())");
-//        }
-//    }
-//    return in_array($day, $cached_data);
-//}
-
-/**
- * 
- */
-//function get_nearest_dates($event_info, $n = 10) {
-//    $result = Array();
-//
-//    // create date condition
-//    $condition = Array();
-//    if ($event_info['pochrik'] > 0) {
-//        $condition[0] = $event_info['pochrik'];
-//    }
-//    // pochmis
-//    if ($event_info['pochmis'] > 0) {
-//        $condition[1] = $event_info['pochmis'];
-//    }
-//    // pochday
-//    if ($event_info['pochday'] > 0) {
-//        $condition[2] = $event_info['pochday'];
-//    }
-//    // pochtyzh
-//    if ($event_info['pochtyzh'] >= 0) {
-//        $condition[3] = $event_info['pochtyzh'];
-//    }
-//    $keys = array_keys($condition);
-//    // prn('$condition',$condition);
-//
-//    for ($i = 0, $time = time(); $i < 370; $i++, $time+=86400) {
-//        $date = explode(' ', date('Y m d w', $time));
-//        // prn(join(' ',$condition),join(' ',$date));
-//        $ok = true;
-//        foreach ($keys as $k) {
-//            $ok = $ok && ($condition[$k] == $date[$k]);
-//        }
-//
-//        if ($ok) {
-//            $result[] = substr('0000' . $date[0], -4) . '-' . substr('0000' . $date[1], -2) . '-' . substr('0000' . $date[2], -2);
-//        }
-//        if (count($result) >= $n) {
-//            break;
-//        }
-//        // prn(date('Y m d w',$time).' => '.$ok.';');
-//    }
-//    return $result;
-//}
 
 function get_view($event_list, $lang) {
 
@@ -576,7 +487,7 @@ function get_view($event_list, $lang) {
     // prn($ids);
     // collect event dates
     $query = "select * from {$GLOBALS['table_prefix']}calendar_date where calendar_id in (" . join(',', $ids) . ")";
-    $tmp = db_getrows($query);
+    $tmp = \e::db_getrows($query);
     $dates = Array();
     foreach ($tmp as $tm) {
         if (!isset($dates[$tm['calendar_id']])) {
@@ -611,7 +522,7 @@ function get_view($event_list, $lang) {
     }
 
     $query = "select * from {$GLOBALS['table_prefix']}calendar_category where event_id in (" . join(',', $ids) . ")";
-    $categories = db_getrows($query);
+    $categories = \e::db_getrows($query);
     // prn($categories);
     $category_ids = Array(0 => 1);
     $event_category = Array();
@@ -624,7 +535,7 @@ function get_view($event_list, $lang) {
     }
     // prn('$category_ids',$category_ids,'$event_category',$event_category);
     $query = "SELECT * FROM {$GLOBALS['table_prefix']}category WHERE category_id in(" . join(',', array_keys($category_ids)) . ")";
-    $tmp = db_getrows($query);
+    $tmp =\e::db_getrows($query);
     // prn($query,$tmp);
     if (!function_exists("encode_dir_name")) {
         run('lib/file_functions');
@@ -726,7 +637,7 @@ function getMonthTable($year, $month, $this_site_info) {
     $month_table['days'] = Array();
 
     $query="SELECT DISTINCT d FROM {$GLOBALS['table_prefix']}calendar_days_cache WHERE Y=".( (int)$year )." AND m=".( (int) $month)." AND site_id={$this_site_info['id']} ";
-    $existing_days=array_flip(array_map(function($in){return $in['d'];},db_getrows($query)));
+    $existing_days=array_flip(array_map(function($in){return $in['d'];},\e::db_getrows($query)));
     
     foreach ($calendar as $row) {
         $tr = Array();
@@ -1041,7 +952,7 @@ class CategoryEvents2{
                   GROUP BY ch.category_id
                   HAVING visible";
         //prn($query); exit();
-        $children = db_getrows($query);
+        $children = \e::db_getrows($query);
         $cnt = count($children);
         for ($i = 0; $i < $cnt; $i++) {
             $children[$i] = $children[$i]['category_id'];
@@ -1064,10 +975,10 @@ class CategoryEvents2{
                     ".( $this->ordering ? "ORDER BY {$this->ordering}":'')
                    ." LIMIT {$this->start},{$this->rows_per_page} ";
             //prn($query);
-            $event_days= db_getrows($query);
+            $event_days= \e::db_getrows($query);
             $event_ids = array_unique(array_map(function($in){return $in['calendar_id'];},$event_days));
 
-            $this->items_found = db_getonerow("SELECT FOUND_ROWS() AS n_records");
+            $this->items_found =\e::db_getonerow("SELECT FOUND_ROWS() AS n_records");
             $this->items_found = $this->items_found['n_records'];
             $this->_pages = $this->get_paging_links($this->items_found, $this->start, $this->rows_per_page);
 
@@ -1084,10 +995,10 @@ class CategoryEvents2{
                     ".( $this->ordering ? "ORDER BY {$this->ordering}":'')
                    ." LIMIT {$this->start},{$this->rows_per_page} ";
             // prn($query);
-            $event_days= db_getrows($query);
+            $event_days= \e::db_getrows($query);
             $event_ids = array_unique(array_map(function($in){return $in['calendar_id'];},$event_days));
 
-            $this->items_found = db_getonerow("SELECT FOUND_ROWS() AS n_records");
+            $this->items_found =\e::db_getonerow("SELECT FOUND_ROWS() AS n_records");
             $this->items_found = $this->items_found['n_records'];
             $this->_pages = $this->get_paging_links($this->items_found, $this->start, $this->rows_per_page);
 
@@ -1105,10 +1016,10 @@ class CategoryEvents2{
                    ." LIMIT {$this->start},{$this->rows_per_page} ";
             // prn($query);
 
-            $event_days = db_getrows($query);
+            $event_days = \e::db_getrows($query);
             $event_ids  = array_unique(array_map(function($in){return $in['calendar_id'];},$event_days));
 
-            $this->items_found = db_getonerow("SELECT FOUND_ROWS() AS n_records");
+            $this->items_found =\e::db_getonerow("SELECT FOUND_ROWS() AS n_records");
             $this->items_found = $this->items_found['n_records'];
             $this->_pages = $this->get_paging_links($this->items_found, $this->start, $this->rows_per_page);
 
@@ -1133,7 +1044,7 @@ class CategoryEvents2{
                   ";
         //AND lang='" . DbStr($this->lang) . "'
         // prn($query); exit();
-        $event_list = db_getrows($query);
+        $event_list = \e::db_getrows($query);
         $events = get_view($event_list, $this->lang);
         $map=Array();
         foreach($events as $ev){
@@ -1229,7 +1140,7 @@ class CategoryEvents {
             HAVING visible
         ";
         //prn($query); exit();
-        $children = db_getrows($query);
+        $children = \e::db_getrows($query);
         $cnt = count($children);
         for ($i = 0; $i < $cnt; $i++) {
             $children[$i] = $children[$i]['category_id'];
@@ -1274,10 +1185,10 @@ class CategoryEvents {
                   LIMIT {$this->start},{$this->rows_per_page}";
         //AND lang='" . DbStr($this->lang) . "'
         // prn($query); exit();
-        $this->_list = db_getrows($query);
+        $this->_list = \e::db_getrows($query);
         // $cnt = count($this->_list);
 
-        $this->items_found = db_getonerow("SELECT FOUND_ROWS() AS n_records");
+        $this->items_found =\e::db_getonerow("SELECT FOUND_ROWS() AS n_records");
         $this->items_found = $this->items_found['n_records'];
         //prn('$this->items_found=' . $this->items_found);
         # --------------------------- list of pages - begin --------------------------

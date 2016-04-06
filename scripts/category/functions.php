@@ -70,7 +70,7 @@ function adjust($_info, $category_id) {
     $tor['category_title'] = get_langstring($tor['category_title']);
 
     $tor['category_title_short'] = get_langstring($tor['category_title_short']);
-    if (strlen($tor['category_title_short'])) {
+    if (strlen($tor['category_title_short'])==0) {
         $tor['category_title_short'] = shorten($tor['category_title']);
     }
 
@@ -118,7 +118,7 @@ function category_public_list($site_id, $lang) {
               group by ch.category_id
               having visible>0
               order by  ch.start";
-    $caterory_list = db_getrows($query);
+    $caterory_list = \e::db_getrows($query);
     // ------------------ get list of categories - end -------------------------
     // ------------------ adjust list of categories - begin --------------------
     // $category_url_prefix = site_root_URL . "/index.php?action=category/browse&site_id={$site_id}&lang={$lang}&category_id=";
@@ -144,7 +144,7 @@ function category_public_list($site_id, $lang) {
     $query = "SELECT category_id, count(news_id) as n_news
            FROM {$GLOBALS['table_prefix']}news_category
            WHERE category_id in({$category_ids}) GROUP BY category_id";
-    $number_of_news = db_getrows($query);
+    $number_of_news = \e::db_getrows($query);
 
     foreach ($number_of_news as $n_news) {
         for ($i = 0; $i < $cnt; $i++) {
@@ -182,10 +182,10 @@ function category_info($options) {
     }
     if (isset($options['path'])) {
         $options['path'] = preg_replace("/\\/+$|^\\/+/", '', $options['path']);
-        $where[0] = "path='" . DbStr($options['path']) . "'";
+        $where[0] = "path='" . \e::db_escape($options['path']) . "'";
     }
     if (isset($options['category_code'])) {
-        $where[0] = "category_code='" . DbStr($options['category_code']) . "'";
+        $where[0] = "category_code='" . \e::db_escape($options['category_code']) . "'";
     }
 
     if (count($where) == 0) {
@@ -195,7 +195,7 @@ function category_info($options) {
     $where[2] = 'is_visible =1';
     $query = "SELECT * FROM {$GLOBALS['table_prefix']}category WHERE " . join(' AND ', $where);
     // prn($query);
-    $this_category_info = db_getonerow($query);
+    $this_category_info =\e::db_getonerow($query);
     if (!$this_category_info) {
         //die('Category not found');
         return Array();
@@ -203,7 +203,10 @@ function category_info($options) {
 
     $this_category_info['category_title_orig'] = $this_category_info['category_title'];
     $this_category_info['category_title'] = get_langstring($this_category_info['category_title'], $options['lang']);
-
+    $this_category_info['category_title_short'] = get_langstring($this_category_info['category_title_short']);
+    if (strlen($this_category_info['category_title_short'])==0) {
+        $this_category_info['category_title_short'] = shorten($this_category_info['category_title']);
+    }
     $this_category_info['category_description'] = get_langstring($this_category_info['category_description'], $options['lang']);
     $this_category_info['URL'] = str_replace(Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), Array($this_category_info['path'], $options['lang'], $options['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), url_pattern_category);
     $this_category_info['date_lang_update'] = get_langstring($this_category_info['date_lang_update'], $options['lang']);
@@ -297,9 +300,15 @@ class CategoryViewModel {
         }
         $tor['category_description'] = get_langstring($tor['category_description'], $this->lang);
         $tor['category_description_exists'] = strlen($tor['category_description']) > 0;
-        $tor['URL'] = str_replace(
-                Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), 
-                Array($tor['path'], $this->lang, $this->site_info['id'], $tor['category_id'], $tor['category_code']), url_pattern_category);
+        if(is_valid_url($tor['category_description'])){
+            $tor['URL'] = $tor['category_description'];
+            $tor['redirectURL'] = $tor['category_description'];
+        }else{
+            $tor['URL'] = str_replace(
+                    Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), 
+                    Array($tor['path'], $this->lang, $this->site_info['id'], $tor['category_id'], $tor['category_code']), url_pattern_category);
+            $tor['redirectURL'] = '';
+        }
 
         return $tor;
     }
@@ -316,7 +325,7 @@ class CategoryViewModel {
                  and pa.site_id={$this->site_info['id']}
                  and pa.start<ch.start and ch.finish<pa.finish
                order by pa.start asc";
-        $this->category_parents = db_getrows($query);
+        $this->category_parents = \e::db_getrows($query);
 
         // all parents should be visible
         $parents_are_visible = true;
@@ -343,18 +352,34 @@ class CategoryViewModel {
     private function loadChildren() {
 
         // ------------------- get children - begin --------------------------------
+        //        $query = "select ch.category_id, ch.site_id, ch.category_code, ch.category_title,
+        //                      ch.start, ch.finish, ch.is_deleted, ch.deep, ch.is_part_of,
+        //                      ch.see_also, ch.is_visible, ch.path, ch.category_description,
+        //                      ch.category_icon, ch.category_title_short
+        //               from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
+        //               WHERE pa.category_id={$this->category_info['category_id']} and ch.site_id={$this->site_info['id']} and ch.is_visible
+        //                 and pa.site_id={$this->site_info['id']} 
+        //                 and ( ch.deep between " . ($this->category_info['deep'] + 1 ) . " AND " . ($this->category_info['deep'] + $this->deep ) . " )
+        //                 and pa.start<ch.start and ch.finish<pa.finish
+        //               order by ch.start asc";
+
         $query = "select ch.category_id, ch.site_id, ch.category_code, ch.category_title,
                       ch.start, ch.finish, ch.is_deleted, ch.deep, ch.is_part_of,
                       ch.see_also, ch.is_visible, ch.path, ch.category_description,
-                      ch.category_icon, ch.category_title_short
+                      ch.category_icon, ch.category_title_short, 
+                      BIT_AND(pa.is_visible) as parentsVisible
                from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
-               WHERE pa.category_id={$this->category_info['category_id']} and ch.site_id={$this->site_info['id']} and ch.is_visible
-                 and pa.site_id={$this->site_info['id']} 
-                 and ( ch.deep between " . ($this->category_info['deep'] + 1 ) . " AND " . ($this->category_info['deep'] + $this->deep ) . " )
-                 and pa.start<ch.start and ch.finish<pa.finish
+               WHERE ch.site_id={$this->site_info['id']}
+                 AND ch.is_visible
+                 AND pa.site_id={$this->site_info['id']} 
+                 AND ( ch.deep between " . ($this->category_info['deep'] + 1 ) . " AND " . ($this->category_info['deep'] + $this->deep ) . " )
+                 AND {$this->category_info['start']}<ch.start AND ch.finish<{$this->category_info['finish']}
+                 AND pa.start<ch.start and ch.finish<pa.finish
+               GROUP BY ch.category_id
+               HAVING parentsVisible
                order by ch.start asc";
         // prn(checkStr($query));
-        $this->category_children = db_getrows($query);
+        $this->category_children = \e::db_getrows($query);
         // prn($this->category_children);
         $cnt = count($this->category_children);
         for ($i = 0; $i < $cnt; $i++) {

@@ -2,12 +2,12 @@
 
 /*
 
-Импорт категорий УДК из временной таблицы dl_tmp_udc_codes
-в таблицу dl_category 
+пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ dl_tmp_udc_codes
+пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ dl_category 
 
 */
 
-// корневой узел дерева УДК
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
    $root_category_id = 3;
 $main_template_name='';
 
@@ -74,12 +74,12 @@ for($row_counter=0;$row_counter<500;$row_counter++)
 
 # read row from dl_tmp_udc_codes
   $query="SELECT * FROM {$table_prefix}tmp_udc_codes WHERE imported_successfully=0 ORDER BY code ASC LIMIT 0,1";
-  $this_node_info=db_getonerow($query);
+  $this_node_info=\e::db_getonerow($query);
   #prn($this_node_info);  die();
 
 # get parent node from imported categories
-  $query="SELECT * FROM {$table_prefix}category WHERE LENGTH(category_code)>0 AND LOCATE(category_code,'".DbStr($this_node_info['code'])."')=1 ORDER BY category_code DESC LIMIT 0,1";
-  $parent_node_info=db_getonerow($query);
+  $query="SELECT * FROM {$table_prefix}category WHERE LENGTH(category_code)>0 AND LOCATE(category_code,'".\e::db_escape($this_node_info['code'])."')=1 ORDER BY category_code DESC LIMIT 0,1";
+  $parent_node_info=\e::db_getonerow($query);
   //prn(htmlencode($query),$parent_node_info); 
 
 # load parent node info
@@ -99,7 +99,7 @@ for($row_counter=0;$row_counter<500;$row_counter++)
   $child_id=$this_category->add_child();
   
 # copy data to table
-  $see_also=db_getrows("SELECT more FROM {$table_prefix}tmp_udc_codes WHERE code='".DbStr($this_node_info['code'])."'");
+  $see_also=\e::db_getrows("SELECT more FROM {$table_prefix}tmp_udc_codes WHERE code='".\e::db_escape($this_node_info['code'])."'");
   $cnt=count($see_also);
   for($i=0;$i<$cnt;$i++) $see_also[$i]=$see_also[$i]['more'];
   $see_also=join(' <br> ',$see_also);
@@ -115,19 +115,19 @@ for($row_counter=0;$row_counter<500;$row_counter++)
   prn($new_category_info);
 
   $query="UPDATE {$table_prefix}category
-          SET category_code='".DbStr($new_category_info['category_code'])."'
-             ,category_title='".DbStr($new_category_info['category_title'])."'
-             ,category_description='".DbStr($new_category_info['category_description'])."'
-             ,is_part_of='".DbStr($new_category_info['is_part_of'])."'
-             ,see_also='".DbStr($new_category_info['see_also'])."'
+          SET category_code='".\e::db_escape($new_category_info['category_code'])."'
+             ,category_title='".\e::db_escape($new_category_info['category_title'])."'
+             ,category_description='".\e::db_escape($new_category_info['category_description'])."'
+             ,is_part_of='".\e::db_escape($new_category_info['is_part_of'])."'
+             ,see_also='".\e::db_escape($new_category_info['see_also'])."'
           WHERE category_id={$child_id}";
-  db_getonerow($query);
+ \e::db_getonerow($query);
 
 
 # mark rows as imported
-  db_getonerow("UPDATE {$table_prefix}tmp_udc_codes
+ \e::db_getonerow("UPDATE {$table_prefix}tmp_udc_codes
                 SET imported_successfully=1
-                WHERE code='".DbStr($this_node_info['code'])."'");
+                WHERE code='".\e::db_escape($this_node_info['code'])."'");
 
 
 

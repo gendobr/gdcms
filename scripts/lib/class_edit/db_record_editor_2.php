@@ -103,7 +103,7 @@ class db_record_editor_2 extends db_record_editor_common {
         // if($this->debug) echo "<hr>Extract record:\n<br>".$this->htmlencode($query)."\n<hr>\n\n";
         // ------------------- create query -- end ----------------------------------
         // run query
-        $result = db_getrows($query);
+        $result = \e::db_getrows($query);
 
         // number of found records
         $num_records = count($result);
@@ -170,7 +170,7 @@ class db_record_editor_2 extends db_record_editor_common {
                     $this->prn($query);
                 else {
                     $this->prn(checkStr($query));
-                    $retcode = db_execute($query);
+                    $retcode = \e::db_execute($query);
 
                     return $retcode;
                 }
@@ -193,10 +193,10 @@ class db_record_editor_2 extends db_record_editor_common {
                 if ($this->debug)
                     $this->prn($query);
                 else {
-                    $retcode = db_execute($query);
+                    $retcode = \e::db_execute($query);
 
 
-                    $new_ID = db_getonerow("SELECT LAST_INSERT_ID() AS newid;");
+                    $new_ID =\e::db_getonerow("SELECT LAST_INSERT_ID() AS newid;");
                     $this->id = $new_ID['newid'];
                     $this->field[$primary_key_alias]->set_value($this->id);
                     return $retcode;
@@ -297,10 +297,6 @@ class db_record_editor_2 extends db_record_editor_common {
     // MySQL functions
     //
   //----------------------- database interface -- end --------------------------
-    // new versions
-    //function db_execute($query){if(debug) prn("<b><font color=\"red\">$query</font></b>"); $result_id=mysql_query(trim($query)); if(!$result_id){ prn($query.'<br>'.mysql_error());} return $result_id;}
-    //function db_getrows($query){ $result_id=db_execute($query); $tor=Array(); while($row=mysql_fetch_array($result_id,MYSQL_ASSOC)) $tor[]=$row; mysql_free_result($result_id); return $tor;}
-    //function db_getonerow($query){ $result_id=db_execute($query); $tor=mysql_fetch_array($result_id, MYSQL_ASSOC);  mysql_free_result($result_id); return $tor;}
 
     function use_db($_tname) {
         $this->db = $_tname;

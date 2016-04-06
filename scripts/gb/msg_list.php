@@ -40,7 +40,7 @@ if(get_level($site_id)==0)
      //error_reporting(E_ALL);
      $query="DELETE FROM {$table_prefix}gb WHERE id={$delete_msg_id} AND site={$site_id}";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
      // echo mysql_error();
   }
   clear('delete_msg_id');
@@ -52,7 +52,7 @@ if(get_level($site_id)==0)
   {
      $query="UPDATE {$table_prefix}gb SET is_visible=1 WHERE id={$show_msg_id} AND site={$site_id}";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
   }
   clear('show_msg_id');
 //-------------------- show message - end --------------------------------------
@@ -63,7 +63,7 @@ if(get_level($site_id)==0)
   {
      $query="UPDATE {$table_prefix}gb SET is_visible=0 WHERE id={$hide_msg_id} AND site={$site_id}";
      // prn($query);
-     db_execute($query);
+     \e::db_execute($query);
   }
   clear('hide_msg_id');
 //-------------------- hide message - end --------------------------------------

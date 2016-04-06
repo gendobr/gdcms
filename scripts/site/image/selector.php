@@ -5,7 +5,7 @@ global $main_template_name;
 $main_template_name = '';
 //------------------- check site id - begin ------------------------------------
   $site_id=checkInt($input_vars['site_id']);
-  $this_site_info=db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info=\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
   if(checkInt($this_site_info['id'])<=0)
   {
      echo $text['Site_not_found'];
@@ -40,7 +40,7 @@ $obj_name = 'page_content';
 
 
   // get site root directory
-     $site_dir=sites_root."/".$this_site_info['dir'];
+     $site_dir=\e::config('SITES_ROOT')."/".$this_site_info['dir'];
 
   // get site root url     
      $this_site_info['url'] = ereg_replace('/$','',$this_site_info['url']);

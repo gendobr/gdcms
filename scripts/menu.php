@@ -5,25 +5,7 @@
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com
  */
 
-//------------------------ site section menu -- begin --------------------------
-/*
-  if( is_logged())
-  {
-  if(isset($_SESSION['user_info']['sites']))
-  if(count($_SESSION['user_info']['sites'])==1)
-  {
-  run('site/menu');
-  $user_site_id=array_keys($_SESSION['user_info']['sites']);
-  $user_site_id=$user_site_id[0];
 
-  $input_vars['page_menu']['site']=Array(
-  'title'=>$text['Site_menu']
-  ,'items'=>menu_site(db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$user_site_id}"))
-  );
-  }
-  }
- */
-//------------------------ site section menu -- begin --------------------------
 
 
 $input_vars['page_menu']['main'] = Array('title' => $text['Main_menu'], 'items' => Array());
@@ -111,7 +93,7 @@ if (is_logged()) {
         );
 
         $input_vars['page_menu']['admin']['items']['search/spider/recreateindex'] = Array(
-            'URL' => "index.php?action=search/spider/recreateindex&key=" . md5(local_root)
+            'URL' => "index.php?action=search/spider/recreateindex&key=" . md5(\e::config('APP_ROOT'))
             , 'innerHTML' => 'Re-create full text search index'
             , 'attributes' => ' target=_blank '
         );
@@ -131,7 +113,7 @@ if (is_logged()) {
     }
     $query = "select count(*) as n from {$GLOBALS['table_prefix']}notification_queue WHERE notification_queue_attempts<5 AND site_id in(" . join(',', $keys) . ")";
     // prn($query);
-    $n_notification_queue = db_getonerow($query);
+    $n_notification_queue = \e::db_getonerow($query);
     $input_vars['page_menu']['admin']['items']['notifier/cron'] = Array(
         'URL' => "index.php?action=notifier/cron"
         , 'innerHTML' => 'Run notifier cron task (' . $n_notification_queue['n'] . ')'

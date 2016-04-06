@@ -72,7 +72,7 @@ $rep->add_field('rsssource_url'
         , text('rsssource_url'));
 
 //rsssource_lang             varchar(3)
-$languages=db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;");
+$languages=\e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;");
 $tmp=Array();
 foreach($languages as $lan){
     $tmp[]="{$lan['id']}=".  rawurlencode($lan['name']);

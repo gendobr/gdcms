@@ -105,7 +105,7 @@ class GalleryImages {
             for ($i = 0; $i < $cnt; $i++) {
                 $word = trim($kw[$i]);
                 if (strlen($word) > 0) {
-                    $cond[] = " locate('" . DbStr($word) . "',rozdil)>0 ";
+                    $cond[] = " locate('" . \e::db_escape($word) . "',rozdil)>0 ";
                 }
             }
             if (count($cond) > 0) {
@@ -114,7 +114,7 @@ class GalleryImages {
                 $cond = '';
             }
 
-            $images = db_getrows(
+            $images = \e::db_getrows(
                     "SELECT SQL_CALC_FOUND_ROWS *,
                             FLOOR(1 + RAND() * 10000) as rand_ind
                      FROM {$GLOBALS['table_prefix']}photogalery
@@ -129,9 +129,9 @@ class GalleryImages {
             if ($this->rozdilizformy) {
                 //$cond="AND rozdil like '" . DbStr($this->rozdilizformy) . "/%'";
                 if ($this->showImagesFromSubcategories) {
-                    $cond.= "AND (rozdil = '" . DbStr($this->rozdilizformy) . "' OR rozdil like '" . DbStr($this->rozdilizformy) . "/%')";
+                    $cond.= "AND (rozdil = '" . \e::db_escape($this->rozdilizformy) . "' OR rozdil like '" . \e::db_escape($this->rozdilizformy) . "/%')";
                 } else {
-                    $cond = "AND rozdil = '" . DbStr($this->rozdilizformy) . "'";
+                    $cond = "AND rozdil = '" . \e::db_escape($this->rozdilizformy) . "'";
                 }
             } else {
                 if (!$this->showImagesFromSubcategories) {
@@ -148,7 +148,7 @@ class GalleryImages {
                      LIMIT {$this->start}, {$this->rowsPerPage}
                      ";
             //prn($query);
-            $images = db_getrows($query);
+            $images = \e::db_getrows($query);
             // ---------------------- show images from one category - end ------
         }
 
@@ -161,7 +161,7 @@ class GalleryImages {
             $images[$i]['url_thumbnail'] = $url_prefix . '/' . $images[$i]['photos_m'];
             $images[$i]['url_big'] = $url_prefix . '/' . $images[$i]['photos'];
         }
-        $n_records = db_getonerow("SELECT FOUND_ROWS() AS n_records;");
+        $n_records =\e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
 
         $this->_items_found = (int) $n_records['n_records'];
 

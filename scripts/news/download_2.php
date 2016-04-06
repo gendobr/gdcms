@@ -49,7 +49,7 @@ if (isset($input_vars['url'])) {
 
 //    $query = "SELECT count(*) as n FROM {$GLOBALS['table_prefix']}news WHERE site_id=$site_id AND LOCATE('" . DbStr($url) . "',abstract)";
 //    //prn($query);
-//    $nnews = db_getonerow($query);
+//    $nnews =\e::db_getonerow($query);
 //    if ($nnews['n'] > 0) {
 //        echo '{"status":"error","message":"news already imported"}';
 //        return;
@@ -194,8 +194,8 @@ if (isset($input_vars['url'])) {
     //            break;
     //        }
     //    }
-    include(script_root . '/search/charset/charset.php');
-    $charsetDataDir = script_root . '/search/charset/data';
+    include(\e::config('SCRIPT_ROOT') . '/search/charset/charset.php');
+    $charsetDataDir = \e::config('SCRIPT_ROOT') . '/search/charset/data';
     $detector = new charsetdetector(Array(
         Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/rus-utf8.stats"))),
         Array('charset' => 'UTF-8', 'stats' => unserialize(file_get_contents("$charsetDataDir/deu-utf8.stats"))),
@@ -273,16 +273,8 @@ if (isset($input_vars['url'])) {
     $abstract = strip_tags($abstract) . "<p><a href=\"$url\" target=_blank>$url</a></p>";
 
 
-    include (script_root . "/search/getlanguage/getlanguage.php");
+    include (\e::config('SCRIPT_ROOT') . "/search/getlanguage/getlanguage.php");
 
-
-    //$langSelector = new getlanguage(Array(
-    //    'files' => Array(
-    //        'eng' => script_root . "/search/getlanguage/stats_eng.txt",
-    //        'rus' => script_root . "/search/getlanguage/stats_rus.txt",
-    //        'ukr' => script_root . "/search/getlanguage/stats_ukr.txt",
-    //    )
-    //));
 
     // ----------------- clear tags - begin ------------------------------------
     $tags = preg_split("/,|;|\\./", isset($input_vars['tags'])?$input_vars['tags']:"");
@@ -313,11 +305,11 @@ if (isset($input_vars['url'])) {
             for ($i = 0; $i < $cnt; $i++) {
                 $tag = trim($tags[$i]);
                 if (strlen($tag) > 0) {
-                    $query[] = "({$newsId},'{$lang}','" . DbStr($tag) . "')";
+                    $query[] = "({$newsId},'{$lang}','" . \e::db_escape($tag) . "')";
                 }
             }
             $query = "INSERT INTO {$GLOBALS['table_prefix']}news_tags(news_id,lang,tag) VALUES" . join(',', $query);
-            db_execute($query);
+            \e::db_execute($query);
         }
     }
 
@@ -339,23 +331,23 @@ if (isset($input_vars['url'])) {
 
     $query = "SELECT id as newid FROM {$GLOBALS['table_prefix']}news 
               WHERE site_id=$site_id AND lang='{$lang}'
-                AND LOCATE('" . DbStr($url) . "',abstract)";
+                AND LOCATE('" . \e::db_escape($url) . "',abstract)";
     if ($debug) {
         prn($query);
     }
-    $newid = db_getonerow($query);
+    $newid =\e::db_getonerow($query);
 
     if ($newid) {
         $news_id = $newid['newid'];
         $query = "
             UPDATE {$GLOBALS['table_prefix']}news 
-            SET title='" . DbStr($title) . "',
-                content='" . DbStr($content) . "', 
+            SET title='" . \e::db_escape($title) . "',
+                content='" . \e::db_escape($content) . "', 
                 last_change_date='{$last_change_date}',
-                abstract='" . DbStr($abstract) . "',
+                abstract='" . \e::db_escape($abstract) . "',
                 cense_level='{$cense_level}', 
                 category_id='{$category_id}',
-                tags='".  DbStr(join(',',$tags))."',
+                tags='".  \e::db_escape(join(',',$tags))."',
                 expiration_date=null,
                 weight='{$weight}'
                     
@@ -364,23 +356,23 @@ if (isset($input_vars['url'])) {
         if ($debug) {
             prn($query);
         }
-        db_execute($query);
+        \e::db_execute($query);
 
         $query = "DELETE FROM {$GLOBALS['table_prefix']}news_category WHERE news_id={$news_id}";
         if ($debug) {
             prn($query);
         }
-        db_execute($query);
+        \e::db_execute($query);
 
         $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
         if ($debug) {
             prn($query);
         }
-        db_execute($query);
+        \e::db_execute($query);
 
 
         // update tags
-        db_execute("DELETE FROM {$GLOBALS['table_prefix']}news_tags WHERE news_id={$news_id}");
+        \e::db_execute("DELETE FROM {$GLOBALS['table_prefix']}news_tags WHERE news_id={$news_id}");
         foreach($langTags as $lanf=>$tags){
             updateNewsTags($news_id, $lanf, $tags);
         }
@@ -390,7 +382,7 @@ if (isset($input_vars['url'])) {
     } else {
         // calculate news id
         $query = "SELECT max(id) AS newid FROM {$table_prefix}news";
-        $newid = db_getonerow($query);
+        $newid =\e::db_getonerow($query);
         $news_id = 1 + (int) $newid['newid'];
 
         $query = "
@@ -417,13 +409,13 @@ if (isset($input_vars['url'])) {
             ({$news_id}, 
             '{$lang}', 
             '{$site_id}', 
-            '" . DbStr($title) . "', 
-            '" . DbStr($content) . "', 
+            '" . \e::db_escape($title) . "', 
+            '" . \e::db_escape($content) . "', 
             '{$cense_level}', 
             '{$last_change_date}', 
-            '" . DbStr($abstract) . "', 
+            '" . \e::db_escape($abstract) . "', 
             '{$category_id}', 
-            '".  DbStr(join(',',$tags))."', 
+            '".  \e::db_escape(join(',',$tags))."', 
              null, 
             '{$weight}', 
             '{$creation_date}', 
@@ -435,16 +427,16 @@ if (isset($input_vars['url'])) {
         if ($debug) {
             prn($query);
         }
-        db_execute($query);
+        \e::db_execute($query);
 
         $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
         if ($debug) {
             prn($query);
         }
-        db_execute($query);
+        \e::db_execute($query);
 
         // update tags
-        db_execute("DELETE FROM {$GLOBALS['table_prefix']}news_tags WHERE news_id={$news_id}");
+        \e::db_execute("DELETE FROM {$GLOBALS['table_prefix']}news_tags WHERE news_id={$news_id}");
         foreach($langTags as $lanf=>$tags){
             updateNewsTags($news_id, $lanf, $tags);
         }
@@ -458,7 +450,7 @@ if (isset($input_vars['url'])) {
 // ------------------ do download - end ----------------------------------------
 # get list of all site categories
 $query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>=0 AND site_id={$site_id} ORDER BY start ASC";
-$tmp = db_getrows($query);
+$tmp = \e::db_getrows($query);
 $list_of_categories = Array();
 foreach ($tmp as $tm) {
     $list_of_categories[$tm['category_id']] = str_repeat(' + ', $tm['deep']) . get_langstring($tm['category_title']);

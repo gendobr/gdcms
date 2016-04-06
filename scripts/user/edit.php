@@ -7,7 +7,7 @@ if(!is_admin()) return 0;
 
 //------------------- this_user_info - begin -----------------------------------
   $query = "SELECT * FROM {$table_prefix}user WHERE id=".checkInt($input_vars['user_id']);
-  $this_user_info=db_getonerow($query);
+  $this_user_info=\e::db_getonerow($query);
   //prn($this_user_info);
 //------------------- this_user_info - end -------------------------------------
 
@@ -37,7 +37,7 @@ if(!is_admin()) return 0;
         {
            $query="SELECT count(*) AS ns FROM {$table_prefix}user WHERE user_login='".$this->field['user_login']['value']."' AND id<>'".checkInt($this->id)."'";
            // prn($query);
-           $count_site=db_getonerow($query);
+           $count_site=\e::db_getonerow($query);
            $count_site=$count_site['ns'];
            if($count_site>0)
            {
@@ -104,9 +104,9 @@ if(!is_admin()) return 0;
       {
          if($input_vars['db_record_editor_user_password_again']==$input_vars['db_record_editor_user_password'])
          {
-             $query="UPDATE {$table_prefix}user SET user_password='".md5($input_vars['db_record_editor_user_password'])."' WHERE user_login='".DbStr($rep->field['user_login']['value'])."'";
+             $query="UPDATE {$table_prefix}user SET user_password='".md5($input_vars['db_record_editor_user_password'])."' WHERE user_login='".\e::db_escape($rep->field['user_login']['value'])."'";
              #prn($query);
-             db_execute($query);
+             \e::db_execute($query);
          }
          else
          {
@@ -116,9 +116,9 @@ if(!is_admin()) return 0;
       //-------------------- password - end ------------------------------------
 
 
-      $query = "SELECT * FROM {$table_prefix}user WHERE user_login='".DbStr($rep->field['user_login']['value'])."'";
+      $query = "SELECT * FROM {$table_prefix}user WHERE user_login='".\e::db_escape($rep->field['user_login']['value'])."'";
       //prn($query);
-      $this_user_info=db_getonerow($query);
+      $this_user_info=\e::db_getonerow($query);
 
    }
 // ------------------ post-process - end ---------------------------------------

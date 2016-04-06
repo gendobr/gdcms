@@ -1,6 +1,6 @@
 <?php
 /**
- * годы и месяцы, когда были новости
+ * пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  */
 global $main_template_name; $main_template_name='';
 
@@ -45,13 +45,13 @@ $query="SELECT YEAR(last_change_date) as news_year,
                count(id) as n_news
         FROM {$table_prefix}news
         WHERE site_id={$this_site_info['id']}
-          AND lang='".DbStr($lang)."'
+          AND lang='".\e::db_escape($lang)."'
           AND cense_level>={$this_site_info['cense_level']}
         GROUP BY news_year, news_month
         ORDER BY news_year DESC, news_month ASC
         ";
 //prn($query);
-$dates =  db_getrows($query);
+$dates =  \e::db_getrows($query);
 
 $month_names = Array('', $txt['month_January'], $txt['month_February'], $txt['month_March'], $txt['month_April'], $txt['month_May'], $txt['month_June'], $txt['month_July'], $txt['month_August'], $txt['month_September'], $txt['month_October'], $txt['month_November'], $txt['month_December']);
 for($cnt=count($dates), $i=0; $i<$cnt; $i++){

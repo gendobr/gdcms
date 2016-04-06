@@ -59,15 +59,15 @@ if (strlen($keywords) > 0) {
 
     $query="SELECT SQL_CALC_FOUND_ROWS * FROM {$GLOBALS['table_prefix']}forum_msg AS forum_msg 
             WHERE site_id={$this_site_info['id']}
-                AND ( LOCATE('".DbStr($keywords)."', msg) OR LOCATE('".DbStr($keywords)."', name) )
+                AND ( LOCATE('".\e::db_escape($keywords)."', msg) OR LOCATE('".\e::db_escape($keywords)."', name) )
               ".($forum_id>0?" AND forum_id=$forum_id":'')."
             order by data desc
             limit $start, ".rows_per_page;
     // AND MATCH (`name`,`email`,`www`,`subject`,`msg`) AGAINST ('".DbStr($keywords)."')
     // prn($query);
-    $rows=  db_getrows($query);
+    $rows=  \e::db_getrows($query);
 
-    $num = db_getonerow("SELECT FOUND_ROWS() AS n_records;");
+    $num =\e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
     $num = $num['n_records'];
     
     $thread_ids=Array();
@@ -79,7 +79,7 @@ if (strlen($keywords) > 0) {
     
     if(count($thread_ids)>0){
         $query="select * from {$GLOBALS['table_prefix']}forum_thread where site_id={$site_id} AND id in(".join(',', array_keys($thread_ids)).")";
-        $tmp=  db_getrows($query);
+        $tmp=  \e::db_getrows($query);
         $threads=Array();
         foreach($tmp as $tm){
             $tm['URL']=site_root_URL."/index.php?action=forum/msglist&thread_id={$tm['id']}&site_id={$site_id}&lang={$input_vars['lang']}&forum_id={$tm['forum_id']}";
@@ -89,7 +89,7 @@ if (strlen($keywords) > 0) {
     // prn($threads);
     if(count($forum_ids)>0){
         $query="select * from {$GLOBALS['table_prefix']}forum_list where site_id={$site_id} AND id in(".join(',', array_keys($forum_ids)).")";
-        $tmp=  db_getrows($query);
+        $tmp=  \e::db_getrows($query);
         $forums=Array();
         foreach($tmp as $tm){
             $tm['URL']=site_root_URL."/index.php?action=forum/thread&site_id={$site_id}&lang={$input_vars['lang']}&forum_id=".$tm['id'];
@@ -200,7 +200,7 @@ $form=Array(
         ",
     'keywords'=>$keywords,
     'forum_id' => $forum_id,
-    'forum_options'=> draw_options($forum_id,db_getrows("select id, name from {$GLOBALS['table_prefix']}forum_list where site_id={$this_site_info['id']}"))
+    'forum_options'=> draw_options($forum_id,\e::db_getrows("select id, name from {$GLOBALS['table_prefix']}forum_list where site_id={$this_site_info['id']}"))
 );
 // prn($form);
 //------------------- search form - begin --------------------------------------

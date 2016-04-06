@@ -31,12 +31,12 @@ if (get_level($site_id) == 0) {
 }
 # ------------------- check permission - end -----------------------------------
 // $GLOBALS['main_template_name']='popup';
-// site_id - идентификатор сайта
-// lang - код языка
-// template - имя файла  с шаблоном
-// element - идентификатор элемента HTML, в который надо вставить список
-// deep - мексимальная глубина выводимого дерева
-// ec_category_id - ветка, которую надо вывести
+// site_id - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+// lang - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+// template - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ  пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+// element - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ HTML, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+// deep - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+// ec_category_id - пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 $block_id = 'block' . md5(time() . session_id());
 $vyvid = '
@@ -61,7 +61,7 @@ $input_vars['page_content'] = "
     <b>site_id</b> - ".text('ec_category_html_site_id')."<br>
     <b>lang</b> - ".text('ec_category_html_lang')."<br>
     <b>template</b> - ".text('ec_category_html_template')."<br>
-    <!-- b>element</b> - идентификатор элемента HTML, в который надо вставить список<br -->
+    <!-- b>element</b> - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ HTML, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ<br -->
     <b>deep</b> - ".text('ec_category_html_deep')."<br>
     <b>ec_category_id</b> - ".text('ec_category_html_category_id')."<br>
 ";
@@ -77,7 +77,7 @@ $query = "select ch.*, bit_and(pa.is_visible) as visible
               having visible>0
               order by  ch.start";
 // prn($query);
-$caterory_list = db_getrows($query);
+$caterory_list = \e::db_getrows($query);
 // ------------------ get list of categories - end -------------------------
 $input_vars['page_content'].= '<h4>'.text('ec_category_html_existing_category_ids').'</h4>';
 foreach($caterory_list as $cat){

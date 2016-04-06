@@ -32,7 +32,7 @@
 # ------------------- get site info - end --------------------------------------
 
 # --------------------------- get site template - begin ------------------------
-  $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
   if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 # --------------------------- get site template - end --------------------------
 
@@ -48,15 +48,15 @@ if(!isset($input_vars['view'])) return '';
 
 
 # -------------- parse file - begin --------------------------------------------
-  $file_path=realpath($custom_page_template = sites_root.'/'.$this_site_info['dir'].'/'.$input_vars['file']);
+  $file_path=realpath($custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/'.$input_vars['file']);
 
 # check file path
-  if( strlen(dirname($file_path)) < strlen(realpath(sites_root.'/'.$this_site_info['dir']))) die('File_not_found');
+  if( strlen(dirname($file_path)) < strlen(realpath(\e::config('SITES_ROOT').'/'.$this_site_info['dir']))) die('File_not_found');
 
 $data=file($file_path);
 
 
-$parsed_data=Array('title'=>'unknown','komandà'=>Array(),'tur'=>Array());
+$parsed_data=Array('title'=>'unknown','komandï¿½'=>Array(),'tur'=>Array());
 $cnt=count($data);
 for($i=0;$i<$cnt;$i++)
 {
@@ -72,15 +72,15 @@ for($i=0;$i<$cnt;$i++)
           case 'turnir':
               $parsed_data['title']=$tmp[1];
           break;
-          case 'komandà':
+          case 'komandï¿½':
               $tmp[1]=explode('=',$tmp[1]);
-              $parsed_data['komandà'][$tmp[1][0]]=Array(
+              $parsed_data['komandï¿½'][$tmp[1][0]]=Array(
                        'title'=>$tmp[1][1]
                       ,'stats'=>Array(
-                          'È'=>0
-                         ,'Â'=>0
-                         ,'Ï'=>0
-                         ,'Î'=>0
+                          'ï¿½'=>0
+                         ,'ï¿½'=>0
+                         ,'ï¿½'=>0
+                         ,'ï¿½'=>0
                          ,'+'=>0
                          ,'-'=>0
                        )
@@ -106,8 +106,8 @@ for($i=0;$i<$cnt;$i++)
               }
               else echo "<b style='color:red;'>Invalid date in line #$i </b><br>";
               
-              if(isset($tmp[1][1])>0 && !isset($parsed_data['komandà'][$tmp[1][1]])) echo "<b style='color:red;'>Invalid team1 in line #$i : {$data[$i]}</b><br>";
-              if(isset($tmp[1][2])>0 && !isset($parsed_data['komandà'][$tmp[1][2]])) echo "<b style='color:red;'>Invalid team2 in line #$i : {$data[$i]}</b><br>";
+              if(isset($tmp[1][1])>0 && !isset($parsed_data['komandï¿½'][$tmp[1][1]])) echo "<b style='color:red;'>Invalid team1 in line #$i : {$data[$i]}</b><br>";
+              if(isset($tmp[1][2])>0 && !isset($parsed_data['komandï¿½'][$tmp[1][2]])) echo "<b style='color:red;'>Invalid team2 in line #$i : {$data[$i]}</b><br>";
 
               $parsed_data['tur'][$current_tur]['igra'][]=Array(
                   'data_igry'=> $data_igry
@@ -159,7 +159,7 @@ for($i=0;$i<$cnt;$i++)
               }
               # -------------- search for date of next match - end -------------
               # -------------- show next matches - begin -----------------------
-              $show.="<p><b>Ñëåäóþùèå èãðû:</b>";
+              $show.="<p><b>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½:</b>";
               foreach($parsed_data['tur'] as $t=>$tur)
               {
                   foreach($tur['igra'] as $i=>$igra)
@@ -172,9 +172,9 @@ for($i=0;$i<$cnt;$i++)
                           $show.="<div>
                               {$tur['title']};
                               ".date('d.m.Y',strtotime($dt)).";
-                              {$parsed_data['komandà'][$cmd1]['title']}
+                              {$parsed_data['komandï¿½'][$cmd1]['title']}
                               -
-                              {$parsed_data['komandà'][$cmd2]['title']}
+                              {$parsed_data['komandï¿½'][$cmd2]['title']}
                              </div>";
                       }
                   }
@@ -212,7 +212,7 @@ for($i=0;$i<$cnt;$i++)
               }
               # -------------- search last matches - begin ---------------------
               # -------------- show last matches - begin -----------------------
-              $show.="<p><b>Ïîñëåäíèå èãðû:</b>";
+              $show.="<p><b>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½:</b>";
               foreach($parsed_data['tur'] as $t=>$tur)
               {
                   foreach($tur['igra'] as $i=>$igra)
@@ -220,14 +220,14 @@ for($i=0;$i<$cnt;$i++)
                       if(isset($input_vars['team']) && $igra['komanda1']!=$input_vars['team'] && $igra['komanda2']!=$input_vars['team']) continue;
                       if(strcmp($igra['data_igry'],$dt)==0)
                       {
-                         if(strlen($igra['urlstats'])>0) $igra['urlstats']="(<a href=\"{$igra['urlstats']}\">îò÷åò</a>)";
+                         if(strlen($igra['urlstats'])>0) $igra['urlstats']="(<a href=\"{$igra['urlstats']}\">ï¿½ï¿½ï¿½ï¿½ï¿½</a>)";
 
                          $show.="<div>
                               {$tur['title']};
                               ".date('d.m.Y',strtotime($dt)).";
-                              {$parsed_data['komandà'][$igra['komanda1']]['title']}
+                              {$parsed_data['komandï¿½'][$igra['komanda1']]['title']}
                               -
-                              {$parsed_data['komandà'][$igra['komanda2']]['title']};
+                              {$parsed_data['komandï¿½'][$igra['komanda2']]['title']};
                               {$igra['schet']} {$igra['urlstats']}
                              </div>";
                       }
@@ -239,7 +239,7 @@ for($i=0;$i<$cnt;$i++)
 
           case 'matches':
               # -------------- show all matches - begin ------------------------
-              $show.="<h2>Êàëåíäàðü âñòðå÷</h2>
+              $show.="<h2>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</h2>
               <style>
                 .matchestable td{border:1px dotted gray; font-size:10pt; vertical-align:top;}
               </style>
@@ -250,13 +250,13 @@ for($i=0;$i<$cnt;$i++)
                   foreach($tur['igra'] as $i=>$igra)
                   {
                       if(isset($input_vars['team']) && $igra['komanda1']!=$input_vars['team'] && $igra['komanda2']!=$input_vars['team']) continue;
-                      if(strlen($igra['urlstats'])>0) $igra['urlstats']="(<a href=\"{$igra['urlstats']}\">îò÷åò</a>)";
+                      if(strlen($igra['urlstats'])>0) $igra['urlstats']="(<a href=\"{$igra['urlstats']}\">ï¿½ï¿½ï¿½ï¿½ï¿½</a>)";
 
                       $show.="<tr>
                               <td>".date('d.m.Y',strtotime($igra['data_igry']))."</td>
-                              <td>".(strlen($igra['komanda1'])>0?$parsed_data['komandà'][$igra['komanda1']]['title']:'')."</td>
+                              <td>".(strlen($igra['komanda1'])>0?$parsed_data['komandï¿½'][$igra['komanda1']]['title']:'')."</td>
                               <td><nobr>{$igra['schet']} {$igra['urlstats']}</nobr></td>
-                              <td>".(strlen($igra['komanda2'])>0?$parsed_data['komandà'][$igra['komanda2']]['title']:'')."</td>
+                              <td>".(strlen($igra['komanda2'])>0?$parsed_data['komandï¿½'][$igra['komanda2']]['title']:'')."</td>
                               </tr>";
                       //
                   }
@@ -275,62 +275,62 @@ for($i=0;$i<$cnt;$i++)
                       if(strlen($igra['schet'])==0) continue;
                       $schet=explode(':',$igra['schet']);
 
-                      $parsed_data['komandà'][$igra['komanda1']]['stats']['È']++;
-                      $parsed_data['komandà'][$igra['komanda2']]['stats']['È']++;
+                      $parsed_data['komandï¿½'][$igra['komanda1']]['stats']['ï¿½']++;
+                      $parsed_data['komandï¿½'][$igra['komanda2']]['stats']['ï¿½']++;
 
-                      $parsed_data['komandà'][$igra['komanda1']]['stats']['+']+=$schet[0];
-                      $parsed_data['komandà'][$igra['komanda1']]['stats']['-']+=$schet[1];
+                      $parsed_data['komandï¿½'][$igra['komanda1']]['stats']['+']+=$schet[0];
+                      $parsed_data['komandï¿½'][$igra['komanda1']]['stats']['-']+=$schet[1];
 
-                      $parsed_data['komandà'][$igra['komanda2']]['stats']['-']+=$schet[0];
-                      $parsed_data['komandà'][$igra['komanda2']]['stats']['+']+=$schet[1];
+                      $parsed_data['komandï¿½'][$igra['komanda2']]['stats']['-']+=$schet[0];
+                      $parsed_data['komandï¿½'][$igra['komanda2']]['stats']['+']+=$schet[1];
 
                       if($schet[0]>$schet[1])
                       {
-                         $parsed_data['komandà'][$igra['komanda1']]['stats']['Â']++;
-                         $parsed_data['komandà'][$igra['komanda1']]['stats']['Î']+=2;
+                         $parsed_data['komandï¿½'][$igra['komanda1']]['stats']['ï¿½']++;
+                         $parsed_data['komandï¿½'][$igra['komanda1']]['stats']['ï¿½']+=2;
 
-                         $parsed_data['komandà'][$igra['komanda2']]['stats']['Ï']++;
-                         $parsed_data['komandà'][$igra['komanda2']]['stats']['Î']+=1;
+                         $parsed_data['komandï¿½'][$igra['komanda2']]['stats']['ï¿½']++;
+                         $parsed_data['komandï¿½'][$igra['komanda2']]['stats']['ï¿½']+=1;
                       }
                       else
                       {
-                         $parsed_data['komandà'][$igra['komanda1']]['stats']['Ï']++;
-                         $parsed_data['komandà'][$igra['komanda1']]['stats']['Î']+=1;
+                         $parsed_data['komandï¿½'][$igra['komanda1']]['stats']['ï¿½']++;
+                         $parsed_data['komandï¿½'][$igra['komanda1']]['stats']['ï¿½']+=1;
 
-                         $parsed_data['komandà'][$igra['komanda2']]['stats']['Â']++;
-                         $parsed_data['komandà'][$igra['komanda2']]['stats']['Î']+=2;
+                         $parsed_data['komandï¿½'][$igra['komanda2']]['stats']['ï¿½']++;
+                         $parsed_data['komandï¿½'][$igra['komanda2']]['stats']['ï¿½']+=2;
                       }
 
                   }
               }
               function cmp($a, $b) 
               {
-                if ($a['stats']['Î'] == $b['stats']['Î'])
+                if ($a['stats']['ï¿½'] == $b['stats']['ï¿½'])
                 {
                     $apm=$a['stats']['+']-$a['stats']['-'];
                     $bpm=$b['stats']['+']-$b['stats']['-'];
                     if($apm == $bpm) return 0;
                     return ($apm < $bpm) ? 1 : -1;
                 }
-                return ($a['stats']['Î'] < $b['stats']['Î']) ? 1 : -1;
+                return ($a['stats']['ï¿½'] < $b['stats']['ï¿½']) ? 1 : -1;
               }
-              $turtable=$parsed_data['komandà'];
+              $turtable=$parsed_data['komandï¿½'];
               uasort($turtable, "cmp");
               
-              $show.="<h2>Òóðíèðíàÿ òàáëèöà</h2>
+              $show.="<h2>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</h2>
                       <style>
                       .turtable td{font-size:10pt; vertical-align:top; border:1px dotted gray;}
                       </style>
                       <table border=0px cellspacing=2px cellpadding=0px class=turtable>
                         <tr>
-                        <th>¹</th>
-                        <th>Êîìàíäà</th>
-                        <th>È</th>
-                        <th>Â</th>
-                        <th>Ï</th>
-                        <th>Î</th>
-                        <th>Ç</th>
-                        <th>Ïð</th>
+                        <th>ï¿½</th>
+                        <th>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</th>
+                        <th>ï¿½</th>
+                        <th>ï¿½</th>
+                        <th>ï¿½</th>
+                        <th>ï¿½</th>
+                        <th>ï¿½</th>
+                        <th>ï¿½ï¿½</th>
                         <th>+/-</th>
                         </tr>";
               $N=1;
@@ -340,10 +340,10 @@ for($i=0;$i<$cnt;$i++)
                   $show.="<tr>
                            <td>{$N}</td>
                            <td>{$team['title']}</td>
-                           <td>{$team['stats']['È']}</td>
-                           <td>{$team['stats']['Â']}</td>
-                           <td>{$team['stats']['Ï']}</td>
-                           <td><b>{$team['stats']['Î']}</b></td>
+                           <td>{$team['stats']['ï¿½']}</td>
+                           <td>{$team['stats']['ï¿½']}</td>
+                           <td>{$team['stats']['ï¿½']}</td>
+                           <td><b>{$team['stats']['ï¿½']}</b></td>
                            <td>{$team['stats']['+']}</td>
                            <td>{$team['stats']['-']}</td>
                            <td>{$pm}</td>
@@ -374,7 +374,7 @@ for($i=0;$i<$cnt;$i++)
 
 
 # -------------------- get list of page languages - begin ----------------------
-    $tmp=db_getrows("SELECT DISTINCT ec_item_lang as lang
+    $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
                      FROM {$table_prefix}ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");

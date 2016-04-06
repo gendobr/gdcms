@@ -37,10 +37,11 @@ $input_vars = remove_magic_quotes($input_vars);
 //------------------------- interface to posted data -- end --------------------
 
 
-$db = db_connect(db_host, db_user, db_pass, db_name);
+$db = db_connect(\e::config('db_host'), \e::config('db_user'), \e::config('db_pass'), \e::config('db_name'));
 if ($db) {
-    if (defined('db_encoding'))
-        db_execute('set names ' . db_encoding);
+    if (defined('db_encoding')) {
+        \e::db_execute('set names ' . \e::config('db_charset'));
+    }
     run("session_start");          //start session
     //prn($_SESSION);
     // load interface messages
@@ -72,7 +73,7 @@ if ($db) {
     header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
     // report to log file
     $error_message = date('Y-m-d-H-i-s') . ' ' . mysql_errno() . ":" . mysql_error() . "{$_SERVER['HTTP_USER_AGENT']}\n";
-    file_put_contents(template_cache_root . '/db_connect_errors.txt', $error_message, FILE_APPEND | LOCK_EX);
+    file_put_contents(\e::config('CACHE_ROOT') . '/db_connect_errors.txt', $error_message, FILE_APPEND | LOCK_EX);
 
     die("DataBase Connection Error");
 }

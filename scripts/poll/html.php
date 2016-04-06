@@ -61,7 +61,7 @@ run('poll/functions');
 $input_vars['page_title']  = 
 $input_vars['page_header'] = $this_site_info['title'] .' - '. $text['Poll_html_code'];
 
-$polls=db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1");
+$polls=\e::db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1");
 $pl=Array();
 foreach($polls as $poll) $pl[$poll['id']]=shorten(strip_tags($poll['title']),40);
 $pl=draw_options(isset($input_vars['poll_id'])?$input_vars['poll_id']:'',$pl);
@@ -80,8 +80,8 @@ function set_span_value(span_id,val)
 // -->
 </script>
 
-Мова:<select onchange='set_span_value(\"span_lang\",this.value)'><option value=ukr>ukr</option><option value=rus>rus</option><option value=eng>eng</option></select><br>
-Питання:<select onchange='set_span_value(\"span_poll_id\",this.value)'><option value=''>Всі питання</option>{$pl}</select>
+пїЅпїЅпїЅпїЅ:<select onchange='set_span_value(\"span_lang\",this.value)'><option value=ukr>ukr</option><option value=rus>rus</option><option value=eng>eng</option></select><br>
+пїЅпїЅпїЅпїЅпїЅпїЅпїЅ:<select onchange='set_span_value(\"span_poll_id\",this.value)'><option value=''>пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</option>{$pl}</select>
 <br><br>
 
 <div style='background-color:#e0e0e0;padding:10px;'>

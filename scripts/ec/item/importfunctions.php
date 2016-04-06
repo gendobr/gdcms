@@ -10,7 +10,7 @@ function get_importable_fields($site_id) {
     if(isset($field_name_options)) return $field_name_options;
 
     $query="show fields from {$table_prefix}ec_item";
-    $field_names=db_getrows($query);
+    $field_names=\e::db_getrows($query);
     //prn($field_names);
     $cnt=count($field_names);
     $field_name_options=Array();
@@ -35,7 +35,7 @@ function get_importable_fields($site_id) {
     $field_name_options['ec_item_variants']  =Array('Field' => 'ec_item_variants'  , 'Type' => 'external_table');
 
     $query="SELECT * FROM {$table_prefix}ec_category_item_field WHERE site_id={$site_id}";
-    $rows=db_getrows($query);
+    $rows=\e::db_getrows($query);
     foreach($rows as $row) {
         $field_name_options["ec_category_item_field[{$row['ec_category_item_field_id']}]"]=Array('Field' => "ec_category_item_field[{$row['ec_category_item_field_id']}]", 'Type' => 'external_table','Label'=>get_langstring($row['ec_category_item_field_title']));
     }
@@ -296,7 +296,7 @@ function draw_default_values_form($site_id,$field_name_options) {
                        FROM {$table_prefix}ec_category
                        WHERE site_id={$site_id}
                        ORDER BY start ASC";
-    $ec_category_id_dictionary=db_getrows($query);
+    $ec_category_id_dictionary=\e::db_getrows($query);
     $cnt=count($ec_category_id_dictionary);
     for($i=0;$i<$cnt;$i++) {
         $ec_category_id_dictionary[$i]['ec_category_title']=str_repeat('....',$ec_category_id_dictionary[$i]['deep']).get_langstring($ec_category_id_dictionary[$i]['ec_category_title']);
@@ -321,7 +321,7 @@ function draw_default_values_form($site_id,$field_name_options) {
 
     # -------------------- producers - begin -----------------------------------
     $query="SELECT ec_producer_id,ec_producer_title FROM {$table_prefix}ec_producer WHERE site_id={$site_id}";
-    $ec_producer_id_dictionary=db_getrows($query);
+    $ec_producer_id_dictionary=\e::db_getrows($query);
     array_unshift($ec_producer_id_dictionary,Array('','',));
     # -------------------- producers - end -------------------------------------
 
@@ -355,9 +355,9 @@ function get_producer($site_id,$data) {
                     FROM {$table_prefix}ec_producer
                     WHERE site_id={$site_id}
                       AND(    ec_producer_id=".( (int)$data )."
-                          OR  ec_producer_title='".DbStr($data)."')
+                          OR  ec_producer_title='".\e::db_escape($data)."')
                     ";
-    $tmp=db_getonerow($query);
+    $tmp=\e::db_getonerow($query);
     //prn($query, $tmp);
     $row_data=$tmp?$tmp['ec_producer_id']:0;
     return $row_data;
@@ -374,12 +374,12 @@ function get_categories($site_id,$data) {
                     FROM {$table_prefix}ec_category
                     WHERE site_id={$site_id}
                       AND (    ec_category_id=".( (int)$main_category )."
-                           OR  ec_category_code='".DbStr($main_category)."'
-                           OR (locate('".DbStr($main_category)."',ec_category_title)>0)
+                           OR  ec_category_code='".\e::db_escape($main_category)."'
+                           OR (locate('".\e::db_escape($main_category)."',ec_category_title)>0)
                            )
                     ORDER BY length(ec_category_title) DESC
                     LIMIT 0,1 ";
-    $tmp=db_getonerow($query);
+    $tmp=\e::db_getonerow($query);
     //prn($query,$tmp);
     $row_data=$tmp?$tmp[$colname]:0;
     // --------------- main category - end -------------------------------------
@@ -391,13 +391,13 @@ function get_categories($site_id,$data) {
         $query=Array();
         foreach($categories as $ca) {
             $ca=trim($ca);
-            $query[]=" (    ec_category_id=".( (int)$ca )."  OR  ec_category_code='".DbStr($ca)."' OR (locate('".DbStr($ca)."',ec_category_title)>0)  ) \n";
+            $query[]=" (    ec_category_id=".( (int)$ca )."  OR  ec_category_code='".\e::db_escape($ca)."' OR (locate('".\e::db_escape($ca)."',ec_category_title)>0)  ) \n";
         }
         $query="SELECT ec_category_id
                            FROM {$table_prefix}ec_category
                            WHERE site_id={$site_id}
                             AND (".join(' OR ',$query).")";
-        $additional_categories=db_getrows($query);
+        $additional_categories=\e::db_getrows($query);
         $cnt1=count($additional_categories);
         for($i1=0;$i1<$cnt1;$i1++) {
             $additional_categories[$i1]=$additional_categories[$i1]['ec_category_id'];
@@ -453,14 +453,14 @@ function set_item_variants($ec_item_id,$ec_item_lang,$ec_item_variants) {
 
     $query="DELETE FROM {$table_prefix}ec_item_variant WHERE ec_item_id={$ec_item_id} and ec_item_lang='{$ec_item_lang}'";
     //prn($query);
-    db_execute($query);
+    \e::db_execute($query);
 
     $query=Array();
     foreach($ec_item_variants as $vkey=>$vval) {
         $query[]="({$ec_item_id},
                   '{$ec_item_lang}',
-                  '".DbStr($vval['value'])."',
-                  '".DbStr($vval['price_correction'])."',
+                  '".\e::db_escape($vval['value'])."',
+                  '".\e::db_escape($vval['price_correction'])."',
                 {$vval['indent']},
                 {$vkey})";
     }
@@ -471,15 +471,15 @@ function set_item_variants($ec_item_id,$ec_item_lang,$ec_item_variants) {
                   ec_item_variant_price_correction,ec_item_variant_indent,ec_item_variant_ordering)
                  VALUES ".join(',',$query);
         //prn($query);
-        db_execute($query);
+        \e::db_execute($query);
     }
 }
 
 function set_additional_categories($ec_item_id,$ec_item_lang,$additional_categories) {
     global $table_prefix;
-    db_execute("DELETE FROM {$table_prefix}ec_item_category WHERE ec_item_id={$ec_item_id}");
+    \e::db_execute("DELETE FROM {$table_prefix}ec_item_category WHERE ec_item_id={$ec_item_id}");
 
-    db_execute("INSERT INTO {$table_prefix}ec_item_category(ec_item_id,ec_category_id)
+    \e::db_execute("INSERT INTO {$table_prefix}ec_item_category(ec_item_id,ec_category_id)
                 SELECT {$ec_item_id} as ec_item_id, ec_category_id
                 FROM {$table_prefix}ec_category
                 WHERE ec_category_id IN(".join(',',$additional_categories).")");
@@ -489,16 +489,16 @@ function set_additional_categories($ec_item_id,$ec_item_lang,$additional_categor
 
 function set_item_tags($site_id,$ec_item_id,$ec_item_lang,$ec_item_tags) {
     global $table_prefix;
-    db_execute("DELETE FROM {$table_prefix}ec_item_tags WHERE ec_item_id={$ec_item_id}");
+    \e::db_execute("DELETE FROM {$table_prefix}ec_item_tags WHERE ec_item_id={$ec_item_id}");
     $tmp=split(',|;',$ec_item_tags);
     $query=Array();
     foreach($tmp as $tag) {
         $tag=trim($tag);
-        if(strlen($tag)>0) $query[]="({$ec_item_id},'".DbStr($tag)."',{$site_id})";
+        if(strlen($tag)>0) $query[]="({$ec_item_id},'".\e::db_escape($tag)."',{$site_id})";
     }
     if(count($query)>0) {
         $query="INSERT INTO {$table_prefix}ec_item_tags(ec_item_id,ec_item_tag,site_id) values ".join(',',$query);
-        db_execute($query);
+        \e::db_execute($query);
     }
 
 
@@ -521,7 +521,7 @@ function set_additional_fields($site_id,$ec_item_id,$ec_item_lang,$additional_fi
 			  AND pa.site_id={$site_id}
 			  AND ch.site_id={$site_id}
 			  AND ch.ec_category_id IN(".join(',',$categories).")";
-    $tmp=db_getrows($query);
+    $tmp=\e::db_getrows($query);
     $cnt=count($tmp);
     for($i=0;$i<$cnt;$i++) {
         $tmp[$i]=$tmp[$i]['ec_category_id'];
@@ -535,7 +535,7 @@ function set_additional_fields($site_id,$ec_item_id,$ec_item_lang,$additional_fi
              and cif.ec_category_id IN ($tmp)
            order by cif.ec_category_item_field_ordering ASC";
     // prn(checkStr($query));
-    $tmp=db_getrows($query);
+    $tmp=\e::db_getrows($query);
     // prn($tmp);
     $tor=Array();
     foreach($tmp as $fld) {
@@ -545,12 +545,12 @@ function set_additional_fields($site_id,$ec_item_id,$ec_item_lang,$additional_fi
                       AND ec_item_lang='$ec_item_lang'
                       AND ec_category_item_field_id='{$fld['ec_category_item_field_id']}' ";
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
 
             $query="INSERT INTO {$table_prefix}ec_category_item_field_value(ec_item_id,ec_item_lang,ec_category_item_field_id,ec_category_item_field_value)
-                    VALUES ($ec_item_id,'$ec_item_lang','{$fld['ec_category_item_field_id']}','".DbStr($additional_fields[$fld['ec_category_item_field_id']])."')";
+                    VALUES ($ec_item_id,'$ec_item_lang','{$fld['ec_category_item_field_id']}','".\e::db_escape($additional_fields[$fld['ec_category_item_field_id']])."')";
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
         }
     }
     # ------------------------ list of additional fields - end --------------------
@@ -595,7 +595,7 @@ function recreate_search_index($this_ec_item_info) {
     //prn($search_index);
 
     //prn($this_ec_item_info);
-    db_execute("UPDATE  {$table_prefix}ec_item SET ec_item_keywords='".DbStr($search_index)."' WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
+    \e::db_execute("UPDATE  {$table_prefix}ec_item SET ec_item_keywords='".\e::db_escape($search_index)."' WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
 
 }
 ?>

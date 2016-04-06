@@ -1,9 +1,13 @@
 <?php
 
+function photo_category_list($site_id){
+
+}
+
 
 function photo_category_info($photo_category_id){
     global $table_prefix;
-    $info=db_getonerow(
+    $info=\e::db_getonerow(
             "SELECT photo_category.* , count(photo.photo_id) as nPhotos
              FROM {$table_prefix}photo_category photo_category
                  LEFT JOIN {$table_prefix}photo photo ON (photo.photo_category_id = photo_category.photo_category_id)
@@ -16,7 +20,7 @@ function photo_category_info($photo_category_id){
 
 function photo_info($photo_id){
     global $table_prefix;
-    $info=db_getonerow(
+    $info=\e::db_getonerow(
             "SELECT photo.* , photo_category.*
              FROM {$table_prefix}photo photo 
                   LEFT JOIN {$table_prefix}photo_category photo_category
@@ -36,7 +40,7 @@ function photo_category_update($photo_category_id, $site_id, $data){
     
     // photo_category_path         varchar(255)  utf8_bin   YES             (NULL)                   select,insert,update,references           
     if(isset($data['photo_category_path'])){
-        $set[]=" photo_category_path='".  DbStr($data['photo_category_path'])."' ";
+        $set[]=" photo_category_path='".  \e::db_escape($data['photo_category_path'])."' ";
     }
     
     // photo_category_ordering     int(11)       (NULL)     YES             (NULL)                   select,insert,update,references           
@@ -46,17 +50,17 @@ function photo_category_update($photo_category_id, $site_id, $data){
 
     // photo_category_title        text          utf8_bin   YES             (NULL)                   select,insert,update,references           
     if(isset($data['photo_category_title'])){
-        $set[]=" photo_category_title='".  DbStr($data['photo_category_title'])."' ";
+        $set[]=" photo_category_title='".  \e::db_escape($data['photo_category_title'])."' ";
     }
 
     // photo_category_description  text          utf8_bin   YES             (NULL)                   select,insert,update,references           
     if(isset($data['photo_category_description'])){
-        $set[]=" photo_category_description='".  DbStr($data['photo_category_description'])."' ";
+        $set[]=" photo_category_description='".  \e::db_escape($data['photo_category_description'])."' ";
     }
 
     // photo_category_icon         text          utf8_bin   YES             (NULL)                   select,insert,update,references           
     if(isset($data['photo_category_icon'])){
-        $set[]=" photo_category_icon='".  DbStr(json_encode($data['photo_category_icon']))."' ";
+        $set[]=" photo_category_icon='".  \e::db_escape(json_encode($data['photo_category_icon']))."' ";
     }
 
     // photo_category_visible      tinyint(1)    (NULL)     NO              1                        select,insert,update,references           
@@ -70,7 +74,7 @@ function photo_category_update($photo_category_id, $site_id, $data){
         $site_id*=1;
         $query="UPDATE {$table_prefix}photo_category SET ".join(',',$set)."
                 WHERE photo_category_id=$photo_category_id AND site_id=$site_id";
-        db_execute($query);
+        \e::db_execute($query);
     }
     return photo_category_info($photo_category_id);
 }
@@ -178,7 +182,7 @@ function photo_category_set_icon($photo_category_id, $site_id, $uploadedFile){
 
         # create directory
         $relative_dir = date('Y') . '/' . date('m');
-        $site_root_dir = sites_root . '/' . $this_site_info['dir'];
+        $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
         path_create($site_root_dir, "/gallery/$relative_dir/");
 
         $smallImageFile='';

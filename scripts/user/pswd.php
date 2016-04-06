@@ -10,7 +10,7 @@ $user_info = $_SESSION['user_info'];
 
 //------------------- this_user_info - begin -----------------------------------
 $query = "SELECT * FROM {$table_prefix}user WHERE id=" . ((int) $user_info['id']);
-$this_user_info = db_getonerow($query);
+$this_user_info = \e::db_getonerow($query);
 //prn($this_user_info);
 //------------------- this_user_info - end -------------------------------------
 //------------------- edit properties -- begin ---------------------------------
@@ -80,18 +80,18 @@ if ($success) {
     //-------------------- password - begin ----------------------------------
     if (isset($input_vars['db_record_editor_user_password']) && strlen($input_vars['db_record_editor_user_password']) > 0) {
         if ($input_vars['db_record_editor_user_password_again'] == $input_vars['db_record_editor_user_password']) {
-            $query = "UPDATE {$table_prefix}user SET user_password='" . md5($input_vars['db_record_editor_user_password']) . "' WHERE user_login='" . DbStr($user_info['user_login']) . "'";
+            $query = "UPDATE {$table_prefix}user SET user_password='" . md5($input_vars['db_record_editor_user_password']) . "' WHERE user_login='" . \e::db_escape($user_info['user_login']) . "'";
             #prn($query);
-            db_execute($query);
+            \e::db_execute($query);
         } else {
             $password_messages = " <b><font color=red> {$text['ERROR']} : passwords_do_not_match </font></b><br>\n";
         }
     }
     //-------------------- password - end ------------------------------------
 
-    $query = "SELECT * FROM {$table_prefix}user WHERE user_login='" . DbStr($user_info['user_login']) . "'";
+    $query = "SELECT * FROM {$table_prefix}user WHERE user_login='" . \e::db_escape($user_info['user_login']) . "'";
     //prn($query);
-    $this_user_info = db_getonerow($query);
+    $this_user_info = \e::db_getonerow($query);
 }
 // ------------------ post-process - end ---------------------------------------
 //----------------------------- draw -- begin ----------------------------------

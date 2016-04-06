@@ -12,21 +12,21 @@ function run($fname,$arguments=Array()) {
     extract($arguments);
     unset($arguments);
 
-    $prefix=realpath(script_root.'/');
+    $prefix=realpath(\e::config('SCRIPT_ROOT').'/');
     //prn($prefix);
     foreach($actions as $act) {
         $fn=trim($act);
         $fn=str_replace("\\","/",$fn);
         $fn=preg_replace("/^\/|\/$/",'',$fn);
 
-        $fn=realpath(script_root."/{$fn}.php");
+        $fn=realpath(\e::config('SCRIPT_ROOT')."/{$fn}.php");
 
         // file must be inside script root
         if(strlen(dirname($fn))<strlen($prefix)) $fn='';
         //prn($fn);
 
         // if file exists?
-        if(!is_file ($fn)) $fn = script_root.'/'.default_action.'.php';
+        if(!is_file ($fn)) $fn = \e::config('SCRIPT_ROOT').'/'.default_action.'.php';
         //prn($fn);
 		//FB::log($fn);
 
@@ -410,61 +410,59 @@ function getAsciiUrl($ditryUrl){
 // ---------------------- database interface -- begin --------------------------
 // MySQL functions
 //
-function DbStr($ffff) {
-    return mysql_real_escape_string($ffff);
-}
-function db_connect($db_host,$db_user,$db_pass,$db_name) {
-    if($db=mysql_connect($db_host,$db_user,$db_pass)) {
-        if(mysql_select_db($db_name,$db)) return $db;     else return false;
-    } else return false;
-}
-function db_close($dblink) {
-    mysql_close($dblink);
-}
-
-
+//function DbStr($ffff) {
+//    return mysql_real_escape_string($ffff);
+//}
+//function db_connect($db_host,$db_user,$db_pass,$db_name) {
+//    if($db=mysql_connect($db_host,$db_user,$db_pass)) {
+//        if(mysql_select_db($db_name,$db)) return $db;     else return false;
+//    } else return false;
+//}
+//function db_close($dblink) {
+//    mysql_close($dblink);
+//}
 // new versions
-function db_execute($query) {
-    if(debug & debug_level_show_sql_query) prn("<b><font color=\"red\">$query</font></b>");
-    $result_id=mysql_query(trim($query));
-    if(!$result_id && (debug & debug_level_show_sql_errors)) {
-        prn($query.'<br>'.mysql_error());
-    } return
-    $result_id;
-}
-function db_getrows($query) {
-    $result_id=db_execute($query);
-    $tor=Array(); while($row=mysql_fetch_array($result_id,MYSQL_ASSOC)) $tor[]=$row;
-    mysql_free_result($result_id);
-    return $tor;
-}
-function db_getonerow($query) {
-    //if($_REQUEST['v']==1) prn($query);
-    $result_id=db_execute($query);
-    $tor=mysql_fetch_array($result_id, MYSQL_ASSOC);
-    mysql_free_result($result_id);
-    return $tor;
-}
-function db_get_associated_array($sql) {
-    $tor=Array();
-    $tmp=db_getrows($sql);
-    if(!$tmp) return $tor;
-    foreach($tmp as $tm) {
-        $tm=array_values($tm);
-        if(!isset($tm[1])) $tm[1]=$tm[0];
-        $tor[$tm[0]]=$tm[1];
-    }
-    return $tor;
-}
-
-function SelectLimit($dblink,$query,$start,$rows) {
-    $limit_query=ereg_replace(';?( |'."\n".'|'."\r".')*$','',$query.'  LIMIT '.checkInt($start).','.checkInt($rows).';');
-    ///prn($limit_query);
-    return db_getrows($limit_query);
-}
-function GetNumRows($result_id) {
-    return mysql_num_rows ($result_id);
-}
+//function db_execute($query) {
+//    if(debug & debug_level_show_sql_query) prn("<b><font color=\"red\">$query</font></b>");
+//    $result_id=mysql_query(trim($query));
+//    if(!$result_id && (debug & debug_level_show_sql_errors)) {
+//        prn($query.'<br>'.mysql_error());
+//    } return
+//    $result_id;
+//}
+//function db_getrows($query) {
+//    $result_id=\e::db_execute($query);
+//    $tor=Array(); while($row=mysql_fetch_array($result_id,MYSQL_ASSOC)) $tor[]=$row;
+//    mysql_free_result($result_id);
+//    return $tor;
+//}
+//function db_getonerow($query) {
+//    //if($_REQUEST['v']==1) prn($query);
+//    $result_id=\e::db_execute($query);
+//    $tor=mysql_fetch_array($result_id, MYSQL_ASSOC);
+//    mysql_free_result($result_id);
+//    return $tor;
+//}
+//function db_get_associated_array($sql) {
+//    $tor=Array();
+//    $tmp=\e::db_getrows($sql);
+//    if(!$tmp) return $tor;
+//    foreach($tmp as $tm) {
+//        $tm=array_values($tm);
+//        if(!isset($tm[1])) $tm[1]=$tm[0];
+//        $tor[$tm[0]]=$tm[1];
+//    }
+//    return $tor;
+//}
+//
+//function SelectLimit($dblink,$query,$start,$rows) {
+//    $limit_query=ereg_replace(';?( |'."\n".'|'."\r".')*$','',$query.'  LIMIT '.checkInt($start).','.checkInt($rows).';');
+//    ///prn($limit_query);
+//    return \e::db_getrows($limit_query);
+//}
+//function GetNumRows($result_id) {
+//    return mysql_num_rows ($result_id);
+//}
 
 // ---------------------- database interface -- end ----------------------------
 
@@ -481,7 +479,7 @@ function prn() {
     echo "\n<hr color=lime size=2px>\n";
 }
 function filelog() {
-    $filepath=template_cache_root.'/log_'.preg_replace("/\\W/",'_',$_REQUEST['action']);
+    $filepath=\e::config('CACHE_ROOT').'/log_'.preg_replace("/\\W/",'_',$_REQUEST['action']);
     
     $log ="\n\n----------------------\n".date('Y-m-d H:i:s')."\n";
     $arg_list = func_get_args();
@@ -532,17 +530,17 @@ function load_msg($language='') {
 
     //------------------ choose language file - begin ---------------------
     if(strlen($language)==0) {
-        $file_path = local_root ."/msg/{$_SESSION['lang']}.ini";
+        $file_path = \e::config('APP_ROOT') ."/msg/{$_SESSION['lang']}.ini";
     }
     else {
-        $file_path = local_root ."/msg/{$language}.ini";
+        $file_path = \e::config('APP_ROOT') ."/msg/{$language}.ini";
     }
     //------------------ choose language file - end -----------------------
 
     //------------------- load from file - begin ----------------------------
     if(!file_exists($file_path)) {
         $_SESSION['lang'] = default_language;
-        $file_path = local_root ."/msg/{$_SESSION['lang']}.ini";
+        $file_path = \e::config('APP_ROOT') ."/msg/{$_SESSION['lang']}.ini";
     }
 
     $text=parse_ini_file($file_path);
@@ -584,7 +582,7 @@ function list_of_languages($exclude_pattern='') {
     $ex="/$ex/i";
 
     $files=Array();
-    $dirname = local_root .'/msg';
+    $dirname = \e::config('APP_ROOT') .'/msg';
     if(!is_dir($dirname)) return false;
 
 
@@ -846,14 +844,14 @@ function get_level($site_id, $user_id=0) {
     if(is_admin()) {
         if($debug) prn('is admin');
         $query = "SELECT cense_level FROM {$table_prefix}site WHERE id={$sid}";
-        $tor = db_getonerow($query);
+        $tor = \e::db_getonerow($query);
         return $tor['cense_level'];
     }
 
     if($uid<=0) $uid=checkInt($_SESSION['user_info']['id']);
     $query = "SELECT level FROM {$table_prefix}site_user WHERE site_id={$sid} AND user_id={$uid}";
     if($debug) prn($query);
-    $tor = db_getonerow($query);
+    $tor = \e::db_getonerow($query);
     return checkInt($tor['level']);
 }
 //----------------------------- get_level() - end ------------------------------
@@ -867,7 +865,7 @@ function do_login($lg,$ps,$_prev_info=Array()){
 		}
 		else{
             //------------------- get user info -- begin ------------------------------
-            $tmp_user_info=db_getonerow( "SELECT * FROM {$GLOBALS['table_prefix']}user WHERE user_login='".DbStr($lg)."'");
+            $tmp_user_info=\e::db_getonerow( "SELECT * FROM {$GLOBALS['table_prefix']}user WHERE user_login='".\e::db_escape($lg)."'");
             //------------------- get user info -- end --------------------------------
 		}
         $tmp_user_info['error_msg']='';
@@ -877,13 +875,13 @@ function do_login($lg,$ps,$_prev_info=Array()){
             $tmp_user_info['is_logged']=true;
             //------------------- get user sites - begin ---------------------------
             if($tmp_user_info['id']==1) {
-                $tmp_user_info['sites']=db_get_associated_array(
+                $tmp_user_info['sites']=\e::db_get_associated_array(
                         " SELECT id AS `key`, 1000 AS `value` FROM {$GLOBALS['table_prefix']}site
                            UNION
                            SELECT dir AS `key`, 1000 AS `value` FROM {$GLOBALS['table_prefix']}site" );
             }
             else {
-                $tmp_user_info['sites']=db_get_associated_array(
+                $tmp_user_info['sites']=\e::db_get_associated_array(
                         "SELECT site_id AS `key`, level AS `value`
                     FROM {$GLOBALS['table_prefix']}site_user
                     WHERE user_id='{$tmp_user_info['id']}'
@@ -1000,15 +998,18 @@ function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
 
 
 function ml($a,$s) {
-    $_a=DbStr($a);
+    $_a=\e::db_escape($a);
     $_d=date('Y-m-d H:i:s');
-    $_u=DbStr($_SESSION['user_info']['user_login']);
-    $_s=DbStr(serialize($s));
-    db_execute("insert into {$GLOBALS['table_prefix']}ml(a,d,u,s) VALUES('$_a','$_d','$_u','$_s')");
+    $_u=\e::db_escape($_SESSION['user_info']['user_login']);
+    $_s=\e::db_escape(serialize($s));
+    \e::db_execute("insert into {$GLOBALS['table_prefix']}ml(a,d,u,s) VALUES('$_a','$_d','$_u','$_s')");
 }
 
 
 function nohistory($act) {
+    if(!is_array($_SESSION['history'])){
+        $_SESSION['history']=[];
+    }
     $cnt=count($_SESSION['history']);
     $str='action='.rawurlencode($act);
     for($i=0;$i<$cnt;$i++) {

@@ -110,7 +110,7 @@ if (get_level($site_id) == 0) {
                  ,$_group_operation=false);
 
 //rsssourceitem_lang         varchar(3)
-  $LL = join('&',db_get_associated_array("SELECT rsssourceitem_lang,CONCAT(rsssourceitem_lang,'=',rsssourceitem_lang) FROM {$table_prefix}rsssourceitem WHERE site_id={$site_id}"));
+  $LL = join('&',\e::db_get_associated_array("SELECT rsssourceitem_lang,CONCAT(rsssourceitem_lang,'=',rsssourceitem_lang) FROM {$table_prefix}rsssourceitem WHERE site_id={$site_id}"));
   $re->add_field( $field='rsssourceitem.rsssourceitem_lang'
                  ,$alias='rsssourceitem_lang'
                  ,$type ='enum:'.$LL

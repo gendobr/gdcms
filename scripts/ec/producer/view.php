@@ -55,7 +55,7 @@ $this_site_info['title'] = get_langstring($this_site_info['title'], $lang);
 //prn($input_vars);
 # ------------------- get site info - end --------------------------------------
 # --------------------------- get site template - begin ------------------------
-$custom_page_template = sites_root . '/' . $this_site_info['dir'] . '/template_index.html';
+$custom_page_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/template_index.html';
 if (is_file($custom_page_template)) {
     $this_site_info['template'] = $custom_page_template;
 }
@@ -66,8 +66,8 @@ if (is_file($custom_page_template)) {
 
 $input_vars['orderby'] = 'ec_item_last_change_date desc';
 $input_vars['ec_item_state'] = 'show';
-include(script_root . '/ec/item/get_public_list.php');
-include(script_root . '/ec/item/adjust_public_list.php');
+include(\e::config('SCRIPT_ROOT') . '/ec/item/get_public_list.php');
+include(\e::config('SCRIPT_ROOT') . '/ec/item/adjust_public_list.php');
 
 //prn($list_of_ec_items);
 //prn($pages);
@@ -118,13 +118,13 @@ if (isset($input_vars['comment_code'])) {
                     ec_producer_id,
                     ec_producer_comment_datetime
                )values(
-                '" . DbStr($comment_sender) . "',
-                '" . DbStr($_body) . "',
+                '" . \e::db_escape($comment_sender) . "',
+                '" . \e::db_escape($_body) . "',
                 $site_id,
                 $ec_producer_id,
                 NOW()
                )";
-        db_execute($query);
+        \e::db_execute($query);
         $_SESSION['code'] = get_code();
         $comment_sender = '';
         $comment_body = '';
@@ -143,7 +143,7 @@ $query = "SELECT *
           WHERE site_id=$site_id
             AND ec_producer_id=$ec_producer_id
           ORDER BY ec_producer_comment_datetime ASC";
-$list_of_comments = db_getrows($query);
+$list_of_comments = \e::db_getrows($query);
 # -------------------- get list of comments - end ------------------------------
 # -------------------- draw comments block - begin - begin ---------------------
 $comments = "

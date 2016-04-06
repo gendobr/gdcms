@@ -45,7 +45,7 @@ site_visitor table :
   if(isset($input_vars['site_id'])) $site_id = (int)$input_vars['site_id']; else $site_id=0;
   if($site_id>0)
   {
-    $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+    $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
     if(!$this_site_info) $site_id=0;
   }
   if($site_id<=0) die($txt['Site_not_found']);
@@ -187,7 +187,7 @@ $form_name_prefix='svr_';
 
       # name_nick   uniqueness
         if(strlen($form['name_nick']['value'])>0)
-        if(count(db_getrows("SELECT id FROM {$table_prefix}site_visitor WHERE name_nick='".DbStr($form['name_nick']['value'])."'")))
+        if(count(\e::db_getrows("SELECT id FROM {$table_prefix}site_visitor WHERE name_nick='".\e::db_escape($form['name_nick']['value'])."'")))
         {
           $form['name_nick']['message'].="<font color=red>{$txt['ERROR_name_nick_already_exists']}</font> <br/>";
           $all_is_ok=false;
@@ -227,24 +227,24 @@ $form_name_prefix='svr_';
               telephone, address, additional_info)
               values
               ( {$site_id}
-               ,'".DbStr($form['login_password']['value'])."'
-               ,'".DbStr($form['name_nick']['value'])."'
-               ,'".DbStr($form['name_first']['value'])."'
-               ,'".DbStr($form['name_middle']['value'])."'
-               ,'".DbStr($form['name_last']['value'])."'
-               ,'".DbStr($form['birthdate']['value'])."'
-               ,'".DbStr($form['email']['value'])."'
-               ,'".DbStr($form['home_page_url']['value'])."'
-               ,'".DbStr($form['telephone']['value'])."'
-               ,'".DbStr($form['address']['value'])."'
-               ,'".DbStr($form['additional_info']['value'])."')";
+               ,'".\e::db_escape($form['login_password']['value'])."'
+               ,'".\e::db_escape($form['name_nick']['value'])."'
+               ,'".\e::db_escape($form['name_first']['value'])."'
+               ,'".\e::db_escape($form['name_middle']['value'])."'
+               ,'".\e::db_escape($form['name_last']['value'])."'
+               ,'".\e::db_escape($form['birthdate']['value'])."'
+               ,'".\e::db_escape($form['email']['value'])."'
+               ,'".\e::db_escape($form['home_page_url']['value'])."'
+               ,'".\e::db_escape($form['telephone']['value'])."'
+               ,'".\e::db_escape($form['address']['value'])."'
+               ,'".\e::db_escape($form['additional_info']['value'])."')";
     # prn($query);
-      db_execute($query);
+      \e::db_execute($query);
       
       $query="select last_insert_id() as new_visitor_id;";
     # prn($query);
-      db_execute($query);
-      $new_visitor_id = db_getonerow($query);
+      \e::db_execute($query);
+      $new_visitor_id = \e::db_getonerow($query);
       $new_visitor_id = (int)$new_visitor_id['new_visitor_id'];
     # ------------------------ create record - end -----------------------------
     
@@ -259,13 +259,13 @@ $form_name_prefix='svr_';
            if(strlen(trim($edu['place']))==0) continue;
            if(strlen(trim($edu['year']))==0 ) continue;
            $edu['year']=(int)$edu['year'];
-           $query[]="({$site_id},{$new_visitor_id},{$edu['year']},'".DbStr($edu['faculty'])."','".DbStr($edu['speciality'])."','".DbStr($edu['place'])."')";
+           $query[]="({$site_id},{$new_visitor_id},{$edu['year']},'".\e::db_escape($edu['faculty'])."','".\e::db_escape($edu['speciality'])."','".\e::db_escape($edu['place'])."')";
         }
         if(count($query)>0)
         {
           $query="INSERT INTO {$table_prefix}site_visitor_education(site_id,site_visitor_id,edu_year,faculty,speciality,place) values ". join(',',$query);
         # prn($query);
-          db_execute($query);
+          \e::db_execute($query);
         }
       }
     # ------------------------ save education info - end -----------------------

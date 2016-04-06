@@ -32,7 +32,7 @@ $input_vars['lang']      = get_language('lang');
 
 //------------------- get site info - begin ------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
   //prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -47,7 +47,7 @@ $input_vars['lang']      = get_language('lang');
 
 //------------------- get list of news - begin ---------------------------------
 
-  $lang  = DbStr($input_vars['lang']);
+  $lang  = \e::db_escape($input_vars['lang']);
   $start = isset($_REQUEST['start'])?(int)$_REQUEST['start']:0;
   //--------------------------- list of news - begin ---------------------------
   /*
@@ -89,7 +89,7 @@ $input_vars['lang']      = get_language('lang');
             AND ne.lang='{$lang}'
           ORDER BY ne.last_change_date $date_sort
           LIMIT $start,".$rows;
-    $list_of_news = db_getrows($query);
+    $list_of_news = \e::db_getrows($query);
     if($debug) prn($query,$list_of_news);
     # -------------------- adjust list - begin ---------------------------------
       $cnt=count($list_of_news);
@@ -111,7 +111,7 @@ $input_vars['lang']      = get_language('lang');
 
 # --------------------------- list of pages - begin ----------------------------
     $query="SELECT FOUND_ROWS() AS n_records;";
-    $num = db_getonerow($query);
+    $num = \e::db_getonerow($query);
     // prn($query,$num);
     $news_found = $num = (int)$num['n_records'];
     $pages = Array();
@@ -133,7 +133,7 @@ $input_vars['lang']      = get_language('lang');
 
 
 run('site/page/page_view_functions');
-  $news_template = sites_root.'/'.$this_site_info['dir'].'/template_news_view_list.html';
+  $news_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_news_view_list.html';
   #prn('$news_template',$news_template);
   if(!is_file($news_template)) $news_template = 'cms/template_news_view_list';
 

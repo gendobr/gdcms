@@ -48,7 +48,7 @@ else
 //prn('$this_site_info[template]=',$this_site_info['template']);
 // -------------------------- get page template - end ------------------------
 //--------------------------- language selector - begin ------------------------
-$lang_list = db_getrows("SELECT lang FROM {$table_prefix}page WHERE id={$this_page_info['id']}");
+$lang_list = \e::db_getrows("SELECT lang FROM {$table_prefix}page WHERE id={$this_page_info['id']}");
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
     $lang_list[$i]['url'] = "index.php?action=site/page/view&page_id={$this_page_info['id']}&lang={$lang_list[$i]['lang']}";

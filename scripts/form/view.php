@@ -46,10 +46,8 @@ $this_site_info['URL_to_view_news'] = url_prefix_news_list . "site_id={$this_sit
 
 // load form file
 if (is_array($input_vars['form'])) {
-    //header("Debug: {$input_vars['form'][$input_vars['lang']]}");
     if (isset($input_vars['form'][$input_vars['lang']])) {
-        //$form_file_path=sites_root . '/' . $this_site_info['dir'] . '/' . $input_vars['form'][$input_vars['lang']];
-        $form_file_path=preg_replace("/\\/+$/","",sites_root). '/' . $this_site_info['dir'];
+        $form_file_path=preg_replace("/\\/+$/","",\e::config('SITES_ROOT')). '/' . $this_site_info['dir'];
         $form_file_path=preg_replace("/\\/+$/","",$form_file_path). '/' . $input_vars['form'][$input_vars['lang']];
         //header("Debug: {$form_file_path}");
         $form_file = realpath($form_file_path);
@@ -57,10 +55,10 @@ if (is_array($input_vars['form'])) {
     } else {
         $form_file = array_values($input_vars['form']);
         $form_file = $form_file[0];
-        $form_file = realpath(sites_root . '/' . $this_site_info['dir'] . '/' . $form_file);
+        $form_file = realpath(\e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/' . $form_file);
     }
 }else{
-    $form_file = realpath(sites_root . '/' . $this_site_info['dir'] . '/' . $input_vars['form']);
+    $form_file = realpath(\e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/' . $input_vars['form']);
 }
 
 // prn($this_site_info);
@@ -426,7 +424,7 @@ if ($form_data_posted) {
 
         if (count($emails) == 0) {
             # ------------- list of site managers - begin ----------------------
-            $tmp = db_getrows(
+            $tmp = \e::db_getrows(
                     "select u.id, u.full_name, u.user_login, u.email, su.level
                       from {$GLOBALS['table_prefix']}user AS u, {$GLOBALS['table_prefix']}site_user AS su
                       where u.id = su.user_id AND su.site_id = {$this_site_info['id']}
@@ -468,7 +466,7 @@ if ($form_data_posted) {
                 // ---------------- do mailing - begin -------------------------
                 $mail = new phpmailer();
                 $mail->Timeout=120;
-                $mail->PluginDir=script_root."/lib/";
+                $mail->PluginDir=\e::config('SCRIPT_ROOT')."/lib/";
 
                 if (mail_IsSMTP)  {
                   $mail->IsSMTP();

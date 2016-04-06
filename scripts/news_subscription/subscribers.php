@@ -45,14 +45,14 @@ if(isset($input_vars['add_email'])
                     news_subscriber_date,
                     site_id
                     ) VALUES (
-                    '".  DbStr(trim($input_vars['add_name']))."',
-                    '".  DbStr(trim($input_vars['add_email']))."',
+                    '".  \e::db_escape(trim($input_vars['add_name']))."',
+                    '".  \e::db_escape(trim($input_vars['add_email']))."',
                     '',
                     1,
                     NOW(),
                     $site_id
                 )";
-            db_execute($query);
+            \e::db_execute($query);
 }
 
 run("lib/class_report");

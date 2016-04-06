@@ -38,7 +38,7 @@ function html_get_title($file_content)
 
    if(!isset($input_vars['current_dir']) && isset($input_vars['site_id']))
    {
-       $this_site_info=db_getonerow("SELECT * FROM {$table_prefix}site WHERE id=".( (int)$input_vars['site_id'] ));
+       $this_site_info=\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id=".( (int)$input_vars['site_id'] ));
        if($this_site_info)
        {
            $current_dir='/'.$this_site_info['dir'];
@@ -49,9 +49,9 @@ function html_get_title($file_content)
 
 // ------------------ check current dir - begin --------------------------------
    // check format
-      $current_dir=realpath(sites_root.$current_dir);
+      $current_dir=realpath(\e::config('SITES_ROOT').$current_dir);
       // prn('3.1 $current_dir='.$current_dir);
-      $sites_root = realpath(sites_root);
+      $sites_root = realpath(\e::config('SITES_ROOT'));
       // prn('3.2 $sites_root='.$sites_root);
 
       if(strlen($current_dir)<strlen($sites_root)) $current_dir='/';
@@ -63,7 +63,7 @@ function html_get_title($file_content)
       // prn('3.3 $current_dir='.$current_dir);
 
       $current_dir=ereg_replace('/+','/',$current_dir);
-      $current_dir=str_replace(sites_root.'/','',$current_dir);
+      $current_dir=str_replace(\e::config('SITES_ROOT').'/','',$current_dir);
       // prn('3.4 $current_dir='.$current_dir);
 
    // check base dirs
@@ -87,22 +87,22 @@ function html_get_title($file_content)
        $create_dir_name=str_replace('.','_',$create_dir_name);
        //prn($create_dir_name);
        $create_dir_name=str_replace(
-           Array('ё' ,'ц' ,'ч' ,'ш' ,'щ'  ,'ю' ,'я' ,'ы','а','б','в','г','д','е','ж' ,'з','и','й','к','л','м','н','о','п','р','с','т','у','ф','х' ,'э','ї' ,
-                 'Ё' ,'Ц' ,'Ч' ,'Ш' ,'Щ'  ,'Ю' ,'Я' ,'Ы','А','Б','В','Г','Д','Е','Ж' ,'З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х' ,'Э','?')
+           Array('пїЅ' ,'пїЅ' ,'пїЅ' ,'пїЅ' ,'пїЅ'  ,'пїЅ' ,'пїЅ' ,'пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ' ,'пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ' ,'пїЅ','пїЅ' ,
+                 'пїЅ' ,'пїЅ' ,'пїЅ' ,'пїЅ' ,'пїЅ'  ,'пїЅ' ,'пїЅ' ,'пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ' ,'пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ' ,'пїЅ','?')
           ,Array('yo','ts','ch','sh','sch','yu','ya','y','a','b','v','g','d','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','kh','e','yi',
                  'yo','ts','ch','sh','sch','yu','ya','y','a','b','v','g','d','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','kh','e','yi')
           ,$create_dir_name);
        $create_dir_name=ereg_replace('[^a-z0-9_-]','_',strtolower($create_dir_name));
        //prn($create_dir_name);
-       if(strlen($create_dir_name)>0) mkdir(sites_root.$current_dir.'/'.$create_dir_name);
+       if(strlen($create_dir_name)>0) mkdir(\e::config('SITES_ROOT').$current_dir.'/'.$create_dir_name);
    }
 
 // do upload
-   if($current_dir!='/' && isset($_FILES['userfile'])) upload_file('userfile', realpath(sites_root.$current_dir));
+   if($current_dir!='/' && isset($_FILES['userfile'])) upload_file('userfile', realpath(\e::config('SITES_ROOT').$current_dir));
 
 // get file list from current dir
 // draw file list
-   //$filelist=scandir (sites_root.$current_dir);
+
    $tmp=ls($sites_root.$current_dir);
    $filelist=array_merge($tmp['dirs'],$tmp['files']);
    sort($filelist);
@@ -114,7 +114,7 @@ function html_get_title($file_content)
        foreach($filelist as $fl)
        {
           if($fl=='.' || $fl=='..') continue;
-          if(is_dir(sites_root.$current_dir.'/'.$fl))
+          if(is_dir(\e::config('SITES_ROOT').$current_dir.'/'.$fl))
           {
              $base_dir_allowed=false;
              foreach($available_dirs as $dr) $base_dir_allowed=($base_dir_allowed||ereg("^/$dr",'/'.$fl));
@@ -127,7 +127,7 @@ function html_get_title($file_content)
        foreach($filelist as $key=>$fl)
        {
           if($fl=='.' || $fl=='..') continue;
-          if(is_dir(sites_root.$current_dir.'/'.$fl))
+          if(is_dir(\e::config('SITES_ROOT').$current_dir.'/'.$fl))
           {
               $dirs.=" <a href=\"index.php?action=site/page/edit1_get_images&current_dir=$current_dir/$fl\"><img src=\"".site_root_URL."/img/icon_dir.png\" width=18 wheight=18> $fl</a><br>";
           }
@@ -171,7 +171,7 @@ function html_get_title($file_content)
       $this_site_dir=ereg_replace('^/+','',$current_dir);
       $this_site_dir=ereg_replace('/.*','',$this_site_dir);
       //prn($current_dir,$this_site_id);
-      $this_site_id=db_getonerow("SELECT id FROM {$table_prefix}site WHERE dir like '".DbStr($this_site_dir)."%' ORDER BY dir ASC");
+      $this_site_id=\e::db_getonerow("SELECT id FROM {$table_prefix}site WHERE dir like '".\e::db_escape($this_site_dir)."%' ORDER BY dir ASC");
       $this_site_id=$this_site_id['id'];
       //prn($this_site_id);
       $upload_files_link="";
@@ -219,7 +219,7 @@ function html_get_title($file_content)
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?=site_charset?>" />
-<title>Вставка изображения в страницу</title>
+<title>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</title>
 <link href="http://www.arman-mebel.biz.ua/cms/templates/arman3/style.css" rel="stylesheet" type="text/css" />
 <script>
 function insert_img(str)
@@ -263,7 +263,7 @@ function hide_preview(pid)
 </head>
 <body>
 <div  style='padding:10px;background-color:white;color:black;'>
-<h1>Вставка изображения в страницу</h1>
+<h1>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</h1>
 <?=$input_vars['page_content']?>
 </div>
 <br>

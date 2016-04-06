@@ -20,7 +20,6 @@ if (checkInt($this_site_info['id']) <= 0) {
 }
 //------------------- site info - end ------------------------------------------
 //--------------------------- get site template - begin ------------------------
-//$custom_page_template = sites_root . '/' . $this_site_info['dir'] . '/template_index.html';
 $custom_page_template = site_get_template($this_site_info, "template_index.html", $verbose=false);
 if (is_file($custom_page_template)) $this_site_info['template'] = $custom_page_template;
 //--------------------------- get site template - end --------------------------
@@ -45,7 +44,7 @@ $query =
   WHERE forum_list.site_id=$site_id
   GROUP BY forum_list.id";
 //prn($query);
-$list_of_forums = db_getrows($query);
+$list_of_forums = \e::db_getrows($query);
 
 
 
@@ -68,14 +67,13 @@ if (count($forums) > 0) {
             group by forum_thread.forum_id
             ;";
     //prn($query);
-    $tmp = db_getrows($query);
+    $tmp = \e::db_getrows($query);
     foreach ($tmp as $_tm)
         $n_visible_threads[$_tm['forum_id']] = $_tm['n_threads'];
 }
 
 // ------------- adjust list - begin -------------------------------------------
 $cnt = count($list_of_forums);
-//$prefix = sites_root_URL . "/thread.php?site_id=$site_id&lang={$input_vars['lang']}&forum_id=";
 $prefix = site_root_URL . "/index.php?action=forum/thread&site_id={$site_id}&lang={$input_vars['lang']}&forum_id=";
 for ($i = 0; $i < $cnt; $i++) {
     $list_of_forums[$i]['URL_open_forum'] = $prefix . $list_of_forums[$i]['id'];

@@ -17,7 +17,7 @@ run('site/menu');
 # -------------------- get ec item info - end ----------------------------------
 
 # update item satistics
-  db_execute("UPDATE {$table_prefix}ec_item SET ec_item_in_cart=ifnull(ec_item_in_cart,0)+1 WHERE ec_item_id={$this_ec_item_info['ec_item_id']} LIMIT 1");
+  \e::db_execute("UPDATE {$table_prefix}ec_item SET ec_item_in_cart=ifnull(ec_item_in_cart,0)+1 WHERE ec_item_id={$this_ec_item_info['ec_item_id']} LIMIT 1");
 
 
 # -------------------------- load messages - begin -----------------------------
@@ -37,7 +37,7 @@ run('site/menu');
 # ------------------- get site info - end --------------------------------------
 
 # --------------------------- get site template - begin ------------------------
-  $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
   if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 # --------------------------- get site template - end --------------------------
 

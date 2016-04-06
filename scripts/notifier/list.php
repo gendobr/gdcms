@@ -18,7 +18,7 @@ if(!is_logged())
    if(isset($input_vars['delete']))
    {
        $query="DELETE FROM {$table_prefix}listener WHERE listener_id=".( (int)$input_vars['delete'] );
-       db_execute($query);
+       \e::db_execute($query);
    }
 // ------------------ delete row - end -----------------------------------------
 
@@ -48,14 +48,14 @@ $message='';
                    listener_action,
                    listener_template)
                  VALUES(
-                   '".DbStr($new_listener_event)."',
+                   '".\e::db_escape($new_listener_event)."',
                     ".( (int)$new_site_id ).",
                     ".( (int)$new_user_id ).",
-                   '".DbStr($new_listener_sendto)."',
-                   '".DbStr($new_listener_action)."',
-                   '".DbStr($new_listener_template)."' )";
+                   '".\e::db_escape($new_listener_sendto)."',
+                   '".\e::db_escape($new_listener_action)."',
+                   '".\e::db_escape($new_listener_template)."' )";
          //prn($query);
-         db_execute($query);
+         \e::db_execute($query);
      }
 
   }
@@ -84,14 +84,14 @@ $message='';
                    listener_action,
                    listener_template)
                  VALUES(
-                   '".DbStr($new_listener_event)."',
+                   '".\e::db_escape($new_listener_event)."',
                     ".( (int)$new_site_id ).",
                     ".( (int)$new_user_id ).",
-                   '".DbStr($new_listener_sendto)."',
-                   '".DbStr($new_listener_action)."',
-                   '".DbStr($new_listener_template)."' )";
+                   '".\e::db_escape($new_listener_sendto)."',
+                   '".\e::db_escape($new_listener_action)."',
+                   '".\e::db_escape($new_listener_template)."' )";
          //prn($query);
-         db_execute($query);
+         \e::db_execute($query);
      }
 
   }

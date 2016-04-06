@@ -22,7 +22,7 @@ $news_id = checkInt((isset($input_vars['news_id']) ? $input_vars['news_id'] : 0)
 $lang = get_language('lang');
 
 // $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
-//db_getonerow($query);
+//\e::db_getonerow($query);
 $this_news_info = news_info($news_id, $lang);
 if ($debug) {
     prn(checkStr($query), $this_news_info);
@@ -61,7 +61,7 @@ $this_site_info = get_site_info($site_id);
 
 # ------------------- site info - end ------------------------------------------
 # ----------------------- list of site managers - begin ------------------------
-$tmp = db_getrows(
+$tmp = \e::db_getrows(
         "select u.id, u.full_name, u.user_login, u.email, su.level
         from {$GLOBALS['table_prefix']}user AS u, {$GLOBALS['table_prefix']}site_user AS su
         where u.id = su.user_id AND su.site_id = {$this_site_info['id']}
@@ -80,7 +80,7 @@ if (isset($input_vars['debug']) && $input_vars['debug'] == 'true') {
 
 
 // save news
-include(script_root . '/news/save.php');
+include(\e::config('SCRIPT_ROOT') . '/news/save.php');
 
 
 
@@ -94,7 +94,7 @@ $this_news_info['content'] = $parsed_html['html'];
 $required_images = Array();
 clearstatcache();
 foreach ($parsed_html['src'] as $fname) {
-    if (!file_exists(sites_root . "/{$this_site_info['dir']}/{$fname}")) {
+    if (!file_exists(\e::config('SITES_ROOT') . "/{$this_site_info['dir']}/{$fname}")) {
         $required_images[] = $fname;
     }
 }
@@ -252,7 +252,7 @@ $expiration_date_selector = get_date_selector('expiration_date_posted', $this_ne
 
 # ------------------------ list of all categories - begin ----------------------
 $query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>=0 AND site_id={$site_id} ORDER BY start ASC";
-$tmp = db_getrows($query);
+$tmp = \e::db_getrows($query);
 $list_of_categories = Array();
 foreach ($tmp as $tm) {
     $list_of_categories[$tm['category_id']] = str_repeat(' + ', $tm['deep']) . get_langstring($tm['category_title']);
@@ -260,7 +260,7 @@ foreach ($tmp as $tm) {
 unset($tmp, $tm);
 //prn($list_of_categories);
 
-$news_categories = db_getrows("SELECT category_id FROM {$table_prefix}news_category WHERE news_id={$this_news_info['id']}");
+$news_categories = \e::db_getrows("SELECT category_id FROM {$table_prefix}news_category WHERE news_id={$this_news_info['id']}");
 $cnt = count($news_categories);
 $news_categories_selector = "
     <div id=list_of_categories>
@@ -377,7 +377,7 @@ $input_vars['page_content'] = "
     <div class=label>{$text['Language']} : </div>
     <div class=big>
       <select name=news_lang>" .
-          draw_options($this_news_info['lang'], db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
+          draw_options($this_news_info['lang'], \e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
           . "</select>
     </div>
     </span><!-- 
@@ -511,7 +511,7 @@ $input_vars['page_menu']['page']['items'] = menu_news($this_news_info);
 
 
 $query = "SELECT id, lang, title FROM {$table_prefix}news WHERE site_id={$site_id} and id={$this_news_info['id']} and lang<>'{$this_news_info['lang']}'";
-$tmp = db_getrows($query);
+$tmp = \e::db_getrows($query);
 if ($tmp) {
     $input_vars['page_menu']['page']['items']['news/translations_links'] = Array(
         'URL' => ""

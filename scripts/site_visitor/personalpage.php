@@ -35,14 +35,14 @@ run('site/menu');
 //prn($_SESSION['ec_order_ids']);
 
 # --------------------------- get site template - begin ------------------------
-  $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
   if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 # --------------------------- get site template - end --------------------------
 
 
 # get list of page languages
 # -------------------- get list of page languages - begin ----------------------
-$tmp=db_getrows("SELECT DISTINCT lang FROM {$table_prefix}page WHERE site_id={$site_id} AND cense_level>0");
+$tmp=\e::db_getrows("SELECT DISTINCT lang FROM {$table_prefix}page WHERE site_id={$site_id} AND cense_level>0");
 $existing_languages=Array();
 foreach($tmp as $tm) $existing_languages[$tm['lang']]=$tm['lang'];
 // prn($existing_languages);
@@ -118,7 +118,7 @@ if(isset($_SESSION['site_visitor_info']['is_logged']) && $_SESSION['site_visitor
              WHERE site_visitor_id={$_SESSION['site_visitor_info']['site_visitor_id']}
              ORDER BY ec_order_history_date DESC
              LIMIT $start,".$rows_per_page;
-     $ec_order_history=db_getrows($query);
+     $ec_order_history=\e::db_getrows($query);
      $cnt=count($ec_order_history);
      $url_prefix=site_root_URL."/index.php?action=ec/order/view&lang={$lang}&ec_order_id=";
      for($i=0;$i<$cnt;$i++)
@@ -130,7 +130,7 @@ if(isset($_SESSION['site_visitor_info']['is_logged']) && $_SESSION['site_visitor
 
    # ---------------------------- order history paging - begin -----------------
      $query="SELECT FOUND_ROWS() AS n_records;";
-     $num = db_getonerow($query);
+     $num = \e::db_getonerow($query);
      $num = $num['n_records'];
      //prn($num);
      $pages = Array();

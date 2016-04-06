@@ -2,11 +2,11 @@
 
 class GDSearchParser {
 
-    private $commonWordsReader; //local_root.'/scripts/lib/common_words.txt'
+    private $commonWordsReader; //\e::config('APP_ROOT').'/scripts/lib/common_words.txt'
     private $commonWords = false;
 
     // $commonWordsReader=function(){
-    //        $symbol = file(local_root . '/scripts/lib/common_words.txt');
+    //        $symbol = file(\e::config('APP_ROOT') . '/scripts/lib/common_words.txt');
     //        $cnt = count($symbol);
     //        for ($i = 0; $i < $cnt; $i++) {
     //            $symbol[$i] = str_replace(Array("\n", "\r"), '', $symbol[$i]);

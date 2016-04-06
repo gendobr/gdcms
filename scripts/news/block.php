@@ -19,7 +19,7 @@ header('Content-Type:text/html; charset=' . site_charset);
 header('Access-Control-Allow-Origin: *');
 
 $GLOBALS['main_template_name'] = '';
-include(script_root . '/news/get_public_list2.php');
+include(\e::config('SCRIPT_ROOT') . '/news/get_public_list2.php');
 
 
 $site_id = checkInt($input_vars['site_id']);
@@ -49,12 +49,12 @@ $txt = load_msg($news->getLang());
 # check if template name is posted
 if (isset($input_vars['template'])) {
     $input_vars['template'] = str_replace(Array('/', "\\"), '_', $input_vars['template']); // to prevent template names like /etc/passwd
-    $news_template = sites_root . '/' . $this_site_info['dir'] . '/' . $input_vars['template'] . '.html';
+    $news_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/' . $input_vars['template'] . '.html';
     if (!is_file($news_template)) {
         $news_template = false;
     }
     if (!$news_template) {
-        $news_template = sites_root . '/' . $this_site_info['dir'] . '/' . $input_vars['template'];
+        $news_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/' . $input_vars['template'];
     }
     if (!is_file($news_template)) {
         $news_template = false;
@@ -66,7 +66,7 @@ if (isset($input_vars['template'])) {
 
 # check if site news template name exists
 if (!$news_template) {
-    $news_template = sites_root . '/' . $this_site_info['dir'] . '/template_news_view_block.html';
+    $news_template = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/template_news_view_block.html';
 }
 if (!is_file($news_template)) {
     $news_template = false;
@@ -92,6 +92,8 @@ $vyvid = process_template($news_template
     , 'all_news_url' => $news->url(Array())
     , 'start' => $news->list['start']
     , 'finish' => $news->list['finish']
+    , 'site'=>$this_site_info
+    ,'site_root_url'=>site_root_URL
         ));
 
 

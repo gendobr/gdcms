@@ -113,7 +113,7 @@ $rep->field['ec_category_title'] = new db_record_editor_field_string(
 # is_part_of            bigint(20)
 if ($this_category->info['start'] > 0) {
     $list_of_categories = "SELECT * FROM {$table_prefix}ec_category WHERE site_id={$site_id} ORDER BY start";
-    $list_of_categories = db_getrows($list_of_categories);
+    $list_of_categories = \e::db_getrows($list_of_categories);
     //prn($list_of_categories);
     $tmp = Array();
     foreach ($list_of_categories as $ct) {
@@ -200,7 +200,7 @@ if ($success) {
                 $query = "UPDATE {$table_prefix}category
                     SET is_part_of=" . ((int) $this_category->info['is_part_of']) . "
                     WHERE category_id={$ec_category_id}";
-                db_execute($query);
+                \e::db_execute($query);
             }
         }
     #  ----------------------- move branch - end --------------------------------
@@ -222,13 +222,13 @@ if ($success) {
                        {$ec_category_item_field_id},
                        {$this_site_info['id']},
                        {$ec_category_id},
-                       '" . DbStr($val['title']) . "'  ,
-                       '" . DbStr($val['options']) . "',
+                       '" . \e::db_escape($val['title']) . "'  ,
+                       '" . \e::db_escape($val['options']) . "',
                         " . ((int) $val['ordering']) . ",
-                       '" . DbStr($val['type']) . "'
+                       '" . \e::db_escape($val['type']) . "'
                     )";
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
         } elseif ($ec_category_item_field_id > 0) {
             $query = "delete from {$table_prefix}ec_category_item_field
                      where ec_category_item_field_id={$ec_category_item_field_id}
@@ -236,12 +236,12 @@ if ($success) {
                        and ec_category_id = {$ec_category_id}
                      ";
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
 
             // delete field values
             $query = "delete from {$table_prefix}ec_category_item_field_value
                      where ec_category_item_field_id={$ec_category_item_field_id}";
-            db_execute($query);
+            \e::db_execute($query);
         }
     }
     #  ----------------------- save additional fields - end ---------------------
@@ -265,7 +265,7 @@ foreach ($cnt as $i) {
 #prn($this_category);
 # -------------------- get category parents - end ---------------------------
 # -------------------- get name of the neares parent - begin ----------------
-$this_category->info['is_part_of_name'] = db_getonerow("SELECT category_title FROM {$table_prefix}category WHERE category_id=" . ( (int) $this_category->info['is_part_of'] ));
+$this_category->info['is_part_of_name'] =\e::db_getonerow("SELECT category_title FROM {$table_prefix}category WHERE category_id=" . ( (int) $this_category->info['is_part_of'] ));
 $this_category->info['is_part_of_name'] = $this_category->info['is_part_of_name']['category_title'];
 #prn($this_category->info['is_part_of_name']);
 # -------------------- get name of the neares parent - end ------------------
@@ -283,7 +283,7 @@ $query = "select *
              and ec_category_id={$ec_category_id}
            order by ec_category_item_field_ordering ASC
            ";
-$ec_category_item_field = db_getrows($query);
+$ec_category_item_field = \e::db_getrows($query);
 //prn($ec_category_item_field);
 $category_item_field_form = "";
 foreach ($ec_category_item_field as $fld) {

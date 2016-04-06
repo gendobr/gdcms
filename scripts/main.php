@@ -18,9 +18,9 @@ if (is_logged()) {
     run('site/menu');
     // get sites
     if (is_admin()) {
-        $sites = db_getrows("SELECT s.* FROM {$table_prefix}site as s");
+        $sites = \e::db_getrows("SELECT s.* FROM {$table_prefix}site as s");
     } else {
-        $sites = db_getrows("SELECT s.* FROM {$table_prefix}site_user as su INNER JOIN {$table_prefix}site as s ON su.site_id=s.id WHERE su.user_id={$_SESSION['user_info']['id']}");
+        $sites = \e::db_getrows("SELECT s.* FROM {$table_prefix}site_user as su INNER JOIN {$table_prefix}site as s ON su.site_id=s.id WHERE su.user_id={$_SESSION['user_info']['id']}");
     }
     $cnt = count($sites);
     for ($i = 0; $i < $cnt; $i++) {

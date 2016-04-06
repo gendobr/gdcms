@@ -159,7 +159,7 @@ function delivery_cost($total,$site_info,$request) {
 function delivery_config($site_info) {
     static $config;
     if(!isset($config)) {
-        $config=db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}ec_delivery WHERE site_id={$site_info['id']} ORDER BY ec_delivery_ordering ASC");
+        $config=\e::db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}ec_delivery WHERE site_id={$site_info['id']} ORDER BY ec_delivery_ordering ASC");
     }
     return $config;
 }
@@ -285,6 +285,4 @@ function delivery_show_cost($ec_delivery_cost,$ec_delivery_id,$request) {
     }
     return $ec_delivery_cost;
 }
-//echo delivery_form(30,db_getonerow("SELECT * FROM {$table_prefix}site WHERE id=1"),Array());
-//$main_template_name='';
 ?>

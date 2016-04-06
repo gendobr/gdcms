@@ -20,7 +20,7 @@ if(!is_logged()) return 0;
   {
      //------------------------ get own sites - begin --------------------------
        $query="SELECT site_id FROM {$table_prefix}site_user WHERE user_id={$_SESSION['user_info']['id']}";
-       $site_list=db_getrows($query);
+       $site_list=\e::db_getrows($query);
        $sl=Array();
        $sl[]=0;
        foreach($site_list as $st)

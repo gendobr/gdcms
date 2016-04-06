@@ -14,14 +14,14 @@ function rss_aggregator_get_list($site_id, $lang, $_start, $_rows_per_page, $fil
 
     $query = "SELECT SQL_CALC_FOUND_ROWS * FROM {$GLOBALS['table_prefix']}rsssourceitem
             WHERE site_id=" . ( (int) $site_id ) . "
-              AND rsssourceitem_lang='" . DbStr($lang) . "'
+              AND rsssourceitem_lang='" . \e::db_escape($lang) . "'
               AND rsssourceitem_is_visiblle
             ORDER BY rsssourceitem_datetime DESC
             LIMIT $start, $rows_per_page";
-    $rows = db_getrows($query);
+    $rows = \e::db_getrows($query);
 
     $query = "SELECT FOUND_ROWS() AS n_records;";
-    $num = db_getonerow($query);
+    $num = \e::db_getonerow($query);
     // prn($query,$num);
     $rows_found = (int) $num['n_records'];
 

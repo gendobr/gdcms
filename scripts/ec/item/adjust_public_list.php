@@ -6,7 +6,7 @@ $tmp=Array();
 foreach($list_of_ec_items as $it) $tmp[$it['ec_item_currency']]=$it['ec_item_currency'];
 if(count($tmp)>0)
 {
-   $tmp=db_getrows("SELECT * FROM {$table_prefix}ec_currency WHERE ec_currency_code IN('".join("','",$tmp)."')");
+   $tmp=\e::db_getrows("SELECT * FROM {$table_prefix}ec_currency WHERE ec_currency_code IN('".join("','",$tmp)."')");
    $currency_titles=Array();
    foreach($tmp as $tm) $currency_titles[$tm['ec_currency_code']]=$tm['ec_curency_title'];
 }

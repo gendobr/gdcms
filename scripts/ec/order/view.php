@@ -83,7 +83,7 @@ $custom_page_template = site_get_template($this_site_info,'template_index');
 
 
 # -------------------- get list of page languages - begin ----------------------
-$tmp=db_getrows("SELECT DISTINCT ec_item_lang as lang
+$tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
                      FROM {$table_prefix}ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");

@@ -131,7 +131,7 @@ $month_table['days']=Array();
 $view_day_events_url_prefix = site_root_URL . "/index.php?" . preg_query_string('/action|year|month|day/') . "&action=calendar/month&year={$year}&month={$month}&day=";
 
 $query="SELECT DISTINCT d FROM {$GLOBALS['table_prefix']}calendar_days_cache WHERE Y=".( (int)$year )." AND m=".( (int) $month)." AND site_id={$this_site_info['id']} ";
-$existing_days=array_flip(array_map(function($in){return $in['d'];},db_getrows($query)));
+$existing_days=array_flip(array_map(function($in){return $in['d'];},\e::db_getrows($query)));
     
 foreach ($calendar as $row) {
     $tr = Array();
@@ -165,11 +165,11 @@ if ($day > 0) {
             WHERE Y=".( (int)$year )." AND m=".( (int) $month)." 
               AND d=".( (int) $day)." AND site_id={$this_site_info['id']}
             ORDER BY h ASC, i ASC;";
-    $event_days=db_getrows($query);
+    $event_days=\e::db_getrows($query);
 
     $event_ids=array_map(function($in){return $in['calendar_id'];},$event_days);
     if(count($event_ids)>0){
-        $event_list = db_getrows("select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$event_ids).")");
+        $event_list = \e::db_getrows("select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$event_ids).")");
     }else{
         $event_list=Array();
     }

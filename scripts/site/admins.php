@@ -37,12 +37,12 @@ foreach($ivk as $key)
       $usrid=checkInt(str_replace('filter_user_level_','',$key));
       $level=checkInt($input_vars[$key]);
       $query="DELETE FROM {$table_prefix}site_user WHERE site_id={$site_id} AND user_id={$usrid}";
-      db_execute($query);
+      \e::db_execute($query);
       if($level>0)
       {
         $query="INSERT INTO {$table_prefix}site_user(user_id,site_id,level) 
                 VALUES ({$usrid}, {$site_id}, {$level})";
-        db_execute($query);
+        \e::db_execute($query);
       }
       clear($key);
    }

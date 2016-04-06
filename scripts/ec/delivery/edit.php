@@ -25,7 +25,7 @@ run('ec/delivery/functions');
 # ------------------- delete condition - begin ---------------------------------
   if(isset($input_vars['delete_ec_delivery_id'])){
       $query="DELETE FROM {$table_prefix}ec_delivery WHERE ec_delivery_id=".((int)$input_vars['delete_ec_delivery_id'])." AND site_id=$site_id";
-      db_execute($query);
+      \e::db_execute($query);
   }
 # ------------------- delete condition - end -----------------------------------
 
@@ -45,11 +45,11 @@ run('ec/delivery/functions');
                         site_id,ec_delivery_title,ec_delivery_ordering,
                         ec_delivery_indent,ec_delivery_cost,ec_delivery_condition)
                      VALUES(
-                        {$site_id},'".DbStr($ec_delivery_title)."',
+                        {$site_id},'".\e::db_escape($ec_delivery_title)."',
                         $ec_delivery_ordering,$ec_delivery_indent,
-                        '".DbStr($ec_delivery_cost)."','".DbStr($ec_delivery_condition)."'
+                        '".\e::db_escape($ec_delivery_cost)."','".\e::db_escape($ec_delivery_condition)."'
                      )";
-             db_execute($query);
+             \e::db_execute($query);
          }
          unset($input_vars['delivery'][0]);
       // -------------- add new condition - end --------------------------------
@@ -62,15 +62,15 @@ run('ec/delivery/functions');
              $ec_delivery_cost=trim($de['ec_delivery_cost']);
              $ec_delivery_condition=trim($de['ec_delivery_condition']);
              $query="UPDATE {$table_prefix}ec_delivery
-                     SET ec_delivery_title= '".DbStr($ec_delivery_title)."',
+                     SET ec_delivery_title= '".\e::db_escape($ec_delivery_title)."',
                          ec_delivery_ordering=$ec_delivery_ordering,
                          ec_delivery_indent=$ec_delivery_indent,
-                         ec_delivery_cost='".DbStr($ec_delivery_cost)."',
-                         ec_delivery_condition='".DbStr($ec_delivery_condition)."'
+                         ec_delivery_cost='".\e::db_escape($ec_delivery_cost)."',
+                         ec_delivery_condition='".\e::db_escape($ec_delivery_condition)."'
                      WHERE ec_delivery_id=$ec_delivery_id AND site_id=$site_id
                      ";
              //prn(checkStr($query));
-             db_execute($query);
+             \e::db_execute($query);
          }
       // -------------- update - end -------------------------------------------
       $msg.='<div style="color:green">'.text('Changes_saved_successfully').'</div>';
@@ -116,7 +116,7 @@ run('ec/delivery/functions');
 
 
 # ------------------- get delivery config - begin ------------------------------
-  $delivery_config=db_getrows("SELECT * FROM {$table_prefix}ec_delivery WHERE site_id={$site_id} ORDER BY ec_delivery_ordering ASC");
+  $delivery_config=\e::db_getrows("SELECT * FROM {$table_prefix}ec_delivery WHERE site_id={$site_id} ORDER BY ec_delivery_ordering ASC");
 # ------------------- get delivery config - end --------------------------------
 
 

@@ -11,7 +11,7 @@ global $main_template_name; $main_template_name='';
 //------------------- get site info - end --------------------------------------
 
 //--------------------------- get site template - begin ------------------------
-  $custom_page_template = sites_root.'/'.$this_site_info['dir'].'/template_index.html';
+  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir'].'/template_index.html';
   #prn('$news_template',$news_template);
   if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
 //--------------------------- get site template - end --------------------------
@@ -19,14 +19,14 @@ global $main_template_name; $main_template_name='';
 
 
 // ------------------ get poll - begin -----------------------------------------
-   $polls=db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1");
+   $polls=\e::db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1");
    if(!$polls) return '';
    //prn('$polls',$polls);
 
    $poll_ids=Array();
    foreach($polls as $key=>$val) $poll_ids[$key]=(int)$val['id'];
 
-   $vidpovidi=db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
+   $vidpovidi=\e::db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
 
    $poll_ids=array_flip($poll_ids);
    foreach($vidpovidi as $val)
@@ -85,22 +85,6 @@ $menu_groups = get_menu_items($this_site_info['id'],0,$input_vars['lang']);
 
 //------------------------ get list of languages - begin -----------------------
   $lang_list=list_of_languages();
-  
-  /*
-  $cnt=count($lang_list);
-  for($i=0;$i<$cnt;$i++)
-  {
-     $lang_list[$i]['url']=$lang_list[$i]['href'];
-
-     $lang_list[$i]['url']=str_replace('action=forum%2Fthread','',$lang_list[$i]['url']);
-     $lang_list[$i]['url']=str_replace('index.php','thread.php',$lang_list[$i]['url']);
-     $lang_list[$i]['url']=str_replace(site_root_URL,sites_root_URL,$lang_list[$i]['url']);
-     $lang_list[$i]['url']=str_replace('?&','?',$lang_list[$i]['url']);
-     $lang_list[$i]['url']=str_replace('&&','&',$lang_list[$i]['url']);
-
-     $lang_list[$i]['lang']=$lang_list[$i]['name'];
-  }
-  */
   // prn($lang_list);
 //------------------------ get list of languages - end -------------------------
 

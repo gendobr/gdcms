@@ -31,7 +31,7 @@ if ($this_site_info['admin_level'] == 0 && !is_admin()) {
 }
 //------------------- check permission - end -----------------------------------
 # ---------------- delete image - begin ----------------------------------------
-$site_root_dir = sites_root . '/' . $this_site_info['dir'];
+$site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
 //prn($input_vars);
 if (isset($input_vars["ec_producer_img_delete"])) {
     $path = $site_root_dir . '/' . $this_producer_info["ec_producer_img"];
@@ -39,9 +39,9 @@ if (isset($input_vars["ec_producer_img_delete"])) {
         unlink($path);
     }
     $this_producer_info["ec_producer_img"] = '';
-    $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_img='" . DbStr($this_producer_info["ec_producer_img"]) . "' WHERE ec_producer_id={$ec_producer_id} LIMIT 1";
+    $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_img='" . \e::db_escape($this_producer_info["ec_producer_img"]) . "' WHERE ec_producer_id={$ec_producer_id} LIMIT 1";
     //prn($query);
-    db_execute($query);
+    \e::db_execute($query);
     //prn('Deleting...');
     header("Location: index.php?action=ec/producer/edit&ec_producer_id={$ec_producer_id}&site_id={$site_id}");
     exit();
@@ -52,9 +52,9 @@ if (isset($input_vars["ec_producer_logo_delete"])) {
         unlink($path);
     }
     $this_producer_info["ec_producer_logo"] = '';
-    $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_logo='" . DbStr($this_producer_info["ec_producer_logo"]) . "' WHERE ec_producer_id={$ec_producer_id} LIMIT 1";
+    $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_logo='" . \e::db_escape($this_producer_info["ec_producer_logo"]) . "' WHERE ec_producer_id={$ec_producer_id} LIMIT 1";
     //prn($query);
-    db_execute($query);
+    \e::db_execute($query);
     //prn('Deleting...');
     header("Location: index.php?action=ec/producer/edit&ec_producer_id={$ec_producer_id}&site_id={$site_id}");
     exit();
@@ -123,7 +123,7 @@ if ($success) {
 
             # create directory
             $relative_dir = date('Y') . '/' . date('m');
-            $site_root_dir = sites_root . '/' . $this_site_info['dir'];
+            $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
             path_create($site_root_dir, "/gallery/$relative_dir/");
             
             # copy uploaded file
@@ -139,8 +139,8 @@ if ($success) {
             //    $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
             //    ec_img_resize($photos['tmp_name'], $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
             $ec_producer_img = "gallery/$relative_dir/$big_image_file_name";
-            $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_img='" . DbStr($ec_producer_img) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
-            db_execute($query);
+            $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_img='" . \e::db_escape($ec_producer_img) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
+            \e::db_execute($query);
             //phpinfo();
         }
     }
@@ -157,7 +157,7 @@ if ($success) {
 
             # create directory
             $relative_dir = date('Y') . '/' . date('m');
-            $site_root_dir = sites_root . '/' . $this_site_info['dir'];
+            $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
             path_create($site_root_dir, "/gallery/$relative_dir/");
             //prn($site_root_dir,"/gallery/$relative_dir/");
             # copy uploaded file
@@ -174,9 +174,9 @@ if ($success) {
             
             $ec_producer_logo = "gallery/$relative_dir/$big_image_file_name";
             //prn($this_producer_info["ec_producer_logo"]);
-            $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_logo='" . DbStr($ec_producer_logo) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
+            $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_logo='" . \e::db_escape($ec_producer_logo) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
             //prn($query);
-            db_execute($query);
+            \e::db_execute($query);
             //phpinfo();
         }
     }

@@ -11,7 +11,7 @@ $debug=false;
 
 //------------------- site info - begin ----------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info =\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
   if($debug) prn('$this_site_info=',$this_site_info);
 //------------------- site info - end ------------------------------------------
 
@@ -32,7 +32,7 @@ $debug=false;
 
  # ------------------------ list of categories - begin -------------------------
     $query="SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
-    $tmp=db_getrows($query);
+    $tmp=\e::db_getrows($query);
     $list_of_categories=Array();
     foreach($tmp as $tm) $list_of_categories[$tm['category_id']]=str_repeat(' + ',$tm['deep']).get_langstring($tm['category_title']);
     unset($tmp,$tm);

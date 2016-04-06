@@ -5,14 +5,14 @@
   (c) Gennadiy Dobrovolsky, gen_dobr@hotmail.com
  */
 // ------------------------- template processor -- begin -----------------------
-require script_root . '/smarty/libs/Smarty.class.php';
+require \e::config('SCRIPT_ROOT') . '/smarty/libs/Smarty.class.php';
 
 function db_get_template($tpl_name, &$tpl_source, &$smarty_obj) {
     //prn("db_get_template ($tpl_name ... )");
     $paths = Array(
         $tpl_name
-        , template_root . '/' . $tpl_name . '.html'
-        , template_root . '/' . $tpl_name
+        , \e::config('TEMPLATE_ROOT') . '/' . $tpl_name . '.html'
+        , \e::config('TEMPLATE_ROOT') . '/' . $tpl_name
     );
     $path = '';
     //prn($paths);
@@ -63,7 +63,7 @@ function process_template($template_name, $data_array, $functions=Array()) {
 
     $smr->security = true;
 
-    $smr->compile_dir = defined('template_cache_root')?template_cache_root:local_root . '/template_cache';
+    $smr->compile_dir = \e::config('CACHE_ROOT');
     $smr->register_function("txt", "txt");
     $smr->register_function("msg", "getmsgtext");
     $smr->register_function("save", "save");
@@ -171,11 +171,11 @@ function fragment($params) {
         $place_id='';
     }
     $site_id=(int)$site_id;
-    $lang=DbStr($lang);
-    $place=DbStr($place);
+    $lang=\e::db_escape($lang);
+    $place=\e::db_escape($place);
     $query="SELECT fragment_html FROM {$GLOBALS['table_prefix']}fragment
             WHERE site_id=$site_id AND fragment_place='{$place}' AND fragment_lang='{$lang}' AND fragment_is_visible";
-    $tmp=  db_getrows($query);
+    $tmp=  \e::db_getrows($query);
     for($i=0, $cnt=count($tmp); $i<$cnt;$i++){
         $tmp[$i]=$tmp[$i]['fragment_html'];
     }
@@ -207,7 +207,7 @@ function run_function($params, &$smarty) {
     global $input_vars, $db, $table_prefix, $text, $main_template_name;
     extract($params);
     $p = preg_replace('/[^a-z0-9_]/i', '_', $name);
-    include(script_root . "/lib/smarty_addons/{$p}.php");
+    include(\e::config('SCRIPT_ROOT') . "/lib/smarty_addons/{$p}.php");
     //return run("lib/smarty_addons/$p",Array('data'=>$data));
 }
 
@@ -229,7 +229,7 @@ function get_menu_items($site_id, $page_id, $lang) {
                  and page.site_id=$site_id
                  and site.id=$site_id
                  and page.id=$page_id";
-    $this_page_info = db_getonerow($query);
+    $this_page_info = \e::db_getonerow($query);
 
     // ---------------- get page info - end ------------------------------------
 
@@ -240,9 +240,9 @@ function get_menu_items($site_id, $page_id, $lang) {
                  FROM {$table_prefix}menu_group
                  WHERE     site_id=" . checkInt($site_id) . "
                        AND page_id=0
-                       AND lang='" . DbStr($lang) . "'
+                       AND lang='" . \e::db_escape($lang) . "'
                  ORDER BY page_id DESC, ordering,  id, lang ";
-    $tmp = db_getrows($query);
+    $tmp = \e::db_getrows($query);
 
     foreach ($tmp as $tm) {
         $menu_groups[$tm['id']] = $tm;
@@ -258,14 +258,14 @@ function get_menu_items($site_id, $page_id, $lang) {
                     {$table_prefix}page_menu_group AS pmg
                     ON ( mg.id=pmg.menu_group_id
                      AND pmg.page_id={$page_id}
-                     AND pmg.lang = '" . DbStr($lang) . "'
+                     AND pmg.lang = '" . \e::db_escape($lang) . "'
                      )
                 WHERE mg.site_id = $site_id
-                  AND mg.lang='" . DbStr($lang) . "'
+                  AND mg.lang='" . \e::db_escape($lang) . "'
                   AND mg.page_id<>0
                 ";
 
-    $tmp = db_getrows($query);
+    $tmp = \e::db_getrows($query);
 
     foreach ($tmp as $tm) {
         $menu_groups[$tm['id']] = $tm;
@@ -280,8 +280,8 @@ function get_menu_items($site_id, $page_id, $lang) {
         $mmm[] = $tm['id'];
     }
     $mmm = join(',', $mmm);
-    $query = "SELECT * FROM {$table_prefix}menu_item  WHERE     menu_group_id IN($mmm) AND lang='" . DbStr($lang) . "' ORDER BY menu_group_id, ordering";
-    $tmp = db_getrows($query);
+    $query = "SELECT * FROM {$table_prefix}menu_item  WHERE     menu_group_id IN($mmm) AND lang='" . \e::db_escape($lang) . "' ORDER BY menu_group_id, ordering";
+    $tmp = \e::db_getrows($query);
     foreach ($tmp as $tm) {
         // prn($this_page_url,get_absolute_url($tm['url'],$this_page_url));
         //$tm['disabled'] = ($this_page_url == get_absolute_url($tm['url'], $this_page_url)) ? '1' : '0';

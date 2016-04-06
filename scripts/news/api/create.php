@@ -86,7 +86,7 @@ if ($this_site_info['salt'] != $input_vars['api_key']) {
 
 // calculate news id
 $query = "SELECT max(id) AS newid FROM {$table_prefix}news";
-$newid = db_getonerow($query);
+$newid =\e::db_getonerow($query);
 $news_id = $newid = 1 + (int) $newid['newid'];
 
 
@@ -108,10 +108,10 @@ if (!$found) {
 $site_id = $this_site_info['id'];
 
 //
-$title = DbStr($input_vars['title']);
+$title = \e::db_escape($input_vars['title']);
 
 //
-$content = DbStr($input_vars['content']);
+$content = \e::db_escape($input_vars['content']);
 
 //
 $cense_level = $input_vars['cense_level'] ? 1 : 0;
@@ -125,7 +125,7 @@ if (checkDatetime($last_change_date)) {
 }
 
 //
-$abstract = DbStr($input_vars['abstract']);
+$abstract = \e::db_escape($input_vars['abstract']);
 
 //
 $category_id = 0;
@@ -150,10 +150,10 @@ if (checkDatetime($expiration_date)) {
 
 $weight = (int) $input_vars['news_code'];
 $creation_date = date('Y-m-d H:i:s');
-$news_code = DbStr($input_vars['news_code']);
-$news_meta_info = DbStr($input_vars['news_meta_info']);
-$news_extra_1 = DbStr($input_vars['news_extra_1']);
-$news_extra_2 = DbStr($input_vars['news_extra_2']);
+$news_code = \e::db_escape($input_vars['news_code']);
+$news_meta_info = \e::db_escape($input_vars['news_meta_info']);
+$news_extra_1 = \e::db_escape($input_vars['news_extra_1']);
+$news_extra_2 = \e::db_escape($input_vars['news_extra_2']);
 
 
 
@@ -201,12 +201,12 @@ INSERT INTO {$GLOBALS['table_prefix']}news
 	'{$news_extra_2}'
 	);";
 
-db_execute($query);
+\e::db_execute($query);
 
 
 
 # ------------------ rebuild tags - begin -------------------------------
-db_execute("DELETE FROM {$table_prefix}news_tags WHERE news_id={$news_id} AND lang='{$lang}'");
+\e::db_execute("DELETE FROM {$table_prefix}news_tags WHERE news_id={$news_id} AND lang='{$lang}'");
 if (strlen(trim($tags)) > 0) {
     // $query=explode(',',$this_news_info['tags']);
     $query = preg_split("/,|;|\\./", $tags);
@@ -215,16 +215,16 @@ if (strlen(trim($tags)) > 0) {
         for ($i = 0; $i < $cnt; $i++) {
             $query[$i] = trim($query[$i]);
             if (strlen($query[$i]) > 0) {
-                $query[$i] = "({$news_id},'{$lang}','" . DbStr($query[$i]) . "')";
+                $query[$i] = "({$news_id},'{$lang}','" . \e::db_escape($query[$i]) . "')";
             }
         }
         $query = "INSERT INTO {$table_prefix}news_tags(news_id,lang,tag) VALUES" . join(',', $query);
-        db_execute($query);
+        \e::db_execute($query);
     }
 }
 # ------------------ rebuild tags - end ---------------------------------
 //echo "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'";exit('115');
-$news_info = db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'");
+$news_info =\e::db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'");
 
 
 

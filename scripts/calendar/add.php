@@ -45,13 +45,13 @@ if (isset($input_vars['nazva'])) {
         $input_vars['page_content'] = "ok!";
         $query = "INSERT INTO {$table_prefix}calendar (site_id, nazva, kartynka, adresa,description,vis)
                   VALUES (" . ( (int) $site_id ) . ",
-                         '" . DbStr($nazva) . "',
-                         '" . DbStr($kartynka) . "',
-                         '" . DbStr($adresa) . "',
-                         '" . DbStr($description) . "',
+                         '" . \e::db_escape($nazva) . "',
+                         '" . \e::db_escape($kartynka) . "',
+                         '" . \e::db_escape($adresa) . "',
+                         '" . \e::db_escape($description) . "',
                          " . ( (int) $vis) . ")";
-        db_execute($query);
-        $calendar_info = db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id=last_insert_id()");
+        \e::db_execute($query);
+        $calendar_info =\e::db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id=last_insert_id()");
         header("Location: ".site_root_URL."/index.php?action=calendar/edit&site_id={$site_id}&event_id={$calendar_info['id']}");
         exit();
     }

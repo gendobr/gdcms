@@ -9,7 +9,7 @@ run('lib/socket_http_function');
 $ec_item_id=0;
 if(isset($input_vars['ec_item_id'])) {
     $ec_item_id   = (int)$input_vars['ec_item_id'];
-    $ec_item_lang = DbStr($input_vars['ec_item_lang']);
+    $ec_item_lang = \e::db_escape($input_vars['ec_item_lang']);
     $this_ec_item_info=get_ec_item_info($ec_item_id,$ec_item_lang);
     //prn($this_ec_item_info);
 }
@@ -98,7 +98,7 @@ if(isset($input_vars['imh']) && is_array($input_vars['imh'])) {
 
     # create directory
     $relative_dir=date('Y').'/'.date('m');
-    $site_root_dir=sites_root.'/'.$this_site_info['dir'];
+    $site_root_dir=\e::config('SITES_ROOT').'/'.$this_site_info['dir'];
     path_create($site_root_dir,"/gallery/$relative_dir/");
     $prefix="$site_root_dir/gallery/$relative_dir/";
 
@@ -130,9 +130,9 @@ if(isset($input_vars['imh']) && is_array($input_vars['imh'])) {
         }
     }
     if(strlen($report)>0) {
-        $query="UPDATE {$table_prefix}ec_item SET cache_datetime=null,cached_info=null,ec_item_img='".DbStr(trim(join("\n",$this_ec_item_info['ec_item_img']).$report))."' WHERE ec_item_id=$ec_item_id AND ec_item_lang='$ec_item_lang' AND site_id=$site_id";
+        $query="UPDATE {$table_prefix}ec_item SET cache_datetime=null,cached_info=null,ec_item_img='".\e::db_escape(trim(join("\n",$this_ec_item_info['ec_item_img']).$report))."' WHERE ec_item_id=$ec_item_id AND ec_item_lang='$ec_item_lang' AND site_id=$site_id";
         // prn($query);
-        db_execute($query);
+        \e::db_execute($query);
         $this_ec_item_info=get_ec_item_info($ec_item_id,$ec_item_lang);
     }
 }

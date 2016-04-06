@@ -1,0 +1,115 @@
+{assign var="znu_root_url" value="http://www.znu.edu.ua"}
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{$page.title} - {txt lang=$text.language_name variants="eng=ZNU::rus=ЗНУ::ukr=ЗНУ"}</title>
+        <link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+        <link rel='stylesheet' id='znu-css-common'  href='{$site_root_url}/index.php?action=scss%2Fget&site_id=62&f=znu12files/css/common.scss' type='text/css' media='all' />
+
+
+    </head>
+    <body>
+        <div class="znu-2016-overheader-bg">
+                <div class="znu-2016-main">
+                        <div class="znu-2016-overheader-row">
+                                <div class="znu-2016-overheader-col1">
+                                        <a href="#pagetop" class="glyph glyphicon glyphicon-arrow-down" title="{txt lang=$text.language_name variants="eng=Skip to page content::rus=Перейти к тексту страницы::ukr=Перейти до тексту сторінки"}"></a>
+                                        {foreach from=$lang key=ke item=ln}
+                                            {if $ln.lang eq $text.language_name}
+                                                <span class="lang {$ln.lang} active">{$ln.lang}</span>
+                                            {else}
+                                                <a href="{$ln.url}" class="lang {$ln.lang}">{$ln.lang}</a>
+                                            {/if}
+                                        {/foreach}
+                                </div>
+                                <div class="znu-2016-overheader-col2">
+                                        <div class="search">
+                                                <input type="search" id="search" placeholder="Поиск..." />
+                                                <button class="button"> <i class="fa fa-search"></i> </button>
+                                        </div>
+                                        <a href="#" class="glyph glyphicon glyphicon-list" title="Мапа сайту"></a>
+                                        <a href="#" class="glyph glyphicon glyphicon-print" title="Друкувати"></a>
+                                        <!--input type=text class="search"-->
+
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <div class="znu-2016-main">
+            <div class="znu-2016-header">
+                <div class="znu-2016-header-logo">
+                    <a class="znu-2016-logo" href="{$site.url}"></a>
+                    <div class="znu-2016-title-block">
+                        <a class="znu-2016-title" href="{$site.site_root_url}">
+                            <span class="w">{txt lang=$text.language_name variants="eng=Zaporizhzhya::rus=Запорожский::ukr=Запорізький"}</span>
+                            <span class="w">{txt lang=$text.language_name variants="eng=National::rus=национальный::ukr=національний"}</span>
+                            <span class="w">{txt lang=$text.language_name variants="eng=University::rus=университет::ukr=університет"}</span>
+                        </a>
+                        <span class="w1"><a href="http://www.whois.com/whois/znu.edu.ua" class="znu-2016-remark">{txt lang=$text.language_name variants="eng=Official site::rus=Официальный сайт::ukr=Офіційний сайт"}</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="znu-2016-main">
+            <div class="znu-2016-nav">
+                    <div class="znu-2016-nav-had">
+                            <span class="link"><a class="color1" href="{$site.site_root_url}/{$text.language_name}/university" ><i class="fa fa-university"></i><span class="text">{txt lang=$text.language_name variants="eng=University::rus=Университет::ukr=Університет"}</span></a></span>
+                            <span class="link"><a class="color2" href="{$site.site_root_url}/{$text.language_name}/pk"><i class="fa fa-book "></i><span class="text">{txt lang=$text.language_name variants="eng=Submission::rus=Абитуриенту::ukr=Абітурієнту"}</span></a></span>
+                            <span class="link"><a class="color3" href="{$site.site_root_url}/{$text.language_name}/edu"><i class="fa fa-pencil "></i><span class="text">{txt lang=$text.language_name variants="eng=Student::rus=Студенту::ukr=Студенту"}</span></a></span>
+                            <span class="link"><a class="color1" href="{$site.site_root_url}/{$text.language_name}/sci"><i class="fa fa-graduation-cap "></i><span class="text">{txt lang=$text.language_name variants="eng=Science::rus=Учёному::ukr=Науковцю"}</span></a></span>
+                            <span class="link"><a class="color2" href="{$site.site_root_url}/{$text.language_name}/instructor"><i class="fa fa-briefcase "></i><span class="text">{txt lang=$text.language_name variants="eng=Tutors::rus=Преподавателю::ukr=Викладачу"}</span></a></span>
+                            <span class="link"><a class="color3" href="http://sites.znu.edu.ua/news.php?action=news%2Fview&site_id=28&lang={$text.language_name}"><i class="fa fa-clock-o "></i><span class="text">{txt lang=$text.language_name variants="eng=Annonces::rus=Анонсы::ukr=Анонси"}</span></a></span>
+                    </div>
+            </div>
+            
+            <div class="znu-2016-block-page"><a name='pagetop' style='opacity:0; float:right;'></a>
+                {$page.content}
+            </div>
+            
+            
+        </div>
+        
+        <div class="znu-2016-footer-bg">
+            <div class="znu-2016-main">
+                <div class="znu-2016-block-footer">
+                    <div class="znu-2016-block-footer-col">
+                        {txt lang=$text.language_name variants="eng==© 2016 Zaporizhzhya national university::rus=© 2016 ЗНУ Запорожский национальный университет, 69600, ::ukr=© 2016 ЗНУ Запорізький національний університет, 69600, "}
+                        <br>
+
+                        {txt lang=$text.language_name variants="eng=Zaporizhzhya, Zhykovsky street 66::rus=г. Запорожье, ул. Жуковского, 66, ::ukr=м. Запоріжжя, вул. Жуковського, 66, "}
+                        <br>
+
+                        {txt lang=$text.language_name variants="eng=tel/fax::rus=тел./факс::ukr=тел./факс"}
+                         +38 (061)228-75-08
+                    </div>
+                    <div class="znu-2016-block-footer-col">
+                        
+                        <img src="{$site_root_url}/templates/znu12files/img/qr.gif">
+                        <a href="#">
+{txt lang=$text.language_name variants="eng=Message to IT Lab::rus=Обращение к лаборатории ИТ ЗНУ::ukr=Звернення до лабораторії IT ЗНУ"}
+                            </a><br>
+                            {txt lang=$text.language_name variants="eng=Webmaster's email::rus=Электронная почта вебмастера::ukr=Електронна пошта веб-майстра"}
+                         <a href="#">webmaster@znu.edu.ua</a>
+                        <br>
+                        <a class="social" href="#" ><i class="fa fa-vk"></i></a>
+                        <a class="social" href="#" ><i class="fa fa-facebook "></i></a>
+                        <a class="social" href="#" ><i class="fa fa-twitter "></i></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div style="display:none;"> 
+        {literal}<!-- Yandex.Metrika counter --> <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter36579515 = new Ya.Metrika({ id:36579515, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/36579515" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->{/literal}
+        </div>
+
+        <script type="application/javascript" src="{$site_root_url}/templates/znu12files/js/jquery.min.js"></script>
+        <script type="application/javascript" src="{$site_root_url}/templates/znu12files/css/bootstrap-sass/javascripts/bootstrap.min.js"></script>
+        <script type="application/javascript" src="{$site_root_url}/templates/znu12files/js/custom.js"></script>
+    </body>
+</html>

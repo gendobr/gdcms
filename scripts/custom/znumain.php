@@ -47,7 +47,7 @@
 # -------------------- get list of page languages - end ------------------------
 
 # -------------------- search for template - begin -----------------------------
-  $ec_item_template_list = sites_root.'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_ec_item_list.html";
+  $ec_item_template_list = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_ec_item_list.html";
   if(!is_file($ec_item_template_list)) $ec_item_template_list = 'cms/template_ec_item_list';
 # -------------------- search for template - end -------------------------------
 
@@ -58,7 +58,7 @@
 
 # ------------------------ here is main page content - begin -------------------
 function get_cached_page($url, $timeout=300) {
-    $cache_dir = local_root . '/template_cache';
+    $cache_dir = \e::config('APP_ROOT') . '/template_cache';
     $filepath = $cache_dir . '/' . md5($url) . '.txt';
     //prn($filepath);
     if (!is_file($filepath) || time() > (filemtime($filepath) + $timeout)) {
@@ -189,7 +189,7 @@ if($banners){
 
 
 # --------------------------- get site template - begin ------------------------
-  $custom_page_template = sites_root.'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_index.html";
+  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_index.html";
   if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
   //prn($custom_page_template);
   //prn($this_site_info['template']);

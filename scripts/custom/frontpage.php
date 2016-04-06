@@ -44,7 +44,7 @@
 # -------------------- get list of page languages - end ------------------------
 
 # -------------------- search for template - begin -----------------------------
-  $ec_item_template_list = sites_root.'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_ec_item_list.html";
+  $ec_item_template_list = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_ec_item_list.html";
   if(!is_file($ec_item_template_list)) $ec_item_template_list = 'cms/template_ec_item_list';
 # -------------------- search for template - end -------------------------------
 
@@ -54,8 +54,8 @@
   $input_vars['ec_item_state']='show';
   $input_vars['orderby']='rand() asc';
   $input_vars['rows']=5;
-  include(script_root.'/ec/item/get_public_list.php');
-  include(script_root.'/ec/item/adjust_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/ec/item/get_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
   $vystavka=process_template( $ec_item_template_list
                     ,Array(
                            'pages'=>$pages,
@@ -78,8 +78,8 @@
   $input_vars['ec_category_id']=-10;
   $input_vars['orderby']='ec_item_last_change_date desc';
   $input_vars['rows']=6;
-  include(script_root.'/ec/item/get_public_list.php');
-  include(script_root.'/ec/item/adjust_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/ec/item/get_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
   $last_added=process_template( $ec_item_template_list
                     ,Array(
                            'pages'=>Array(),
@@ -102,9 +102,9 @@
   $input_vars['category_filter_mode']='yes';
   $input_vars['category_id']=2;
   $input_vars['lang']='ukr';
-  include(script_root.'/news/get_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/news/get_public_list.php');
 
-  $news_template = sites_root.'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_news_view_list.html";
+  $news_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_news_view_list.html";
   #prn('$news_template',$news_template);
   if(!is_file($news_template)) $news_template = 'cms/template_news_view_list';
 
@@ -137,9 +137,9 @@
   $input_vars['category_filter_mode']='yes';
   $input_vars['category_id']=3;
   $input_vars['lang']='ukr';
-  include(script_root.'/news/get_public_list.php');
+  include(\e::config('SCRIPT_ROOT').'/news/get_public_list.php');
 
-  $news_template = sites_root.'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_news_stan_rechej.html";
+  $news_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_news_stan_rechej.html";
   #prn('$news_template',$news_template);
   if(!is_file($news_template)) $news_template = 'cms/template_news_view_list';
 
@@ -185,7 +185,7 @@
 //
 //  ";
 # --------------------------- get site template - begin ------------------------
-  $custom_page_template = sites_root.'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_index.html";
+  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_index.html";
   if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
   //prn($custom_page_template);
   //prn($this_site_info['template']);
@@ -213,4 +213,3 @@ echo $file_content;
 
 global $main_template_name; $main_template_name='';
 
-?>

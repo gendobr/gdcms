@@ -11,7 +11,7 @@
     it will be treated as Smarty template and used instead of default one.
 */
 
-include(script_root.'/news/get_public_list.php');
+include(\e::config('SCRIPT_ROOT').'/news/get_public_list.php');
 
 //prn($this_site_info);
 /*

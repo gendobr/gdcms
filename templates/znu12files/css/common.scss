@@ -1,12 +1,18 @@
 // parameters
 
+$resourse-root-url:"/cms/templates/znu12files";
+
+
 $grid-gutter-width:4rem;
 
-$icon-font-path:"./css/bootstrap-sass/fonts/bootstrap/";
+$icon-font-path: $resourse-root-url + "/css/bootstrap-sass/fonts/bootstrap/";
 $icon-font-name:'glyphicons-halflings-regular';
 
 $screen-xs-min:320px;
 $container-sm:$screen-xs-min - 20px;
+
+$screen-xs-s-min:416px;
+$container-sm:$screen-xs-s-min - 20px;
 
 $screen-sm-min:760px;
 $container-sm:$screen-sm-min - 20px;
@@ -22,8 +28,12 @@ $font-size-base:10pt;
 $znu-color-blue-bak: rgba(150, 175, 245, 0.16);
 $znu-color-black:#000000;
 $znu-color-blue:#3852A6;
+$znu-color-blue-light:#3361B7;
+$znu-color-blue-light-link:rgba(52, 82, 166, 0.5);
 $znu-color-blue-a:rgba(56, 82, 166, 0.88);
-$znu-color-white:#ffffff;
+$znu-color-white-light:rgba(255, 255, 255, 0.5);
+$znu-color-white-light1:rgba(255, 255, 255, 0.7);
+$znu-color-white: #fff;
 $znu-color-blue-1:#337ab7;
 $znu-color-blue-dark:#223264;
 
@@ -31,6 +41,7 @@ $znu-color-blue-dark:#223264;
 $znu-color-yellow:rgba(188, 241, 17, 0.4);
 $znu-color-rose:rgba(234, 49, 182, 0.4);
 $znu-color-green:rgba(76, 241, 224, 0.4); //#F0F2E5;
+$znu-background-color: #f2f2f2;
 
 //$znu-color-sand-light1:#FEF5E6;
 
@@ -44,20 +55,16 @@ $znu-color-green:rgba(76, 241, 224, 0.4); //#F0F2E5;
 //$znu-color-rose-light1:#FCBDE5;
 
 
-$znu-shadow-box: 3px 3px 5px 2px rgba(0, 0, 0, 0.1), 3px 3px 5px 1px transparent;
-$znu-shadow-box-inset: inset 3px 3px 5px 2px rgba(0, 0, 0, 0.1), inset 3px 3px 5px 1px transparent;
-$znu-background-color: #f5f5f5;
+$znu-shadow-box:0px 3px 5px -1px rgba(0,0,0,0.14);
+//0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);//3px 3px 5px 2px rgba(0, 0, 0, 0.1), 3px 3px 5px 1px transparent;
+$znu-shadow-box-inset: 0px 0px 16px -1px rgba(0,0,0,0.14);//0 -1px 0 #e5e5e5,0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);//0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
 
-
-
-
-//$font-family-sans-serif:"PT Sans", Helvetica, Arial, sans-serif;
 $font-family-sans-serif: 'Roboto', sans-serif;
 
 @font-face {
     font-family: 'Glyphicons Halflings';
-    src: url('./css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.eot');
-    src: url('./css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('./css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'), url('./css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('./css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('./css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+    src: url($resourse-root-url +  '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.eot');
+    src: url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'), url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
 // ====================================================
@@ -70,48 +77,48 @@ $font-family-sans-serif: 'Roboto', sans-serif;
 
 @mixin link-style($color-default, $color-active, $color-visited : $znu-color-rose-dark) {
 
-	color:$color-default;
+    color:$color-default;
     &:link{
-		color:$color-default;
-		text-decoration:none;
+        color:$color-default;
+        text-decoration:none;
     }
 
-	text-decoration:none;
-	transition: 0.4s;
+    text-decoration:none;
+    transition: 0.4s;
     &:visited{
         text-decoration:none;
-		color:$color-visited;
-		transition: 0.8s;
+        color:$color-visited;
+        transition: 0.8s;
     }
 
-	&:hover, &:active, &:focus{
+    &:hover, &:active, &:focus{
         text-decoration:none;
-		color:$color-active;
-		border-bottom:1px solid transparent;
-		border-bottom-color:rgba(red($color-active), green($color-active), blue($color-active), 0.5)
+        color:$color-active;
+        border-bottom:1px solid transparent;
+        border-bottom-color:rgba(red($color-default), green($color-active), blue($color-active), 0.5)
     }
 }
 
 @mixin font-header{
-	font-family: 'PT Sans Narrow', sans-serif;
+    font-family: 'PT Sans Narrow', sans-serif;
 }
 @mixin font-plain{
-	font-family: $font-family-sans-serif;
+    font-family: $font-family-sans-serif;
 }
 
 .znu-2016-main{
-	@extend .container;
+    @extend .container;
 
-	.pagetop{
-	    font-size:0;
-	    position:absolute;
-	}
+    .pagetop{
+        font-size:0;
+        position:absolute;
+    }
 }
 
 body{
-	background-color: $znu-background-color;
-	background-size: cover;
-	background-attachment: fixed;
+    background-color: $znu-background-color;
+    background-size: cover;
+    background-attachment: fixed;
 
 }
 
@@ -121,485 +128,451 @@ body{
 
 
 .znu-2016-overheader-bg{
-	background-color:$znu-color-blue;
-	box-shadow: $znu-shadow-box;
-	.znu-2016-main{
-		background-color:$znu-color-blue;
-	}
+    background-color:$znu-color-blue;
+    //position: relative;
+    box-shadow: 0 0 2px rgba(0,0,0,.14),0 2px 4px rgba(0,0,0,.28);
+    .znu-2016-main{
+        background-color:$znu-color-blue;
+    }
 }
 
 .znu-2016-overheader-row{
-	@extend .row;
+    @extend .row;
 
-	.icon{
-		border-bottom-width:0;
-		&:hover, &:active, &:focus{
-			border-bottom-width:0;
-		}
-		img{
-			height:2rem;
-		}
-	}
-	.glyph{
-		@include link-style($znu-color-white, $znu-color-blue-light1,$znu-color-white);
-		display:inline-block;
-		width:2.2rem;
-		height:2.2rem;
-		border-bottom-width:0;
-		&:hover, &:active, &:focus, &:link{
-			border-bottom-width:0;
-		}
-	}
+    .icon{
+        border-bottom-width:0;
+        &:hover, &:active, &:focus{
+            border-bottom-width:0;
+        }
+        img{
+            height:2rem;
+        }
+    }
+    .glyph{
+        @include link-style($znu-color-white, $znu-color-white-light,$znu-color-white);
+        display:inline-block;
+        width:2.2rem;
+        height:2.2rem;
+        border-bottom-width:0;
+        &:hover, &:active, &:focus, &:link{
+            border-bottom-width:0;
+        }
+    }
 
-	.lang{
-		display:inline-block;
-		@include link-style($znu-color-white,$znu-color-white, $znu-color-blue-light1);
-		font-size:1.5rem;
-		&.active{
-			color:white;
-		}
-	}
+    .lang{
+        display:inline-block;
+        @include link-style($znu-color-white,$znu-color-white-light, $znu-color-blue-light1);
+        font-size:1.5rem;
+        &.active{
+            color:$znu-color-white;
+        }
+    }
 
-	.search{
-		vertical-align: middle;
-		white-space: nowrap;
-		position: relative;
-		float: right;
+    .search{
+        vertical-align: middle;
+        white-space: nowrap;
+        position: relative;
+        float: right;
 
-		i{
-			position: relative;
-			margin-top: 0.4rem;
-			color: white;
-		}
-	}
-	.search input#search{
+        i{
+            position: relative;
+            margin-top: 0.4rem;
+            color: $znu-color-white;
+        }
+    }
+    .button{
+        background-color:$znu-color-blue-light;
+        border: none;
+        &.hover{
+            color:$znu-color-white-light;
+        }
+    }
+    .search input#search{
 
-		height: 2.2rem;
-		background: #3361B7;
-		border: none;
-		float: left;
-		color: white;
-		padding-left: 1.5rem;
-		margin-left: 1rem;
-		margin-right: -2rem;
-	}
-	input[type="search"]::-webkit-input-placeholder {color:white; opacity: 0.5}
-	input[type="search"]::-moz-placeholder          {color:white; opacity: 0.5}/* Firefox 19+ */
-	input[type="search"]:-moz-placeholder           {color:white; opacity: 0.5}/* Firefox 18- */
-	input[type="search"]:-ms-input-placeholder      {color:white; opacity: 0.5}
+        height: 2.2rem;
+        background: $znu-color-blue-light;
+        border: none;
+        float: left;
+        color: $znu-color-white;
+        padding-left: 1.5rem;
+        margin-left: 1rem;
+        margin-right: -2rem;
+    }
+    input[type="search"]::-webkit-input-placeholder {color:$znu-color-white; opacity: 0.5}
+    input[type="search"]::-moz-placeholder          {color:$znu-color-white; opacity: 0.5}/* Firefox 19+ */
+    input[type="search"]:-moz-placeholder           {color:$znu-color-white; opacity: 0.5}/* Firefox 18- */
+    input[type="search"]:-ms-input-placeholder      {color:$znu-color-white; opacity: 0.5}
 
 }
 
 
 .znu-2016-overheader-col1{
-	@include make-xs-column(12);
-	@include make-sm-column(4);
-	@include make-md-column(3);
-	@include make-lg-column(3);
+    @include make-xs-column(12);
+    @include make-sm-column(4);
+    @include make-md-column(3);
+    @include make-lg-column(3);
 
-	padding-top:0.5rem;
-	padding-bottom:0.5rem;
-	@media (max-width: $screen-sm-min - 1px) {
-		display:inline-block;
-		width:auto;
-	}
+    padding-top:0.5rem;
+    padding-bottom:0.5rem;
+    @media (max-width: $screen-sm-min - 1px) {
+        display:inline-block;
+        width:auto;
+    }
 }
 
 
 .znu-2016-overheader-col2{
 
-	@include make-xs-column(12);
-	@include make-sm-column(8);
-	@include make-md-column(9);
-	@include make-lg-column(9);
+    @include make-xs-column(12);
+    @include make-sm-column(8);
+    @include make-md-column(9);
+    @include make-lg-column(9);
 
-	padding-bottom:0.5rem;
-	padding-top:0.5rem;
-	text-align:right;
-	@media (max-width: $screen-sm-min - 1px) {
-		text-align:left;
-		display:inline-block;
-		width:auto;
-	}
+    padding-bottom:0.5rem;
+    padding-top:0.5rem;
+    text-align:right;
+    @media (max-width: $screen-sm-min - 1px) {
+        text-align:left;
+        display:inline-block;
+        width:auto;
+    }
 }
 
 
 .znu-2016-header {
-	@extend .row;
+    @extend .row;
 
-	background-color: $znu-color-white;
-	padding-bottom: 1rem;
-	padding-top: 0.7rem;
-	box-shadow: $znu-shadow-box;
-	//margin-top:1rem;
+    background-color: $znu-color-white-light;
+    padding-bottom: 1rem;
+    padding-top: 0.7rem;
+    box-shadow: $znu-shadow-box;
+    //margin-top:1rem;
 
-	.znu-2016-header-logo {
-		@include make-xs-column(12);
-		@include make-sm-column(12);
-		@include make-md-column(12);
-		@include make-lg-column(12);
+    .znu-2016-header-logo {
+        @include make-xs-column(12);
+        @include make-sm-column(12);
+        @include make-md-column(12);
+        @include make-lg-column(12);
 
-		.znu-2016-logo {
-			display: inline-block;
-			float: left;
+        .znu-2016-logo {
+            display: inline-block;
+            float: left;
 
-			background-image: url(img/logoznu.png);
-			background-size: 8rem;
-			background-position: center top;
+            background-image: url($resourse-root-url +  '/img/logoznu.png');
+            background-size: 8rem;
+            background-position: center top;
 
-			@media (min-width: $screen-xs-min) {
-				margin-top: 2rem;
-				margin-bottom: 1rem;
-				width: 8rem;
-				height: 8rem;
-			}
+            @media (min-width: $screen-xs-min) {
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                width: 8rem;
+                height: 8rem;
+            }
 
-			@media (min-width: $screen-sm-min) {
-				margin-top: 2rem;
-				margin-bottom: 1rem;
-				width: 8rem;
-				height: 8rem;
-			}
+            @media (min-width: $screen-sm-min) {
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                width: 8rem;
+                height: 8rem;
+            }
 
-			@media (min-width: $screen-md-min) {
-				margin-top: 2rem;
-				margin-bottom: 1rem;
-				width: 8rem;
-				height: 8rem;
-			}
+            @media (min-width: $screen-md-min) {
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                width: 8rem;
+                height: 8rem;
+            }
 
-			@media (min-width: $screen-lg-min) {
-				margin-top: 1.4rem;
-				margin-bottom: 1rem;
-				width: 9rem;
-				height: 8rem;
-			}
-		}
+            @media (min-width: $screen-lg-min) {
+                margin-top: 1.4rem;
+                margin-bottom: 1rem;
+                width: 9rem;
+                height: 8rem;
+            }
+        }
 
-		.znu-2016-title-block {
+        .znu-2016-title-block {
 
-			.w1{
-				margin-left: 1rem;
-			}
+            .w1{
+                margin-left: 1rem;
+            }
 
-			@media (min-width: $screen-xs-min) {
-				margin-left: 9rem;
-				margin-top: 1.3rem;
-				.w {
-					display: inline-block;
-				}
-			}
+            @media (min-width: $screen-xs-min) {
+                margin-left: 9rem;
+                margin-top: 1.3rem;
+                .w {
+                    display: inline-block;
+                }
+            }
 
-			@media (min-width: $screen-sm-min) {
-			margin-left: 9rem;
-			margin-top: 1.3rem;
-				.w {
-					display: inline;
-				}
-			}
-			@media (min-width: $screen-md-min) {
-				margin-left: 7rem;
-				margin-top: 1.3rem;
-				.w {
-					display: inline;
-				}
-			}
+            @media (min-width: $screen-sm-min) {
+                margin-left: 9rem;
+                margin-top: 1.3rem;
+                .w {
+                    display: inline;
+                }
+            }
+            @media (min-width: $screen-md-min) {
+                margin-left: 7rem;
+                margin-top: 1.3rem;
+                .w {
+                    display: inline;
+                }
+            }
 
-			@media (min-width: $screen-lg-min) {
-				margin-left: 10rem;
-				margin-top: 1.3rem;
-				.w {
-					display: inline;
-				}
-			}
-			.znu-2016-title {
+            @media (min-width: $screen-lg-min) {
+                margin-left: 10rem;
+                margin-top: 1.3rem;
+                .w {
+                    display: inline;
+                }
+            }
+            .znu-2016-title {
 
-				color: $znu-color-blue;
-				display: inline;
-				@include link-style($znu-color-blue, $znu-color-blue-1, $znu-color-blue);
-				border-bottom-width: 0;
-				&:hover, &:active, &:focus, &:link {
-					border-bottom-width: 0;
-				}
+                color: $znu-color-blue;
+                display: inline;
+                @include link-style($znu-color-blue, $znu-color-blue, $znu-color-blue);
+                border-bottom-width: 0;
+                &:hover, &:active, &:focus, &:link {
+                    border-bottom-width: 0;
+                }
 
-				@media (min-width: $screen-xs-min) {
-					font-size: 2.8rem;
-					line-height: 3rem;
-				}
-				@media (min-width: $screen-sm-min) {
-					font-size: 2.8rem;
-					line-height: 3rem;
-				}
-				@media (min-width: $screen-md-min) {
-					font-size: 2.8rem;
-					line-height: 3rem;
-				}
-				@media (min-width: $screen-lg-min) {
-					font-size: 4.5rem;
-					line-height: 7rem;
-				}
+                @media (min-width: $screen-xs-min) {
+                    font-size: 2.8rem;
+                    line-height: 3rem;
+                }
+                @media (min-width: $screen-sm-min) {
+                    font-size: 2.8rem;
+                    line-height: 3rem;
+                }
+                @media (min-width: $screen-md-min) {
+                    font-size: 2.8rem;
+                    line-height: 3rem;
+                }
+                @media (min-width: $screen-lg-min) {
+                    font-size: 4.5rem;
+                    line-height: 7rem;
+                }
 
-			}
-			.znu-2016-remark {
-				@include link-style($znu-color-blue, $znu-color-blue-1, $znu-color-blue);
-				font-size: 1.5rem;
-				vertical-align: top;
-				display: inline-block;
-				border: none;
-				@media (min-width: $screen-sm-min) {
-					padding-top: 0.1rem;
-				}
+            }
+            .znu-2016-remark {
+                @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+                font-size: 1.5rem;
+                vertical-align: top;
+                display: inline-block;
+                border: none;
+                @media (min-width: $screen-sm-min) {
+                    padding-top: 0.1rem;
+                }
 
-				@media (min-width: $screen-md-min) {
-				}
+                @media (min-width: $screen-md-min) {
+                }
 
-				@media (min-width: $screen-lg-min) {
-					font-weight:500;
-				}
-			}
-		}
+                @media (min-width: $screen-lg-min) {
+                    font-weight:500;
+                }
+            }
+        }
 
-	}
+    }
 }
 // =========== header and top navigation = end ============
 
 // =========== navigation bar =============================
 
 .znu-2016-nav{
-	@extend .row;
-	text-align: center;
+    @extend .row;
+    text-align: center;
+}
 
-		.znu-2016-title-block{
-			margin-left:11rem;
-			margin-top:1.0rem;
+.znu-2016-nav-had {
+    @extend .row;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    @media (min-width: $screen-xs-min) {
+        margin: 0 0 0 0;
+    }
+    @media (min-width: $screen-sm-min) {
+        margin: 0 0 0 0;
+    }
+    @media (min-width: $screen-md-min) {
+        margin: 0 -2rem 0 -2rem;
+    }
+    @media (min-width: $screen-lg-min) {
+        margin: 0 -2rem 0 -2rem;
+    }
 
-			@media (min-width: $screen-xs-min) {
-				margin-left:9rem;
-				margin-top:1.3rem;
-				.w{
-					display:inline;
-				}
-			}
+    .color1 {
+        background-color: $znu-color-rose;
+        color: $znu-color-blue;
+        box-shadow: $znu-shadow-box;
+        &:hover {
+            -webkit-transform: scale(1.01);
+            transform: scale(1.01);
+        }
+    }
+    .color2 {
+        background-color: $znu-color-green;
+        color: $znu-color-blue;
+        box-shadow: $znu-shadow-box;
+        &:hover {
+            -webkit-transform: scale(1.01);
+            transform: scale(1.01);
+        }
+    }
+    .color3 {
+        background-color: $znu-color-yellow;
+        color: $znu-color-blue;
+        box-shadow: $znu-shadow-box;
+        &:hover {
+            -webkit-transform: scale(1.01);
+            transform: scale(1.01);
+        }
+    }
+    .color4 {
+        background-color: $znu-color-white-light;
+        color: $znu-color-blue;
+        box-shadow: $znu-shadow-box;
+        &:hover {
+            -webkit-transform: scale(1.01);
+            transform: scale(1.01);
+        }
+    }
 
-			@media (min-width: $screen-sm-min) {
-				margin-left:9rem;
-				margin-top:1.3rem;
-				.w{
-					display:inline;
-				}
-			}
-			@media (min-width: $screen-md-min) {
-				margin-left:7rem;
-				margin-top:1.3rem;
-				.w{
-					display:inline;
-				}
-			}
+    .link {
+        //@include make-xs-s-column(4);
+        @include make-xs-column(5);
+        @include make-sm-column(3);
+        @include make-md-column(2);
+        @include make-lg-column(2);
 
-			@media (min-width: $screen-lg-min) {
-			.w {
-				display: inline;
-			}
-		}
-			.znu-2016-title{
-				color:$znu-color-blue;
-				display:inline;
-				@include link-style($znu-color-blue,$znu-color-blue-1, $znu-color-blue);
-				border-bottom-width:0;
-				&:hover, &:active, &:focus, &:link{
-					border-bottom-width:0;
-				}
-				@media (min-width: $screen-xs-min) {
-					font-size: 2.8rem;
-					line-height: 1.2em;
-				}
+        @media (min-width: $screen-xs-s-min){
+            text-align: center;
+            float: inherit;
+            display: inline-block;
+            vertical-align: top;
+            a {
+                text-align: center;
+                display: block;
+                margin: 0.5rem 0rem 0.5rem 0rem;
+                height: 9rem;
+            }
+            i {
+                position: relative;
+                text-align: center;
+                top: 20%;
+                font-size: 3rem;
+                width: 7rem;
+            }
+            .text {
+                position: relative;
+                text-align: center;
+                font-size: 1.2rem;
+                top: 20%;
+            }
+        }
+        @media (min-width: $screen-xs-min) {
+            text-align: center;
+            float: inherit;
+            display: inline-block;
+            vertical-align: top;
+            a {
+                text-align: center;
+                display: block;
+                margin: 0.5rem 0rem 0.5rem 0rem;
+                height: 7rem;
+            }
+            i {
+                position: relative;
+                text-align: center;
+                top: 20%;
+                font-size: 3rem;
+                width: 7rem;
+            }
+            .text {
+                position: relative;
+                text-align: center;
+                font-size: 1.2rem;
+                top: 20%;
+            }
+        }
+        @media (min-width: $screen-sm-min) {
+            float: inherit;
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+            a {
+                display: block;
+                margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+                height: 10rem;
+            }
+            i {
+                position: relative;
+                text-align: center;
+                top: 20%;
+                font-size: 4rem;
+                width: 10rem;
+            }
+            .text {
+                position: relative;
+                text-align: center;
+                font-size: 1.5rem;
+                top: 30%;
+            }
+        }
 
-				@media (min-width: $screen-sm-min) {
-					font-size:2.8rem;
-					line-height: 1.07rem;
-				}
-				@media (min-width: $screen-md-min) {
-					font-size:2.8rem;
-					line-height: 1.07rem;
-				}
-				@media (min-width: $screen-lg-min) {
-					font-size:3.8rem;
-					line-height: 1.07rem;
-				}
-			}
-			.znu-2016-remark{
-				@include link-style($znu-color-blue,$znu-color-blue-1, $znu-color-blue);
-				font-size:1.5rem;
-				vertical-align: top;
-				display:inline-block;
-				border:none;
-				@media (min-width: $screen-sm-min) {
-					padding-top: 0.1rem;
-				}
-				@media (min-width: $screen-md-min) {
-				}
-				@media (min-width: $screen-lg-min) {
-				}
-			}
+        @media (min-width: $screen-md-min) {
+            float: left;
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+            a {
+                display: block;
+                height: 10rem;
+                margin: 0 0 0 0;
+            }
+            i {
+                position: relative;
+                text-align: center;
+                top: 20%;
+                font-size: 4rem;
+                width: 10rem;
+            }
+            .text {
+                position: relative;
+                text-align: center;
+                font-size: 1.5rem;
+                top: 30%;
+            }
+        }
 
-		}
-	}
-
-	.znu-2016-nav-had {
-		@include make-xs-column(12);
-		@include make-sm-column(12);
-		@include make-md-column(12);
-		@include make-lg-column(12);
-
-		padding-top: 2rem;
-		padding-bottom: 2rem;
-		.color1 {
-			background-color: $znu-color-rose;
-			color: $znu-color-blue;
-			box-shadow: $znu-shadow-box;
-			&:hover {
-				box-shadow: $znu-shadow-box-inset;
-			}
-		}
-		.color2 {
-			background-color: $znu-color-green;
-			color: $znu-color-blue;
-			box-shadow: $znu-shadow-box;
-			&:hover {
-				box-shadow: $znu-shadow-box-inset;
-			}
-		}
-		.color3 {
-			background-color: $znu-color-yellow;
-			color: $znu-color-blue;
-			box-shadow: $znu-shadow-box;
-			&:hover {
-				box-shadow: $znu-shadow-box-inset;
-			}
-		}
-		.color4 {
-			background-color: $znu-color-white;
-			color: $znu-color-blue;
-			box-shadow: $znu-shadow-box;
-			&:hover {
-				box-shadow: $znu-shadow-box-inset;
-			}
-		}
-
-		@media (min-width: $screen-xs-min) {
-			.link {
-				text-align: center;
-				width: 12rem;
-				display: inline-block;
-				vertical-align: top;
-				a {
-					display: block;
-					margin: 0.5rem 0.5rem 0.5rem 0.5rem;
-					height: 10rem;
-				}
-				i {
-					position: relative;
-					text-align: center;
-					top: 20%;
-					font-size: 4rem;
-					width: 9rem;
-				}
-				.text {
-					position: relative;
-					text-align: center;
-					font-size: 1.5rem;
-					top: 30%;
-				}
-			}
-		}
-
-
-		@media (min-width: $screen-sm-min) {
-			.link {
-				text-align: center;
-				width: 12rem;
-				display: inline-block;
-				vertical-align: top;
-				a {
-					display: block;
-					margin: 0.5rem 0.5rem 0.5rem 0.5rem;
-					height: 10rem;
-				}
-				i {
-					position: relative;
-					text-align: center;
-					top: 20%;
-					font-size: 4rem;
-					width: 10rem;
-				}
-				.text {
-					position: relative;
-					text-align: center;
-					font-size: 1.5rem;
-					top: 30%;
-				}
-			}
-		}
-
-		@media (min-width: $screen-md-min) {
-			width: 100%;
-			.link {
-				text-align: center;
-				width: 12rem;
-				display: inline-block;
-				vertical-align: top;
-				a {
-					display: block;
-					margin: 0.5rem 0.5rem 0.5rem 0.5rem;
-					height: 10rem;
-				}
-				i {
-					position: relative;
-					text-align: center;
-					top: 20%;
-					font-size: 4rem;
-					width: 10rem;
-				}
-				.text {
-					position: relative;
-					text-align: center;
-					font-size: 1.5rem;
-					top: 30%;
-				}
-			}
-		}
-		@media (min-width: $screen-lg-min) {
-			padding-top: 2.5rem;
-			width: 100%;
-			.link {
-				text-align: center;
-				width: 18rem;
-				display: inline-block;
-				vertical-align: top;
-				a {
-					display: block;
-					margin: 0 2rem 0rem 2rem;
-					height: 12rem;
-				}
-				font-size: 4rem;
-
-				i {
-					position: relative;
-					text-align: center;
-					top: 20%;
-					font-size: 5rem;
-					width: 12rem;
-				}
-
-				.text {
-					position: relative;
-					text-align: center;
-					font-size: 1.5rem;
-					top: 0;
-				}
-			}
-		}
-	}
+        @media (min-width: $screen-lg-min) {
+            font-size: 4rem;
+            float: left;
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+            a {
+                display: block;
+                height: 12rem;
+                margin: 0 0 0 0;
+            }
+            i {
+                position: relative;
+                text-align: center;
+                top: 20%;
+                font-size: 6rem;
+                width: 12rem;
+            }
+            .text {
+                position: relative;
+                text-align: center;
+                font-size: 1.5rem;
+                top: 0;
+            }
+        }
+    }
+}
 
 
 
@@ -610,133 +583,133 @@ body{
 // =============== front page slider = begin =================
 .znu-2016-slider{
 
-	margin-top: 1em;
+    margin-top: 1em;
 
-   @extend .row;
-   .znu-2016-slider-col{
-	    @include make-xs-column(12);
-	    @include make-sm-column(12);
-	    @include make-md-column(12);
-	    @include make-lg-column(12);
-	    position:relative;
+    @extend .row;
+    .znu-2016-slider-col{
+        @include make-xs-column(12);
+        @include make-sm-column(12);
+        @include make-md-column(12);
+        @include make-lg-column(12);
+        position:relative;
 
-	   box-shadow: $znu-shadow-box;
+        box-shadow: $znu-shadow-box;
         padding-left:0rem;
         padding-right:0rem;
 
         .carousel{
-           .container{
-             padding-left:0rem;
+            .container{
+                padding-left:0rem;
             }
-        } 
+        }
 
-	    .znu-2016-carousel-image{
+        .znu-2016-carousel-image{
 
-			@media (min-width: $screen-xs-min) {
-				height:24rem;
-			}
-			@media (min-width: $screen-sm-min) {
-				height:30rem;
-			}
-			@media (min-width: $screen-md-min) {
-				height:30rem;
-			}
-			@media (min-width: $screen-lg-min) {
-				height:48rem;
-			}
-	        display: block;
-	        width:100%;
-	        background-size:cover;
-	        background-position:center center;
-	        background-repeat:no-repeat;
-	    }
-	    .carousel-caption{
-	        right:auto;
-	        left:auto;
-	        background-color:rgba(255,255,255,0.7);
-	        color:$znu-color-blue;
-	        text-shadow:none;
-			box-shadow: $znu-shadow-box;
+            @media (min-width: $screen-xs-min) {
+                height:24rem;
+            }
+            @media (min-width: $screen-sm-min) {
+                height:30rem;
+            }
+            @media (min-width: $screen-md-min) {
+                height:30rem;
+            }
+            @media (min-width: $screen-lg-min) {
+                height:48rem;
+            }
+            display: block;
+            width:100%;
+            background-size:cover;
+            background-position:center center;
+            background-repeat:no-repeat;
+        }
+        .carousel-caption{
+            right:auto;
+            left:auto;
+            background-color:$znu-color-white-light1;
+            color:$znu-color-blue;
+            text-shadow:none;
+            box-shadow: $znu-shadow-box;
 
-	        bottom:3rem;
-	        width:100%;
-	        margin:0 0 0 0;
+            bottom:3rem;
+            width:100%;
+            margin:0 0 0 0;
 
-	        h1{
-				@media (min-width: $screen-xs-min) {
-					font-size:140%;
-				}
-				@media (min-width: $screen-sm-min) {
-					font-size:140%;
-				}
-				@media (min-width: $screen-md-min) {
-					font-size:140%;
-				}
-				@media (min-width: $screen-lg-min) {
-					font-size:180%;
-				}
-	           margin-top:0.2rem;
-	        }
-	        .btn{
-				background-color: $znu-color-blue;
-	           font-size:100%;
-				border: 0rem;
-				border-radius: 0;
-				box-shadow: $znu-shadow-box;
-				&:hover {
-					box-shadow: $znu-shadow-box-inset;
-				}
-	        }
-
-	        font-size:80%;
-
-	        padding-left:1rem;
-	        padding-right:1rem;
-
-			@media (min-width: $screen-xs-min) {
-				bottom:3.5rem;
-				width:80%;
-				margin:0 10% 0 10%;
-				font-size:90%;
-			}
-
-			@media (min-width: $screen-sm-min) {
-		        bottom:3.5rem;
-		        width:80%;
-		        margin:0 10% 0 10%;
-                font-size:90%;
-			}
-
-			@media (min-width: $screen-md-min) {
-		        bottom:3.5rem;
-		        width:80%;
-		        margin:0 10% 0 10%;
+            h1{
+                @media (min-width: $screen-xs-min) {
+                    font-size:140%;
+                }
+                @media (min-width: $screen-sm-min) {
+                    font-size:140%;
+                }
+                @media (min-width: $screen-md-min) {
+                    font-size:140%;
+                }
+                @media (min-width: $screen-lg-min) {
+                    font-size:180%;
+                }
+                margin-top:0.2rem;
+            }
+            .btn{
+                background-color: $znu-color-blue;
                 font-size:100%;
-			}
+                border: 0rem;
+                border-radius: 0;
+                box-shadow: $znu-shadow-box;
+                &:hover {
+                    box-shadow: $znu-shadow-box-inset;
+                }
+            }
 
-			@media (min-width: $screen-lg-min) {
-		        bottom:40px;
-		        width:60%;
-		        margin:0 20% 0 20%;
-			}
-	    }
-	    .carousel-indicators{
-	       bottom:0;
-	       margin-bottom:0px;
-	       li{
-			   border: none;
-			   background-color:rgba(255,255,255,0.6);
-	          height: 2rem;
-	          width: 2rem;
-	       }
-			.active {
-				border: none;
-			  	height: 2.2rem;
-			  	width: 2.2rem;
-				background-color: $znu-color-blue;
-			}
-	    }
-	}
+            font-size:80%;
+
+            padding-left:1rem;
+            padding-right:1rem;
+
+            @media (min-width: $screen-xs-min) {
+                bottom:3.5rem;
+                width:80%;
+                margin:0 10% 0 10%;
+                font-size:90%;
+            }
+
+            @media (min-width: $screen-sm-min) {
+                bottom:3.5rem;
+                width:80%;
+                margin:0 10% 0 10%;
+                font-size:90%;
+            }
+
+            @media (min-width: $screen-md-min) {
+                bottom:3.5rem;
+                width:80%;
+                margin:0 10% 0 10%;
+                font-size:100%;
+            }
+
+            @media (min-width: $screen-lg-min) {
+                bottom:40px;
+                width:60%;
+                margin:0 20% 0 20%;
+            }
+        }
+        .carousel-indicators{
+            bottom:0;
+            margin-bottom:0px;
+            li{
+                border: none;
+                background-color:$znu-color-white-light1;
+                height: 2rem;
+                width: 2rem;
+            }
+            .active {
+                border: none;
+                height: 2.2rem;
+                width: 2.2rem;
+                background-color: $znu-color-blue;
+            }
+        }
+    }
 }
 // =============== front page slider = end ====================
 
@@ -745,197 +718,228 @@ body{
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ================== events = begin =======================
 
-.znu-2016-block-events{
-	@extend .row;
-	//text-align: center;
-
+.znu-2016-block-news{
+    @extend .row;
+    @media (min-width: $screen-xs-min) {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    @media (min-width: $screen-sm-min) {
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
+    @media (min-width: $screen-md-min) {
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
+    @media (min-width: $screen-lg-min) {
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
     margin-top:1rem;
-	//background-color:$znu-color-white;
 
-    .znu-2016-block-events-anounces{
-	    @include make-xs-column(12);
-	    @include make-sm-column(12);
-	    @include make-md-column(12);
-	    @include make-lg-column(12);
+    .znu-2016-block-news-anounces{
 
-		h3{
-			color:$znu-color-blue;
-			margin-top: 10pt;
-			margin-bottom: 10pt;
-			text-align: center;
-		}
-
-       .remark{
-           @include link-style($znu-color-blue,$znu-color-blue,$znu-color-blue);
-           display:inline-block;
-           vertical-align:top;
-           font-size:1.5rem;
-           margin-top:0.5rem;
+        @media (min-width: $screen-lg-min) {
+            //padding-left: 1.1rem;
+            //padding-right: 0.5rem;
         }
 
-		img{
-			width: 10rem;
-			float: left;
-			margin-right: 2rem;
-			margin-top: 0.5rem;
-		}
 
-	    a{
-	       @include link-style($znu-color-blue-1,$znu-color-blue,$znu-color-blue);
-	    }
+        h3{
+            color:$znu-color-blue;
+            margin-top: 10pt;
+            margin-bottom: 10pt;
+            text-align: center;
+        }
+
+        .remark{
+            @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+            display:inline-block;
+            vertical-align:top;
+            font-size:1.5rem;
+            margin-top:0.5rem;
+        }
 
 
-	    .znu-2016-block-anounces-one{
-	        @include make-xs-column(12);
-	        @include make-sm-column(6);
-	        @include make-md-column(6);
-	        @include make-lg-column(4);
-			box-shadow: $znu-shadow-box;
 
-			display: block;
-			background-color: opacity($znu-color-blue);
-	        padding-top:1rem;
-	        padding-bottom:1rem;
-			a{
-				font-size: 1.5rem;
-			}
+        a{
+            @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+        }
 
-			.a-container{
-				font-size: 1.5rem;
-				color: #fff;
-			}
 
-			.date-container{
-				text-align: right;
-				vertical-align: bottom;
-			}
+        .znu-2016-block-new-one{
+            @include make-xs-column(12);
+            @include make-sm-column(6);
+            @include make-md-column(6);
+            @include make-lg-column(4);
+            box-shadow: $znu-shadow-box;
+            height: 1rem;
+            overflow: hidden;
 
-			.icon{
-				display:none;
-				border:none;
-				width:100%;
+            // display: block;
+            background-color: opacity($znu-color-blue);
+            padding-top:1rem;
+            padding-bottom:1rem;
+            a{
+                @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+                font-size: 1.5rem;
+            }
 
-				@media (min-width: $screen-sm-min) {
-					display:inline-block;
-					//height:15em;
-				}
-				@media (min-width: $screen-md-min) {
-					//height:10em;
-				}
-				@media (min-width: $screen-lg-min) {
-					//height:10em;
-				}
-				background-color:$znu-color-blue-light2;
-				background-position:center center;
-				background-size:cover;
-			}
+            
+            .znu-2016-block-new-icon{
+                float:left;
+                width:12rem;
+                display:block;
+                // vertical-align:top;
+                &:hover{
+                    border:none;
+                }    
+                &:visited{
+                    border:none;
+                }    
+                img{
+                    width: 10rem;
+                    margin-right: 1rem;
+                    margin-top: 0.5rem;
+                }
+            }
+            .znu-2016-block-new-title{
+                display:block;
+                margin-left:12rem;
+                &:hover{
+                    border:none;
+                }    
+                &:visited{
+                    border:none;
+                }
+                max-height:8.1rem;
+                overflow:hidden;
+            }
+            
+            .a-container{
+                @include link-style($znu-color-white, $znu-color-white-light1, $znu-color-white);
+                font-size: 1.5rem;
+                color: #fff;
+                max-height: 1rem;
+            }
 
-	        @media (min-width : $screen-sm-min) and (max-width : $screen-md-min - 2px){
-		        &:nth-child(2n+1){
-		            clear:left;
-		        }
-	        }
-	        @media (min-width : $screen-md-min) and (max-width : $screen-lg-min - 1px){
-		        &:nth-child(2n+1){
-		            clear:left;
-					margin-bottom: 1rem;
-		        }
-	        }
-			@media (min-width: $screen-lg-min) {
-		        &:nth-child(3n+1){
-		            clear:left;
-					margin-bottom: 1rem;
-		        }
-			}
+            .date-container{
+                vertical-align: bottom;
+                text-align: right;
+            }
 
-		    &:nth-child(1){
-		        background-color:$znu-color-yellow;
-				margin-bottom: 1rem;
-				margin-top: 1rem;
-				margin-right: 1rem;
-				margin-left: 1rem;
-		    }
-			&:nth-child(2){
-				background-color:$znu-color-white;
-				margin-bottom: 1rem;
-				margin-top: 1rem;
-				margin-right: 1rem;
-				margin-left: 1rem;
-			}
-		    &:nth-child(3){
-		        background-color:$znu-color-rose;//rgba(76, 241, 224, 0.4);
-				margin-bottom: 1rem;
-				margin-top: 1rem;
-				margin-right: 1rem;
-				margin-left: 1rem;
-		    }
-			&:nth-child(4){
-				background-color:$znu-color-white;
-				margin-bottom: 1rem;
-				margin-top: 1rem;
-				margin-right: 1rem;
-				margin-left: 1rem;
-			}
-		    &:nth-child(5){
-		        background-color:$znu-color-green;
-				margin-bottom: 1rem;
-				margin-top: 1rem;
-				margin-right: 1rem;
-				margin-left: 1rem;
-		    }
-			&:nth-child(6){
-				background-color:$znu-color-white;
-				margin-bottom: 1rem;
-				margin-top: 1rem;
-				margin-right: 1rem;
-				margin-left: 1rem;
-			}
+            /*            .icon{
+                            display:none;
+                            border:none;
+                            width:100%;
 
-	        line-height: 2rem;
-	        @media (min-width: $screen-xs-min) {
-				min-height:12rem;
-				max-height: 12rem;
-				max-width:94%;
-				overflow:hidden;
+                            @media (min-width: $screen-sm-min) {
+                                display:inline-block;
+                                //height:15em;
+                            }
+                            @media (min-width: $screen-md-min) {
+                                //height:10em;
+                            }
+                            @media (min-width: $screen-lg-min) {
+                                //height:10em;
+                            }
+                            background-color:$znu-color-blue-light2;
+                            background-position:center center;
+                            background-size:cover;
+                        }*/
 
-			}
-			@media (min-width: $screen-sm-min) {
-				min-height:12rem;
-				max-height: 12rem;
-				max-width: 47.2%;
-				overflow:hidden;
-			}
+            @media (min-width : $screen-sm-min) and (max-width : $screen-md-min - 2px){
+                &:nth-child(2n+1){
+                    clear:left;
+                }
+            }
+            @media (min-width : $screen-md-min) and (max-width : $screen-lg-min - 1px){
+                &:nth-child(2n+1){
+                    clear:left;
+                    margin-bottom: 1rem;
+                }
+            }
+            @media (min-width: $screen-lg-min) {
+                &:nth-child(3n+1){
+                    clear:left;
+                    margin-bottom: 1rem;
+                }
+            }
 
-			@media (min-width: $screen-md-min) {
-				min-height: 12rem;
-				max-height: 12rem;
-				max-width: 47.8%;
-				overflow:hidden;
-			}
+            &:nth-child(1){
+                background-color:$znu-color-yellow;
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+                margin-right: 1rem;
+                margin-left: 1rem;
+            }
+            &:nth-child(2){
+                background-color:$znu-color-white-light;
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+                margin-right: 1rem;
+                margin-left: 1rem;
+            }
+            &:nth-child(3){
+                background-color:$znu-color-rose;//rgba(76, 241, 224, 0.4);
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+                margin-right: 1rem;
+                margin-left: 1rem;
+            }
+            &:nth-child(4){
+                background-color:$znu-color-white-light;
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+                margin-right: 1rem;
+                margin-left: 1rem;
+            }
+            &:nth-child(5){
+                background-color:$znu-color-green;
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+                margin-right: 1rem;
+                margin-left: 1rem;
+            }
+            &:nth-child(6){
+                background-color:$znu-color-white-light;
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+                margin-right: 1rem;
+                margin-left: 1rem;
+            }
 
-			@media (min-width: $screen-lg-min) {
-	            min-height: 12rem;
-				max-height: 12rem;
-				max-width: 31.5%;
-	            overflow:hidden;
-			}
-	    }
-	}
+            line-height: 2rem;
+            @media (min-width: $screen-xs-min) {
+                min-height:12rem;
+                max-height: 12rem;
+                max-width:94%;
+                overflow:hidden;
 
-	.znu-2016-block-events-col1,
-	.znu-2016-block-events-col2,
-	.znu-2016-block-events-col3{
-	    h3{
-	       @include font-header;
-	    }
-	    .znu-2016-block-events-one{
-	        margin-bottom:1rem;
-	    }
-	    a{
-	       @include link-style($znu-color-blue-2,$znu-color-blue-dark);
-	    }
-	}
+            }
+            @media (min-width: $screen-sm-min) {
+                min-height:12rem;
+                max-height: 12rem;
+                max-width: 47.2%;
+                overflow:hidden;
+            }
 
+            @media (min-width: $screen-md-min) {
+                min-height: 12rem;
+                max-height: 12rem;
+                max-width: 47.8%;
+                overflow:hidden;
+            }
+
+            @media (min-width: $screen-lg-min) {
+                min-height: 12rem;
+                max-height: 12rem;
+                max-width: 31.5%;
+                overflow:hidden;
+            }
+        }
+    }
 }
 // ================== events = end =========================
 
@@ -945,16 +949,20 @@ body{
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ====================== footer = begin =====================
 .znu-2016-footer-bg{
-	background-color:$znu-color-blue;
+    background-color:$znu-color-blue;
     .znu-2016-main{
-	   background-color:$znu-color-blue;
-	}
+        background-color:$znu-color-blue;
+    }
 }
 .znu-2016-block-footer{
-	@extend .row;
-	border-top: 1px solid rgba(56, 82, 166, 0.5);
+    @extend .row;
+    border-top: 1px solid rgba(56, 82, 166, 0.5);
     padding-top:1rem;
     padding-bottom:1rem;
+    img{
+        width: 7rem;
+        float: right;
+    }
 
 }
 .znu-2016-block-footer-col{
@@ -966,7 +974,11 @@ body{
     color:$znu-color-white;
     a{
         display:inline-block;
-        @include link-style($znu-color-white,$znu-color-blue-light1, $znu-color-white);
+        @include link-style($znu-color-white,$znu-color-white-light, $znu-color-white);
+    }
+    .social{
+        font-size: 2rem;
+        margin: 0 0.5rem 0 0.5rem;
     }
 }
 // ====================== footer = end =======================
@@ -980,37 +992,52 @@ body{
 // ====================== bottom links = begin ===============
 
 .znu-2016-block-links{
-	@extend .row;
-	background-color:$znu-color-white;
-	box-shadow: $znu-shadow-box;
+    @extend .row;
+    background-color:$znu-color-white-light;
+    box-shadow: $znu-shadow-box;
 
-	margin-bottom: 1rem;
+    margin-bottom: 1rem;
 
-	.znu-2016-block-banner{
-		//@extend .row;
-		padding-bottom:1rem;
-		//background-color:$znu-color-white;
-		//box-shadow: $znu-shadow-box;
-		margin-bottom: 1rem;
-	}
-	.znu-2016-one-banner{
+    .znu-2016-block-banner{
+        padding-bottom:1rem;
+        margin-bottom: 1rem;
+    }
+    .znu-2016-one-banner{
 
-		@include make-xs-column(6);
-		@include make-sm-column(6);
-		@include make-md-column(3);
-		@include make-lg-column(3);
+        @include make-xs-column(12);
+        @include make-sm-column(6);
+        @include make-md-column(3);
+        @include make-lg-column(3);
 
-		display: block;
-		img{
-			height: 4rem; ///////////////////////////////////////////////////////////для разных тпо размеру( убрат елси одинаковые)
-			//width:60%;
-			color-rendering: rgba(255, 255, 255, 0.2) ;
-		}
-		a{
-			border:none;
-		}
-	}
+        margin: 1rem 0 1rem 0;
+        display: block;
+
+        img {
+            max-width:100%;
+        }
+        /*		
+                        .mon{
+                                padding: 1rem 4rem 1rem 4rem;
+                        }
+                        .soc{
+                                padding: 1rem 4rem 1rem 3rem;
+                        }
+                        .os{
+                                padding: 1rem 4rem 1rem 4rem;
+                        }*/
+
+        a{
+            border:none;
+            background-color: $znu-color-blue;
+            display: inline-block;
+            width:96%;
+            padding:0.5rem 2%;
+            text-align:center;
+            height:8rem;
+        }
+    }
 }
+
 .znu-2016-block-links-col{
     @include make-xs-column(12);
     @include make-sm-column(6);
@@ -1019,21 +1046,21 @@ body{
     margin-bottom:2rem;
 
     h3{
-		color:$znu-color-blue;
-		padding-bottom: 2rem;
-		border-bottom: 1px solid rgba(56, 82, 166, 0.5);
+        color:$znu-color-blue;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(56, 82, 166, 0.5);
     }
     ul{
-       padding-left:0;
-       list-style: none; //outside none circle !important;
-       color:$znu-color-white;
+        padding-left:0;
+        list-style: none; //outside none circle !important;
+        color:rgb(255 255 225, 0.2);
     }
     .znu-2016-block-links-one{
         margin-bottom:1rem;
     }
     a{
-       @include link-style($znu-color-blue,$znu-color-blue, $znu-color-blue);
-		text-decoration: none;
+        @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+        text-decoration: none;
     }
 }
 // ====================== bottom links = end =================
@@ -1051,289 +1078,410 @@ body{
 
 // ============= banners = end ===============================
 
-
-
-
-
-.znu-2016-block-calendar-row{
-    @extend .row;
-    
-    margin-top:1rem;
-}
-
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// ============= breadcrumbs = begin =========================
-.znu-2016-breadcrumbs{
-    @extend .row;
-    background-color:$znu-color-white;
-    //margin-top:1rem;
-	margin-bottom: 2rem;
-	padding-left: 1rem;
-
-}
-.znu-2016-breadcrumbs-col{
-    @include make-xs-column(12);
-    @include make-sm-column(12);
-    @include make-md-column(12);
-    @include make-lg-column(12);
-
-	a{
-	   @include link-style($znu-color-blue-2,$znu-color-blue-dark);
-	}
-	.current{
-	}
-}
-// ============= breadcrumbs = end ===========================
-
-
-
-
-
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ============= page = begin ================================
-.znu-2016-block-page{
+.znu-2016-block-page {
     @extend .row;
-    background-color:$znu-color-white;
-    margin-bottom:1rem;
-    padding-bottom:2rem;
-	box-shadow: $znu-shadow-box;
-}
-.znu-2016-page-col{
-    @include make-xs-column(12);
-    @include make-sm-column(12);
-    @include make-md-column(12);
-    @include make-lg-column(12);
-	padding-left: 3rem;
-	padding-right: 3rem;
-	a{
-	   @include link-style($znu-color-blue,$znu-color-blue-1, $znu-color-rose-dark);
-	}
-	.znu-2016-block-page-header{
-		h1{
-			margin-bottom: 0.2rem;
-		    font-size:2rem;
-			@media (min-width: $screen-sm-min) {
-			   font-size:2.5rem;
-			}
+    margin-bottom: 1rem;
 
-			@media (min-width: $screen-md-min) {
-			   font-size:3rem;
-			}
+    
+    // есть позразделы и содержание
+    .znu-2016-breadcrumbs-ch-content{
+        @include make-xs-column(12);
+        @include make-sm-column(9);
+        @include make-md-column(9);
+        @include make-lg-column(9);        
+    }
 
-			@media (min-width: $screen-lg-min) {
-			   font-size:3.5rem;
-			}
-		}
-	}
+    // есть только позразделы
+    .znu-2016-breadcrumbs-ch-nocontent{
+        @include make-xs-column(12);
+        @include make-sm-column(12);
+        @include make-md-column(12);
+        @include make-lg-column(12);        
+    }
+    
+    // есть только содержание
+    .znu-2016-breadcrumbs-noch-content{
+        @include make-xs-column(12);
+        @include make-sm-column(12);
+        @include make-md-column(12);
+        @include make-lg-column(12);        
+    }
+    
+    .znu-2016-breadcrumbs {
+        margin-bottom: 1rem;
+        padding-right: 0;
+        padding-left: 0;
+        position: relative;
+        .znu-2016-breadcrumbs-col {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 1rem 3rem 1rem 3rem;
+            box-shadow: 0px 1px 5px -1px rgba(0, 0, 0, 0.14);
 
-	.znu-2016-block-page-content{
-
-	    font-size:$font-size-base;
-
-		@media (min-width: $screen-sm-min) {
-		   font-size:$font-size-base;
-		}
-
-		@media (min-width: $screen-md-min) {
-		   font-size:$font-size-base;
-		}
-
-		@media (min-width: $screen-lg-min) {
-		   font-size:$font-size-base+2pt;
-		}
-
-		.highlight{
-		    padding:1rem;
-		    margin:0 0 1rem 0;
-			ul{
-				list-style: none;
-				padding-left: 0rem;
-			}
-			@media (min-width: $screen-sm-min) {
-			    width:50%;
-			    float:right;
-			    margin:0 0 2rem 2rem;
-			}
-
-			@media (min-width: $screen-md-min) {
-			    width:35%;
-			}
-
-			@media (min-width: $screen-lg-min) {
-			    width:35%;
-			}
-
-		}
-		.highlight1{
-		   background-color:$znu-color-blue-light2;
-
-		}
-		.highlight2{
-		   background-color:$znu-color-green-light1;
-			list-style: none;
-		}
-		.highlight3{
-		   background-color:$znu-color-sand-light1;
-			list-style: none;
-		}
-
-		.spoiler{
-			display:none;
-			padding:1rem;
-			height:1rem;
-			opacity:0;
-			overflow:hidden;
-			transition: height 2s ease-in-out 0;
-		}
-		.spoiler.visible{
-		    display:block;
-		    height:auto;
-		    opacity:1;
-		    transition: height 2s ease-in-out 0;
-		}
-
-		input[type="submit"]{
-		    background-color:$znu-color-blue-light1;
-		    color:$znu-color-white;
-		    //border:2px solid $znu-color-blue;
-
-		    &:hover, &:focus{
-			    background-color:$znu-color-blue-1;
-			    //border-color:$znu-color-blue-1;
-		    }
-		}
-		input[type="text"]{
-		    //border:1px solid $znu-color-blue;
-		    background-color:$znu-color-blue-light1;
-		    &:hover, &:focus{
-			   // border-color:$znu-color-blue-1;
-			    background-color:$znu-color-blue-light2;
-		    }		    
-		}
-
-        img{
-            max-width:100%;
+            a {
+                @include link-style($znu-color-blue-2, $znu-color-blue-dark);
+            }
+            .current {
+            }
         }
-        img[align="right"]{
-            margin:0 0 2rem 2rem;
-            clear:right;
+    }
+
+
+    // есть позразделы и содержание
+    .znu-2016-block-page-content-ch-content{
+        @include make-xs-column(12);
+        @include make-sm-column(9);
+        @include make-md-column(9);
+        @include make-lg-column(9);
+    }
+    
+    // есть только позразделы
+    .znu-2016-block-page-content-ch-nocontent{
+        @include make-xs-column(12);
+        @include make-sm-column(12);
+        @include make-md-column(12);
+        @include make-lg-column(12);
+    }
+    // есть только содержание
+    .znu-2016-block-page-content-noch-content{
+        @include make-xs-column(12);
+        @include make-sm-column(12);
+        @include make-md-column(12);
+        @include make-lg-column(12);        
+    }
+    
+    .znu-2016-block-page-content {
+
+        @media (min-width: $screen-xs-min) {
+            padding-right: 2rem;
+            padding-left: 2rem;
+        }
+        @media (min-width: $screen-sm-min) {
+            padding-right: 2rem;
+            padding-left: 2rem;
         }
 
-        .content-row{
+        @media (min-width: $screen-md-min) {
+            padding-right: 2rem;
+            padding-left: 2rem;
+        }
+
+        @media (min-width: $screen-lg-min) {
+            padding-right: 3rem;
+            padding-left: 3rem;
+        }
+
+
+        .znu-2016-page-header {
+            a {
+                @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+            }
+            .znu-2016-block-page-header {
+                h1 {
+                    font-size: 2rem;
+                    @media (min-width: $screen-sm-min) {
+                        font-size: 2.5rem;
+                    }
+                    @media (min-width: $screen-md-min) {
+                        font-size: 3rem;
+                    }
+                    @media (min-width: $screen-lg-min) {
+                        font-size: 3.5rem;
+                    }
+                }
+            }
+        }
+        .search{
+            vertical-align: middle;
+            white-space: nowrap;
+            position: relative;
+            float: right;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+
+            .button{
+                background-color:$znu-color-white-light;
+                border: none;
+                font-size: 90%;
+                i{
+                    color: $znu-color-blue;
+                    position: relative;
+                    margin-top: 0.4rem;
+                }
+            }
+        }
+        .search input#search{
+            height: 2.2rem;
+            background: $znu-color-white-light;
+            border: none;
+            float: left;
+            color: $znu-color-blue;
+            padding: 0 0 0 1rem;
+            width: 100%;
+        }
+        input[type="search"]::-webkit-input-placeholder {color:$znu-color-blue-light; opacity: 0.5}
+        input[type="search"]::-moz-placeholder          {color:$znu-color-blue-light; opacity: 0.5}/* Firefox 19+ */
+        input[type="search"]:-moz-placeholder           {color:$znu-color-blue-light; opacity: 0.5}/* Firefox 18- */
+        input[type="search"]:-ms-input-placeholder      {color:$znu-color-blue-light; opacity: 0.5}
+
+        background-color: $znu-color-white-light;
+        margin-bottom: 1rem;
+        box-shadow: $znu-shadow-box;
+        font-size: $font-size-base;
+
+        @media (min-width: $screen-sm-min) {
+            font-size: $font-size-base;
+        }
+
+        @media (min-width: $screen-md-min) {
+            font-size: $font-size-base;
+        }
+
+        @media (min-width: $screen-lg-min) {
+            font-size: $font-size-base+2pt;
+        }
+
+        .highlight {
+            padding: 1rem;
+            margin: 0 0 1rem 0;
+            ul {
+                list-style: none;
+                padding-left: 0rem;
+            }
+            @media (min-width: $screen-sm-min) {
+                width: 50%;
+                float: right;
+                margin: 0 0 2rem 2rem;
+            }
+
+            @media (min-width: $screen-md-min) {
+                width: 35%;
+            }
+
+            @media (min-width: $screen-lg-min) {
+                width: 35%;
+            }
+
+        }
+        .highlight1 {
+            background-color: $znu-color-blue-light2;
+
+        }
+        .highlight2 {
+            background-color: $znu-color-green-light1;
+            list-style: none;
+        }
+        .highlight3 {
+            background-color: $znu-color-sand-light1;
+            list-style: none;
+        }
+
+        .spoiler {
+            display: none;
+            padding: 1rem;
+            height: 1rem;
+            opacity: 0;
+            overflow: hidden;
+            transition: height 2s ease-in-out 0;
+        }
+        .spoiler.visible {
+            display: block;
+            height: auto;
+            opacity: 1;
+            transition: height 2s ease-in-out 0;
+        }
+
+        input[type="submit"] {
+            background-color: $znu-color-blue-light1;
+            color: $znu-color-white-light;
+            &:hover, &:focus {
+                background-color: $znu-color-blue-1;
+            }
+        }
+        input[type="text"] {
+            background-color: $znu-color-blue-light1;
+            &:hover, &:focus {
+                background-color: $znu-color-blue-light2;
+            }
+        }
+
+        img {
+            max-width: 100%;
+            margin: 1rem 0 1rem 0;
+        }
+        img[align="right"] {
+            margin: 0 0 2rem 2rem;
+            clear: right;
+        }
+
+        .content-row {
             @extend .row;
-            margin:0rem;
-            .left-col-4{
-			    @include make-xs-column(12);
-			    @include make-sm-column(6);
-			    @include make-md-column(4);
-			    @include make-lg-column(4);
-			    padding-left:0rem;
+            margin: 0rem;
+            .left-col-4 {
+                @include make-xs-column(12);
+                @include make-sm-column(6);
+                @include make-md-column(4);
+                @include make-lg-column(4);
+                padding-left: 0rem;
             }
-            .right-col-8{
-			    @include make-xs-column(12);
-			    @include make-sm-column(6);
-			    @include make-md-column(8);
-			    @include make-lg-column(8);            
-			    padding-right:0rem;
+            .right-col-8 {
+                @include make-xs-column(12);
+                @include make-sm-column(6);
+                @include make-md-column(8);
+                @include make-lg-column(8);
+                padding-right: 0rem;
             }
 
-            .left-col-2{
-			    @include make-xs-column(12);
-			    @include make-sm-column(4);
-			    @include make-md-column(2);
-			    @include make-lg-column(2);
-			    padding-left:0rem;
+            .left-col-2 {
+                @include make-xs-column(12);
+                @include make-sm-column(4);
+                @include make-md-column(2);
+                @include make-lg-column(2);
+                padding-left: 0rem;
 
             }
-            .right-col-10{
-			    @include make-xs-column(12);
-			    @include make-sm-column(8);
-			    @include make-md-column(10);
-			    @include make-lg-column(10);            
-			    padding-right:0rem;
+            .right-col-10 {
+                @include make-xs-column(12);
+                @include make-sm-column(8);
+                @include make-md-column(10);
+                @include make-lg-column(10);
+                padding-right: 0rem;
 
-                
-			    @media (max-width: $screen-sm-min) {
-			        padding-left:0rem;
-    			}
-
-
+                @media (max-width: $screen-sm-min) {
+                    padding-left: 0rem;
+                }
             }
         }
 
-		.subcategories-bg{
-		    background-position:left center;
-		    background-size:cover;
+        .category-content{
+            margin: 2rem 2rem 2rem 2rem;
+        }
 
-            @extend .row;
+        .data-container{
+            text-align:right;
+        }
+        
+        
+        
+        
+        
+        
+    }
 
-            margin:0 0 2rem 0;
-            .subcategories{
-			    @include make-xs-column(12);
-			    @include make-sm-column(6);
-			    @include make-md-column(4);
-			    @include make-lg-column(4);
-				
-				padding-left:0px;
+    
+    // есть позразделы и содержание
+    .subcategories {
+        @include make-xs-column(12);
+        @include make-sm-column(3);
+        @include make-md-column(3);
+        @include make-lg-column(3);
 
-				a{
-				   @include link-style($znu-color-blue,$znu-color-blue, $znu-color-rose-dark);
-					text-decoration: none;
-				}
-		        ul{
-			        background-color:rgba(255,255,255,0.8);
-			        padding:1rem 2rem;
-			        margin-bottom:0rem;
-					text-decoration: none;
-					list-style: none;
-				}
-				.category-child{
-				    position:relative;
-     	            padding-left:0.3rem;
-		            padding-right:0.3rem;
+        @media (min-width: $screen-xs-min){
+            padding: 0 0 0 0;
+            margin: 0 0 2rem 0;
+            //margin-bottom: 2rem;
+        }
 
+        @media (min-width: $screen-sm-min) {
+            margin-bottom: 2rem;
+            padding-right: 2rem;
+        }
+        @media (min-width: $screen-md-min) {
+            margin-bottom: 2rem;
+            padding-right: 2rem;
+        }
+        @media (min-width: $screen-lg-min) {
+            margin-bottom: 2rem;
+            padding-right: 2rem;
+        }
 
-			       .category-grandchildren{
-			           padding-top:1rem;
-			           padding-bottom:1rem;
-			           padding-right:2rem;
-			           display:none;
-			           position:absolute;
-			           z-index:100;
-			           width:400px;
-			           max-width:auto;
-			           left:30px;
-			           li{
-			             padding-left:0.3rem;
-			             padding-right:0.3rem;
-			             font-size:90%;
-			             margin-bottom:0.5rem;
-						   text-decoration: none;
-			           }
-			           li:hover{
-						   background-color:$znu-color-white;
-						   text-decoration: none;
-			              
-			           }
-			           .more-grandchildren{
-			               text-align:center;
-			               background-color:$znu-color-white;
-			               &:hover{
-			                   background-color:$znu-color-green-light1;
-			               }
-			           }
-	 		        }
-				    &:hover{
-				       .category-grandchildren{
-				           display:block;
-				       }
-				    }
-				}
-			}
-		}
-	}
+        margin-bottom: 2rem;
+        .text{
+            padding: 0.5rem 2rem 0.5rem 2rem;
+            @media (min-width: $screen-xs-min){
+                font-size:100%;
+            }
+            @media (min-width: $screen-sm-min){
+                font-size:110%;
+            }
+            @media (min-width: $screen-md-min){
+                font-size:120%;
+            }
+            @media (min-width: $screen-lg-min){
+                font-size:130%;
+            }
+        }
+        #sub {
+            background-color: rgba(255, 255, 255, 0.2);
+            height: 100%;
+            box-shadow: $znu-shadow-box;
+            padding: 0 0 0 0;
+        }
+        a {
+            @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-rose-dark);
+            text-decoration: none;
+            @media (min-width: $screen-xs-min){
+                font-size:100%;
+            }
+            @media (min-width: $screen-sm-min){
+                font-size:110%;
+            }
+            @media (min-width: $screen-md-min){
+                font-size:120%;
+            }
+            @media (min-width: $screen-lg-min){
+                font-size:130%;
+            }
+        }
+        ul {
+            display: block;
+            margin-bottom: 0rem;
+            text-decoration: none;
+            list-style: none;
+        }
+        li{
+            padding: 0.5rem 2rem 0.5rem 2rem;
+            &:hover {
+                background-color: #ddd;
+                text-decoration: none;
+            }
+        }
+        .category-child {
+            .category-grandchildren {
+                background-color: #f9f9f9;
+                display: none;
+                position: absolute;
+                z-index: 100;
+                width: 400px;
+                left: 30px;
+                li {
+                    font-size: 90%;
+                    margin-bottom: 0.5rem;
+                    text-decoration: none;
+                    padding: 0.5rem 2rem 0.5rem 2rem;
+                }
+                li:hover {
+                    background-color: #ddd;
+                    text-decoration: none;
+                }
+                .more-grandchildren {
+                    text-align: center;
+                    &:hover {
+                        background-color: $znu-color-green-light1;
+                    }
+                }
+            }
+            &:hover {
+                .category-grandchildren {
+                    display: block;
+                    padding: 0 0 0 0;
+                }
+            }
+        }
+    }
 }
+
+
 // ============= page = end ==================================
+
