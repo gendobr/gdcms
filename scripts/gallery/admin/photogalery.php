@@ -108,15 +108,14 @@ if (isset($_REQUEST['vvv']))
         $delit = '';
         $delit = join(',', $vvv);
 
-        $resultt = \e::db_execute("SELECT * FROM {$table_prefix}photogalery  WHERE id in($delit)");
-        $a = mysql_num_rows($resultt);
-        while ($roww = mysql_fetch_array($resultt)) {
+        $resultt = \e::db_getrows("SELECT * FROM <<tp>>photogalery  WHERE id in($delit)");
+        foreach ($resultt as $roww) {
             $photoss = $roww['photos'];
             $photoss1 = $roww['photos_m'];
             @unlink(\e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/gallery/' . $photoss);
             @unlink(\e::config('SITES_ROOT') . '/' . $this_site_info['dir'] . '/gallery/' . $photoss1);
         }
-        mysql_query("DELETE FROM {$table_prefix}photogalery WHERE id in($delit)");
+        \e::db_execute("DELETE FROM <<tp>>photogalery WHERE id in($delit)");
         $vyvid .= $text['Gallery_deleted_images'] . ":";
         $vyvid .= "$delit";
     }

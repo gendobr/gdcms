@@ -124,7 +124,7 @@ input, select{
 div.comments{}
 div.label,div.big,div.comments{padding:3px;background-color:#eeeeee;}
 
-div.big{font-size:110%;margin-top:0px;}
+div.big{font-size:110%;margin-top:0px;margin-bottom:0px;}
 
 div.label{margin-top:10pt;margin-bottom:0px;font-weight:normal;}
 

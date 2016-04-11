@@ -46,16 +46,19 @@ function export_page($_page_id, $_lang) {
     //    //------------------- check permission - end ---------------------------------
     ## at this line the permission is checked
     // -------------------------- get page template - begin ----------------------
-    $custom_page_template = '';
-    foreach ($this_page_info['templates'] as $tpl) {
-        if (is_file($tmp = $this_site_info['site_root_dir'] . '/' . $tpl)) {
-            $custom_page_template = $tmp;
-            break;
+    $this_page_info['template'] = $this_site_info['template'];
+    $this_page_info['subtemplate'] = false;
+
+    for($i=count($this_page_info['templates'])-1; $i>=0; $i--){
+        $tmp1=$this_site_info['site_root_dir'] . '/' . $this_page_info['templates'][$i];
+        if (is_file($tmp1)) {
+            $this_page_info['template'] = $tmp1;
+        }
+        $tmp2=$this_site_info['site_root_dir'] . '/' . $this_page_info['subtemplates'][$i];
+        if (is_file($tmp2)) {
+            $this_page_info['subtemplate'] = $tmp2;
         }
     }
-    if (strlen($custom_page_template) > 0)
-        $this_site_info['template'] = $custom_page_template;
-    //prn('$this_site_info[template]=',$this_site_info['template']);
     // -------------------------- get page template - end ------------------------
     //--------------------------- language selector - begin ----------------------
     $lang_list = \e::db_getrows("SELECT * FROM {$table_prefix}page WHERE id={$this_page_info['id']} AND cense_level>={$this_site_info['cense_level']}");
@@ -88,15 +91,30 @@ function export_page($_page_id, $_lang) {
     }
 
     //------------------------ draw using SMARTY template - begin ----------------
+    //
+    //
     //prn($lang_list);
     $this_page_info['editURL']=site_URL."?action=site/page/edit&page_id={$this_page_info['id']}&aed=1&lang={$this_page_info['lang']}&aed=0";
-    $file_content = process_template($this_site_info['template']
+
+    if($this_page_info['subtemplate']){
+        $page_content = process_template($this_page_info['subtemplate']
+            , Array(
+                'page' => $this_page_info
+                , 'site' => $this_site_info
+                , 'lang' => $lang_list
+                , 'menu' => $menu_groups
+                , 'site_root_url' => site_public_URL
+                , 'text' => load_msg($this_page_info['lang'])
+            ));
+        $this_page_info['content']=$page_content;
+    }
+    $file_content = process_template($this_page_info['template']
             , Array(
         'page' => $this_page_info
         , 'lang' => $lang_list
         , 'site' => $this_site_info
         , 'menu' => $menu_groups
-        , 'site_root_url' => site_root_URL
+        , 'site_root_url' => site_public_URL
         , 'text' => load_msg($this_page_info['lang'])
             ));
     //------------------------ draw using SMARTY template - end ------------------

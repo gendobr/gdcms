@@ -517,7 +517,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
 
   <div class=label>".$text['Page_Category']." : </div>
   <div class=big>
-     <select name=page_category>
+     <select name=page_category id=page_category>
     <option value=''></option>".
     draw_options($this_page_info['category_id'],$list_of_categories)
     ."</select>
@@ -606,15 +606,18 @@ if(!isset($file_upload_form)) $file_upload_form='';
 
   <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/markitup/skins/simple/style.css\" />
   <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/markitup/sets/html/style.css\" />
+  <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/select2/css/select2.min.css\" />
 
   <script type=\"text/javascript\" charset=\"".site_charset."\" src=\"./scripts/lib/markitup/jquery.markitup.js\"></script>
   <script type=\"text/javascript\" charset=\"".site_charset."\" src=\"./scripts/lib/markitup/sets/html/set.js\"></script>
   <script type=\"text/javascript\" charset=\"".site_charset."\" src=\"./scripts/lib/markitup.js\"></script>
   <script type=\"text/javascript\" charset=\"".site_charset."\" src=\"./scripts/lib/choose_links.js\"></script>
+  <script type=\"text/javascript\" charset=\"".site_charset."\" src=\"./scripts/lib/select2/js/select2.full.min.js\"></script>
   <script type=\"text/javascript\">
       $(function(){
           init_links();
           $('textarea.wysiswyg').markItUp(mySettings);
+          $('#page_category').select2();
       });
   </script>
   ";

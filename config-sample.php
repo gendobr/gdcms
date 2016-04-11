@@ -13,7 +13,8 @@ define('site_charset', 'UTF-8');
 
 //------------------------ URLs - begin ----------------------------------------
 define('site_root_URL', "http" . (isset($_SERVER['HTTPS']) ? 's' : '') . "://{$_SERVER['HTTP_HOST']}/cms"); // ZSU
-define('site_public_URL', "http://{$_SERVER['HTTP_HOST']}/cms"); // ZSU
+//define('site_public_URL', "http://{$_SERVER['HTTP_HOST']}/cms"); // ZSU
+define('site_public_URL', "http://gen.znu.edu.ua/cms"); // ZSU
 
 $config->APPLICATION_URL=site_root_URL;
 

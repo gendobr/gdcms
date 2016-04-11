@@ -3,275 +3,100 @@
 <title>{$page.title}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="{$site_root_url}/templates/ZNU_3/styles.css" type="text/css">
+<style>
+{literal}
+div.shapka{display:inline-block;width:100%; height:274px;position:relative;}
+   body { background: #f0f0f0; }
+   @media screen and (min-width: 901px) {
+     
+	 .shapka h1{margin-left:300px; margin-right:300px;font-size:20pt;margin-top:30px;}
+	 .con_m{display:inline-block;width:20%;}
+	 .con_b{display:inline-block;width:78%;}
+   }
+   @media screen and (min-width : 701px) and (max-width : 900px){
+     .kart2 {display:none;}
+	 .shapka h1{margin-left:300px; margin-right:40px;font-size:20pt;margin-top:30px;}
+	 .con_m{display:inline-block;width:30%;}
+	 .con_b{display:inline-block;width:68%;}
+   }
+   @media screen and (max-width : 700px){
+     .kart1{display:none;}
+	 .kart2{display:none;}
+	 .shapka h1{margin-left:40px; margin-right:40px;font-size:18pt;margin-top:20px;}
+	 .con_m{display:inline-block;width:40%;}
+	 .con_b{display:inline-block;width:58%;}
+   }
+.kart1{position:absolute; width:274px; height:221px; top:0;left:0;}
+.kart2{position:absolute; width:276px; height:219px; top:0;right:0;}
+.lang{position:absolute; padding:2px; top:0;right:160px;}
+   {/literal}
+  </style>
 </head>
 <body leftmargin="0" topmargin="0">
 
 <!-- початок великої світлозеленої таблиці -->
 
-<table border="0" cellpadding="0" cellspacing="0" width="100%" height="10">
-<tr><td class="a" style="background-image: url({$site_root_url}/templates/ZNU_3/verh_line.gif);" colspan="3"><img src="{$site_root_url}/templates/ZNU_3/verh_line.gif"></td></tr>
-
-<!-- початок верхнього блоку -->
-
-<tr><td class="a" width="274" style="background-image: url({$site_root_url}/templates/ZNU_3/center_line.gif);"><img src="{$site_root_url}/templates/ZNU_3/logo.ukr.gif" width="274" height="221"></td><td class="a" style="background-image: url({$site_root_url}/templates/ZNU_3/center_line.gif);" valign="top" align="right" width="60%">
-
-<!-- початок блоку мов -->
+<div style="display:inline-block;width:100%; background-image: url('{$site_root_url}/templates/ZNU_3/verh_line.gif');height:10px;">
+</div>
+<div class="shapka" style="background-image: url({$site_root_url}/templates/ZNU_3/center_line.gif);">
+	<h1 style="color:#E8EEF0;">{$site.title}</h1>
+	<div class="kart1" style="background-image: url('{$site_root_url}/templates/ZNU_3/logo.ukr.gif')"></div>
+	<div class="kart2" style="background-image: url('{$site_root_url}/templates/ZNU_3/image.gif')"></div>
+	<div class="lang">
+		<!-- початок блоку мов -->
 {* ------------------------ language selector - begin ----------------------- *}
-   {section name=l_id loop=$lang}
-     <a href="{$lang[l_id].url}"><img src="{$site_root_url}/templates/ZNU_3/fl_{$lang[l_id].lang}_a.gif" border="0" width=23px height=15px></a>
-   {/section}&nbsp;&nbsp;
+   {foreach from=$lang key=ke item=ln}
+                                            {if $ln.lang eq $text.language_name}
+                                                <span class="lang {$ln.lang} active">{$ln.lang}</span>
+                                            {else}
+                                                <a href="{$ln.url}" class="lang {$ln.lang}">{$ln.lang}</a>
+                                            {/if}
+   {/foreach}
 {* ------------------------ language selector - end ------------------------- *}
-<!-- кінець блоку мов -->
+		<!-- кінець блоку мов -->
+	</div>
+</div>
 
-</td><td class="a" style="background-image: url({$site_root_url}/templates/ZNU_3/center_line.gif);" valign="top" align="right" width="176"><img src="{$site_root_url}/templates/ZNU_3/image.gif" width="276" height="219"></td></tr>
 
-<!-- кінець верхнього блоку -->
 <!-- початок основного текстового блоку -->
-<tr><td class="a" colspan="3" valign="top">
-
-
-
-<table border="0" cellpadding="0" cellspacing="0">
-<!-- початок лівого блоку -->
-<tr><td class="a" width="5%" valign="top">
-      <table border="0" cellpadding="5" cellspacing="5">
-      <!-- початок 1 елементу лівого блоку -->
-      <tr>
-      <td class="b" width="100%"  style="background-image: url({$site_root_url}/templates/ZNU_3/rozdil.gif); background-position: top,left; background-repeat: no-repeat; background-color: #ffffff; border-top-color: #D1DFE0;">
-      <br>
-      <nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/main/">{$text.znu3_Main_Page}</a></nobr><br/>
-      <nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/university">{$text.znu3_University}</a></nobr><br/>
-      <nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/science">{$text.znu3_Science_and_study}</a></nobr><br/>
-      <nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/pk">{$text.znu3_Entrance_Commitee}</a></nobr><br/>
-      <nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/international">{$text.znu3_International}</a></nobr><br/>
-      <nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/departments">{$text.znu3_Departments}</a></nobr><br/>
-      <nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/filialy">{$text.znu3_Branches}</a></nobr><br/>
-      <nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/diff">{$text.znu3_Out_of_lectures}</a></nobr><br/>
-      </td>
-      </tr>
-      <!-- кінець 1 елементу лівого блоку -->
-      
-      <!-- початок 2 елементу лівого блоку -->
-      <tr><td class="b" width="100%"><!-- 
-       --><nobr><a href="http://sites.zsu.zp.ua/news.php?site_id=27&lang={$text.language_name}">{$text.znu3_News}</a></nobr><br/><!-- 
-       --><nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/main/contacts/">{$text.znu3_Contacts}</a></nobr><br/><!-- 
-       --><nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/main/sitemap/">{$text.znu3_Sitemap}</a></nobr><br/><!-- 
-       --><nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/main/links/">{$text.znu3_Links}</a></nobr><br/><!-- 
-       --><nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/main/guestbook/">{$text.znu3_Guestbook}</a></nobr><br/><!-- 
-       --><nobr><a href="http://www.zsu.edu.ua/contacts/index.php?action=guest/msg&contact_id=97">{$text.znu3_Feedback}</a></nobr><br/><!-- 
-       --><nobr><a href="http://sites.zsu.zp.ua/forum.php?site_id=20&lang={$text.language_name}&interface_lang={$text.language_name}">{$text.znu3_Forum}</a></nobr><br/><!-- 
-       --><nobr><a href="http://www.zsu.edu.ua/{$text.language_name}/main/search">{$text.znu3_Search}</a></nobr><br/><!-- 
-       --></td></tr>
-      <!-- кінець 2 елементу лівого блоку -->
-      
-      <!-- початок елементу "підрозділи" лівого блоку -->
-      {section name=mid loop=$menu}
-            <tr>
-            <td class="b" width="100%">
+<div style="display:inline-block;width:100%;">
+	<div class="con_m" style="vertical-align: top;">
+		<div style="background-image: url('{$site_root_url}/templates/ZNU_3/rozdil.gif'); background-position: top,left; background-repeat: no-repeat; background-color: #ffffff; border-top-color: #D1DFE0;margin:10px;padding:0px; border: solid 1pt;padding: 5pt;border-color: #003333;border-top:none;">
+		<br>
+		<!-- початок елементу "підрозділи" лівого блоку -->
+		 {section name=mid loop=$menu}
+            
             <b>{$menu[mid].html}</b><br />
             {section name=miid loop=$menu[mid].items}
               <a href="{$menu[mid].items[miid].url}" title="{$menu[mid].items[miid].description}" {$menu[mid].items[miid].attributes}  class="si">{$menu[mid].items[miid].html}</a><br />
             {/section}
-            </td></tr>
-      {/section}
-      <!-- кінець елементу "підрозділи" лівого блоку -->
+            
+		  {/section}
+		 <!-- кінець елементу "підрозділи" лівого блоку -->
+		 <br>
+		</div>
+	</div>
+	<div class="con_b">
+		<div style="background-color: #ffffff; border: solid 1pt;margin:10px;padding:10px;border-color: #003333;">
+		<br>
+			<h2>{$page.title}</h2>
+			{$page.content}
+			<br>
+		</div>
 
-      <!-- початок елементу "лічильники" лівого блоку -->
-      <tr>
-      <td class="b" width="100%">
-{*======================== counters - begin ====================================*}
-{literal}
-<TABLE cellSpacing=0 cellPadding=0 align=center border=0>
-<TBODY>
-<TR>
-<TD align=center>
-
-<!-- BEGIN OF PING CODE -->
-<A HREF="http://www.topping.com.ua/" target="_top">
-<font size="1" color="#006ca8">
-<script>
-//<!--
-id='020802140946';
-img='count3';
-an=navigator.appName; d=document;  w=''; c='';
-script='http://counter.topping.com.ua:80/cgi-bin/pinger.cgi';
-function ping() {
-d.write("<img src=\""+script+"?id="+id+"&img="+img+"&w="+w+"&c="+c+"&ref="+escape(d.referrer)+"\" width=81 height=63 border=0 alt=\"Rated by PING\"></a>");
-}
-//-->
-</script>
-<script language="javascript1.2">
-//<!--
-s=screen;
-w=s.width;
-an!="Netscape"?c=s.colorDepth:c=s.pixelDepth
-//-->
-</script>
-<script>
-//<!--
-ping()
-//-->
-</script>
-<noscript>
-<img src="http://counter.topping.com.ua:80/cgi-bin/ping.cgi?020802140946;count3" width=81 height=63 border=0 alt="Rated by PING">
-</noscript></a>
-</FONT>
-<!-- END OF PING CODE -->
-</TD>
-</tr>
-<tr>
-<TD vAlign=bottom align=center>
-
-<!--Rating@Mail.ru COUNTER--><script language="JavaScript"><!--
-d=document;a='';a+=';r='+escape(d.referrer)
-js=10//--></script><script language="JavaScript1.1"><!--
-a+=';j='+navigator.javaEnabled()
-js=11//--></script><script language="JavaScript1.2"><!--
-s=screen;a+=';s='+s.width+'*'+s.height
-a+=';d='+(s.colorDepth?s.colorDepth:s.pixelDepth)
-js=12//--></script><script language="JavaScript1.3"><!--
-js=13//--></script><script language="JavaScript"><!--
-d.write('<a href="http://top.mail.ru/jump?from=308846"'+
-' target=_top><img src="http://top.list.ru/counter'+
-'?id=308846;t=131;js='+js+a+';rand='+Math.random()+
-'" alt="Rating@Mail.ru"'+' border=0 height=40 width=88></a>')
-if(js>11)d.write('<'+'!-- ')//--></script><noscript><a
-target=_top href="http://top.mail.ru/jump?from=308846"><img
-src="http://top.list.ru/counter?js=na;id=308846;t=131"
-border=0 height=40 width=88
-alt="Rating@Mail.ru"></a></noscript><script language="JavaScript"><!--
-if(js>11)d.write('--'+'>')//--></script><!--/COUNTER-->
-
-</TD></TR>
-        <TR>
-          <TD align=left align=center>
-          
-<!-- bigmir)net TOP 100 --><a href=http://www.bigmir.net/?cl=24184 target=_blank><script language="javascript"><!--
-bmQ='<img src=http://c.bigmir.net/?s24184&t10'
-bmD=document
-bmD.cookie="b=b"
-if(bmD.cookie)bmQ+='&c1'
-//--></script><script language="javascript1.2"><!-- 
-bmS=screen;bmQ+='&d'+(bmS.colorDepth?bmS.colorDepth:bmS.pixelDepth)+"&r"+bmS.width;
-//--></script><script language="javascript"><!--
-bmF = bmD.referrer.slice(7);
-((bmI=bmF.indexOf('/'))!=-1)?(bmF=bmF.substring(0,bmI)):(bmI=bmF.length);
-if(bmF!=window.location.href.substring(7,7+bmI))bmQ+='&f'+escape(bmD.referrer);
-bmD.write(bmQ+" border=0 width=140 height=17 alt='bigmir TOP100'>");
-//--></script></a>
-<!-- bigmir)net TOP 100 -->
-<!-- Begin Nedstat Basic code -->
-<!-- Title: Official Web Site of ZSU (2002) -->
-<!-- URL: http://www.zsu.edu.ua -->
-{/literal}<script language="JavaScript" src="{$site_root_url}/templates/ZSU.files/basic.js"></script>{literal}
-<script language="JavaScript">
-<!--
-  nedstatbasic("ABZsXw4do2vv47AN07sqSpgq8fHw", 0);
-// -->
-</script>
-<noscript>
-<a target="_blank" href="http://v1.nedstatbasic.net/stats?ABZsXw4do2vv47AN07sqSpgq8fHw"><img
-src="http://m1.nedstatbasic.net/n?id=ABZsXw4do2vv47AN07sqSpgq8fHw"
-border="0" nosave width="18" height="18"></a>
-</noscript>
-<!-- End Nedstat Basic code -->
+	</div>
+	<br>
+	<div style="display:inline-block;width:98%; padding:10px; ">
+		<a href="http://www.zsu.edu.ua/contacts/index.php?action=guest/msg&contact_id=97">Запорізький національний університет, © 1996-2005</a>
+	</div>
+	<br>
+</div>
 
 
-</TD></TR></TBODY></TABLE>
-
-{/literal}
-{*======================== counters - end ======================================*}
-      </td></tr>
-      <!-- кінець елементу "лічильники" лівого блоку -->
-
-      </table>
-</td>
-<!-- кінець лівого блоку -->
-<!-- початок центрального блоку -->
-<td class="a" valign="top">
-
-<table border="0" cellpadding="5" cellspacing="5" width=100%>
-<tr>
-<td class="b">
-{literal}
-<script type="text/javascript">
-<!-- 
-  function print_page_content(block_id)
-  {
-    var content_block = document.getElementById(block_id);
-    if(!content_block) return;
-    if(!content_block.innerHTML) return;
-    frm=window.open("about:blank","print_content","scrollbars=1,resizable=1,menubar=1,status=1");
-    frm.document.open();
-    frm.document.writeln(document.location.href + '<hr>');
-    frm.document.writeln(content_block.innerHTML);
-    frm.document.close();
-    return;
-  }
-// -->
-</script>
-{/literal}
-<div align=right><a href="#" onclick="print_page_content('page_content'); return false;" title="{$text.Printer_friendly_version}"><img src={$site_root_url}/templates/ZNU_3/print.gif  alt="{$text.Printer_friendly_version}" width=16 height=14 border=0></a></div>
-<span class="textblok" id="page_content">
-<!-- вміст центрального блоку -->
-    <h3>{$page.title}</h3>
-	{sysmsg}
-    {$page.content} 
-<!-- закінчився вміст центрального блоку -->
-</span>
-</td>
-</tr>
-</table>
-
-</td>
-<!-- кінець центрального блоку -->
-<!-- початок правого блоку -->
-<td class="a" width="20%" valign="top">
-<table border="0" cellpadding="5" cellspacing="5" width=100%>
 
 
-<!-- початок 1 елементу правого блоку -->
-<tr>
-<td class="b" width="100%"  style="background-image: url({$site_root_url}/templates/ZNU_3/rozdil.gif); background-position: top,left; background-repeat: no-repeat; background-color: #ffffff; border-top-color: #D1DFE0;">
-<br>
-<script type="text/javascript" src="http://sites.zsu.zp.ua/cms/index.php?action=news/js&site_id=28&lang={$text.language_name}&rows=3"></script>
-</td></tr>
-<!-- кінець 1 елементу правого блоку -->
+<div style="display:inline-block;width:100%; background-image: url('{$site_root_url}/templates/ZNU_3/verh_line.gif');height:10px;">
+</div>
 
-
-<!-- початок 2 елементу правого блоку -->
-<tr>
-<td class="b" width="100%">
-<script type="text/javascript" src="http://sites.zsu.zp.ua/cms/index.php?action=news/js&site_id=26&lang={$text.language_name}&rows=1"></script>
-</td></tr>
-<!-- кінець 2 елементу правого блоку -->
-{* 
-<!-- початок 3 елементу правого блоку -->
-<tr>
-<td class="b" width="100%">dfdfgd dfgdf fgfghfdh
-</td></tr>
-<!-- кінець 3 елементу правого блоку -->
-*}
-</table>
-</td>
-</tr>
-<!-- кінець правого блоку -->
-</table>
-<!-- кінець основного текстового блоку -->
-</td></tr>
-<tr><td class="a" colspan="3" valign="top">
-<!-- початок нижнього блоку -->
-<table border="0" cellpadding="10" cellspacing="5" width="100%">
-<tr>
-<td class="b">
-<a href="http://www.zsu.edu.ua/contacts/index.php?action=guest/msg&contact_id=97">Запорізький національний університет, Web-лабораторія, © 1996-2005</a>
-</td>
-</tr>
-</table>
-<!-- кінець нижнього блоку -->
-</td></tr>
-<tr><td class="a" style="background-image: url({$site_root_url}/templates/ZNU_3/verh_line2.gif);" colspan="3"><img src="{$site_root_url}/templates/ZNU_3/verh_line2.gif"></td></tr>
-</table>
-<!-- кінець великої світлозеленої таблиці -->
 </body>
 </html>

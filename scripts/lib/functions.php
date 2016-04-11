@@ -1007,7 +1007,7 @@ function ml($a,$s) {
 
 
 function nohistory($act) {
-    if(!is_array($_SESSION['history'])){
+    if(!isset($_SESSION['history']) || !is_array($_SESSION['history'])){
         $_SESSION['history']=[];
     }
     $cnt=count($_SESSION['history']);

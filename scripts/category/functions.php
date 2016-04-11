@@ -122,12 +122,21 @@ function category_public_list($site_id, $lang) {
     // ------------------ get list of categories - end -------------------------
     // ------------------ adjust list of categories - begin --------------------
     // $category_url_prefix = site_root_URL . "/index.php?action=category/browse&site_id={$site_id}&lang={$lang}&category_id=";
-    $category_url_pattern = str_replace(Array('{site_id}', '{lang}'), Array((int) $site_id, $lang), url_pattern_category);
+//    $category_url_pattern = str_replace(
+//            Array('{site_id}', '{lang}','{category_id}','{path}','{category_code}'), 
+//            Array((int) $site_id, $lang), 
+//            url_pattern_category);
+    //{site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}
     $cnt = count($caterory_list);
     for ($i = 0; $i < $cnt; $i++) {
         $caterory_list[$i]['category_title'] = get_langstring($caterory_list[$i]['category_title'], $lang);
         $caterory_list[$i]['category_description'] = get_langstring($caterory_list[$i]['category_description'], $lang);
-        $caterory_list[$i]['URL'] = str_replace('{category_id}', $caterory_list[$i]['category_id'], $category_url_pattern);
+        $caterory_list[$i]['URL'] = str_replace(
+            Array('{site_id}'   , '{lang}','{category_id}','{path}','{category_code}'), 
+            Array((int) $site_id, $lang  , $caterory_list[$i]['category_id'], $caterory_list[$i]['path'],$caterory_list[$i]['category_code']),
+            url_pattern_category);
+        // str_replace('{category_id}', $caterory_list[$i]['category_id'], $category_url_pattern);
+
         $caterory_list[$i]['number_of_news'] = 0;
 
         $caterory_list[$i]['category_icon'] = json_decode($caterory_list[$i]['category_icon'], true);
@@ -204,9 +213,10 @@ function category_info($options) {
     $this_category_info['category_title_orig'] = $this_category_info['category_title'];
     $this_category_info['category_title'] = get_langstring($this_category_info['category_title'], $options['lang']);
     $this_category_info['category_title_short'] = get_langstring($this_category_info['category_title_short']);
-    if (strlen($this_category_info['category_title_short'])==0) {
-        $this_category_info['category_title_short'] = shorten($this_category_info['category_title']);
-    }
+    $this_category_info['category_meta'] = get_langstring($this_category_info['category_meta']);
+    //if (strlen($this_category_info['category_title_short'])==0) {
+    //    $this_category_info['category_title_short'] = shorten($this_category_info['category_title']);
+    //}
     $this_category_info['category_description'] = get_langstring($this_category_info['category_description'], $options['lang']);
     $this_category_info['URL'] = str_replace(Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), Array($this_category_info['path'], $options['lang'], $options['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), url_pattern_category);
     $this_category_info['date_lang_update'] = get_langstring($this_category_info['date_lang_update'], $options['lang']);
@@ -299,6 +309,7 @@ class CategoryViewModel {
             $tor['category_icon'] = json_decode($tor['category_icon'], true);
         }
         $tor['category_description'] = get_langstring($tor['category_description'], $this->lang);
+        $tor['category_description_short'] = get_langstring($tor['category_description_short'], $this->lang);
         $tor['category_description_exists'] = strlen($tor['category_description']) > 0;
         if(is_valid_url($tor['category_description'])){
             $tor['URL'] = $tor['category_description'];
@@ -318,7 +329,7 @@ class CategoryViewModel {
         $query = "select pa.category_id, pa.site_id, pa.category_code, pa.category_title,
                       pa.start, pa.finish, pa.is_deleted, pa.deep, pa.is_part_of,
                       pa.see_also, pa.is_visible, pa.path, pa.category_icon,
-                      pa.category_title_short, pa.category_description
+                      pa.category_title_short, pa.category_description, pa.category_description_short
                from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
                WHERE ch.category_id={$this->category_info['category_id']} 
                  and ch.site_id={$this->site_info['id']} 
@@ -366,7 +377,7 @@ class CategoryViewModel {
         $query = "select ch.category_id, ch.site_id, ch.category_code, ch.category_title,
                       ch.start, ch.finish, ch.is_deleted, ch.deep, ch.is_part_of,
                       ch.see_also, ch.is_visible, ch.path, ch.category_description,
-                      ch.category_icon, ch.category_title_short, 
+                      ch.category_icon, ch.category_title_short, ch.category_description_short,
                       BIT_AND(pa.is_visible) as parentsVisible
                from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
                WHERE ch.site_id={$this->site_info['id']}

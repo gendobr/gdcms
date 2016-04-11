@@ -3,3 +3,5 @@ ALTER TABLE `cms_category`
    ADD COLUMN `category_meta` TEXT NULL AFTER `category_icon`; 
 
 ALTER TABLE `cms_category` ADD COLUMN `category_title_short` VARCHAR(1024) NULL AFTER `category_meta`; 
+
+ALTER TABLE `cms_category` ADD COLUMN `category_description_short` TEXT NULL AFTER `category_title_short`; 

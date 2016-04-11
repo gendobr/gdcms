@@ -246,8 +246,8 @@ if (isset($input_vars['show_comment']) && $visitor['is_moderator']) {
 
 // add comment
 if (isset($input_vars['news_comment_content'])) {
-    if ($_REQUEST['postedcode'] != $_SESSION['code']
-            || strlen($_SESSION['code']) == 0)
+    if ($_REQUEST['postedcode'] != $_SESSION['captcha']
+            || strlen($_SESSION['captcha']) == 0)
         $errors = "<b><font color=red>{$txt['Retype_the_number']}</font></b><br/>";
 
     $news_comment_content = trim(strip_tags($input_vars['news_comment_content']));
@@ -260,19 +260,19 @@ if (isset($input_vars['news_comment_content'])) {
                     VALUES( {$news_id}, '" . \e::db_escape($this_news_info['lang']) . "', {$site_id},  now()                , '" . \e::db_escape($news_comment_content) . "', {$news_comment_is_visible}, '" . \e::db_escape($news_comment_sender) . "',  {$news_comment_parent_id} )
                    ");
         // prn('$news_comment_parent_id='.$news_comment_parent_id);
-        $_SESSION['code'] = '';
+        $_SESSION['captcha'] = '';
         header("Location: index.php?action=news/view_details&news_id={$news_id}&lang={$this_news_info['lang']}");
         exit();
     }
 }
 // -------------------------- create confirmation code - begin -----------------
-if (!isset($_SESSION['code']) || strlen($_SESSION['code']) == 0) {
+if (!isset($_SESSION['captcha']) || strlen($_SESSION['captcha']) == 0) {
     srand((float) microtime() * 1000000);
     $chars = explode(',', '1,2,3,4,5,6,7,8,9,0');
     shuffle($chars);
     $chars = join('', $chars);
     $chars = substr($chars, 0, 3);
-    $_SESSION['code'] = $chars;
+    $_SESSION['captcha'] = $chars;
 }
 
 // -------------------------- create confirmation code - end -------------------
@@ -441,7 +441,7 @@ if ($news_template) {
                   , 'site' => $this_site_info
                   , 'comments' => (new NewsComments($news_view['lang'], $this_site_info, $news_view, 0) )
                   , 'visitor' => $visitor
-                  , 'postedcode_src' => (site_root_URL . "/index.php?action=gb/bookcode&t=" . time())
+                  , 'postedcode_src' => (site_root_URL . "/index.php?action=news/captcha&t=" . time())
             )
             , Array('show_related_news', 'show_news_categories'));
 }

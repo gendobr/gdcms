@@ -33,7 +33,8 @@ $(window).load(function(){
         if(sourceUrl){
             jQuery.get( sourceUrl, {}, function(data, textStatus, jqXHR){
                 // Activate Carousel
-                $("#myCarousel").html(data).carousel();
+                $("#myCarousel").html(data);
+                $("#carhome").carousel();
             }, 'html' );
         }
     }

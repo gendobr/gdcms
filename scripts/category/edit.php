@@ -96,14 +96,23 @@ db_record_editor_field::$text = db_record_editor_2::$text = $GLOBALS['text'];
 if (isset($input_vars['db_record_editor_is_submitted']) && $input_vars['db_record_editor_is_submitted'] == 'yes') {
     $db_record_editor_category_description = '';
     $db_record_editor_category_meta = '';
+    $db_record_editor_category_description_short='';
     //prn($list_of_languages);
     foreach ($list_of_languages as $lng) {
         $db_record_editor_category_description.="<{$lng['name']}>" . $_REQUEST['db_record_editor_category_description_' . $lng['name']] . "</{$lng['name']}>";
         $db_record_editor_category_meta.="<{$lng['name']}>" . $_REQUEST['db_record_editor_category_meta_' . $lng['name']] . "</{$lng['name']}>";
+        
+        
+        $db_record_editor_category_description_short.="<{$lng['name']}>" . $_REQUEST['db_record_editor_category_description_short_' . $lng['name']] . "</{$lng['name']}>";
+        
     }
     $_REQUEST['db_record_editor_category_description'] = & $db_record_editor_category_description;
     $_POST['db_record_editor_category_description'] = & $db_record_editor_category_description;
     $input_vars['db_record_editor_category_description'] = & $db_record_editor_category_description;
+    
+    $_REQUEST['db_record_editor_category_description_short'] = & $db_record_editor_category_description_short;
+    $_POST['db_record_editor_category_description_short'] = & $db_record_editor_category_description_short;
+    $input_vars['db_record_editor_category_description_short'] = & $db_record_editor_category_description_short;
     //prn(checkStr($tmp));
     $_REQUEST['db_record_editor_category_meta'] = & $db_record_editor_category_meta;
     $_POST['db_record_editor_category_meta'] = & $db_record_editor_category_meta;
@@ -181,6 +190,13 @@ $rep->field['category_description'] = new db_record_editor_field_textarea(
         , text('category_description'));
 //prn($rep->field['category_description']);
 
+# category_description  text
+$rep->field['category_description_short'] = new db_record_editor_field_textarea(
+        'category_description_short'
+        , 'category_description_short'
+        , 'textarea'
+        , text('category_description_short'));
+//prn($rep->field['category_description']);
 
 $rep->field['category_meta'] = new db_record_editor_field_textarea(
         'category_meta'
@@ -472,7 +488,7 @@ $input_vars['page_content'].= ( isset($form['elements']['is_visible']) ? "
    </div>
    
 
-  <div class=label>{$form['elements']['category_title_short']->label}</div>
+  <div class=label><h3>{$form['elements']['category_title_short']->label}</h3></div>
   <div class=big>
     <input type=text
            name='{$form['elements']['category_title_short']->form_element_name}'
@@ -488,12 +504,43 @@ $input_vars['page_content'].= ( isset($form['elements']['is_visible']) ? "
 
 
             
+$input_vars['page_content'].="<h3>{$form['elements']['category_description_short']->label}</h3>";
+
+//prn($list_of_languages);
+foreach ($list_of_languages as $lng) {
+    $input_vars['page_content'].="
+    <div class=label style='font-size:110%;'>
+      {$form['elements']['category_description_short']->label} ({$lng['name']})
+    </div>
+    <div class=big>
+      <div>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
+      </div>
+     <textarea name='{$form['elements']['category_description_short']->form_element_name}_{$lng['name']}'
+               id='{$form['elements']['category_description_short']->form_element_name}_{$lng['name']}'
+               style='width:100%;height:100px;' class=\"wysiswyg\">"
+            . checkStr(get_langstring($form['elements']['category_description_short']->value, $lng['name']))
+            . "</textarea>
+    </div>
+    ";
+}
+$input_vars['page_content'].="
+<input type=submit value='{$text['Save']}'>
+";
+            
+            
+            
+            
+            
             
     $input_vars['page_content'].="
 <script type=\"text/javascript\" charset=\"utf-8\" src=\"".site_root_URL."/scripts/lib/meta-tags-insert.js\"></script>
 
   ";
-
+$input_vars['page_content'].="<h3>{$form['elements']['category_meta']->label}</h3>";
 //prn($list_of_languages);
 foreach ($list_of_languages as $lng) {
 
@@ -515,6 +562,12 @@ foreach ($list_of_languages as $lng) {
     </div>
     ";
 }
+
+
+
+
+
+
 
 
 $input_vars['page_content'].="

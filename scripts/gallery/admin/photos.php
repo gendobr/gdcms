@@ -114,7 +114,7 @@ while ($qq < 5) {
 
             # save to database
             $icon_insert = \e::db_execute(
-                    "INSERT INTO {$table_prefix}photogalery(id,photos,photos_m,rozdil,rozdil2,pidpys,autor,rik,site,vis)
+                    "INSERT INTO <<tp>>photogalery(id,photos,photos_m,rozdil,rozdil2,pidpys,autor,rik,site,vis)
                  VALUES
                  ( NULL
                   ,'" . \e::db_escape("$relative_dir/$big_image_file_name") . "'
@@ -130,9 +130,7 @@ while ($qq < 5) {
 
             # show report
             $url_prefix = preg_replace("/\\/+\$/i", '', $this_site_info['url']) . '/gallery';
-            $result = \e::db_execute("SELECT * FROM {$table_prefix}photogalery WHERE photos = '" . \e::db_escape("$relative_dir/$big_image_file_name") . "'");
-            $a = mysql_num_rows($result);
-            $row = mysql_fetch_array($result);
+            $row = \e::db_getonerow("SELECT * FROM <<tp>>photogalery WHERE photos = '" . \e::db_escape("$relative_dir/$big_image_file_name") . "'");
             if ($row) {
                 $report[$qq] = "<h4 style='color:green;'>{$text['Gallery_image_uploaded_successfully']}</h4>
                             <img src={$url_prefix}/{$row['photos']} width=200px>
@@ -152,7 +150,7 @@ while ($qq < 5) {
 run('gallery/category_model');
 gallery_synchronize_categories($this_site_info['id']);
 
-$list_rozdil = \e::db_getrows("SELECT DISTINCT rozdil FROM {$table_prefix}photogalery_rozdil WHERE site_id = '$site_id' ORDER BY `rozdil` ASC");
+$list_rozdil = \e::db_getrows("SELECT DISTINCT rozdil FROM <<tp>>photogalery_rozdil WHERE site_id = '$site_id' ORDER BY `rozdil` ASC");
 
 
 

@@ -106,19 +106,23 @@ function get_page_info($page_id, $page_lang) {
         $this_page_info['file'] = $this_page_info['path'] . '/' . $this_page_info['file'];
     }
 
-    // ----------------- list of possible templates - begin ----------------------
+    // ----------------- list of possible templates - begin --------------------
     $this_page_info['templates'] = Array();
+    $this_page_info['subtemplates'] = Array();
     if (strlen($this_page_info['path']) > 0) {
         $tmp_path = $this_page_info['path'];
         $i = 0;
         while (strlen($tmp_path) > 0 && $tmp_path != '.' && $i++ < 100) {
             // echo $tmp_path.';<br>';
             $this_page_info['templates'][] = $tmp_path . '/template_index.html';
+            $this_page_info['subtemplates'][] = $tmp_path . '/template_page.html';
             $tmp_path = dirname($tmp_path);
         }
     }
     $this_page_info['templates'][] = 'template_index.html';
-    // ----------------- list of possible templates - end ------------------------
+    $this_page_info['subtemplates'][] = 'template_page.html';
+    // ----------------- list of possible templates - end ----------------------
+
     // create static page URL
     $this_page_url = '/' . preg_replace('/(^\/+|\/+$)/', '', $this_page_info['path'])
             . '/' . $this_page_info['id']
@@ -140,22 +144,26 @@ function get_page_info($page_id, $page_lang) {
         $this_page_info['file2'] = $this_page_info['path'] . '/' . $this_page_info['page_file_name'];
     }
 
-    $this_page_info['category']=new pagecategory($this_page_info['category_id'],$this_page_info['lang'],$this_page_info['site_id']);
+    $this_page_info['site']=  get_site_info($this_page_info['site_id'], $this_page_info['lang']);
+    
+    $this_page_info['category']=new pagecategory($this_page_info['category_id'],$this_page_info['lang'],$this_page_info['site']);
 
-    # prn($query,$this_page_info);
+    //prn($query,$this_page_info);
     return $this_page_info;
 }
 
 class pagecategory {
 
     private $categoryInfo;
+    private $view;
     private $categoryId;
     private $lang;
+    private $site;
 
-    function __construct($categoryId, $lang, $site_id) {
+    function __construct($categoryId, $lang, $site_info) {
         $this->categoryId = $categoryId;
         $this->lang = $lang;
-        $this->site_id = $site_id;
+        $this->site = $site_info;
     }
 
     private function init() {
@@ -165,34 +173,40 @@ class pagecategory {
         if (!$this->categoryId) {
             return;
         }
-        run('category/functions');
-        $this->categoryInfo = category_info(Array(
+        
+        $this->categoryInfo=category_info(Array(
             'category_id' => $this->categoryId,
             'lang' => $this->lang,
-            'site_id' => $this->site_id
+            'site_id' => $this->site['id']
         ));
+        $this->view = new CategoryViewModel(
+            $this->site,
+            $this->categoryInfo,
+            $this->lang);
     }
 
     function __get($attr) {
         if (!isset($this->categoryInfo)) {
             $this->init();
         }
-        if ($this->categoryInfo) {
-            switch ($attr) {
-                case 'category_id':
-                    return $this->categoryId;
-                case 'lang':
-                    return $this->lang;
-                case 'site_id':
-                    return $this->site_id;
-                case 'category_title':
-                    return $this->categoryInfo['category_title'];
-                case 'category_description':
-                    return $this->categoryInfo['category_description'];
-                case 'URL':
-                    return $this->categoryInfo['URL'];
-            }
+        
+        switch ($attr) {
+            case 'category_id':
+                return $this->categoryId;
+            case 'view':
+                return $this->view;
+            case 'lang':
+                return $this->lang;
+            case 'site_id':
+                return $this->site_id;
+            case 'category_title':
+                return $this->categoryInfo['category_title'];
+            case 'category_description':
+                return $this->categoryInfo['category_description'];
+            case 'URL':
+                return $this->categoryInfo['URL'];
         }
+        
         return false;
     }
 }

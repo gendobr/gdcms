@@ -66,7 +66,7 @@ if(isset($input_vars['user_login'])){
 
 
 
-    if($_SESSION['user_info']['is_logged']) {
+    if(isset($_SESSION['user_info']['is_logged']) && $_SESSION['user_info']['is_logged']) {
         ml('login',Array($_ENV,$_SERVER));
         echo '{"status":"OK","message":"'.str_replace('"',"\\\"",text('Refresh_page_to_continue')).'"}';
     }else{

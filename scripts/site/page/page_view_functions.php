@@ -64,20 +64,20 @@ function process_template($template_name, $data_array, $functions=Array()) {
     $smr->security = true;
 
     $smr->compile_dir = \e::config('CACHE_ROOT');
-    $smr->register_function("txt", "txt");
-    $smr->register_function("msg", "getmsgtext");
-    $smr->register_function("save", "save");
-    $smr->register_function("run", "run_function");
+    $smr->register_function("txt", "smarty_txt");
+    $smr->register_function("msg", "smarty_getmsgtext");
+    $smr->register_function("save", "smarty_save");
+    $smr->register_function("run" , "smarty_run_function");
     $smr->register_function("get_langstring", "smarty_get_langstring");
-    $smr->register_function("sysmsg", "sysmsg");
-    $smr->register_function("fragment", "fragment");
-
-
+    $smr->register_function("sysmsg", "smarty_sysmsg");
+    $smr->register_function("fragment", "smarty_fragment");
+    $smr->register_block('set', 'smarty_block_set');
 
     if (is_array($functions) && count($functions) > 0) {
         //prn($functions);
-        foreach ($functions as $fname)
+        foreach ($functions as $fname) {
             $smr->register_function($fname, $fname);
+        }
     }
     //prn($smr); die();
     $smr->register_resource("db", array("db_get_template",
@@ -111,39 +111,67 @@ function process_template($template_name, $data_array, $functions=Array()) {
     return $to_return;
 }
 
+
+// sample call is
+// {set path="page.title"}some text or template{/set}
+function smarty_block_set($params, $content, &$smarty, &$repeat) {
+    // only output on the closing tag
+    global $_saved_tpl_vars;
+    if (!isset($_saved_tpl_vars)) {
+        $_saved_tpl_vars = Array();
+    }
+    if (!is_array($_saved_tpl_vars)) {
+        $_saved_tpl_vars = Array();
+    }
+    if(!$repeat){
+        if (isset($content)) {
+            extract($params);
+            if (!isset($path)) {
+                return '';
+            }
+            $_saved_tpl_vars[$path] = $content;
+            return '';
+        }
+    }
+}
 // sample call is
 // {get_langstring lang=$text.language_name from=$category.title}
 function smarty_get_langstring($params) {
     extract($params);
-    if (!isset($lang))
+    if (!isset($lang)) {
         $lang = default_language;
-    if (!isset($from))
+    }
+    if (!isset($from)) {
         return '------';
+    }
     return get_langstring($from, $lang);
 }
 
 // sample call is
 // {txt lang=$text.language_name variants="eng=English text::rus=Russian text::ukr=Ukrainian text"}
-function txt($params) {
+function smarty_txt($params) {
     extract($params);
     if (!isset($lang))
         $lang = default_language;
-    if (!isset($variants))
+    if (!isset($variants)) {
         return '------';
+    }
 
     $variants = explode('::', $variants);
     $cnt = count($variants);
-    if ($cnt == 0)
+    if ($cnt == 0) {
         return '????????';
+    }
     for ($i = 0; $i < $cnt; $i++) {
         $variants[$i] = explode('=', $variants[$i]);
-        if ($variants[$i][0] == $lang)
+        if ($variants[$i][0] == $lang) {
             return $variants[$i][1];
+        }
     }
     return $variants[0][1];
 }
 
-function sysmsg() {
+function smarty_sysmsg() {
 
     if (isset($_SESSION['msg'])) {
         $tor = $_SESSION['msg'];
@@ -155,14 +183,14 @@ function sysmsg() {
 
 // sample call is
 // {msg id="some_message_identifier"}
-function getmsgtext($params) {
+function smarty_getmsgtext($params) {
     $p = array_values($params);
     return text($p[0]);
 }
 
 // sample call is
 // {fragment place="" lang=$text.language_name site_id=$site.id}
-function fragment($params) {
+function smarty_fragment($params) {
     extract($params);
     if (!isset($lang)){
         $lang = default_language;
@@ -186,24 +214,28 @@ function fragment($params) {
 
 // sample call is
 // {save path="page.title" value="some text"}
-function save($params, &$smarty) {
+function smarty_save($params, &$smarty) {
     global $_saved_tpl_vars;
-    if (!isset($_saved_tpl_vars))
+    if (!isset($_saved_tpl_vars)) {
         $_saved_tpl_vars = Array();
-    if (!is_array($_saved_tpl_vars))
+    }
+    if (!is_array($_saved_tpl_vars)) {
         $_saved_tpl_vars = Array();
+    }
     extract($params);
-    if (!isset($path))
+    if (!isset($path)) {
         return '';
-    if (!isset($value))
+    }
+    if (!isset($value)) {
         $value = '';
+    }
     $_saved_tpl_vars[$path] = $value;
     return '';
 }
 
 // sample call is
 // {run name="protect" data="page.title"}
-function run_function($params, &$smarty) {
+function smarty_run_function($params, &$smarty) {
     global $input_vars, $db, $table_prefix, $text, $main_template_name;
     extract($params);
     $p = preg_replace('/[^a-z0-9_]/i', '_', $name);

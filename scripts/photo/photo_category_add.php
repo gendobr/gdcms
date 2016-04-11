@@ -74,7 +74,7 @@ $html="
     </span><!-- 
     --></div>
     
-    <div class=label>" . text('is_part_of') . "</div>
+    <div class=label>" . text('9') . "</div>
   	<div class=big>
             <select name='{$form['elements']['is_part_of']->form_element_name}' id='{$form['elements']['is_part_of']->form_element_name}'>
                 <option value=''></option>
