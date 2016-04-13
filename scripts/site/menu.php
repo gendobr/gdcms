@@ -270,13 +270,18 @@ function menu_site($site_info) {
                 ,'innerHTML'=>text('List_of_news_subscribers')
                 ,'attributes'=>' target=_blank '
         );
+        
+        $tor['news/stat']=Array(
+                'URL'=>"index.php?action=news/stat&orderby=last_change_date+desc&site_id=".$site_info['id']
+                ,'innerHTML'=>text('News_views_stat')
+                ,'attributes'=>''
+        );
 
         $tor['news/html']=Array(
                 'URL'=>'#'
                 ,'innerHTML'=>$text['News'].':'.$text['Get_html_link'].'<br><br>'
                 ,'attributes'=>" onclick='popup(\"index.php?action=news/html&site_id={$site_info['id']}&lang={$_SESSION['lang']}\")' "
         );
-
 
     }
 

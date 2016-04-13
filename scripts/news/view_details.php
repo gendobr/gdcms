@@ -447,7 +447,12 @@ if ($news_template) {
 }
 # --------------------- draw news details - end --------------------------------
 
-$lang = \e::db_escape($input_vars['lang']);
+$lang = \e::db_escape($this_news_info['lang']);
+
+
+// update number of views
+\e::db_execute("UPDATE <<tp>>news SET news_views=news_views+1 WHERE id=<<integer id>> AND lang=<<string lang>>",$this_news_info);
+
 
 
 

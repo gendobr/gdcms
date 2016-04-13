@@ -23,7 +23,7 @@ $container-md:$screen-md-min - 20px;
 $screen-lg-min:1170px;
 $container-lg:$screen-lg-min - 20px;
 
-$font-size-base:10pt;
+$font-size-base:1rem;
 
 $znu-color-blue-bak: rgba(150, 175, 245, 0.16);
 $znu-color-black:#000000;
@@ -37,7 +37,6 @@ $znu-color-white: #fff;
 $znu-color-blue-1:#337ab7;
 $znu-color-blue-dark:#223264;
 
-
 /*$znu-color-yellow:rgba(188, 241, 17, 0.4);
 $znu-color-rose:rgba(234, 49, 182, 0.4);
 $znu-color-green:rgba(76, 241, 224, 0.4); //#F0F2E5;*/
@@ -49,7 +48,6 @@ $znu-color-green:rgb(67, 192, 212);
 $znu-background-color: #f2f2f2;
 
 //$znu-color-sand-light1:#FEF5E6;
-
 
 //$znu-color-green-light:#29C8B6;
 //$znu-color-green-dark:#14645B;
@@ -119,12 +117,15 @@ $font-family-sans-serif: 'Roboto', sans-serif;
         position:absolute;
     }
 }
+html{
+    font-size:10pt;
 
+}
 body{
     background-color: $znu-background-color;
+    font-size:1rem;
     background-size: cover;
     background-attachment: fixed;
-
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -156,9 +157,11 @@ body{
     .glyph{
         @include link-style($znu-color-white, $znu-color-white-light,$znu-color-white);
         display:inline-block;
-        width:2.2rem;
-        height:2.2rem;
+        width:2rem;
+        height:1rem;
+	font-size:1.3rem;
         border-bottom-width:0;
+	margin-top:0.1rem;
         &:hover, &:active, &:focus, &:link{
             border-bottom-width:0;
         }
@@ -167,7 +170,7 @@ body{
     .lang{
         display:inline-block;
         @include link-style($znu-color-white,$znu-color-white-light, $znu-color-blue-light1);
-        font-size:1.5rem;
+        font-size:1.3rem;
         &.active{
             color:$znu-color-white;
         }
@@ -194,7 +197,7 @@ body{
     }
     .search input#search{
 
-        height: 2.2rem;
+        height: 1.8rem;
         background: $znu-color-blue-light;
         border: none;
         float: left;
@@ -259,19 +262,39 @@ body{
         @include make-md-column(12);
         @include make-lg-column(12);
 
+	@media (min-width: $screen-xs-min){
+	    padding-left: 1rem;
+	    padding-right: 1rem;
+	}
+
+	@media (min-width: $screen-lg-min){
+	    padding-left: 2rem;
+	    padding-righr: 2rem;
+	}
+
+        .w1{
+            float:right;
+            //margin-left: 45rem;
+            a{
+                font-size: 1.3rem;
+            }
+        }
+
+
         .znu-2016-logo {
             display: inline-block;
             float: left;
 
             background-image: url($resourse-root-url +  '/img/logoznu.png');
-            background-size: 8rem;
-            background-position: center top;
+            //background-size: 8rem;
+            background-position: center top;            
 
             @media (min-width: $screen-xs-min) {
                 margin-top: 2rem;
                 margin-bottom: 1rem;
-                width: 8rem;
-                height: 8rem;
+                width: 5rem;
+                height: 5rem;
+		background-size: 5rem;
             }
 
             @media (min-width: $screen-sm-min) {
@@ -289,22 +312,21 @@ body{
             }
 
             @media (min-width: $screen-lg-min) {
-                margin-top: 1.4rem;
+                margin-top: 1rem;
                 margin-bottom: 1rem;
-                width: 9rem;
+                width: 8rem;
                 height: 8rem;
+		background-size: 8rem;
+
             }
         }
 
         .znu-2016-title-block {
 
-            .w1{
-                margin-left: 1rem;
-            }
 
             @media (min-width: $screen-xs-min) {
-                margin-left: 9rem;
-                margin-top: 1.3rem;
+                margin-left: 0rem;
+                margin-top: 0rem;
                 .w {
                     display: inline-block;
                 }
@@ -320,17 +342,11 @@ body{
             @media (min-width: $screen-md-min) {
                 margin-left: 7rem;
                 margin-top: 1.3rem;
-                .w {
-                    display: inline;
-                }
             }
 
             @media (min-width: $screen-lg-min) {
                 margin-left: 10rem;
-                margin-top: 1.3rem;
-                .w {
-                    display: inline;
-                }
+                margin-top: 2.5rem;
             }
             .znu-2016-title {
 
@@ -343,7 +359,7 @@ body{
                 }
 
                 @media (min-width: $screen-xs-min) {
-                    font-size: 2.8rem;
+                    font-size: 2.3rem;
                     line-height: 3rem;
                 }
                 @media (min-width: $screen-sm-min) {
@@ -355,8 +371,8 @@ body{
                     line-height: 3rem;
                 }
                 @media (min-width: $screen-lg-min) {
-                    font-size: 4.5rem;
-                    line-height: 7rem;
+                    font-size: 3.8rem;
+                    line-height: 5rem;
                 }
 
             }
@@ -388,214 +404,75 @@ body{
 .znu-2016-nav{
     @extend .row;
     text-align: center;
-}
 
-.znu-2016-nav-had {
-    @extend .row;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    @media (min-width: $screen-xs-min) {
-        margin: 0 0 0 0;
-    }
-    @media (min-width: $screen-sm-min) {
-        margin: 0 0 0 0;
-    }
-    @media (min-width: $screen-md-min) {
-        margin: 0 -2rem 0 -2rem;
-    }
-    @media (min-width: $screen-lg-min) {
-        margin: 0 -2rem 0 -2rem;
-    }
-
-    .color1 {
-        background-color: $znu-color-rose;
-        color: $znu-color-blue;
-        box-shadow: $znu-shadow-box;
-        &:hover {
-            -webkit-transform: scale(1.01);
-            transform: scale(1.01);
-        }
-    }
-    .color2 {
-        background-color: $znu-color-green;
-        color: $znu-color-blue;
-        box-shadow: $znu-shadow-box;
-        &:hover {
-            -webkit-transform: scale(1.01);
-            transform: scale(1.01);
-        }
-    }
-    .color3 {
-        background-color: $znu-color-yellow;
-        color: $znu-color-blue;
-        box-shadow: $znu-shadow-box;
-        &:hover {
-            -webkit-transform: scale(1.01);
-            transform: scale(1.01);
-        }
-    }
-    .color4 {
-        background-color: $znu-color-white-light;
-        color: $znu-color-blue;
-        box-shadow: $znu-shadow-box;
-        &:hover {
-            -webkit-transform: scale(1.01);
-            transform: scale(1.01);
-        }
-    }
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-left:-3.5rem;
+    margin-right:-3.5rem;
 
     .link {
-        //@include make-xs-s-column(4);
-        @include make-xs-column(5);
-        @include make-sm-column(3);
+        @include make-xs-column(6);
+        @include make-sm-column(4);
         @include make-md-column(2);
         @include make-lg-column(2);
+        padding-left:0px;
+        padding-right:0px;
 
-        @media (min-width: $screen-xs-s-min){
-            text-align: center;
-            float: inherit;
-            display: inline-block;
-            vertical-align: top;
-            a {
-                text-align: center;
-                display: block;
-                margin: 0.5rem 0rem 0.5rem 0rem;
-                height: 9rem;
-            }
-            i {
-                position: relative;
-                text-align: center;
-                //top: 20%;
-                font-size: 3rem;
-                width: 7rem;
-                display: inline-block;
-            }
-            .text {
-                position: relative;
-                text-align: center;
-                font-size: 1.2rem;
-                //top: 20%;
-                display: block;
-            }
-        }
-        @media (min-width: $screen-xs-min) {
-            text-align: center;
-            float: inherit;
-            display: inline-block;
-            vertical-align: top;
-            a {
-                text-align: center;
-                display: block;
-                margin: 0.5rem 0rem 0.5rem 0rem;
-                height: 7rem;
-                padding-top: 1rem;
-            }
-            i {
-                position: relative;
-                text-align: center;
-                //top: 20%;
-                font-size: 3rem;
-                width: 7rem;
-                display: inline-block;
-            }
-            .text {
-                position: relative;
-                text-align: center;
-                font-size: 1.2rem;
-                //top: 20%;
-                display: block;
-            }
-        }
-        @media (min-width: $screen-sm-min) {
-            float: inherit;
-            text-align: center;
-            display: inline-block;
-            vertical-align: top;
-            a {
-                display: block;
-                margin: 0.5rem 0.5rem 0.5rem 0.5rem;
-                height: 10rem;
-                padding-top: 2rem;
-            }
-            i {
-                position: relative;
-                text-align: center;
-                //top: 20%;
-                font-size: 4rem;
-                width: 10rem;
-                display: inline-block;
-            }
-            .text {
-                position: relative;
-                text-align: center;
-                font-size: 1.5rem;
-                //top: 30%;
-                display: block;
-            }
-        }
 
-        @media (min-width: $screen-md-min) {
-            float: left;
+        a {
             text-align: center;
-            display: inline-block;
-            vertical-align: top;
-            a {
-                display: block;
-                height: 10rem;
-                margin: 0 0 0 0;
-                padding-top: 2rem;
-            }
+            display: block;
+            margin: 0.5rem 1.5rem 0.5rem 1.5rem;
+            height: 9rem;
+            padding-top:1.2rem;
+            line-height:1.2rem;
             i {
-                position: relative;
-                text-align: center;
-                //top: 20%;
-                font-size: 4rem;
-                width: 10rem;
-                display: inline-block;
+                font-size: 4.5rem;
             }
             .text {
-                position: relative;
-                text-align: center;
                 font-size: 1.5rem;
-                //top: 30%;
                 display: block;
+		margin-top: 0.5rem;
             }
         }
-
-        @media (min-width: $screen-lg-min) {
-            font-size: 4rem;
-            float: left;
-            text-align: center;
-            display: inline-block;
-            vertical-align: top;
-            a {
-                display: block;
-                height: 12rem;
-                margin: 0 0 0 0;
-                padding-top: 2rem;
+        .color1 {
+            background-color: $znu-color-rose;
+            color: $znu-color-blue;
+            box-shadow: $znu-shadow-box;
+            &:hover {
+                -webkit-transform: scale(1.01);
+                transform: scale(1.01);
             }
-            i {
-                position: relative;
-                text-align: center;
-                //top: 20%;
-                font-size: 6rem;
-                width: 12rem;
-                display: inline-block;
+        }
+        .color2 {
+            background-color: $znu-color-green;
+            color: $znu-color-blue;
+            box-shadow: $znu-shadow-box;
+            &:hover {
+                -webkit-transform: scale(1.01);
+                transform: scale(1.01);
             }
-            .text {
-                position: relative;
-                text-align: center;
-                font-size: 1.5rem;
-                top: 0;
-                display: block;
+        }
+        .color3 {
+            background-color: $znu-color-yellow;
+            color: $znu-color-blue;
+            box-shadow: $znu-shadow-box;
+            &:hover {
+                -webkit-transform: scale(1.01);
+                transform: scale(1.01);
+            }
+        }
+        .color4 {
+            background-color: $znu-color-white-light;
+            color: $znu-color-blue;
+            box-shadow: $znu-shadow-box;
+            &:hover {
+                -webkit-transform: scale(1.01);
+                transform: scale(1.01);
             }
         }
     }
 }
-
-
-
-
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -630,7 +507,7 @@ body{
                 height:30rem;
             }
             @media (min-width: $screen-lg-min) {
-                height:48rem;
+                height:34rem;
             }
         }
 
@@ -646,7 +523,7 @@ body{
                 height:30rem;
             }
             @media (min-width: $screen-lg-min) {
-                height:48rem;
+                height:34rem;
             }
             display: block;
             width:100%;
@@ -730,13 +607,13 @@ body{
             li{
                 border: none;
                 background-color:$znu-color-white-light1;
-                height: 2rem;
-                width: 2rem;
+                height: 1.5rem;
+                width: 1.5rem;
             }
             .active {
                 border: none;
-                height: 2.2rem;
-                width: 2.2rem;
+                height: 1.6rem;
+                width: 1.6rem;
                 background-color: $znu-color-blue;
             }
         }
@@ -751,54 +628,185 @@ body{
 
 .znu-2016-block-news{
     @extend .row;
-    @media (min-width: $screen-xs-min) {
-        margin-left: 0;
-        margin-right: 0;
-    }
-    @media (min-width: $screen-sm-min) {
-        margin-left: -1rem;
-        margin-right: -1rem;
-    }
-    @media (min-width: $screen-md-min) {
-        margin-left: -1rem;
-        margin-right: -1rem;
-    }
-    @media (min-width: $screen-lg-min) {
-        margin-left: -1rem;
-        margin-right: -1rem;
-    }
-    margin-top:1rem;
-
-    .znu-2016-block-news-anounces{
-
+    /*    @media (min-width: $screen-xs-min) {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        @media (min-width: $screen-sm-min) {
+        //    margin-left: -1rem;
+        //    margin-right: -1rem;
+        }
+        @media (min-width: $screen-md-min) {
+        //    margin-left: -1rem;
+        //    margin-right: -1rem;
+        }
         @media (min-width: $screen-lg-min) {
-            //padding-left: 1.1rem;
-            //padding-right: 0.5rem;
-        }
+            //margin-left: -1rem;
+        //    margin-right: -1rem;
+        }*/
+    //margin-left: -3rem;
+    //margin-right: -3rem;
 
 
-        h3{
-            color:$znu-color-blue;
-            margin-top: 10pt;
-            margin-bottom: 10pt;
-            text-align: center;
-        }
+    /*        @media (min-width: $screen-lg-min) {
+                //padding-left: 1.1rem;
+                //padding-right: 0.5rem;
+            }*/
 
+    //margin-top:1rem;
+    //margin-bottom: 1rem;
+
+
+    h3{
+        @include make-xs-column(12);
+        @include make-sm-column(12);
+        @include make-md-column(12);
+        @include make-lg-column(12);
+        color:$znu-color-blue;
+        text-align: center;
+        margin-top:10pt;
+        margin-bottom:10pt;
         .remark{
             @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
             display:inline-block;
             vertical-align:top;
-            font-size:1.5rem;
-            margin-top:0.5rem;
+            font-size:1.2rem;
+            //margin-top:0.5rem;
         }
+    }
+    .znu-2016-block-new-one{
+        @include make-xs-column(12);
+        @include make-sm-column(6);
+        @include make-md-column(6);
+        @include make-lg-column(4);
+        
+            &:nth-child(1){
+                .znu-2016-block-new-one-content{
+                    background-color:$znu-color-yellow;
+                }
+            }
+            &:nth-child(2){
+                .znu-2016-block-new-one-content{
+                    background-color:$znu-color-white-light;
+		    
+                }
+            }
+            &:nth-child(3){
+                .znu-2016-block-new-one-content{
+                    background-color:$znu-color-rose;//rgba(76, 241, 224, 0.4);
+                }
+            }
+            &:nth-child(4){
+                .znu-2016-block-new-one-content{
+                    background-color:$znu-color-white-light;
+                }
+                
+            }
+            &:nth-child(5){
+                .znu-2016-block-new-one-content{
+                    background-color:$znu-color-green;
+                }
+                
+            }
+            &:nth-child(6){
+                .znu-2016-block-new-one-content{
+                    background-color:$znu-color-white-light;
+                }
+                
+            }
+
+            
+        .znu-2016-block-new-one-content{
+            box-shadow: $znu-shadow-box;
+            background-position:center center;
+            background-size:cover;
+            
+            
+            
+            margin:1rem 0;
+            padding:1rem;
+
+            height: 12rem;
+            font-size:1.4rem;
+            @media (min-width: $screen-sm-min) {
+            }
+            @media (min-width: $screen-md-min) {
+            }
+            @media (min-width: $screen-lg-min) {
+            }
+            
+            
+            &:after{
+                content:"";
+                display:block;
+                font-size:0px;
+                clear:left;
+            }
+            .znu-2016-block-new-icon{
+                float:left;
+                width:9rem;
+                height:7rem;
+                display:block;
+                
+                background-size:cover;
+                background-position:center center;
+
+                &:hover{
+                    border:none;
+                }    
+                &:visited{
+                    border:none;
+                }    
+            }
+            .znu-2016-block-new-title{
+                display:block;
+                margin-left:10rem;
+                overflow:hidden;
+                
+                max-height:8.1rem;
+                @media (min-width: $screen-sm-min) {
+                }
+                @media (min-width: $screen-md-min) {
+                }
+                @media (min-width: $screen-lg-min) {
+                }
+                
+                a{
+                    @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+                }
+
+            }
+            .znu-2016-block-new-title-odd{
+                display:block;
+                overflow:hidden;
+                a{
+                    @include link-style($znu-color-white, $znu-color-white-light1, $znu-color-white);
+                }
+
+                max-height:8.1rem;
+                @media (min-width: $screen-sm-min) {
+                }
+                @media (min-width: $screen-md-min) {
+                }
+                @media (min-width: $screen-lg-min) {
+                }
+            }
+            .date-container{
+                text-align: right;
+		font-size: 1.2rem;
+            }
+        }
+    }
 
 
 
+
+
+
+/*
         a{
             @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
         }
-
-
         .znu-2016-block-new-one{
             @include make-xs-column(12);
             @include make-sm-column(6);
@@ -817,37 +825,6 @@ body{
                 font-size: 1.5rem;
             }
 
-
-            .znu-2016-block-new-icon{
-                float:left;
-                width:12rem;
-                display:block;
-                // vertical-align:top;
-                &:hover{
-                    border:none;
-                }    
-                &:visited{
-                    border:none;
-                }    
-                img{
-                    width: 10rem;
-                    margin-right: 1rem;
-                    margin-top: 0.5rem;
-                }
-            }
-            .znu-2016-block-new-title{
-                display:block;
-                margin-left:12rem;
-                &:hover{
-                    border:none;
-                }    
-                &:visited{
-                    border:none;
-                }
-                max-height:8.1rem;
-                overflow:hidden;
-            }
-
             .a-container{
                 @include link-style($znu-color-white, $znu-color-white-light1, $znu-color-white);
                 font-size: 1.5rem;
@@ -860,7 +837,7 @@ body{
                 text-align: right;
             }
 
-            /*            .icon{
+                        .icon{
                             display:none;
                             border:none;
                             width:100%;
@@ -878,7 +855,7 @@ body{
                             background-color:$znu-color-blue-light2;
                             background-position:center center;
                             background-size:cover;
-                        }*/
+                        }
 
             @media (min-width : $screen-sm-min) and (max-width : $screen-md-min - 2px){
                 &:nth-child(2n+1){
@@ -969,10 +946,11 @@ body{
                 max-width: 31.5%;
                 overflow:hidden;
             }
-        }
-    }
+        }*/
+    
 }
 // ================== events = end =========================
+
 
 
 
@@ -1003,6 +981,7 @@ body{
     @include make-lg-column(6);
 
     color:$znu-color-white;
+    font-size: 1.2rem;
     a{
         display:inline-block;
         @include link-style($znu-color-white,$znu-color-white-light, $znu-color-white);
@@ -1064,7 +1043,7 @@ body{
             width:96%;
             padding:0.5rem 2%;
             text-align:center;
-            height:8rem;
+            height:6rem;
         }
     }
 }
@@ -1078,8 +1057,9 @@ body{
 
     h3{
         color:$znu-color-blue;
-        padding-bottom: 2rem;
+        padding-bottom: 1.5rem;
         border-bottom: 1px solid rgba(56, 82, 166, 0.5);
+	font-size: 1.7rem;
     }
     ul{
         padding-left:0;
@@ -1092,6 +1072,7 @@ body{
     a{
         @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
         text-decoration: none;
+	font-size: 1.2rem;
     }
 }
 // ====================== bottom links = end =================
@@ -1114,7 +1095,7 @@ body{
 // ============= page = begin ================================
 .znu-2016-block-page {
     @extend .row;
-    margin-bottom: 1rem;
+    //margin-bottom: 1rem;
 
 
     // есть позразделы и содержание
@@ -1153,7 +1134,11 @@ body{
 
             a {
                 @include link-style($znu-color-blue-2, $znu-color-blue-dark);
+		font-size: 1.2rem;
             }
+	    span{
+		font-size:1.2rem;
+	    }
             .current {
             }
         }
@@ -1184,6 +1169,13 @@ body{
     }
 
     .znu-2016-block-page-content {
+	padding-bottom:1rem;
+	p{
+	    font-size: 1.2rem;
+	}
+	h2{
+	    font-size: 2.5rem;
+	}
 
         @media (min-width: $screen-xs-min) {
             padding-right: 2rem;
@@ -1213,15 +1205,15 @@ body{
             }
             .znu-2016-block-page-header {
                 h1 {
-                    font-size: 2rem;
+                    font-size: 1.5rem;
                     @media (min-width: $screen-sm-min) {
-                        font-size: 2.5rem;
+                        font-size: 2rem;
                     }
                     @media (min-width: $screen-md-min) {
-                        font-size: 3rem;
+                        font-size: 2.5rem;
                     }
                     @media (min-width: $screen-lg-min) {
-                        font-size: 3.5rem;
+                        font-size: 3rem;
                     }
                 }
             }
@@ -1236,11 +1228,12 @@ body{
             .button{
                 background-color:$znu-color-white-light;
                 border: none;
-                font-size: 90%;
+                font-size: 1.5rem;
                 i{
                     color: $znu-color-blue;
                     position: relative;
                     margin-top: 0.4rem;
+		    font-size: 1.2rem;
                 }
             }
         }
@@ -1441,7 +1434,7 @@ body{
                 @include make-lg-column(6);
                 padding-right: 0rem;
             }
-            
+
             .left-col-7 {
                 @include make-xs-column(12);
                 @include make-sm-column(7);
@@ -1456,7 +1449,7 @@ body{
                 @include make-lg-column(5);
                 padding-right: 0rem;
             }
-            
+
             .left-col-8 {
                 @include make-xs-column(12);
                 @include make-sm-column(6);
@@ -1471,7 +1464,7 @@ body{
                 @include make-lg-column(4);
                 padding-right: 0rem;
             }
-            
+
             .left-col-9 {
                 @include make-xs-column(12);
                 @include make-sm-column(8);
@@ -1486,7 +1479,7 @@ body{
                 @include make-lg-column(3);
                 padding-right: 0rem;
             }
-            
+
 
             .left-col-10 {
                 @include make-xs-column(12);
@@ -1505,7 +1498,7 @@ body{
         }
 
         .category-content{
-            margin: 2rem 2rem 2rem 2rem;
+            //margin: 0rem 2rem 2rem 2rem;
         }
 
         .data-container{
@@ -1533,16 +1526,16 @@ body{
                 @include make-sm-column(6);
                 @include make-md-column(3);
                 @include make-lg-column(3);
-                
-                
+
+
                 margin-bottom:2rem;
                 .znu-2016-block-new-icon{
-                    
+
                     height:15rem;
                     background-position:center;
                     background-size:cover;
-                    
-                    
+
+
                     display:block;
                     @media (max-width: $screen-sm-min) {
                         display:none;

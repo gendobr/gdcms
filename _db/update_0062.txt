@@ -5,3 +5,5 @@ ALTER TABLE `cms_category`
 ALTER TABLE `cms_category` ADD COLUMN `category_title_short` VARCHAR(1024) NULL AFTER `category_meta`; 
 
 ALTER TABLE `cms_category` ADD COLUMN `category_description_short` TEXT NULL AFTER `category_title_short`; 
+
+ALTER TABLE `cms_news` ADD COLUMN `news_views` INT DEFAULT 0  NOT NULL;
