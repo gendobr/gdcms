@@ -21,7 +21,10 @@ class GalleryCategory {
     // output data
     protected $_list, $_pages, $_items_found, $_this_category_info, $breadcrumbs;
 
-    function __construct($lang, $this_site_info, $start, $rozdilizformy, $keywords, $category_details_url_template = url_pattern_gallery_category) {
+    function __construct($lang, $this_site_info, $start, $rozdilizformy, $keywords, $category_details_url_template = false) {
+        if($category_details_url_template===false){
+            $category_details_url_template = \e::config('url_pattern_gallery_category');
+        }
         $this->lang = $lang;
         $this->this_site_info = $this_site_info;
         $this->start = (int) $start;
@@ -166,7 +169,7 @@ class GalleryCategory {
                     'innerHTML' => $path[$r],
                     'url' => str_replace(
                             Array('{rozdil2}','{rozdilizformy}', '{site_id}', '{lang}', '{start}', '{keywords}'),
-                            Array(encode_dir_name($re1),rawurlencode($re1), $site_id, $lang, 0, $keywords), $this->category_details_url_template)
+                            Array(\core\fileutils::encode_dir_name($re1),rawurlencode($re1), $site_id, $lang, 0, $keywords), $this->category_details_url_template)
                 );
             }
             $r = $r + 1;
@@ -287,7 +290,7 @@ class GalleryCategory {
             //$categories[$i]['url_details'] = $url_details_prefix . rawurlencode($categories[$i]['dirname']);
             $categories[$i]['url_details'] = str_replace(
                     Array('{rozdilizformy}','{rozdil2}'), 
-                    Array(rawurlencode($categories[$i]['dirname']),  encode_dir_name($categories[$i]['dirname'])), 
+                    Array(rawurlencode($categories[$i]['dirname']),  \core\fileutils::encode_dir_name($categories[$i]['dirname'])), 
                     $url_details_prefix);
 
             $categories[$i]['url_thumbnail'] = $url_thumbnail_prefix . '/' . $categories[$i]['icon'];
@@ -303,7 +306,7 @@ class GalleryCategory {
 
         $url_template = str_replace(
                 Array('{site_id}'          , '{lang}', '{keywords}','{rozdilizformy}','{rozdil2}'),
-                Array($this_site_info['id'], $lang   , ''          ,rawurlencode($this->category_info['rozdil']), encode_dir_name($this->category_info['rozdil'])), $this->category_details_url_template);
+                Array($this_site_info['id'], $lang   , ''          ,rawurlencode($this->category_info['rozdil']), \core\fileutils::encode_dir_name($this->category_info['rozdil'])), $this->category_details_url_template);
         $this->paging_links = get_paging_links($this->start, $this->_items_found, $this->rowsPerPage, $url_template);
 
         return $categories;
@@ -391,7 +394,7 @@ function gallery_get_children_of($this_site_info, $lang, $rozdilizformy = false)
     $url_details_prefix = str_replace(
             Array('{site_id}', '{lang}', '{start}', '{keywords}'), 
             Array($this_site_info['id'], $lang, 0, ''), 
-            url_pattern_gallery_category);
+            \e::config('url_pattern_gallery_category'));
 
     $url_thumbnail_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']) . '/gallery';
     $cnt = count($categories);
@@ -399,7 +402,7 @@ function gallery_get_children_of($this_site_info, $lang, $rozdilizformy = false)
         //$categories[$i]['url_details'] = $url_details_prefix . rawurlencode($categories[$i]['dirname']);
         $categories[$i]['url_details'] = str_replace(
                 Array('{rozdilizformy}','{rozdil2}'), 
-                Array(rawurlencode($categories[$i]['dirname']),  encode_dir_name($categories[$i]['dirname'])), 
+                Array(rawurlencode($categories[$i]['dirname']),  \core\fileutils::encode_dir_name($categories[$i]['dirname'])), 
                 $url_details_prefix);
 
         $categories[$i]['url_thumbnail'] = $url_thumbnail_prefix . '/' . $categories[$i]['icon'];
@@ -422,7 +425,7 @@ function gallery_breadcrumbs($rozdilizformy, $site_id, $lang, $keywords) {
         'url' => str_replace(
                 Array('{rozdil2}','{rozdilizformy}', '{site_id}', '{lang}', '{start}', '{keywords}'), 
                 Array('','', $site_id, $lang, 0, ''), 
-                url_pattern_gallery_category)
+                \e::config('url_pattern_gallery_category'))
     );
 
     if ($keywords) {
@@ -453,8 +456,8 @@ function gallery_breadcrumbs($rozdilizformy, $site_id, $lang, $keywords) {
                 'innerHTML' => $path[$r],
                 'url' => str_replace(
                         Array('{rozdil2}','{rozdilizformy}', '{site_id}', '{lang}', '{start}', '{keywords}'), 
-                        Array(encode_dir_name($re1),rawurlencode($re1), $site_id, $lang, 0, $keywords), 
-                        url_pattern_gallery_category)
+                        Array(\core\fileutils::encode_dir_name($re1),rawurlencode($re1), $site_id, $lang, 0, $keywords), 
+                        \e::config('url_pattern_gallery_category'))
             );
         }
         $r = $r + 1;
@@ -538,7 +541,7 @@ function gallery_synchronize_categories($site_id) {
     $cnt = count($existing_categories);
     $new = Array();
     for ($i = 0; $i < $cnt; $i++) {
-        $new[] = "({$site_id},'" . \e::db_escape($existing_categories[$i]) . "','" . \e::db_escape(encode_dir_name($existing_categories[$i])) . "')";
+        $new[] = "({$site_id},'" . \e::db_escape($existing_categories[$i]) . "','" . \e::db_escape(\core\fileutils::encode_dir_name($existing_categories[$i])) . "')";
     }
     if (count($new) > 0) {
         $query = "INSERT INTO {$GLOBALS['table_prefix']}photogalery_rozdil(site_id,rozdil,rozdil2) VALUES " . join(',', $new) . "";

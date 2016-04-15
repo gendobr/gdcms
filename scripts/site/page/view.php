@@ -11,7 +11,7 @@
 run('site/menu');
 run('site/page/menu');
 run('site/page/page_view_functions');
-run('lib/file_functions');
+
 run('category/functions');
 //--------------------------- check page id - begin ----------------------------
 if (isset($input_vars['page_id'])) {

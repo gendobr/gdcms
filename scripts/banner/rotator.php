@@ -43,10 +43,10 @@ if ($banners_at_once < 1) {
 global $main_template_name;
 $main_template_name = '';
 
-run("lib/file_functions");
+
 
 $banner_dir = ereg_replace('/$', '', \e::config('SITES_ROOT') . '/' . $this_site_info['dir']) . '/banners';
-$files = ls($banner_dir);
+$files = \core\fileutils::ls($banner_dir);
 $files = $files['files'];
 
 $cnt = count($files);

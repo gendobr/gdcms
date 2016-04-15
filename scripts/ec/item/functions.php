@@ -589,9 +589,9 @@ function ec_item_adjust($_info, $this_site_info) {
     }
 
     # url to view details
-    //$_info['url_details']=sprintf(url_ec_item_details_pattern,$_info['ec_item_lang'],$_info['ec_item_id']);
+    //$_info['url_details']=sprintf(\e::config('url_ec_item_details_pattern'),$_info['ec_item_lang'],$_info['ec_item_id']);
     $_info['url_details'] = str_replace(
-            Array('{ec_item_lang}', '{ec_item_id}', '{ec_item_code}'), Array($_info['ec_item_lang'], $_info['ec_item_id'], $_info['ec_item_code']), url_ec_item_details_pattern);
+            Array('{ec_item_lang}', '{ec_item_id}', '{ec_item_code}'), Array($_info['ec_item_lang'], $_info['ec_item_id'], $_info['ec_item_code']), \e::config('url_ec_item_details_pattern'));
 
     # title of currency
     $_info['ec_curency_title'] = isset($currency_titles[$_info['ec_item_currency']]) ? $currency_titles[$_info['ec_item_currency']] : $_info['ec_item_currency'];
@@ -641,8 +641,8 @@ function ec_item_adjust($_info, $this_site_info) {
     if (($_info['ec_item_cense_level'] & ec_item_sell) > 0) {
         //prn('ec_item_sell='.ec_item_sell);
         $_info['ec_item_sell'] = 1;
-        $_info['url_order_now'] = sprintf(url_ec_item_order_now_pattern, $_info['ec_item_lang'], $_info['ec_item_id']);
-        $_info['url_buy_now'] = sprintf(url_ec_item_buy_now_pattern, $_info['ec_item_lang'], $_info['ec_item_id'], $this_site_info['id']);
+        $_info['url_order_now'] = sprintf(\e::config('url_ec_item_order_now_pattern'), $_info['ec_item_lang'], $_info['ec_item_id']);
+        $_info['url_buy_now'] = sprintf(\e::config('url_ec_item_buy_now_pattern'), $_info['ec_item_lang'], $_info['ec_item_id'], $this_site_info['id']);
     } else
         $_info['ec_item_sell'] = 0;
 

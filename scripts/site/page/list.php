@@ -55,12 +55,11 @@ if(get_level($site_id)==0)
     # --------------------- delete from DB - end -------------------------------
 
     # --------------------- delete exported page - begin -----------------------
-      run("lib/file_functions");
       $site_root_dir = \e::config('SITES_ROOT').'/'.$this_site_info['dir'];
-      path_delete($site_root_dir,$delete_page_info['file']);
+      \core\fileutils::path_delete($site_root_dir,$delete_page_info['file']);
       if($delete_page_info['file2']) {
           //prn("path_delete($site_root_dir,{$delete_page_info['file2']})");
-          path_delete($site_root_dir,$delete_page_info['file2']);
+          \core\fileutils::path_delete($site_root_dir,$delete_page_info['file2']);
       }
     # --------------------- delete exported page - end -------------------------
     clear('delete_page_id','delete_page_lang');

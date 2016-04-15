@@ -195,3 +195,20 @@ input[type="submit"],input[type="reset"]{font-size:150%;width:auto;}
     padding:1px 5px;
     display:inline-block;
 }
+
+.error{
+    color:red;
+    font-weight:bold;
+}
+
+.menu_block{
+    position:absolute;
+    background-color:#e0e0e0;
+    padding:5px 15px;
+    display:inline-block;
+    width:200px;
+}
+
+.label h5{
+    margin:0px;
+}

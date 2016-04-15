@@ -7,7 +7,7 @@
   $site_id       - site identifier, integer, optional
   (c) Gennadiy Dobrovolsky, gen_dobr@hotmail.com
  */
-run('lib/file_functions');
+
 run('site/image/url_replacer');
 run('ec/item/functions');
 run('site/menu');

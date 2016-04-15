@@ -510,7 +510,9 @@ function get_site_info($site_id,$lang='') {
 
     $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$_id}");
 
-    if(!$this_site_info) return false;
+    if (!$this_site_info) {
+        return false;
+    }
 
     $this_site_info['title']=get_langstring($this_site_info['title'],$lang);
 

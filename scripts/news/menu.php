@@ -160,7 +160,7 @@ function news_get_view($news_list, $lang) {
         $news_list[$i]['URL_view_details'] = str_replace(
                 Array('{news_id}','{lang}','{news_code}'),
                 Array($news_list[$i]['id'],$lang,$news_list[$i]['news_code']),
-                url_template_news_details);
+                \e::config('url_template_news_details'));
         //url_prefix_news_details . "news_id={$news_list[$i]['id']}&lang={$lang}";
         
         $news_list[$i]['tag_links'] = news_tag_links($news_list[$i]['tags'],$news_list[$i]['site_id'],$lang);
@@ -278,7 +278,7 @@ class CategoryNews {
         // get list of tags
         // cache info as file in the site dir
         $cachefilepath=\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_category{$this->category_info['category_id']}_lang{$this->lang}.cache";
-        $tmp = get_cached_info($cachefilepath, cachetime);
+        $tmp = \core\fileutils::get_cached_info($cachefilepath, cachetime);
         if ($tmp) {
             $this->tagSelector = $tmp;
         } else {
@@ -311,7 +311,7 @@ class CategoryNews {
                        ORDER BY news_tags.lang, news_tags.tag";
             //prn($query);
             $this->tagSelector = \e::db_getrows($query);
-            set_cached_info($cachefilepath, $this->tagSelector);
+            \core\fileutils::set_cached_info($cachefilepath, $this->tagSelector);
         }
         $cnt=count($this->tagSelector);
         for($i=0; $i<$cnt; $i++){

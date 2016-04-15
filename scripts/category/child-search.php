@@ -51,9 +51,9 @@ if (is_valid_url($url = trim($this_category_info['category_description']))) {
 
 
 
-run('lib/file_functions');
+
 // cache info as file in the site dir
-$tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 600);
+$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 600);
 
 if ($tmp) {
     // prn($tmp);
@@ -128,7 +128,7 @@ if ($tmp) {
     //prn($this_category_info['children']);
     // ------------------- get children - end ----------------------------------
     $tmp = Array('parents' => $this_category_info['parents'], 'children' => $this_category_info['children']);
-    set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tmp);
+    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tmp);
 }
 
 // do search 

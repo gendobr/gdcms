@@ -27,8 +27,22 @@ $list=\e::db_getrows("SELECT * FROM <<tp>>photo_category photo_category WHERE si
 $html="<a href='".\e::url(['action'=>'photo/photo_category_add', 'site_id'=>$site_id])."'>".text('photo_category_add')."</a>";
 
 foreach($list as $row){
-    $deep=substr_count ( $row['path'] , "/");
-    $html="";
+    $deep=substr_count ( $row['photo_category_path'] , "/");
+    $html.="<div style=\"padding-left:".(10*$deep)."pt; margin-top:10px;\">
+               <a href=\"javascript:void({$row['photo_category_id']})\" class=context_menu_link onclick=\"change_state('cm{$row['photo_category_id']}'); return false;\"><img src=img/context_menu.gif border=0 width-25 height=15></a>
+               ".  get_langstring($row['photo_category_title'])."
+               <div id=\"cm{$row['photo_category_id']}\" class=menu_block style='display:none;'>
+               ";
+    $menu = photo_category_menu($row);
+    foreach($menu as $cm){
+        if($cm['url']){
+            $html.="<div><nobr><a href=\"{$cm['url']}\" {$cm['attributes']}>{$cm['html']}</a></nobr></div>";
+        }else{
+            $html.="<div><nobr>{$cm['html']}</nobr></div>";
+        }
+    }
+    $html.=    "</div>
+            </div>";
 }
 
 

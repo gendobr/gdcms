@@ -23,7 +23,7 @@ $in_charset = 'UTF-8';
 header('content-type: text/html; charset=' . $out_charset);
 
 run('site/menu');
-run('lib/file_functions');
+
 
 
 run('lib/hyphenation/hyphenation');
@@ -93,7 +93,7 @@ $cache_file_path = \e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/r
 
 
 // try read data from cache
-$content = get_cached_info($cache_file_path, 0);
+$content = \core\fileutils::get_cached_info($cache_file_path, 0);
 if ($content) {
     echo $content;
     exit();
@@ -243,5 +243,5 @@ $content = process_template($template_path
 echo $content;
 
 // save content to cache
-set_cached_info($cache_file_path, $content);
+\core\fileutils::set_cached_info($cache_file_path, $content);
 ?>

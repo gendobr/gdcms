@@ -30,7 +30,7 @@ if (get_level($site_id) == 0) {
 # ------------------- check permission - end -----------------------------------
 
 
-run('lib/file_functions');
+
 
 if(!isset($input_vars['dirname'])) $input_vars['dirname']='';
 $input_vars['dirname'] = preg_replace("/^\\/|\\/\$/",'',$input_vars['dirname']);
@@ -76,9 +76,6 @@ Directory <b><a href=\"index.php?action=site/files&site_id=$site_id&current_dir=
                 unique_names : true,
                 flash_swf_url : '" . site_root_URL . "/scripts/lib/plupload/plupload.flash.swf',
                 silverlight_xap_url : '" . site_root_URL . "/scripts/lib/plupload/plupload.silverlight.xap',
-                //   filters : [
-                //             {title : \"Allowed files\", extensions : \"".str_replace('|',',',allowed_file_extension)."\"}
-                //   ],
                 preinit: {
 			UploadFile: function(up, file) {
                                log('[UploadingFile] ' + file.name + '(' + file.size + ' bytes)');

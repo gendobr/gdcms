@@ -83,8 +83,7 @@ if (isset($input_vars['text']))
         $_SESSION['code'] = '';
 
         // new messages are showed at the top of list
-        header("Location: " . url_prefix_guestbook . "start=0&lang={$input_vars['lang']}&site={$site}");
-        //echo("Location: " . url_prefix_guestbook . "start={$i}&lang={$input_vars['lang']}&site={$site}");
+        header("Location: " . \e::config('url_prefix_guestbook') . "start=0&lang={$input_vars['lang']}&site={$site}");
         run("session_finish");         //finish session
         exit();
     }
@@ -126,7 +125,7 @@ for ($i = 0; $i < $num; $i = $i + 10) {
     if ($i == $start) {
         $paging[] = Array('URL' => '', 'HTML' => '[' . (1 + $i / 10) . ']');
     } else {
-        $paging[] = Array('URL' => url_prefix_guestbook . "start={$i}&lang={$input_vars['lang']}&site={$site}", 'HTML' => (1 + $i / 10));
+        $paging[] = Array('URL' => \e::config('url_prefix_guestbook') . "start={$i}&lang={$input_vars['lang']}&site={$site}", 'HTML' => (1 + $i / 10));
     }
 }
 
@@ -190,74 +189,10 @@ $vyvid=process_template( $guestbook_template
                           ,'text'=>$txt
                           ,'guestbook_messages'=>$guestbook_messages
                           ,'guestbook_messages_found' => $num
-                          ,'form_action'=>url_prefix_guestbook . "site=$site&lang={$input_vars['lang']}&interface_lang={$input_vars['lang']}"
+                          ,'form_action'=>\e::config('url_prefix_guestbook') . "site=$site&lang={$input_vars['lang']}&interface_lang={$input_vars['lang']}"
                           ,'codeimage'=>site_root_URL . "/index.php?action=gb/bookcode"
                      )
          );
-//
-//if(count($paging)>1){
-//    $pages=text('Pages')." : ";
-//    foreach($paging as $pg){
-//        if(strlen($pg['URL'])>0){
-//            $pages.=" <a href=\"{$pg['URL']}\">{$pg['HTML']}</a> ";
-//        }else{
-//            $pages.=" <b>{$pg['HTML']}</b> ";
-//        }
-//    }
-//}else{
-//    $pages='';
-//}
-//
-//if (count($guestbook_messages) > 0) {
-//    $vyvid .= "<p>$pages</p>";
-//    $n = 0;
-//    foreach ($guestbook_messages as $row) {
-//        $vyvid .= "<p><b>";
-//        if (is_valid_email($row['email']))
-//            $vyvid .= "<a href='mailto:{$row['email']}'>{$row['name']}</a>"; else
-//            $vyvid .= $row['name'];
-//        $vyvid .= " <i>" . date('d.m.Y H:i', $row['data']) . "</i></b>";
-//
-//        if (strlen($row['adress']) > 0 && is_valid_url($row['adress'])) {
-//            $vyvid .= "
-//                   <div><a href='{$row['adress']}' target=new>{$row['adress']}</a></div>
-//                   ";
-//        }
-//
-//        if (strlen($row['tema']) > 0)
-//            $vyvid .= "\n\n<div>\n" . $row['tema'] . "\n</div>";
-//
-//        $vyvid .= "
-//        <div>
-//        " . wordwrap($row['text'], 60, " ", 1) . "
-//        </div>";
-//        $vyvid .= "</p><br>";
-//        $n+=1;
-//    }
-//
-//    $vyvid .= "<p>$pages</p>";
-//}
-//else {
-//    $vyvid .= "<p><b>{$text['There_are_no_messages_in_this_guestbook']}</b><hr></p>";
-//}
-//
-//$vyvid .= "
-//<table width=90% border=0>
-//<tr><td style='border:none;'>
-//<h4>{$text['Create_message']}</h4>
-//<form action=" . url_prefix_guestbook . "site=$site&lang={$input_vars['lang']}&interface_lang={$input_vars['lang']} method=post>
-//<table width=100%>
-//<tr><td width=30% style='border:none;'>{$txt['Name']}</td><td style='border:none;'><INPUT type=text class=text NAME=name SIZE=15 style='width:90%;'></td></tr>
-//<tr><td style='border:none;'>E-mail</td><td style='border:none;'><INPUT type=text class=text NAME=email SIZE=15 style='width:90%;'></td></tr>
-//<tr><td style='border:none;'>WWW</td><td style='border:none;'><INPUT type=text NAME=adress class=text value='' SIZE=25 style='width:90%;'></td></tr>
-//<tr><td style='border:none;'>{$txt['Subject']}</td><td style='border:none;'><INPUT type=text class=text NAME=tema  value='' SIZE=25 style='width:90%;'></td></tr>
-//<tr><td style='border:none;'>{$txt['Message']}</td><td style='border:none;'><textarea  class=text NAME=text rows=4 cols=40 style='width:90%;'></TEXTAREA></td></tr>
-//<tr><td style='border:none;'><b>{$txt['Retype_the_number']}</b> <img src=" . site_root_URL . "/index.php?action=gb/bookcode width=80px height=22px border=1px></td><td><input type=text name=postedcode value=''></td></tr>
-//<tr><td style='border:none;'></td><td style='border:none;'><input type=submit value='{$txt['Send']}' class=button></td></tr>
-//</table>
-//</form>
-//</td></tr>
-//</table>";
 
 
 $file_content = process_template($this_site_info['template']

@@ -184,7 +184,7 @@ if (!is_file($ec_item_template)) {
 
 $this_ec_item_info['ec_item_size'][3] = text('ec_units_' . $this_ec_item_info['ec_item_size'][3]);
 $this_ec_item_info['ec_item_weight'][1] = text('ec_units_' . $this_ec_item_info['ec_item_weight'][1]);
-$this_ec_item_info['url_order_now'] = sprintf(url_ec_item_order_now_pattern, $this_ec_item_info['ec_item_lang'], $this_ec_item_info['ec_item_id']);
+$this_ec_item_info['url_order_now'] = sprintf(\e::config('url_ec_item_order_now_pattern'), $this_ec_item_info['ec_item_lang'], $this_ec_item_info['ec_item_id']);
 
 $this_ec_item_info['ec_item_tags'] = explode(',', $this_ec_item_info['ec_item_tags']);
 $cnt = count($this_ec_item_info['ec_item_tags']);

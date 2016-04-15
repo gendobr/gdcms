@@ -249,9 +249,9 @@ class CategoryViewModel {
         $this->category_info = $category_info;
 
         $this->cache_path=$this->site_info['site_root_dir'] . "/cache/category_{$this->category_info['category_id']}_{$this->lang}.cache";
-        path_create($this->site_info['site_root_dir'], $this->cache_path);
+        \core\fileutils::path_create($this->site_info['site_root_dir'], $this->cache_path);
         
-        $tmp = get_cached_info($this->cache_path, 600);
+        $tmp = \core\fileutils::get_cached_info($this->cache_path, 600);
         if ($tmp) {
             $this->deep=$tmp->deep;
             $this->category_parents=$tmp->category_parents;
@@ -356,7 +356,7 @@ class CategoryViewModel {
         // echo ' -->';
         // ---------------------------- get parents - end --------------------------
         if(!$this->useCache && $this->category_children && $this->category_parents){
-            set_cached_info($this->cache_path, $this);
+            \core\fileutils::set_cached_info($this->cache_path, $this);
         }
     }
 
@@ -424,7 +424,7 @@ class CategoryViewModel {
         // ------------------- get children - end ----------------------------------
         
         if(!$this->useCache && $this->category_children && $this->category_parents){
-            set_cached_info($this->cache_path, $this);
+            \core\fileutils::set_cached_info($this->cache_path, $this);
         }
     }
 

@@ -50,7 +50,7 @@ $log_file_path=\e::config('CACHE_ROOT')."/multiple_upload_receiver.log.txt";
 ml('site/upload_receiver', Array($this_site_info, $_FILES));
 
 // load file functions
-run('lib/file_functions');
+
 
 // load dirname
 if (!isset($input_vars['current_dir'])) {
@@ -64,7 +64,7 @@ $destination_dir = realpath($destination_dir);
 $destination_dir = str_replace("\\", '/', $destination_dir);
 if (stristr($destination_dir, $this_site_info['site_root_dir']) === false) {
     // prn("Invalid destination dir  {$this_site_info['site_root_dir']}+{$input_vars['dirname']} = {$destination_dir}");
-    write_to_file($log_file_path, "Invalid destination dir  {$this_site_info['site_root_dir']}+{$input_vars['dirname']} = {$destination_dir}");
+    file_put_contents($log_file_path, "Invalid destination dir  {$this_site_info['site_root_dir']}+{$input_vars['dirname']} = {$destination_dir}");
     die();
 }
 // for logging
@@ -126,7 +126,7 @@ if(strlen($destination_dir_relative)==0){
 $log = '';
 //$log.="\r\n form element names: " . join(',', array_keys($_FILES)) . ';';
 foreach ($_FILES as $fld => $vals) {
-    if (!preg_match("/\\.(" . allowed_file_extension . ")\$/i", $vals['name'])) {
+    if (!preg_match("/\\.(" . \e::config('allowed_file_extension') . ")\$/i", $vals['name'])) {
         $log.=" <b><font color=red>File {$vals['name']} has forbidden extension</font></b><br>";
         continue;
     }
@@ -134,9 +134,9 @@ foreach ($_FILES as $fld => $vals) {
     //$vals['name'] = $_FILES[$fld]['name'] = encode_file_name(iconv('utf8',site_charset,$vals['name']));
     //$vals['name'] = $_FILES[$fld]['name'] = encode_file_name($vals['name']);
     //$vals['name'] = $_FILES[$fld]['name'] = encode_file_name(utf8_to_cp1251($vals['name']));
-    $vals['name'] = $_FILES[$fld]['name'] = encode_file_name($vals['name']);
+    $vals['name'] = $_FILES[$fld]['name'] = \core\fileutils::encode_file_name($vals['name']);
 
-    $fname = upload_file($fld, $destination_dir);
+    $fname = \core\fileutils::upload_file($_FILES[$fld], $destination_dir);
     $log.="Uploading file {$_FILES[$fld]['name']} => <a href='{$destination_dir_url}/{$fname}' target=_blank>$destination_dir_relative/$fname</a>;";
     if (strlen($fname) > 0) {
         $log.="OK\n";
@@ -153,8 +153,7 @@ foreach ($_FILES as $fld => $vals) {
                 break;
         }
     }
-    write_to_file($log_file_path, strip_tags($log)."\n");
+    file_put_contents($log_file_path, strip_tags($log)."\n");
 }
 
 echo $log;
-?>

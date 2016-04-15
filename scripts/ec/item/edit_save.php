@@ -113,9 +113,9 @@ $this_ec_item_info['ec_item_weight'] = Array(checkFloat($input_vars['ec_item_wei
 $this_ec_item_info['ec_item_ordering'] = (int) $input_vars['ec_item_ordering'];
 
 // check ec_item_code
-$this_ec_item_info['ec_item_code'] = encode_dir_name($input_vars['ec_item_code']);
+$this_ec_item_info['ec_item_code'] = \core\fileutils::encode_dir_name($input_vars['ec_item_code']);
 if (strlen($this_ec_item_info['ec_item_code']) == 0) {
-    $this_ec_item_info['ec_item_code'] = encode_dir_name($input_vars['ec_item_title']);
+    $this_ec_item_info['ec_item_code'] = \core\fileutils::encode_dir_name($input_vars['ec_item_title']);
 }
 // ec_item_code must be unique
 $query = "SELECT * from  {$GLOBALS['table_prefix']}ec_item "
@@ -154,16 +154,16 @@ if ($all_is_ok) {
                 # create directory
                 $relative_dir = date('Y') . '/' . date('m');
                 $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
-                path_create($site_root_dir, "/gallery/$relative_dir/");
+                \core\fileutils::path_create($site_root_dir, "/gallery/$relative_dir/");
 
                 # copy uploaded file
                 //copy($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$big_image_file_name");
 
-                $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-big-" . encode_file_name($photos['name']);
+                $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-big-" . \core\fileutils::encode_file_name($photos['name']);
                 $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
                 ec_img_resize($photos['tmp_name'], $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
 
-                $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . encode_file_name($photos['name']);
+                $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . \core\fileutils::encode_file_name($photos['name']);
                 $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
                 ec_img_resize($photos['tmp_name'], $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
 

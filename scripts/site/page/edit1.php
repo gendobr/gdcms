@@ -5,7 +5,6 @@
               $lang       - page_language  , char(3), mandatory
   (c) Gennadiy Dobrovolsky, gen_dobr@hotmail.com
 */
-run('lib/file_functions');
 run('site/image/url_replacer');
 run('site/page/menu');
 run('site/menu');

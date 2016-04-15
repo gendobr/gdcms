@@ -49,8 +49,7 @@ $log_file_path=\e::config('CACHE_ROOT')."/directory_creator.log.txt";
 // save log
 ml('site/file_directory_creator', Array($this_site_info, $input_vars));
 
-// load file functions
-run('lib/file_functions');
+
 
 // load dirname
 if (!isset($input_vars['current_dir'])) {
@@ -64,7 +63,7 @@ $destination_dir = realpath($destination_dir);
 $destination_dir = str_replace("\\", '/', $destination_dir);
 if (stristr($destination_dir, $this_site_info['site_root_dir']) === false) {
     // prn("Invalid destination dir  {$this_site_info['site_root_dir']}+{$input_vars['dirname']} = {$destination_dir}");
-    write_to_file($log_file_path, "Invalid destination dir  {$this_site_info['site_root_dir']}+{$input_vars['dirname']} = {$destination_dir}");
+    file_put_contents($log_file_path, "Invalid destination dir  {$this_site_info['site_root_dir']}+{$input_vars['dirname']} = {$destination_dir}");
     die();
 }
 // for logging
@@ -125,7 +124,7 @@ function utf8_to_cp1251($s) {
 
 // $log = 'Uploading files: into ' . $destination_dir_relative .';</br>';
 $log = '';
-$newdir=  encode_dir_name(utf8_to_cp1251($input_vars['newdir']));
+$newdir=  \core\fileutils::encode_dir_name(utf8_to_cp1251($input_vars['newdir']));
 $path=$destination_dir."/".$newdir;
 $log.=" Creating directory $newdir<br>\n";
 if(mkdir($path)){
@@ -134,6 +133,6 @@ if(mkdir($path)){
     $log.="ERROR<br>\n";
 }
 
-write_to_file($log_file_path, strip_tags($log)."\n");
+file_put_contents($log_file_path, strip_tags($log)."\n");
 echo $log;
 ?>

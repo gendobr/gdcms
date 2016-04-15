@@ -31,7 +31,7 @@ $txt = load_msg($input_vars['lang']);
 
 $lang = $input_vars['lang'];
 run('site/menu');
-run('lib/file_functions');
+
 //------------------- site info - begin ----------------------------------------
 if (isset($input_vars['site_id'])) {
     $site = $site_id = checkInt($input_vars['site_id']);
@@ -47,7 +47,7 @@ if (checkInt($this_site_info['id']) <= 0) {
 
 $_template = false;
 if (isset($input_vars['template'])) {
-    $input_vars['template'] = encode_file_name($input_vars['template']);
+    $input_vars['template'] = \core\fileutils::encode_file_name($input_vars['template']);
     $_template = site_get_template($this_site_info, $input_vars['template']);
 }
 if (!$_template) {

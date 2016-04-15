@@ -48,8 +48,7 @@ if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
          $dir_to_delete=\e::config('SITES_ROOT').'/'.$this_site_info['dir'];
          if(is_dir($dir_to_delete))
          {
-            run('lib/file_functions');
-            rm_r($dir_to_delete);
+            \core\fileutils::rm_r($dir_to_delete);
          }
       }
     //-------------------- delete files - end ----------------------------------

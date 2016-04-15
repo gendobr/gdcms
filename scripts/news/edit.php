@@ -9,7 +9,7 @@
 
 $debug = false;
 
-run('lib/file_functions');
+
 run('site/image/url_replacer');
 run('lib/img');
 

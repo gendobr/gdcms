@@ -4,7 +4,7 @@ $link = $db;
 $data = date("Y-m-d H:i");
 
 run('site/menu');
-run('lib/file_functions');
+
 # ------------------- site info - begin ----------------------------------------
 if (isset($input_vars['site_id'])) {
     $site = $site_id = checkInt($input_vars['site_id']);
@@ -60,7 +60,7 @@ $vyvid = '';
 if (isset($input_vars['rozdil1'])) {
 
     $rozdil1 = \e::db_escape(trim($input_vars['rozdil1']));
-    $rozdil21 = encode_dir_name(trim($input_vars['rozdil1']));
+    $rozdil21 = \core\fileutils::encode_dir_name(trim($input_vars['rozdil1']));
     $pidpys1 = \e::db_escape($input_vars['pidpys1']);
     $autor1 = \e::db_escape($input_vars['autor1']);
     $rik1 = \e::db_escape($input_vars['rik1']);

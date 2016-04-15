@@ -72,7 +72,7 @@ $tags = \e::db_getrows($query);
 
 if (count($tags) > 0) {
 
-    $url_prefix = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^tags$|^category_id$|^action$') . '&tags=';
+    $url_prefix = \e::config('url_prefix_news_list') . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^tags$|^category_id$|^action$') . '&tags=';
 
     $cnt = count($tags);
     for ($i = 0; $i < $cnt; $i++) {

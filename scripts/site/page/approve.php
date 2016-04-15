@@ -6,7 +6,7 @@
   (c) Gennadiy Dobrovolsky, gen_dobr@hotmail.com
 */
 
-run('lib/file_functions');
+
 run('site/page/menu');
 
 
@@ -87,7 +87,7 @@ run('site/page/menu');
       $input_vars['page_header']  = $this_page_info['title'].' - '.$text['Seize_to_revize'];
       
       // delete page file if page permission
-      path_delete($root,$dir,isset($input_vars['verbose']));
+      \core\fileutils::path_delete($root,$dir,isset($input_vars['verbose']));
       if(isset($input_vars['verbose'])) prn("path_delete($root,$dir);");
     # path_delete($this_site_info['absolute_path'],$this_site_info['absolute_path'].'/'.ereg_replace('^/+|/+$','',$this_page_info['file']) );
     break;
@@ -96,7 +96,7 @@ run('site/page/menu');
       $input_vars['page_title']   = $this_page_info['title'].' - '.$text['Return_to_previous_operator'];
       $input_vars['page_header']  = $this_page_info['title'].' - '.$text['Return_to_previous_operator'];
       // delete page file if page permission
-      path_delete($root,$dir,isset($input_vars['verbose']));
+      \core\fileutils::path_delete($root,$dir,isset($input_vars['verbose']));
       if(isset($input_vars['verbose'])) prn("path_delete($root,$dir);");
     break;
     default:

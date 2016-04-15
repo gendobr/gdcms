@@ -4,7 +4,7 @@
  * Set image category
  */
 $GLOBALS['main_template_name'] = '';
-run('lib/file_functions');
+
 //prn($input_vars);
 
 $rozdil_id = (int) str_replace('rozdiltitle_', '', $input_vars['id']);
@@ -39,7 +39,7 @@ if (get_level($site_id) == 0) {
 # ------------------- check permission - end -----------------------------------
 
 $encoded_category_title  = \e::db_escape($category_title);
-$query="UPDATE {$table_prefix}photogalery_rozdil SET rozdil='$encoded_category_title', rozdil2='".encode_dir_name($category_title)."' WHERE id=$rozdil_id AND site_id=$site_id";
+$query="UPDATE {$table_prefix}photogalery_rozdil SET rozdil='$encoded_category_title', rozdil2='".\core\fileutils::encode_dir_name($category_title)."' WHERE id=$rozdil_id AND site_id=$site_id";
 //prn($query);
 \e::db_execute($query);
 // ------------- update image categories - begin -------------------------------
@@ -60,7 +60,7 @@ foreach($photogalery_rozdil_list as $rozdil){
    $to=$category_title.substr($rozdil['rozdil'],strlen($category_info['rozdil']));
 
    // update list of images
-   $query="UPDATE {$table_prefix}photogalery SET rozdil='".\e::db_escape($to)."', rozdil2='".encode_dir_name($to)."' WHERE site={$site_id} AND rozdil='$from'";
+   $query="UPDATE {$table_prefix}photogalery SET rozdil='".\e::db_escape($to)."', rozdil2='".\core\fileutils::encode_dir_name($to)."' WHERE site={$site_id} AND rozdil='$from'";
    // prn($query);
    \e::db_execute($query);
 }
@@ -85,7 +85,7 @@ foreach($photogalery_rozdil_list as $rozdil){
 
    // update list of subcategories
    $query="UPDATE {$table_prefix}photogalery_rozdil
-           SET rozdil='".\e::db_escape($to)."', rozdil2='".encode_dir_name($to)."'
+           SET rozdil='".\e::db_escape($to)."', rozdil2='".\core\fileutils::encode_dir_name($to)."'
            WHERE site_id={$site_id} AND rozdil='$from'";
    //echo '<!--';   prn($query);  //echo '-->';
    \e::db_execute($query);

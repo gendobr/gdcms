@@ -3,9 +3,7 @@
 if (!function_exists('menu_news')) {
     run('news/menu');
 }
-if (!function_exists('get_cached_info')) {
-    run('lib/file_functions');
-}
+
 if (!function_exists('get_site_info')) {
     run('site/menu');
 }
@@ -313,20 +311,20 @@ class CmsNewsViewer {
 
         // copy parameters excluding some ones
         foreach ($this->currentInputData as $key => $val) {
-            if (!preg_match(url_template_news_list_ignore_parameters, $key)) {
+            if (!preg_match(\e::config('url_template_news_list_ignore_parameters'), $key)) {
                 $parameters[$key] = $val;
             }
         }
 
         // apply updates
         foreach ($updates as $key => $val) {
-            if (!preg_match(url_template_news_list_ignore_parameters, $key)) {
+            if (!preg_match(\e::config('url_template_news_list_ignore_parameters'), $key)) {
                 $parameters[$key] = $val;
             }
         }
 
         // get parameters from basic template
-        $tmp = explode('{', url_template_news_list);
+        $tmp = explode('{', \e::config('url_template_news_list'));
         $cnt = count($tmp);
         $basicKeys = Array();
         for ($i = 1; $i < $cnt; $i++) {
@@ -343,12 +341,12 @@ class CmsNewsViewer {
         // get additional paramaters
         $other_parameters = '';
         foreach ($parameters as $key => $val) {
-            $other_parameters.=str_replace(Array('{key}', '{value}'), Array($key, rawurlencode($val)), url_template_news_list_other_parameters);
+            $other_parameters.=str_replace(Array('{key}', '{value}'), Array($key, rawurlencode($val)), \e::config('url_template_news_list_other_parameters'));
         }
         $basicKeys['other_parameters'] = $other_parameters;
 
         // compose URL
-        $tmp = explode('{', url_template_news_list);
+        $tmp = explode('{', \e::config('url_template_news_list'));
         $cnt = count($tmp);
         for ($i = 1; $i < $cnt; $i++) {
             $tmp[$i] = explode('}', $tmp[$i]);
@@ -566,7 +564,7 @@ class CmsNewsViewer {
 
 
             $cachefilepath = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_months_site{$this->site_id}_lang{$this->lang}_year{$this->year}.cache";
-            $tmp = get_cached_info($cachefilepath, cachetime);
+            $tmp = \core\fileutils::get_cached_info($cachefilepath, cachetime);
             if (!$tmp) {
                 $tmp = \e::db_getrows("SELECT DISTINCT month(last_change_date) AS month
                                           FROM {$GLOBALS['table_prefix']}news as news
@@ -575,7 +573,7 @@ class CmsNewsViewer {
                                            AND news.lang='{$this->lang}'
                                            AND year(last_change_date)=$this->year
                                           ORDER BY month ASC");
-                set_cached_info($cachefilepath, $tmp);
+                \core\fileutils::set_cached_info($cachefilepath, $tmp);
             }
             foreach ($tmp as $tm) {
                 $this->_dateselector->children[] = Array(
@@ -591,10 +589,10 @@ class CmsNewsViewer {
             );
 
             $cachefilepath = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_years_site{$this->site_id}_lang{$this->lang}.cache";
-            $tmp = get_cached_info($cachefilepath, cachetime);
+            $tmp = \core\fileutils::get_cached_info($cachefilepath, cachetime);
             if (!$tmp) {
                 $tmp = \e::db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$GLOBALS['table_prefix']}news as news WHERE news.site_id={$this->site_id} AND  news.cense_level>={$this->this_site_info['cense_level']} AND news.lang='{$this->lang}' ORDER BY year ASC");
-                set_cached_info($cachefilepath, $tmp);
+                \core\fileutils::set_cached_info($cachefilepath, $tmp);
             }
             foreach ($tmp as $tm) {
                 $this->_dateselector->children[] = Array(
@@ -611,7 +609,7 @@ class CmsNewsViewer {
 
         // get list of tags
         // cache info as file in the site dir
-        $tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
+        $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
         if ($tmp) {
             $this->_tagSelector = $tmp;
         } else {
@@ -627,7 +625,7 @@ class CmsNewsViewer {
                        ORDER BY news_tags.lang, news_tags.tag";
             //prn($query);
             $this->_tagSelector = \e::db_getrows($query);
-            set_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->_tagSelector);
+            \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->_tagSelector);
         }
         $cnt = count($this->_tagSelector);
         for ($i = 0; $i < $cnt; $i++) {

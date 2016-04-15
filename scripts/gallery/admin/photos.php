@@ -2,7 +2,7 @@
 
 $potochnyjrik = date('Y');
 include(\e::config('SCRIPT_ROOT') . '/gallery/admin/trumbalis0.php');
-run('lib/file_functions');
+
 
 function clear_str($str) {
     $tot = str_replace('"', ' ', $str);
@@ -69,7 +69,7 @@ while ($qq < 5) {
         $photom = $_FILES["photo_m_{$qq}"];
 
         $rozdil = $input_vars["rozdil_{$qq}"];
-        $rozdil2 = encode_dir_name($rozdil);
+        $rozdil2 = \core\fileutils::encode_dir_name($rozdil);
 
         $pidpys = $input_vars["pidpys_{$qq}"];
 
@@ -87,22 +87,22 @@ while ($qq < 5) {
             $file_extension = ".{$regs[1]}";
 
             # create file name
-            $big_image_file_name = "{$site}-{$data}-" . encode_file_name($photos['name']);
+            $big_image_file_name = "{$site}-{$data}-" . \core\fileutils::encode_file_name($photos['name']);
 
             # create directory
             $relative_dir = date('Y') . '/' . date('m');
             $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
-            path_create($site_root_dir, "/gallery/$relative_dir/");
+            \core\fileutils::path_create($site_root_dir, "/gallery/$relative_dir/");
 
             # copy uploaded file
             copy($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$big_image_file_name");
 
             if ($photom['size'] > 0 && eregi("(jpg|gif|png|jpeg)$", $photom['name'], $regs)) {
-                $small_image_file_name = eregi_replace($file_extension . '/', '.jpg', "{$site}-{$data}-m-" . encode_file_name($photom['name']));
+                $small_image_file_name = eregi_replace($file_extension . '/', '.jpg', "{$site}-{$data}-m-" . \core\fileutils::encode_file_name($photom['name']));
                 copy($photom['tmp_name'], "$site_root_dir/gallery/$relative_dir/$small_image_file_name");
             } else {
                 # -------------- create small image - begin -------------------------
-                $small_image_file_name = "{$site}-{$data}-m-" . encode_file_name($photos['name']);
+                $small_image_file_name = "{$site}-{$data}-m-" . \core\fileutils::encode_file_name($photos['name']);
                 img_resize(
                         "$site_root_dir/gallery/$relative_dir/$big_image_file_name", // source image
                         "$site_root_dir/gallery/$relative_dir/$small_image_file_name", // here thumbnail image will be saved

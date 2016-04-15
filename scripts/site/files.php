@@ -18,7 +18,7 @@ if (isset($input_vars['popup']) && $input_vars['popup'] == 'yes') {
 # function to paste "insert" link
 $text_field_id = isset($input_vars['text_field_id']) ? $input_vars['text_field_id'] : '';
 function ins($fname, $site_root_url, $text_field_id) {
-    if (in_array(strtolower(file_extention(basename($fname))), $GLOBALS['img_extensions'])) {
+    if (in_array(strtolower(\core\fileutils::file_extention(basename($fname))), \core\fileutils::$img_extensions)) {
         return "<a href=# title=\"{$GLOBALS['text']['Insert_into_form_field']}\" onclick=\"insert_img_html('{$site_root_url}{$fname}', '$text_field_id');\"><img src=img/icon_paste.gif width=20px height=15px border=0></a>";
     } else {
         return "<a href=# title=\"{$GLOBALS['text']['Insert_into_form_field']}\" onclick=\"insert_link_html('{$site_root_url}{$fname}','" . basename($fname) . "', '$text_field_id');\"><img src=img/icon_paste.gif width=20px height=15px border=0></a>";
@@ -56,7 +56,7 @@ if (get_level($site_id) == 0) {
 
 $message = '';
 
-run('lib/file_functions');
+
 
 // ----------------- check current directory - begin ---------------------------
 if (!isset($input_vars['current_dir'])){
@@ -87,12 +87,12 @@ if (is_array($_FILES)) {
         //prn($val);
         if ($val['size'] == 0)
             continue;
-        if (!preg_match("/\\.(" . allowed_file_extension . ")$/i", $_FILES[$key]['name'])) {
+        if (!preg_match("/\\.(" . \e::config('allowed_file_extension') . ")$/i", $_FILES[$key]['name'])) {
             $message.=" <b><font color=red>File {$_FILES[$key]['name']} has forbidden extension</font></b><br>";
             continue;
         }
-        $_FILES[$key]['name'] = encode_file_name($_FILES[$key]['name']);
-        $reply = upload_file($key, $current_dir);
+        $_FILES[$key]['name'] = \core\fileutils::encode_file_name($_FILES[$key]['name']);
+        $reply = \core\fileutils::upload_file($_FILES[$key], $current_dir);
         if ($reply) {
             $message.=" <b><font color=green>File $reply uploaded successfully </font></b><br>";
         } else {
@@ -121,7 +121,7 @@ if (isset($input_vars['delete_file']) && strlen($input_vars['delete_file']) > 1)
     ml('site/files#delete', Array($this_site_info, $input_vars['delete_file']));
     $delfile = str_replace("\\", '/', realpath(str_replace('//', '/', "{$current_dir}/{$input_vars['delete_file']}")));
     if (strlen($delfile) > strlen($current_dir)) {
-        rm_r($delfile);
+        \core\fileutils::rm_r($delfile);
         clearstatcache();
     }
 }
@@ -132,7 +132,7 @@ clear('delete_file');
 //
 //------------------ create subdir - begin -----------------------------------
 if (isset($input_vars['newsubdir']) && strlen($input_vars['newsubdir']) > 0) {
-    $newsubdir = encode_dir_name($input_vars['newsubdir']);
+    $newsubdir = \core\fileutils::encode_dir_name($input_vars['newsubdir']);
     // prn($curr_dir.'/'.$input_vars['newsubdir'],$curr_dir.'/'.$newsubdir);
     ml('site/files#mkdir', Array($this_site_info, $current_dir . '/' . $newsubdir));
     if (!@mkdir($current_dir . '/' . $newsubdir)) {
@@ -151,7 +151,7 @@ if (isset($input_vars['unzip_file']) && strlen($input_vars['unzip_file']) > 1) {
     //prn("unzip({$input_vars['unzip_file']})");
     ml('site/files#unzip', Array($this_site_info, $input_vars['unzip_file']));
     run("lib/pclzip.lib");
-    unzip($current_dir . '/' . basename($input_vars['unzip_file']), $current_dir);
+    \core\fileutils::unzip($current_dir . '/' . basename($input_vars['unzip_file']), $current_dir);
 }
 clear('unzip_file');
 //-------------------- unzip - end ---------------------------------------------
@@ -451,9 +451,6 @@ $input_vars['page_content'].="
                 unique_names : true,
                 flash_swf_url : '" . site_root_URL . "/scripts/lib/plupload/plupload.flash.swf',
                 silverlight_xap_url : '" . site_root_URL . "/scripts/lib/plupload/plupload.silverlight.xap',
-                //   filters : [
-                //             {title : \"Allowed files\", extensions : \"" . str_replace('|', ',', allowed_file_extension) . "\"}
-                //   ],
                 preinit: {
 			UploadFile: function(up, file) {
                                log('[UploadingFile] ' + file.name + '(' + file.size + ' bytes)');

@@ -7,3 +7,18 @@ ALTER TABLE `cms_category` ADD COLUMN `category_title_short` VARCHAR(1024) NULL 
 ALTER TABLE `cms_category` ADD COLUMN `category_description_short` TEXT NULL AFTER `category_title_short`; 
 
 ALTER TABLE `cms_news` ADD COLUMN `news_views` INT DEFAULT 0  NOT NULL;
+
+
+CREATE TABLE `cms_photo_category` (
+  `photo_category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `site_id` int(11) DEFAULT NULL,
+  `photo_category_path` varchar(1024) COLLATE utf8_bin DEFAULT NULL,
+  `photo_category_ordering` int(11) DEFAULT NULL,
+  `photo_category_title` text COLLATE utf8_bin,
+  `photo_category_description` text COLLATE utf8_bin,
+  `photo_category_icon` text COLLATE utf8_bin,
+  `photo_category_visible` tinyint(1) NOT NULL DEFAULT '1',
+  `photo_category_code` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `photo_category_meta` text COLLATE utf8_bin,
+  PRIMARY KEY (`photo_category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin

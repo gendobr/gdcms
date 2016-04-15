@@ -29,7 +29,7 @@ if($user_level==0)
 }
 //------------------- check permission - end -----------------------------------
 run('site/menu');
-run('lib/file_functions');
+
 
 
 
@@ -55,7 +55,7 @@ run('lib/file_functions');
    if(isset($_FILES['userfile']))
    {
        //prn($_FILES);
-       $pt=\e::config('SITES_ROOT')."/{$this_site_info['dir']}"."/".encode_file_name($_FILES['userfile']['name']);
+       $pt=\e::config('SITES_ROOT')."/{$this_site_info['dir']}"."/".\core\fileutils::encode_file_name($_FILES['userfile']['name']);
        //prn($pt);
        @move_uploaded_file($_FILES['userfile']['tmp_name'] , $pt);
        $dt=join('',file($pt));

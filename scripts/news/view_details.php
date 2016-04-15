@@ -62,7 +62,7 @@ foreach ($this_news_info['categories'] as $cat) {
           'category_id' => $cat['category_id']
         , 'category_code' => $cat['category_code']
         , 'category_title' => "<div style=\"padding-left:" . (10 * $cat['deep']) . "pt\">" . get_langstring($cat['category_title']) . "</div>"
-        , 'category_url' => url_prefix_news_list . "site_id={$this_news_info['site_id']}&category_id={$cat['category_id']}"
+        , 'category_url' => \e::config('url_prefix_news_list') . "site_id={$this_news_info['site_id']}&category_id={$cat['category_id']}"
         , 'deep' => $cat['deep']
     );
 }
@@ -82,12 +82,10 @@ if (!$this_site_info)
     die($txt['Site_not_found']);
 $this_site_info['title'] = get_langstring($this_site_info['title'], $input_vars['lang']);
 
-// define('url_template_news_list', site_public_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}");
-//$this_site_info['URL_to_view_news'] = url_prefix_news_list . "site_id={$this_site_info['id']}&lang={$input_vars['lang']}";
 $this_site_info['URL_to_view_news'] = str_replace(
     ['{site_id}','{lang}','{other_parameters}'],
     [$this_site_info['id'],$input_vars['lang'],''],
-    url_template_news_list);
+    \e::config('url_template_news_list'));
 
 # ------------------- get site info - end --------------------------------------
 //
@@ -180,11 +178,10 @@ function show_related_news($params) {
     $tmp = \e::db_getrows($query);
     $tor = '';
     foreach ($tmp as $row) {
-        //url_template_news_details
         $url_news=str_replace(
                 Array('{news_id}','{lang}','{news_code}'),
                 Array($row['id'],$row['lang'],$row['news_code']),
-                url_template_news_details);
+                \e::config('url_template_news_details'));
         $tor.="<div class=\"see_also\"><a href=\"{$url_news}\">{$row['title']}</a></div>";
     }
     # ---------------- get news using tags - end ---------------------------
@@ -217,11 +214,10 @@ function show_news_categories($params) {
     $this_news_info['categories'] = \e::db_getrows($query);
     $tmp = '';
     foreach ($this_news_info['categories'] as $cat) {
-        // $category_url = url_prefix_news_list . "site_id={$site_id}&lang={$_REQUEST['lang']}&category_id={$cat['category_id']}";
         $category_url = str_replace(
             ['{site_id}','{lang}','{other_parameters}'],
             [$site_id,$_REQUEST['lang'],"category_id={$cat['category_id']}"],
-            url_template_news_list);
+            \e::config('url_template_news_list'));
         $tmp.="<span class=\"level{$cat['deep']}\"><a href=\"{$category_url}\">" . get_langstring($cat['category_title'], $_REQUEST['lang']) . "</a></span>\n";
     }
     return $tmp;

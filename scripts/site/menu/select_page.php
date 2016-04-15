@@ -12,7 +12,7 @@ global $main_template_name; $main_template_name = '';
 $site_id = (int)($input_vars['site_id']);
 
 $this_site_info=\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id=$site_id");
-$this_site_info['url']=ereg_replace('^/+|/+$','',$this_site_info['url']);
+$this_site_info['url']=preg_replace("/^\\/+|\\/+\$/",'',$this_site_info['url']);
 
 // $lang    = DbStr($input_vars['lang']);
 $lang = get_language('lang');
@@ -36,7 +36,9 @@ for($i=0; $i<$cnt; $i++)
 //---------------------- draw - begin ------------------------------------------
 echo "
 <html>
-<head><title>{$text['Insert_page_into_menu']}</title></head>
+<head><title>{$text['Insert_page_into_menu']}</title>
+<META content=\"text/html; charset=".site_charset."\" http-equiv=Content-Type>    
+</head>
 <body>
 <h1>{$text['Insert_page_into_menu']}</h1>
 <script type=\"text/javascript\">

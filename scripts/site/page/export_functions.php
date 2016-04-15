@@ -7,7 +7,7 @@
   (c) Gennadiy Dobrovolsky, gen_dobr@hotmail.com
  */
 
-run("lib/file_functions");
+
 run('site/image/url_replacer');
 run('site/page/page_view_functions');
 if (!function_exists('menu_site'))
@@ -126,7 +126,7 @@ function export_page($_page_id, $_lang) {
     if (strlen($this_page_info['delete_file']) > 0) {
         $delete_file=explode("\t",$this_page_info['delete_file']);
         foreach($delete_file as $fl){
-            path_delete($site_root_dir, $fl);
+            \core\fileutils::path_delete($site_root_dir, $fl);
         }
 
     }
@@ -144,20 +144,20 @@ function export_page($_page_id, $_lang) {
 
 
     $page_path1 = $page_path . "/{$this_page_info['id']}.{$this_page_info['lang']}.html";
-    path_create($site_root_dir, $page_path1);
+    \core\fileutils::path_create($site_root_dir, $page_path1);
     //prn($page_path);
-    write_to_file($page_path1, $file_content);
+    file_put_contents($page_path1, $file_content);
 
     if ($this_page_info['is_home_page'] == 1){
         // prn('exporting home page ...');
-        write_to_file($site_root_dir . "/index.html", $file_content);
+        file_put_contents($site_root_dir . "/index.html", $file_content);
     }
 
     // write to custom file name
     if(strlen($this_page_info['page_file_name'])>0){
         $page_path2 = $page_path . "/{$this_page_info['page_file_name']}";
-        path_create($site_root_dir, $page_path2);
-        write_to_file($page_path2, $file_content);
+        \core\fileutils::path_create($site_root_dir, $page_path2);
+        file_put_contents($page_path2, $file_content);
     }
 }
 

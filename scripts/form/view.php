@@ -41,7 +41,7 @@ if (!$this_site_info) {
     die($txt['Site_not_found']);
 }
 $this_site_info['title'] = get_langstring($this_site_info['title'], $input_vars['lang']);
-$this_site_info['URL_to_view_news'] = url_prefix_news_list . "site_id={$this_site_info['id']}&lang={$input_vars['lang']}";
+$this_site_info['URL_to_view_news'] = \e::config('url_prefix_news_list') . "site_id={$this_site_info['id']}&lang={$input_vars['lang']}";
 # ------------------- get site info - end --------------------------------------
 
 // load form file

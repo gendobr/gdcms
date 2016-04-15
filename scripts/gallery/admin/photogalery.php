@@ -201,7 +201,7 @@ foreach ($rows as $row) {
 				<td>
 				<div style='width:100%;height:60px;overflow:scroll;padding:3px;'>
 				&lt;a href=\"" .
-            str_replace(Array('{item}', '{site_id}', '{lang}'), Array($row['id'], $site_id, $lang), url_pattern_gallery_image) . "\"&gt;
+            str_replace(Array('{item}', '{site_id}', '{lang}'), Array($row['id'], $site_id, $lang), \e::config('url_pattern_gallery_image')) . "\"&gt;
 				&lt;img src={$url_prefix}/{$row['photos_m']}&gt;&lt;/a&gt;
 				<br><br>
 				</div>

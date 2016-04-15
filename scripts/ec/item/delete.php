@@ -3,7 +3,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-run('lib/file_functions');
+
 run('site/image/url_replacer');
 run('ec/item/functions');
 run('site/menu');

@@ -1,6 +1,6 @@
 <?php
 
-run('lib/file_functions');
+
 run('ec/item/functions');
 run('site/menu');
 run('lib/socket_http_function');
@@ -99,7 +99,7 @@ if(isset($input_vars['imh']) && is_array($input_vars['imh'])) {
     # create directory
     $relative_dir=date('Y').'/'.date('m');
     $site_root_dir=\e::config('SITES_ROOT').'/'.$this_site_info['dir'];
-    path_create($site_root_dir,"/gallery/$relative_dir/");
+    \core\fileutils::path_create($site_root_dir,"/gallery/$relative_dir/");
     $prefix="$site_root_dir/gallery/$relative_dir/";
 
 
@@ -107,7 +107,7 @@ if(isset($input_vars['imh']) && is_array($input_vars['imh'])) {
         if(!is_valid_url($im_src)) continue;
         $response=http($im_src,Array(),Array());
         if($response['is_successful']) {
-            $fname     = time()."-{$imid}.".file_extention($im_src);
+            $fname     = time()."-{$imid}.".  \core\fileutils::file_extention($im_src);
             $file_path = "{$prefix}/{$fname}";
             file_put_contents($file_path, $response['body']);
 

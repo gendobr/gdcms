@@ -18,7 +18,7 @@ $txt = load_msg($input_vars['lang']);
 //---------------------- load language - end -----------------------------------
 
 run('site/menu');
-run('lib/file_functions');
+
 //------------------- site info - begin ----------------------------------------
 if(isset($input_vars['site'])) {
     $site=$site_id = checkInt($input_vars['site']);
@@ -91,7 +91,7 @@ if (isset($input_vars['item'])) {
                     Array('{rozdilizformy}','{site_id}','{lang}','{start}','{keywords}','{rozdil2}'), 
                     //Array(rawurlencode($re1),$site_id,$lang,0,'',$row['rozdil2']), 
                     Array('',$site_id,$lang,0,'',''), 
-                    url_pattern_gallery_category)
+                    \e::config('url_pattern_gallery_category'))
         );
         while ($r<$n-1) {
             if($r>0) {
@@ -99,13 +99,13 @@ if (isset($input_vars['item'])) {
             }else {
                 $re1.=$path[$r];
             }
-            $rozdil2 = encode_dir_name($re1);
+            $rozdil2 = \core\fileutils::encode_dir_name($re1);
             $categories[]=Array(
                 'innerHTML'=>$path[$r],
                 'url'=>str_replace(
                         Array('{rozdilizformy}','{site_id}','{lang}','{start}','{keywords}','{rozdil2}'), 
                         Array(rawurlencode($re1),$site_id,$lang,0,'',$rozdil2), 
-                        url_pattern_gallery_category)
+                        \e::config('url_pattern_gallery_category'))
             );
             $r=$r+1;
         }

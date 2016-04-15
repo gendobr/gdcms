@@ -2,7 +2,7 @@
 $main_template_name = '';
 run('category/functions');
 run('lib/class_tree1');
-run('lib/file_functions');
+
 run('site/menu');
 #------------------------ get category info - begin ----------------------------
 if (isset($input_vars['category_id'])) {

@@ -43,7 +43,7 @@ if (is_valid_url($url = trim($this_category_info['category_description']))) {
 // -------------------- do redirect if needed - end ----------------------------
 
 
-run('lib/file_functions');
+
 run('news/menu');
 run('calendar/functions');
 run('site/page/page_view_functions');

@@ -13,7 +13,7 @@ $minify = false;
 
 
 run('site/menu');
-run('lib/file_functions');
+
 
 $site_id = isset($input_vars['site_id']) ? ((int) $input_vars['site_id']) : 0;
 $this_site_info = get_site_info($site_id);
@@ -29,7 +29,7 @@ $input_vars['site_id'] = $this_site_info['id'];
 //$filename = preg_replace("/\\W/",'-',$_REQUEST['f']);
 
 $file = $input_vars['f'];
-$basename = encode_file_name(basename($file));
+$basename = \core\fileutils::encode_file_name(basename($file));
 
 //prn(explode('/', dirname($file)));
 //prn(array_map(function($d) { return encode_dir_name($d); }, explode('/', dirname($file))));
@@ -37,7 +37,7 @@ $basename = encode_file_name(basename($file));
 //prn(join('/',  array_filter( array_map(function($d) { return encode_dir_name($d); }, explode('/', dirname($file))),function($f) {  return strlen(trim($f)) > 0;})));
 
         
-$dirname = join('/',  array_filter( array_map(function($d) { return encode_dir_name($d); }, explode('/', dirname($file))),function($f) {  return strlen(trim($f)) > 0;}));
+$dirname = join('/',  array_filter( array_map(function($d) { return \core\fileutils::encode_dir_name($d); }, explode('/', dirname($file))),function($f) {  return strlen(trim($f)) > 0;}));
 
 if ($dirname) {
     $scssRelativePath = "{$dirname}/{$basename}";

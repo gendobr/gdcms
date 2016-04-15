@@ -178,7 +178,7 @@ $vyvid = process_template($search_template
     , 'search_result' => $search_result
     , 'urls_found' => $num_rows
     , 'form_keywords' => checkStr(isset($input_vars['keywords']) ? $input_vars['keywords'] : '')
-    , 'form_action' => url_prefix_search
+    , 'form_action' => \e::config('url_prefix_search')
     , 'form_site_id' => join(',', $siteIds)
     , 'form_lang' => checkStr($input_vars['lang'])
         ));
@@ -190,7 +190,7 @@ $vyvid .= "<div style='opacity:0.4;font-size:10px;'>" . (microtime(true) - $time
 $lang_list = list_of_languages();
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
-    $lang_list[$i]['url'] = url_prefix_search . "interface_lang={$lang_list[$i]['name']}&lang={$lang_list[$i]['name']}&site_id=" . join(',', $siteIds) . "&keywords=" . rawurlencode(isset($input_vars['keywords']) ? $input_vars['keywords'] : '');
+    $lang_list[$i]['url'] = \e::config('url_prefix_search') . "interface_lang={$lang_list[$i]['name']}&lang={$lang_list[$i]['name']}&site_id=" . join(',', $siteIds) . "&keywords=" . rawurlencode(isset($input_vars['keywords']) ? $input_vars['keywords'] : '');
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }
 //------------------------ get list of languages - end -------------------------

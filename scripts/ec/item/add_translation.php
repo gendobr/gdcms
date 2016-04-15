@@ -3,7 +3,7 @@
  * Clone ec item
 */
 
-run('lib/file_functions');
+
 run('ec/item/functions');
 run('site/menu');
 

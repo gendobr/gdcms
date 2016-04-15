@@ -17,7 +17,7 @@ define('site_root_URL', "http" . (isset($_SERVER['HTTPS']) ? 's' : '') . "://{$_
 define('site_public_URL', "http://gen.znu.edu.ua/cms"); // ZSU
 
 $config->APPLICATION_URL=site_root_URL;
-
+$config->APPLICATION_ADMIN_URL=site_root_URL;
 
 define('site_URL', site_root_URL . '/index.php');
 define('sites_root_URL', 'http://127.0.0.1/_sites');
@@ -96,7 +96,7 @@ $config->PHPSESSID='PHPSESSID';
 define('SMARTY_DIR', $config->SCRIPT_ROOT . '/smarty/libs/');
 
 // regexp
-define('allowed_file_extension', 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt|xlsx|xlsm|xltx|xltm|xlam|docx|docm|dotx|dotm|pptx|pptm|potx|potm|ppam|ppsx|ppsm|svg|eot|woff|ttf|less|scss');
+$config->allowed_file_extension= 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt|xlsx|xlsm|xltx|xltm|xlam|docx|docm|dotx|dotm|pptx|pptm|potx|potm|ppam|ppsx|ppsm|svg|eot|woff|ttf|less|scss';
 
 define('apw', md5('qzwxdcft'));
 
@@ -118,7 +118,7 @@ define('emails_at_once',1);
 
 
 
-define('defaultToVisualEditor', 1);
+$config->defaultToVisualEditor=1;
 
 
 
@@ -128,26 +128,30 @@ define('defaultToVisualEditor', 1);
 define('url_pattern_category', 'http://gen.znu.edu.ua/_sites/znu_main/{lang}/{path}');
 
 
-define('url_pattern_gallery_category', site_public_URL . "/index.php?action=gallery/photogallery&rozdilizformy={rozdilizformy}&site_id={site_id}&lang={lang}&start={start}&keywords={keywords}");
-define('url_pattern_ec_category', site_public_URL . "/index.php?action=ec/item/browse&site_id={site_id}&lang={lang}&ec_category_id={ec_category_id}");
+$config->url_pattern_gallery_category = site_public_URL . "/index.php?action=gallery/photogallery&rozdilizformy={rozdilizformy}&site_id={site_id}&lang={lang}&start={start}&keywords={keywords}";
+//\e::config('url_pattern_gallery_category')
 
-define('url_ec_item_order_now_pattern', site_public_URL . "/index.php?action=ec/cart/add&ec_item_lang=%s&ec_item_id=%s");
-define('url_ec_item_buy_now_pattern', site_public_URL . "/index.php?action=ec/order/new&ec_item_lang=%s&ec_item_id=%s&site_id=%s");
-define('url_ec_item_details_pattern', site_public_URL . "/index.php?action=ec/item/view&ec_item_lang={ec_item_lang}&ec_item_code={ec_item_code}&ec_item_id={ec_item_id}");
+$config->url_pattern_ec_category= site_public_URL . "/index.php?action=ec/item/browse&site_id={site_id}&lang={lang}&ec_category_id={ec_category_id}";
 
-define('url_pattern_gallery_image', site_public_URL . "/index.php?action=gallery/photo&site_id={site_id}&lang={lang}&item={item}");
+
+$config->url_ec_item_order_now_pattern= site_public_URL . "/index.php?action=ec/cart/add&ec_item_lang=%s&ec_item_id=%s";
+$config->url_ec_item_buy_now_pattern= site_public_URL . "/index.php?action=ec/order/new&ec_item_lang=%s&ec_item_id=%s&site_id=%s";
+$config->url_ec_item_details_pattern= site_public_URL . "/index.php?action=ec/item/view&ec_item_lang={ec_item_lang}&ec_item_code={ec_item_code}&ec_item_id={ec_item_id}";
+
+
+$config->url_pattern_gallery_image= site_public_URL . "/index.php?action=gallery/photo&site_id={site_id}&lang={lang}&item={item}";
 
 # ----------------------------- urls without mod_rewrite - end -----------------------------
 # ----------------------------- urls using mod_rewrite in apache - begin -------------------
-//define('url_template_news_details', sites_root_URL . "/news_details.php?news_id={news_id}&lang={lang}&news_code={news_code}");
-define('url_template_news_details', site_public_URL . "/index.php?action=news/view_details&news_id={news_id}&lang={lang}&news_code={news_code}");
+//$config->url_template_news_details=, sites_root_URL . "/news_details.php?news_id={news_id}&lang={lang}&news_code={news_code}");
+$config->url_template_news_details= site_public_URL . "/index.php?action=news/view_details&news_id={news_id}&lang={lang}&news_code={news_code}";
 
 
 
 
-define('url_prefix_news_list', sites_root_URL . "/news.php?");
-define('url_prefix_guestbook', "/cms/index.php?action=gb/guestbook&");
-define('url_prefix_search', sites_root_URL . "/search.php?");
+$config->url_prefix_news_list= sites_root_URL . "/news.php?";
+$config->url_prefix_guestbook= "/cms/index.php?action=gb/guestbook&";
+$config->url_prefix_search= sites_root_URL . "/search.php?";
 # ----------------------------- urls using mod_rewrite in apache - end ---------------------
 
 
@@ -156,10 +160,9 @@ define('gallery_big_image_width', 800);
 define('gallery_big_image_height', 800);
 
 
-define('url_template_news_list', site_public_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}");
-define('url_template_news_list_other_parameters', "{key}={value}&"); // template for one (key, value) pair
-define('url_template_news_list_ignore_parameters', "/PHPSESSID|action/i"); // regular expression
+$config->url_template_news_list = site_public_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}";
+$config->url_template_news_list_other_parameters= "{key}={value}&"; // template for one (key, value) pair
+$config->url_template_news_list_ignore_parameters="/PHPSESSID|action/i"; // regular expression
 
 
-
-define('search_spider_key','jfdklsjkj98127987iuhfskjahfkjj656hhhh');
+$config->search_spider_key='jfdklsjkj98127987iuhfskjahfkjj656hhhh';

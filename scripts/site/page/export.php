@@ -9,7 +9,6 @@
 global $main_template_name;
 $main_template_name = '';
 run('site/menu');
-//run('lib/file_functions');
 run('category/functions');
 // ------------------ site info - begin ----------------------------------------
    if(!isset($input_vars['site_id']))

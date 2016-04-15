@@ -93,7 +93,7 @@ if ($category_info) {
 
 
 // ------------------ adjust list of categories - begin ------------------------
-$category_url_pattern = str_replace(Array('{site_id}', '{lang}'), Array((int) $site_id, $lang), url_pattern_ec_category);
+$category_url_pattern = str_replace(Array('{site_id}', '{lang}'), Array((int) $site_id, $lang), \e::config('url_pattern_ec_category'));
 $cnt = count($caterory_list);
 for ($i = 0; $i < $cnt; $i++) {
     $caterory_list[$i]['ec_category_title'] = get_langstring($caterory_list[$i]['ec_category_title'], $lang);

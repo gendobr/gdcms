@@ -26,7 +26,7 @@ if (get_level($site_id) == 0) {
 //------------------- check permission - end -----------------------------------
 
 
-run('lib/file_functions');
+
 
 
 // current directory

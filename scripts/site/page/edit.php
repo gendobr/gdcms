@@ -7,7 +7,6 @@
 */
 
 
-run('lib/file_functions');
 run('site/image/url_replacer');
 run('site/page/menu');
 run('site/menu');
@@ -213,11 +212,11 @@ if(strlen($input_vars['save_changes'])>0)
             $dir2=$old_page_root.'/'.$this_page_info['page_file_name'];
 
          // new page paths
-            $new_page_path=encode_dir_name(strip_tags($input_vars['page_path']));
+            $new_page_path=\core\fileutils::encode_dir_name(strip_tags($input_vars['page_path']));
             
             $new_file_name=trim($input_vars['page_file_name']);
             $new_file_name=  preg_replace("/\.html\$/", '', $new_file_name);// ".html";
-            $new_file_name=encode_dir_name($new_file_name);
+            $new_file_name=\core\fileutils::encode_dir_name($new_file_name);
             
             $new_dir =$root.'/'.preg_replace("/^\\/+|\\/+$/",'',$new_page_path).'/'.$this_page_info['id'].'.'.$this_page_info['lang'].'.html';
             $new_dir2=$root.'/'.preg_replace("/^\\/+|\\/+$/",'',$new_page_path).'/'.$new_file_name.'.html';
@@ -250,7 +249,7 @@ if(strlen($input_vars['save_changes'])>0)
                 $all_is_ok=false;                
             }
          }else{
-             $this_page_info['page_file_name']=  encode_dir_name($this_page_info['title']).'.html';
+             $this_page_info['page_file_name']=  \core\fileutils::encode_dir_name($this_page_info['title']).'.html';
          }
 
     //-------------------------- check page path - end -------------------------

@@ -42,15 +42,15 @@ $main_template_name = '';
   // -->
   </script>
   ";
-  run('lib/file_functions');
+
   $site_dir=\e::config('SITES_ROOT')."/".$this_site_info['dir'];
-  $filelist=ls_r($site_dir);
+  $filelist=\core\fileutils::ls_r($site_dir);
   // $filelist=$filelist['files'];
   // prn($filelist); 
   $ext_list=explode(',',image_file_extensions);
   foreach($filelist as $file)
   {
-    if(in_array(strtolower(file_extention($file)),$ext_list))
+    if(in_array(strtolower(\core\fileutils::file_extention($file)),$ext_list))
     { 
       $fpath   = str_replace($site_dir.'/','',$file);
       $img_src = sites_root_URL.str_replace('//','/',"/{$this_site_info['dir']}/{$fpath}");

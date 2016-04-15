@@ -2,7 +2,6 @@
 /*
   get images for wyswyg editor
 */
-run('lib/file_functions');
 // prn($_SESSION);
 $image_file_extensions=explode(',',image_file_extensions);
 $html_file_extension=Array('html','htm');
@@ -98,12 +97,12 @@ function html_get_title($file_content)
    }
 
 // do upload
-   if($current_dir!='/' && isset($_FILES['userfile'])) upload_file('userfile', realpath(\e::config('SITES_ROOT').$current_dir));
+   if($current_dir!='/' && isset($_FILES['userfile'])) \core\fileutils::upload_file($_FILES['userfile'], realpath(\e::config('SITES_ROOT').$current_dir));
 
 // get file list from current dir
 // draw file list
 
-   $tmp=ls($sites_root.$current_dir);
+   $tmp=\core\fileutils::ls($sites_root.$current_dir);
    $filelist=array_merge($tmp['dirs'],$tmp['files']);
    sort($filelist);
    //prn($filelist);
@@ -135,14 +134,14 @@ function html_get_title($file_content)
           {
               if(!ereg('^\.',$fl))
               {
-                  if(in_array(file_extention($fl),$image_file_extensions))
+                  if(in_array(\core\fileutils::file_extention($fl),$image_file_extensions))
                   {
                        $insert_link="<a href=\"javascript:void(insert_img('".sites_root_URL."$current_dir/$fl'))\"><img src=\"".site_root_URL."/img/icon_paste.gif\" width=20 height=15></a>";
                        $files.="$insert_link <a href=\"".sites_root_URL."$current_dir/$fl\" onmouseover=\"show_preview('preview_{$key}','".sites_root_URL."$current_dir/$fl')\"  onmouseout=\"hide_preview('preview_{$key}')\">$fl</a><br>
                                <div id='preview_{$key}' class=prv style='display:none;'></div>
                        ";
                   }
-                  elseif(in_array(file_extention($fl),$html_file_extension))
+                  elseif(in_array(\core\fileutils::file_extention($fl),$html_file_extension))
                   {
                          $filetitle=str_replace("'",'`',html_get_title(file_get_contents("$sites_root.$current_dir/$fl")));
                          $insert_link="<a href=\"javascript:void(insert_page('".sites_root_URL."$current_dir/$fl','{$filetitle}'))\"><img src=\"".site_root_URL."/img/icon_paste.gif\" width=20 height=15></a>";

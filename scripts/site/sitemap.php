@@ -69,13 +69,12 @@ $query="SELECT id, lang, news_code, last_change_date
         AND ('$now'<=expiration_date OR expiration_date is null)
         ";
 // prn($query);
-// define('url_template_news_details',sites_root_URL."/news_details.php?news_id={news_id}&lang={lang}&news_code={news_code}");
 $rows=  \e::db_getrows($query);
 foreach ($rows as $row){
     $loc=str_replace(
             Array('{news_id}','{lang}','{news_code}'),
             Array($row['id'],$row['lang'],$row['news_code']),
-            url_template_news_details
+            \e::config('url_template_news_details')
             );
     $lastmod=$row['last_change_date'];
     echo format_sitemap_url($loc,$lastmod);

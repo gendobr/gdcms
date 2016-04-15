@@ -23,7 +23,7 @@ $out_charset = site_charset;
 // header('content-type: text/html; charset='.$out_charset);
 
 run('site/menu');
-run('lib/file_functions');
+
 
 
 //run('lib/hyphenation/hyphenation');

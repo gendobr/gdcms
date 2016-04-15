@@ -5,7 +5,7 @@ $main_template_name = '';
 
 
 
-run('lib/file_functions');
+
 run('site/image/url_replacer');
 run('ec/item/functions');
 run('site/menu');
@@ -71,14 +71,14 @@ if ($photos['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/i", $photos['name'],
     # create directory
     $relative_dir = date('Y') . '/' . date('m');
     $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
-    path_create($site_root_dir, "/gallery/$relative_dir/");
+    \core\fileutils::path_create($site_root_dir, "/gallery/$relative_dir/");
 
     # copy uploaded file
-    $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-big-" . encode_file_name($photos['name']);
+    $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-big-" . \core\fileutils::encode_file_name($photos['name']);
     $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
     ec_img_resize($photos['tmp_name'], $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
 
-    $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . encode_file_name($photos['name']);
+    $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . \core\fileutils::encode_file_name($photos['name']);
     $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
     ec_img_resize($photos['tmp_name'], $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
     $this_ec_item_info["ec_item_img"][] = Array("gallery/$relative_dir/$small_image_file_name","gallery/$relative_dir/$big_image_file_name",'');

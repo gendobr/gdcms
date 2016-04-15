@@ -6,7 +6,7 @@
 
 run('category/functions');
 run('lib/class_tree1');
-run('lib/file_functions');
+
 
 
 //------------------- site info - begin ----------------------------------------
@@ -317,9 +317,9 @@ if ($success) {
         run('lib/img');
         $relative_dir="gallery/".date('Y').'/'.date('m');
         $dir="{$this_site_info['site_root_dir']}/{$relative_dir}";
-        path_create($this_site_info['site_root_dir'], "{$dir}/");
+        \core\fileutils::path_create($this_site_info['site_root_dir'], "{$dir}/");
 
-        $newFileName="category-{$category_id}-".encode_file_name($_FILES['category_icon']['name']);
+        $newFileName="category-{$category_id}-".\core\fileutils::encode_file_name($_FILES['category_icon']['name']);
 
         if(move_uploaded_file($_FILES['category_icon']['tmp_name'], "{$dir}/{$newFileName}") ){
             
@@ -338,7 +338,7 @@ if ($success) {
             // ---------------- delete previous icons - end --------------------
             
             // ---------------- upload new icons - begin -----------------------
-            $smallFileName="category-{$category_id}-small-".encode_file_name($_FILES['category_icon']['name']);
+            $smallFileName="category-{$category_id}-small-".\core\fileutils::encode_file_name($_FILES['category_icon']['name']);
             img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", gallery_small_image_width, gallery_small_image_height, $type = "circumscribe");
             $category_icon=['small'=>"{$relative_dir}/{$smallFileName}", "full"=>"{$relative_dir}/{$newFileName}"];
             $query = "UPDATE {$table_prefix}category

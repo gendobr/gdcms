@@ -38,7 +38,7 @@ if (!isset($_FILES) && count($_FILES) > 0) {
     echo "File not posted. Exiting";
     return '';
 }
-run('lib/file_functions');
+
 run('gallery/category_model');
 
 
@@ -155,7 +155,7 @@ foreach ($_FILES as $uploadedfile) {
     $rozdil = $input_vars["rozdil"];
     //echo "\$rozdil=$rozdil;<br>\n";
 
-    $rozdil2 = encode_dir_name($rozdil);
+    $rozdil2 = \core\fileutils::encode_dir_name($rozdil);
 
     $pidpys = $input_vars["pidpys"];
     //echo "\$pidpys=$pidpys;<br>\n";
@@ -175,18 +175,18 @@ foreach ($_FILES as $uploadedfile) {
         $file_extension = ".{$regs[1]}";
 
         # create file name
-        $big_image_file_name = "{$site_id}-{$data}-" . encode_file_name($uploadedfile['name']);
+        $big_image_file_name = "{$site_id}-{$data}-" . \core\fileutils::encode_file_name($uploadedfile['name']);
 
         # create directory
         $relative_dir = date('Y/m');
         $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
-        path_create($site_root_dir, "/gallery/$relative_dir/");
+        \core\fileutils::path_create($site_root_dir, "/gallery/$relative_dir/");
 
         # copy uploaded file
         copy($uploadedfile['tmp_name'], "$site_root_dir/gallery/$relative_dir/$big_image_file_name");
 
         # -------------- create small image - begin ----------------------------
-        $small_image_file_name = "{$site_id}-{$data}-m-" . encode_file_name($uploadedfile['name']);
+        $small_image_file_name = "{$site_id}-{$data}-m-" . \core\fileutils::encode_file_name($uploadedfile['name']);
         img_resize(
                 "$site_root_dir/gallery/$relative_dir/$big_image_file_name", // source image
                 "$site_root_dir/gallery/$relative_dir/$small_image_file_name", // here thumbnail image will be saved

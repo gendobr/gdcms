@@ -36,7 +36,7 @@ $obj_name = 'page_content';
   ";
   
   
-  run('lib/file_functions');
+
 
 
   // get site root directory
@@ -46,7 +46,7 @@ $obj_name = 'page_content';
      $this_site_info['url'] = ereg_replace('/$','',$this_site_info['url']);
 
   // get list of files
-     $filelist=ls_r($site_dir);
+     $filelist=\core\fileutils::ls_r($site_dir);
      // prn($filelist);
 
 
@@ -60,7 +60,7 @@ $obj_name = 'page_content';
       if(!is_dir($upload_dir)) $upload_dir=$site_dir;
       foreach($_FILES as $key=>$val)
       {
-         $image_url=upload_file($key,$upload_dir);
+         $image_url=\core\fileutils::upload_file($_FILES[$key],$upload_dir);
          $file_is_uploaded=true;
          clearstatcache();
         // ----------------------- insert image - begin ------------------------
@@ -132,7 +132,7 @@ $obj_name = 'page_content';
   $ext_list=explode(',',image_file_extensions);
   foreach($filelist as $file)
   {
-    if(in_array(strtolower(file_extention($file)),$ext_list))
+    if(in_array(strtolower(\core\fileutils::file_extention($file)),$ext_list))
     { 
       $fpath   = str_replace($site_dir.'/','',$file);
       $img_src = $this_site_info['url'].'/'.$fpath;

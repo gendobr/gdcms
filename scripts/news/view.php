@@ -50,13 +50,13 @@ $news=new CmsNewsViewer($input_vars);
   
 # -------------------- get list of page languages - begin --------------------
 
-$tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
+$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
 if (!$tmp) {
     $tmp = \e::db_getrows("SELECT DISTINCT lang
                      FROM {$table_prefix}news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
-    set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
+    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
 }
 
 $existing_languages = Array();
@@ -86,11 +86,11 @@ $lang_list = array_values($lang_list);
 $menu_groups = get_menu_items($this_site_info['id'], 0, $news->getLang());
 // prn('$menu_groups',$menu_groups);
 // mark current page URL
-$prefix_length = strlen(url_prefix_news_list);
+$prefix_length = strlen(\e::config('url_prefix_news_list'));
 
 foreach ($menu_groups as $kmg => $mg) {
     foreach ($mg['items'] as $kmi => $mi) {
-        if (url_prefix_news_list == substr($mi['url'], $prefix_length)) {
+        if (\e::config('url_prefix_news_list') == substr($mi['url'], $prefix_length)) {
             continue;
         }
         if (!preg_match("/action=news(\\/|%2F)view/i", $mi['url'])) {

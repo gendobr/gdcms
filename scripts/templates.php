@@ -6,10 +6,10 @@
   $input_vars['page_title']   = text('Site properties');
   $input_vars['page_header']  = text('Site properties');
 
-  run('lib/file_functions');
+  
 
-  $fl=ls(\e::config('TEMPLATE_ROOT').'/cms');
-  $fl=$fl['files'];
+  $fl = \core\fileutils::ls(\e::config('TEMPLATE_ROOT').'/cms');
+  $fl = $fl['files'];
   sort($fl);
   //prn($fl['files']);
 
@@ -23,4 +23,3 @@
   $input_vars['page_content'].= "</ol>
   ";
 
-?>

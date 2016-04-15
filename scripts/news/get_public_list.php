@@ -147,11 +147,11 @@ $categories = $news_browse_tree;
 # ---------------------- tag selector - begin ----------------------------------
 $lang = \e::db_escape($input_vars['lang']);
 
-run('lib/file_functions');
+
 
 // -------------------- get cached list of tags - begin ------------------------
 // cache info as file in the site dir
-$tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", cachetime);
+$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", cachetime);
 if ($tmp) {
     $tags = $tmp;
 } else {
@@ -164,7 +164,7 @@ if ($tmp) {
                  AND news.site_id={$site_id}
                  AND news.lang='{$lang}'";
     $tags = \e::db_getrows($query);
-    set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", $tags);
+    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", $tags);
 }
 // -------------------- get cached list of tags - end --------------------------
 
@@ -181,7 +181,7 @@ if (count($tags) > 0) {
         $selected_tags = array_intersect($tags, explode(',', $input_vars['tags']));
     }
 
-    $url_prefix = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^tags$|^category_id$|^action$') . '&tags=';
+    $url_prefix = \e::config('url_prefix_news_list') . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^tags$|^category_id$|^action$') . '&tags=';
 
     $tag_selector = '';
     foreach ($tags as $tg) {
@@ -213,7 +213,7 @@ $lang = \e::db_escape($input_vars['lang']);
 
 # year
 if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']) > 0) {
-    $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^action$');
+    $href = \e::config('url_prefix_news_list') . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^action$');
     $all_dates = "<a href='{$href}'>{$txt['All_dates']}</a>";
 
     $news_date_year = (int) $input_vars['news_date_year'];
@@ -225,12 +225,12 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
         $news_date_month = (int) $input_vars['news_date_month'];
         $month_options = "<b>{$month_names[$news_date_month]}</b>";
 
-        $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^action$') . '&news_date_year=';
+        $href = \e::config('url_prefix_news_list') . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^action$') . '&news_date_year=';
         $year_options = "<a href='{$href}{$news_date_year}'>{$news_date_year}</a>";
 
         if (isset($input_vars['news_date_day']) && strlen($input_vars['news_date_day']) > 0) {
             $news_date_day = (int) $input_vars['news_date_day'];
-            $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_day$|^news_date_month$|^news_keywords$|^action$') . '&news_date_month=';
+            $href = \e::config('url_prefix_news_list') . query_string('^start$|^' . session_name() . '$|^news_date_day$|^news_date_month$|^news_keywords$|^action$') . '&news_date_month=';
             $month_options = "<a href='{$href}{$news_date_month}'>{$month_names[$news_date_month]}</a>";
             $day_options = "<b>$news_date_day</b>";
         } else {
@@ -243,13 +243,13 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
                              AND month(last_change_date)=$news_date_month
                            ORDER BY day ASC");
             $days = Array();
-            $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_day$|^news_keywords$|^action$') . '&news_date_day=';
+            $href = \e::config('url_prefix_news_list') . query_string('^start$|^' . session_name() . '$|^news_date_day$|^news_keywords$|^action$') . '&news_date_day=';
             foreach ($tmp as $tm)
                 $days[] = "<a href='{$href}{$tm['day']}'>{$tm['day']}</a>";
             $day_options = join(' ', $days);
         }
     } else {
-        $tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", cachetime);
+        $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", cachetime);
         if (!$tmp) {
             $tmp = \e::db_getrows("SELECT DISTINCT month(last_change_date) AS month
                                       FROM {$table_prefix}news as news
@@ -258,10 +258,10 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
                                        AND news.lang='{$lang}'
                                        AND year(last_change_date)=$news_date_year
                                       ORDER BY month ASC");
-            set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", $tmp);
+            \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", $tmp);
         }
         $months = Array();
-        $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_day$|^news_keywords$|^action$') . "&news_date_month=";
+        $href = \e::config('url_prefix_news_list') . query_string('^start$|^' . session_name() . '$|^news_date_day$|^news_keywords$|^action$') . "&news_date_month=";
         foreach ($tmp as $tm) {
             $months[] = "<a href='{$href}{$tm['month']}'>" . $month_names[$tm['month']] . "</a>";
         }
@@ -270,14 +270,14 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
 } else {
     $all_dates = "<b>{$txt['All_dates']}</b>";
     $years = Array();
-    $href = url_prefix_news_list . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^action$') . '&news_date_year=';
+    $href = \e::config('url_prefix_news_list') . query_string('^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^action$') . '&news_date_year=';
 
 
 
-    $tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", cachetime);
+    $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", cachetime);
     if (!$tmp) {
         $tmp = \e::db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$table_prefix}news as news WHERE news.site_id={$site_id} AND  news.cense_level>={$this_site_info['cense_level']} AND news.lang='{$lang}' ORDER BY year ASC");
-        set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", $tmp);
+        \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", $tmp);
     }
 
 
@@ -310,7 +310,7 @@ if (isset($day_options) && strlen($day_options) > 0) {
 # --------------------- draw keyword search form - begin -----------------------
 $news_keywords = trim(isset($input_vars['news_keywords']) ? $input_vars['news_keywords'] : '');
 $news_keywords_selector = "
-    <form action=\"" . url_prefix_news_list . "site_id=$site_id\" method=\"post\">
+    <form action=\"" . \e::config('url_prefix_news_list') . "site_id=$site_id\" method=\"post\">
     <input type=text name=news_keywords value=\"{$news_keywords}\">
     <input type=submit value=\"{$txt['Search']}\">
     </form>
@@ -524,7 +524,7 @@ for ($i = $imin; $i < $imax; $i = $i + rows_per_page) {
     else
         $to = ( 1 + $i / rows_per_page);
     $pages[] = Array(
-        'URL' => url_prefix_news_list . "start={$i}&" . query_string('^start$|^' . session_name() . '$|^action$')
+        'URL' => \e::config('url_prefix_news_list') . "start={$i}&" . query_string('^start$|^' . session_name() . '$|^action$')
         , 'innerHTML' => $to
     );
 }
@@ -549,11 +549,11 @@ if (!function_exists('db_get_template'))
 $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 // prn('$menu_groups',$menu_groups);
 // mark current page URL
-$prefix_length = strlen(url_prefix_news_list);
+$prefix_length = strlen(\e::config('url_prefix_news_list'));
 
 foreach ($menu_groups as $kmg => $mg) {
     foreach ($mg['items'] as $kmi => $mi) {
-        if (url_prefix_news_list == substr($mi['url'], $prefix_length)) {
+        if (\e::config('url_prefix_news_list') == substr($mi['url'], $prefix_length)) {
             continue;
         }
         if (!preg_match("/action=news(\\/|%2F)view/i", $mi['url'])) {
@@ -568,13 +568,13 @@ foreach ($menu_groups as $kmg => $mg) {
 //------------------------ get list of languages - begin -----------------------
 # -------------------- get list of page languages - begin --------------------
 
-$tmp = get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
+$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
 if (!$tmp) {
     $tmp = \e::db_getrows("SELECT DISTINCT lang
                      FROM {$table_prefix}news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
-    set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
+    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
 }
 
 $existing_languages = Array();

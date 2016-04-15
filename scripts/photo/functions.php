@@ -14,7 +14,16 @@ function photo_category_info($photo_category_id){
              WHERE photo_category.photo_category_id=".( (int)$photo_category_id )."
              GROUP BY photo_category.photo_category_id
              ");
-    $info['photo_category_icon']=  json_decode($info['photo_category_icon'],true);
+    if($info) {
+        if(substr_count($info['photo_category_path'], "/")==0){
+            $info['category_parent']='';
+        }else{
+            $info['category_parent']=preg_replace("/\\/[^\\/]+\$/","",$info['photo_category_path']);
+        }
+        if ($info['photo_category_icon']) {
+            $info['photo_category_icon'] = json_decode($info['photo_category_icon'], true);
+        }
+    }
     return $info;
 }
 
@@ -30,166 +39,28 @@ function photo_info($photo_id){
     $info['photo_imgfile']=  json_decode($info['photo_imgfile'],true);
     return $info;
 }
-
-function photo_category_update($photo_category_id, $site_id, $data){
-    
-    // photo_category_id           int(11)       (NULL)     NO      PRI     (NULL)   auto_increment  select,insert,update,references           
-    // site_id                     int(11)       (NULL)     YES             (NULL)                   select,insert,update,references           
-
-    $set=[];
-    
-    // photo_category_path         varchar(255)  utf8_bin   YES             (NULL)                   select,insert,update,references           
-    if(isset($data['photo_category_path'])){
-        $set[]=" photo_category_path='".  \e::db_escape($data['photo_category_path'])."' ";
-    }
-    
-    // photo_category_ordering     int(11)       (NULL)     YES             (NULL)                   select,insert,update,references           
-    if(isset($data['photo_category_ordering'])){
-        $set[]=" photo_category_ordering=".  ((int)$data['photo_category_ordering'])." ";
-    }
-
-    // photo_category_title        text          utf8_bin   YES             (NULL)                   select,insert,update,references           
-    if(isset($data['photo_category_title'])){
-        $set[]=" photo_category_title='".  \e::db_escape($data['photo_category_title'])."' ";
-    }
-
-    // photo_category_description  text          utf8_bin   YES             (NULL)                   select,insert,update,references           
-    if(isset($data['photo_category_description'])){
-        $set[]=" photo_category_description='".  \e::db_escape($data['photo_category_description'])."' ";
-    }
-
-    // photo_category_icon         text          utf8_bin   YES             (NULL)                   select,insert,update,references           
-    if(isset($data['photo_category_icon'])){
-        $set[]=" photo_category_icon='".  \e::db_escape(json_encode($data['photo_category_icon']))."' ";
-    }
-
-    // photo_category_visible      tinyint(1)    (NULL)     NO              1                        select,insert,update,references           
-    if(isset($data['photo_category_visible'])){
-        $set[]=" photo_category_visible=".  ( ( (int)$data['photo_category_visible'] )?1:0 )." ";
-    }
-
-    
-    if(count($set)>0){
-        $photo_category_id*=1;
-        $site_id*=1;
-        $query="UPDATE {$table_prefix}photo_category SET ".join(',',$set)."
-                WHERE photo_category_id=$photo_category_id AND site_id=$site_id";
-        \e::db_execute($query);
-    }
-    return photo_category_info($photo_category_id);
-}
-
-
-
-// ----------------- resizing image to create small image - begin ----------
-/**
- * $type="resample"|"inscribe"|"circumscribe"
- */
-function photo_img_resize($inputfile, $outputfile, $width, $height, $type = "resample", $backgroundColor = 0xFFFFFF, $quality = 70) {
-    if (!file_exists($inputfile)) {
-        return false;
-    }
-    $size = getimagesize($inputfile);
-    if ($size === false) {
-        return false;
-    }
-
-    $format = strtolower(substr($size['mime'], strpos($size['mime'], '/') + 1));
-    $icfunc = "imagecreatefrom" . $format;
-    if (!function_exists($icfunc)) {
-        return false;
-    }
-
-    switch ($type) {
-        case "inscribe":
-            $ratio = $width / $size[0];
-            $new_width = floor($size[0] * $ratio);
-            $new_height = floor($size[1] * $ratio);
-            if ($new_height > $height) {
-                $ratio = $height / $size[1];
-                if($ratio>1){
-                    $ratio=1;
-                }
-                $new_width = floor($size[0] * $ratio);
-                $new_height = floor($size[1] * $ratio);
-            }
-            break;
-        case "circumscribe":
-            $ratio = $width / $size[0];
-            $new_width = floor($size[0] * $ratio);
-            $new_height = floor($size[1] * $ratio);
-            if ($new_height < $height) {
-                $ratio = $height / $size[1];
-                if($ratio>1){
-                    $ratio=1;
-                }
-                $new_width = floor($size[0] * $ratio);
-                $new_height = floor($size[1] * $ratio);
-            }
-            break;
-        default:
-            $ratio = $width / $size[0];
-            $new_width = floor($size[0] * $ratio);
-            $new_height = floor($size[1] * $ratio);
-            if ($new_height > $height) {
-                $ratio = $height / $size[1];
-                if($ratio>1){
-                    $ratio=1;
-                }
-                $new_width = floor($size[0] * $ratio);
-                $new_height = floor($size[1] * $ratio);                    
-            }
-            $width=$new_width;
-            $height=$new_height;
-            break;
-    }
-    $new_left = floor(($width - $new_width) / 2);
-    $new_top = floor(($height - $new_height) / 2);
-
-    $bigimg = $icfunc($inputfile);
-    $trumbalis = imagecreatetruecolor($width, $height);
-
-    imagefill($trumbalis, 0, 0, $backgroundColor);
-    imagecopyresampled($trumbalis, $bigimg, $new_left, $new_top, 0, 0, $new_width, $new_height, $size[0], $size[1]);
-    imagejpeg($trumbalis, $outputfile, $quality);
-
-    imagedestroy($bigimg);
-    imagedestroy($trumbalis);
-    return true;
-}
-
-
-function photo_category_set_icon($photo_category_id, $site_id, $uploadedFile){
-
-    $this_site_info = get_site_info($site_id);
-    if(!$this_site_info){
-        return false;
-    }
-    if($uploadedFile['size'] <= 0){
-        return false;
-    }
-    if(!preg_match("/(jpg|gif|png|jpeg)$/i", $uploadedFile['name'], $regs)){
-        return false;
-    }
-    # get file extension
-    $file_extension = ".{$regs[1]}";
-    
-    $date = date('Y-m-d-h-i-s');
-
-    $photo_category_info= photo_category_info($photo_category_id);
+function photo_category_menu($photo_category_info){
+        $menu = Array();
+        $menu[] = Array(
+            'url' => ''
+            , 'html' => "<b>" . get_langstring($photo_category_info['photo_category_title']) . " : </b>"
+            , 'attributes' => ''
+        );
+        $menu[] = Array(
+              'url' => \e::url(['action'=>'photo/photo_category_edit','photo_category_id'=>$photo_category_info['photo_category_id']])
+            , 'html' => text('photo_category_edit')
+            , 'attributes' => ''
+        );
+        $menu[] = Array(
+              'url' => \e::url(['action'=>'photo/photo_category_delete','photo_category_id'=>$photo_category_info['photo_category_id'],'delete_children'=>1])
+            , 'html' => text('photo_category_delete_with_children')
+            , 'attributes' => ''
+        );
+        $menu[] = Array(
+              'url' => \e::url(['action'=>'photo/photo_category_delete','photo_category_id'=>$photo_category_info['photo_category_id']])
+            , 'html' => text('photo_category_delete')
+            , 'attributes' => ''
+        );
         
-        # create file name
-
-        # create directory
-        $relative_dir = date('Y') . '/' . date('m');
-        $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
-        path_create($site_root_dir, "/gallery/$relative_dir/");
-
-        $smallImageFile='';
-        $bigImageFile='';
-
-        return photo_category_update($photo_category_id, $site_id, 
-                ['photo_category_icon' => ['small'=>$smallImageFile, 'big'=>$bigImageFile]]
-                );
-    
+        return $menu;
 }

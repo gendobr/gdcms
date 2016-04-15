@@ -100,12 +100,12 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
         if(isset($_FILES['news_icon']) && $_FILES['news_icon']['error']==0){
             $relative_dir="gallery/".date('Y').'/'.date('m');
             $dir="{$this_site_info['site_root_dir']}/{$relative_dir}";
-            path_create($this_site_info['site_root_dir'], "{$dir}/");
+            \core\fileutils::path_create($this_site_info['site_root_dir'], "{$dir}/");
             
-            $newFileName="news-{$this_news_info['id']}-{$this_news_info['lang']}-".encode_file_name($_FILES['news_icon']['name']);
+            $newFileName="news-{$this_news_info['id']}-{$this_news_info['lang']}-".\core\fileutils::encode_file_name($_FILES['news_icon']['name']);
 
             if(move_uploaded_file($_FILES['news_icon']['tmp_name'], "{$dir}/{$newFileName}") ){
-                $smallFileName="news-{$this_news_info['id']}-{$this_news_info['lang']}-small-".encode_file_name($_FILES['news_icon']['name']);
+                $smallFileName="news-{$this_news_info['id']}-{$this_news_info['lang']}-small-".\core\fileutils::encode_file_name($_FILES['news_icon']['name']);
                 img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", gallery_small_image_width, gallery_small_image_height, $type = "circumscribe");
                 $this_news_info['news_icon']=['small'=>"{$relative_dir}/{$smallFileName}", "full"=>"{$relative_dir}/{$newFileName}"];
             }
@@ -207,7 +207,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
     // 
     // ----------------- check news_code - begin -------------------------------
     // news_code must be unique
-    $this_news_info['news_code'] = encode_dir_name(trim($input_vars['news_code']));
+    $this_news_info['news_code'] = \core\fileutils::encode_dir_name(trim($input_vars['news_code']));
     if (strlen($this_news_info['news_code']) > 0) {
         $query = "SELECT count(id) as n_news FROM {$table_prefix}news WHERE id<>{$this_news_info['id']} AND news_code='" . \e::db_escape($this_news_info['news_code']) . "'";
         $n_other_news = \e::db_getonerow($query);
@@ -216,7 +216,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
             $all_is_ok = false;
         }
     } else {
-        $this_news_info['news_code'] = encode_dir_name(trim($this_news_info['title']));
+        $this_news_info['news_code'] = \core\fileutils::encode_dir_name(trim($this_news_info['title']));
 
         $query = "SELECT count(id) as n_news FROM {$table_prefix}news WHERE id<>{$this_news_info['id']} AND news_code='" . \e::db_escape($this_news_info['news_code']) . "'";
         $n_other_news = \e::db_getonerow($query);

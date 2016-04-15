@@ -22,7 +22,7 @@ $lang = $input_vars['lang'] = get_language('lang');
 
 $txt = load_msg($input_vars['lang']);
 //---------------------- load language - end -----------------------------------
-run('lib/file_functions');
+
 run('site/menu');
 //------------------- site info - begin ----------------------------------------
 $site_id = isset($input_vars['site_id']) ? ((int) $input_vars['site_id']) : 0;
@@ -69,13 +69,13 @@ if ($rozdilizformy != '') {
     ////$categories = gallery_get_children_of($this_site_info, $lang, $rozdilizformy);
     //prn($categories);
 
-    $url_details_prefix = str_replace(Array('{site_id}', '{lang}', '{start}','{keywords}'), Array($this_site_info['id'], $lang, 0,''), url_pattern_gallery_category);
+    $url_details_prefix = str_replace(Array('{site_id}', '{lang}', '{start}','{keywords}'), Array($this_site_info['id'], $lang, 0,''), \e::config('url_pattern_gallery_category'));
     $url_thumbnail_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']) . '/gallery';
     $query="SELECT * FROM {$table_prefix}photogalery_rozdil WHERE rozdil='".  \e::db_escape($rozdilizformy)."' OR rozdil='" . \e::db_escape(rawurldecode($rozdilizformy)) . "'";
     $this_category_info=\e::db_getonerow($query);
     $this_category_info['url_details'] = str_replace(
             Array('{rozdilizformy}','{rozdil2}'),
-            Array(rawurlencode($this_category_info['rozdil']),  encode_dir_name($this_category_info['rozdil'])),
+            Array(rawurlencode($this_category_info['rozdil']),  \core\fileutils::encode_dir_name($this_category_info['rozdil'])),
             $url_details_prefix);
     $this_category_info['url_thumbnail'] = $url_thumbnail_prefix . '/' . $this_category_info['photos_m'];
     $this_category_info['url_image']     = $url_thumbnail_prefix . '/' . $this_category_info['photos'];
@@ -106,7 +106,7 @@ if (strlen($keywords) > 0) {
 run('site/page/page_view_functions');
 
 $images=new GalleryImages($lang, $this_site_info, isset($input_vars['start']) ? ( (int) $input_vars['start'] ) : 0, $rozdilizformy, $keywords);
-$category=new GalleryCategory($lang, $this_site_info, isset($input_vars['start']) ? ( (int) $input_vars['start'] ) : 0, $rozdilizformy, $keywords, url_pattern_gallery_category);
+$category=new GalleryCategory($lang, $this_site_info, isset($input_vars['start']) ? ( (int) $input_vars['start'] ) : 0, $rozdilizformy, $keywords, \e::config('url_pattern_gallery_category'));
 // ---------------------- draw gallery - begin ---------------------------------
 $_template = site_get_template($this_site_info, 'template_photogallery');
 $vyvid.= process_template($_template, Array(
@@ -128,7 +128,7 @@ $vyvid.= process_template($_template, Array(
 $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 //prn($menu_groups);
 // ---------------- mark active menu items - begin -----------------------------
-$rozdilizformy_pattern = str_replace('/', "\\/", preg_quote(str_replace(Array('{site_id}', '{lang}','{keywords}','{start}'), Array($site_id, $lang,'','0'), url_pattern_gallery_category)));
+$rozdilizformy_pattern = str_replace('/', "\\/", preg_quote(str_replace(Array('{site_id}', '{lang}','{keywords}','{start}'), Array($site_id, $lang,'','0'), \e::config('url_pattern_gallery_category'))));
 $rozdilizformy_pattern = '/' . str_replace("\\{rozdilizformy\\}", '([^&]*)', $rozdilizformy_pattern) . '/';
 //prn('$rozdilizformy_pattern',$rozdilizformy_pattern);
 foreach ($menu_groups as $kmg => $mg) {
@@ -161,7 +161,7 @@ for ($i = 0; $i < $cnt; $i++) {
    $lang_list[$i]['url'] = str_replace(
        Array('{site_id}', '{lang}', '{start}', '{keywords}','{rozdilizformy}'), 
        Array($this_site_info['id'], $lang_list[$i]['name'], 0, '',$category->category_info['rozdil']), 
-       url_pattern_gallery_category);
+       \e::config('url_pattern_gallery_category'));
 
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }

@@ -31,9 +31,9 @@ if (get_level($site_id) == 0) {
 //------------------- check permission - end -----------------------------------
 
 
-run('lib/file_functions');
 
-$list=ls_r($site_root_dir);
+
+$list=\core\fileutils::ls_r($site_root_dir);
 $cnt=count($list);
 $len=strlen($site_root_dir);
 for($i=0;$i<$cnt;$i++){

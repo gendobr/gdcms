@@ -3,7 +3,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-run('lib/file_functions');
+
 
 $a=[
 'Прийом гостей',
@@ -22,6 +22,6 @@ $a=[
         ];
 
 foreach($a as $b){
-    prn(encode_dir_name($b));
+    prn(\core\fileutils::encode_dir_name($b));
 }
-?>
+

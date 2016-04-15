@@ -536,10 +536,7 @@ function get_view($event_list, $lang) {
     // prn('$category_ids',$category_ids,'$event_category',$event_category);
     $query = "SELECT * FROM {$GLOBALS['table_prefix']}category WHERE category_id in(" . join(',', array_keys($category_ids)) . ")";
     $tmp =\e::db_getrows($query);
-    // prn($query,$tmp);
-    if (!function_exists("encode_dir_name")) {
-        run('lib/file_functions');
-    }
+
 
     $ncat = count($tmp);
     $categories = Array();
@@ -547,7 +544,7 @@ function get_view($event_list, $lang) {
     $category_url_prefix = site_root_URL . "/index.php?action=category/browse&site_id={$site_id}&lang={$lang}&category_id=";
     for ($i = 0; $i < $ncat; $i++) {
         $categories[$tmp[$i]['category_id']]['category_title'] = get_langstring($tmp[$i]['category_title'], $lang);
-        $categories[$tmp[$i]['category_id']]['category_code'] = encode_dir_name($tmp[$i]['category_code']);
+        $categories[$tmp[$i]['category_id']]['category_code'] = \core\fileutils::encode_dir_name($tmp[$i]['category_code']);
         $categories[$tmp[$i]['category_id']]['URL'] = $category_url_prefix . $tmp[$i]['category_id'];
         $categories[$tmp[$i]['category_id']]['start'] = $tmp[$i]['start'];
     }

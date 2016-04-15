@@ -43,7 +43,7 @@ if(get_level($site_id)==0) {
 
 // echo "TEST"; exit();
 
-run('lib/file_functions');
+
 
 
 
@@ -57,8 +57,8 @@ if(!$oldfilepath){
 
 if(is_file($oldfilepath)){
     // check new file name
-    $newfilepath = encode_file_name($input_vars['newname']);
-    if(!preg_match("/\\.(".allowed_file_extension.")$/i",$newfilepath)) {
+    $newfilepath = \core\fileutils::encode_file_name($input_vars['newname']);
+    if(!preg_match("/\\.(".\e::config('allowed_file_extension').")$/i",$newfilepath)) {
         echo "ERROR: {$input_vars['newname']} is not allowed";
         exit();
     }
@@ -67,7 +67,7 @@ if(is_file($oldfilepath)){
 
 if(is_dir($oldfilepath)){
     // check new file name
-    $newfilepath = encode_dir_name($input_vars['newname']);
+    $newfilepath = \core\fileutils::encode_dir_name($input_vars['newname']);
     if($newfilepath=='gallery' || $newfilepath=='cache') {
         echo "ERROR: Renaming of the {$input_vars['oldname']} is not allowed";
         exit();

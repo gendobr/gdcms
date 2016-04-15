@@ -157,7 +157,7 @@ class GalleryImages {
         $url_prefix = preg_replace("/\\/+$/", '', $this->this_site_info['url']) . '/gallery';
         for ($i = 0; $i < $cnt; $i++) {
             $images[$i]['url_details'] = str_replace(
-                    Array('{item}', '{site_id}', '{lang}'), Array($images[$i]['id'], $this->this_site_info['id'], $this->lang), url_pattern_gallery_image);
+                    Array('{item}', '{site_id}', '{lang}'), Array($images[$i]['id'], $this->this_site_info['id'], $this->lang), \e::config('url_pattern_gallery_image'));
             $images[$i]['url_thumbnail'] = $url_prefix . '/' . $images[$i]['photos_m'];
             $images[$i]['url_big'] = $url_prefix . '/' . $images[$i]['photos'];
         }
@@ -168,7 +168,7 @@ class GalleryImages {
         // url template for
         $url_template = str_replace(
                 Array('{rozdil2}','{rozdilizformy}', '{site_id}', '{lang}', '{keywords}'), 
-                Array(encode_dir_name($this->rozdilizformy),rawurlencode($this->rozdilizformy), $this->this_site_info['id'], $this->lang, rawurlencode($this->keywords)), url_pattern_gallery_category);
+                Array(\core\fileutils::encode_dir_name($this->rozdilizformy),rawurlencode($this->rozdilizformy), $this->this_site_info['id'], $this->lang, rawurlencode($this->keywords)), \e::config('url_pattern_gallery_category'));
 
         $this->paging_links = $this->get_paging_links($this->start, $this->_items_found, $this->rowsPerPage, $url_template);
         //prn($images);

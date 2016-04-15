@@ -108,7 +108,7 @@ $rep->set_primary_key('ec_producer_id', $ec_producer_id);
 $success = $rep->process();
 
 if ($success) {
-    run('lib/file_functions');
+
     run('ec/item/functions');
     //prn($_FILES);
     # -------------------- upload image - begin ----------------------------------
@@ -119,18 +119,18 @@ if ($success) {
             # get file extension
             $file_extension = ".{$regs[1]}";
             # create file name
-            $orig_image_file_name = "{$site_id}-{$data}-" . encode_file_name($photos['name']);
+            $orig_image_file_name = "{$site_id}-{$data}-" . \core\fileutils::encode_file_name($photos['name']);
 
             # create directory
             $relative_dir = date('Y') . '/' . date('m');
             $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
-            path_create($site_root_dir, "/gallery/$relative_dir/");
+            \core\fileutils::path_create($site_root_dir, "/gallery/$relative_dir/");
             
             # copy uploaded file
             $suc = move_uploaded_file($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$orig_image_file_name");
             
             // resize image file
-            $big_image_file_name = "{$site_id}-{$data}-{$data}-big-" . encode_file_name($photos['name']);
+            $big_image_file_name = "{$site_id}-{$data}-{$data}-big-" . \core\fileutils::encode_file_name($photos['name']);
             $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
             ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
             // echo ($big_file_path); exit();
@@ -153,12 +153,12 @@ if ($success) {
             # get file extension
             $file_extension = ".{$regs[1]}";
             # create file name
-            $orig_image_file_name = "{$site_id}-{$data}-" . encode_file_name($photos['name']);
+            $orig_image_file_name = "{$site_id}-{$data}-" . \core\fileutils::encode_file_name($photos['name']);
 
             # create directory
             $relative_dir = date('Y') . '/' . date('m');
             $site_root_dir = \e::config('SITES_ROOT') . '/' . $this_site_info['dir'];
-            path_create($site_root_dir, "/gallery/$relative_dir/");
+            \core\fileutils::path_create($site_root_dir, "/gallery/$relative_dir/");
             //prn($site_root_dir,"/gallery/$relative_dir/");
             # copy uploaded file
             //prn($photos['tmp_name'],is_file($photos['tmp_name']),filesize($photos['tmp_name']),"$site_root_dir/gallery/$relative_dir/$big_image_file_name");
@@ -166,7 +166,7 @@ if ($success) {
             //prn("<img src="."{$this_site_info['url']}gallery/$relative_dir/$big_image_file_name".">");
             //if($suc) prn('OK'); else prn('Error');
             
-            $big_image_file_name = "{$site_id}-{$data}-big-logo" . encode_file_name($photos['name']);
+            $big_image_file_name = "{$site_id}-{$data}-big-logo" . \core\fileutils::encode_file_name($photos['name']);
             $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
             ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
 

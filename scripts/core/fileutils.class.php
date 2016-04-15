@@ -7,10 +7,10 @@ namespace core;
  */
 class fileutils {
 
-    static $img_extensions = Array('gif', 'jpg', 'jpeg', 'png');
+    public static $img_extensions = Array('gif', 'jpg', 'jpeg', 'png');
 
     // ----------------- get file list of selected directory -- begin ----------
-    static function ls($dirname) {
+    public static function ls($dirname) {
         if (is_dir($dirname)) {
             $handle = opendir($dirname);
             if ($handle) {
@@ -18,31 +18,35 @@ class fileutils {
                 $files = Array();
                 while ($entry = readdir($handle)) {
                     if ($entry != ".." && $entry != ".") {
-                        if (@is_dir($dirname . "/" . $entry)) {
+                        if (is_dir($dirname . "/" . $entry)) {
                             $subdirs[] = $entry;
                         } else {
-                            if ($entry != ".." && $entry != ".")
+                            if ($entry != ".." && $entry != ".") {
                                 $files[] = $entry;
+                            }
                         }
                     }
                 }
                 closedir($handle);
                 return Array('dirs' => $subdirs, 'files' => $files);
             }
-        } else
+        } else {
             return false;
+        }
     }
 
     // ----------------- get file list of selected directory -- end ------------
 
-    static function file_extention($file) {
+    public static function file_extention($file) {
         $pos = strrpos($file, ".");
-        if ($pos === false)
+        if ($pos === false) {
             return '';
+        }
         return substr($file, $pos + 1);
     }
 
-    static function upload_file($fileinfo, $desteny_dir, $prefix = '') {
+    public static function upload_file($fileinfo, $desteny_dir, $prefix = '') {
+        // prn($fileinfo);
         $tmp_name = $fileinfo['tmp_name'];
 
         if (!is_uploaded_file($tmp_name))
@@ -66,7 +70,7 @@ class fileutils {
     }
 
     // -------------------- recursive list of directory -- begin ---------------
-    static function ls_r($dirname) {
+    public static function ls_r($dirname) {
         $response = Array();
         $dirs = Array();
         $response[] = $dirname;
@@ -97,7 +101,7 @@ class fileutils {
     // -------------------- recursive list of directory -- end -----------------
 
     /**  delete directory recursively */
-    static function rm_r($dirname) {
+    public static function rm_r($dirname) {
         if (is_file($dirname)) {
             unlink($dirname);
             return true;
@@ -114,7 +118,7 @@ class fileutils {
 
     # run("lib/pclzip.lib");
 
-    static function unzip($from_file, $to_dir) {
+    public static function unzip($from_file, $to_dir) {
         //\e::info('',$from_file);
         //\e::info('',  file_exists($from_file));
         $o_zip = new \core\pclzip($from_file);
@@ -123,16 +127,18 @@ class fileutils {
         // return;
         $cnt = count($filelist);
         $to_extract = Array();
-        for ($i = 0; $i < $cnt; $i++){
-            $to_extract[] = $i;
+        for ($i = 0; $i < $cnt; $i++) {
+            if (preg_match('/\.(' . \e::config('allowed_file_extension') . ')$/', $filelist[$i]['filename']) || $filelist[$i]['folder'] == 1) {
+                $to_extract[] = $i;
+            }
         }
-        if (count($to_extract) > 0){
+        if (count($to_extract) > 0) {
             $o_zip->extractByIndex(join(',', $to_extract), $to_dir);
         }
         //$o_zip->extract($to_dir);
     }
 
-    static function path_create($root, $dir) {
+    public static function path_create($root, $dir) {
         $rt = preg_replace("/\\/+\$/", '', $root);
         $len = strlen($rt);
         if (substr($dir, 0, $len + 1) == $rt . '/') {
@@ -157,11 +163,11 @@ class fileutils {
             }
         }
         if (strlen($file_name) > 0) {
-            self::write_to_file($path . '/' . $file_name, '');
+            file_put_contents($path . '/' . $file_name, '');
         }
     }
 
-    static function path_delete($root, $dir) {
+    public static function path_delete($root, $dir) {
         $rt = ereg_replace('/+$', '', $root);
         $len = strlen($rt);
         if (substr($dir, 0, $len + 1) == $rt . '/')
@@ -188,7 +194,7 @@ class fileutils {
         return strlen($path) == $len;
     }
 
-    static function encode_file_name($str) {
+    public static function encode_file_name($str) {
         #\e::info('fileutils/encode_file_name', 'original='.$str);
         $extension = self::file_extention($str);
         #\e::info('fileutils/encode_file_name', 'extension='.$extension);
@@ -214,11 +220,25 @@ class fileutils {
         return join('.', $tor);
     }
 
+    public static function encode_dir_name($str) {
+        $tor = str_replace(
+                Array('ё', 'ц', 'ч', 'ш', 'щ', 'ю', 'я', 'ы', 'а', 'б', 'в', 'г', 'д', 'е', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'э', 'ї', 'і',
+            'Ё', 'Ц', 'Ч', 'Ш', 'Щ', 'Ю', 'Я', 'Ы', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Э', '?', 'ь', 'ъ')
+                , Array('yo', 'ts', 'ch', 'sh', 'sch', 'yu', 'ya', 'y', 'a', 'b', 'v', 'g', 'd', 'e', 'zh', 'z', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'kh', 'e', 'yi', 'i',
+            'yo', 'ts', 'ch', 'sh', 'sch', 'yu', 'ya', 'y', 'a', 'b', 'v', 'g', 'd', 'e', 'zh', 'z', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'kh', 'e', 'yi', '', '')
+                , $str);
+        $tor = preg_replace("/[^a-z0-9_\\/=-]/i", '-', $tor);
+        //if (strlen($tor) > 200){
+        //    $tor = substr($tor, 0, 99) . '--' . substr($str, -1, 99);
+        //}
+        return $tor;
+    }
+
     /**
      * проверка положения файла с данными:
      *  файл должен находится в директории $root
      */
-    static function get_allowed_path($path, $root) {
+    public static function get_allowed_path($path, $root) {
         //prn($path,$root);
         $file_path = $path;
         $file_root = $root;
@@ -235,7 +255,7 @@ class fileutils {
     /**
      * Вычисление пути файла
      */
-    static function absolute_file_path($path) {
+    public static function absolute_file_path($path) {
         $p1 = '';
         $p2 = str_replace('\\', '/', $path);
         while ($p1 != $p2) {
@@ -266,7 +286,7 @@ class fileutils {
      * @param $root string корневая директория всех файлов
      * @param $some_path string путь относительно корневой директории
      */
-    static function verified_file_paths($some_path, $root) {
+    public static function verified_file_paths($some_path, $root) {
 
         // get posted relative directory path
         $dir_relative = preg_replace("/^\\/+|\\/+$/", '', $some_path);
@@ -286,7 +306,7 @@ class fileutils {
 
     static private $mime_types;
 
-    static function mime_type($file) {
+    public static function mime_type($file) {
         if (!isset(self::$mime_types)) {
             self::$mime_types = Array(
                 '3dm' => 'x-world/x-3dmf',
@@ -938,6 +958,27 @@ class fileutils {
         } else {
             return 'application/octet-stream';
         }
+    }
+
+    public static function get_cached_info($path, $cachetime = cachetime) {
+        $filepath = '/' . $path;
+        //prn(' reading '.$filepath);
+        if (file_exists($filepath) && filemtime($filepath) > time() - $cachetime) {
+            try {
+                return unserialize(file_get_contents($filepath));
+            } catch (Exception $e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static function set_cached_info($path, $info) {
+        $filepath = $path;
+        //prn('writing '.$filepath);
+        \core\fileutils::path_create(\e::config('CACHE_ROOT'), $filepath);
+        file_put_contents($filepath, serialize($info));
     }
 
 }

@@ -2,7 +2,7 @@
 
 #prn($_REQUEST);
 run('site/menu');
-run('lib/file_functions');
+
 # ------------------- site info - begin ----------------------------------------
 if (isset($input_vars['site_id'])) {
     $site = $site_id = checkInt($input_vars['site_id']);

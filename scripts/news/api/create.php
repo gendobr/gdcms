@@ -231,7 +231,7 @@ $news_info =\e::db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_
 $news_info['news_url'] = str_replace(
                 Array('{news_id}','{lang}','{news_code}'),
                 Array($news_info['id'],$lang,$news_info['news_code']),
-                url_template_news_details);
+                \e::config('url_template_news_details'));
 
 
 
