@@ -59,8 +59,8 @@ $lang = $_SESSION['lang'];
 $report = Array('', '', '', '', '');
 # -------------------------- add image to gallery - begin ----------------------
 
-$gallery_small_image_width  = defined('gallery_small_image_width')?gallery_small_image_width:150;
-$gallery_small_image_height = defined('gallery_small_image_height')?gallery_small_image_height:150;
+
+
 
 $qq = 0;
 while ($qq < 5) {
@@ -106,8 +106,8 @@ while ($qq < 5) {
                 img_resize(
                         "$site_root_dir/gallery/$relative_dir/$big_image_file_name", // source image
                         "$site_root_dir/gallery/$relative_dir/$small_image_file_name", // here thumbnail image will be saved
-                        $gallery_small_image_width,  // new width
-                        $gallery_small_image_height, // new height
+                        \e::config('gallery_small_image_width'),  // new width
+                        \e::config('gallery_small_image_height'), // new height
                         $rgb = 0xFFFFFF, $quality = 100);
                 # -------------- create small image - end ---------------------------
             }

@@ -87,7 +87,7 @@ if($user_cense_level==0)
   $re=new report_generator;
   $re->db=$db;
   $re->distinct=false;
-  $re->exclude='^ec_order';
+  $re->exclude='/^ec_order/';
   $re->from="{$table_prefix}ec_order AS ec_order,
              {$table_prefix}ec_user AS ec_user,
              {$table_prefix}site_visitor AS site_visitor ";

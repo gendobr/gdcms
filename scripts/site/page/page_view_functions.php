@@ -114,7 +114,7 @@ function process_template($template_name, $data_array, $functions=Array()) {
 
 // sample call is
 // {set path="page.title"}some text or template{/set}
-function smarty_block_set($params, $content, &$smarty, &$repeat) {
+function smarty_block_set($params, $content, &$smarty, $repeat) {
     // only output on the closing tag
     global $_saved_tpl_vars;
     if (!isset($_saved_tpl_vars)) {

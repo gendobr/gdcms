@@ -82,7 +82,6 @@ foreach ($rows as $row){
 
 
 // get categories
-// define('url_pattern_category'           ,site_root_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}");
 $query="SELECT site_id,  category_code, date_lang_update,category_id,path,category_description
         FROM {$table_prefix}category 
         WHERE site_id={$site_id}
@@ -100,7 +99,7 @@ foreach ($rows as $row){
             $loc=str_replace(
                         Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
                         Array($row['path'],$language['lang']   ,$site_id   ,$row['category_id'],$row['category_code']),
-                        url_pattern_category);
+                        \e::config('url_pattern_category'));
             $lastmod=$row['last_change_date'];
             echo format_sitemap_url($loc,$lastmod);
         }

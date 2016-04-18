@@ -26,7 +26,7 @@ if($input_vars['delete_user_id']>1 && $input_vars['delete_user_id']!=$_SESSION['
   run("lib/class_report_extended");
   $re=new report_generator;
   $re->db=$db;
-  $re->exclude='^delete_';
+  $re->exclude='/^delete_/';
   $re->distinct=false;
 
   $re->from="{$table_prefix}user AS user";

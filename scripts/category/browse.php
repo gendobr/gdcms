@@ -151,7 +151,7 @@ for ($i = 0; $i < $cnt; $i++) {
         str_replace(
             Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), 
             Array($this_category_info['path'], $lang_list[$i]['lang'], $this_category_info['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), 
-            url_pattern_category);
+            \e::config('url_pattern_category'));
 }
 $lang_list=array_values($lang_list);
 //prn($lang_list);

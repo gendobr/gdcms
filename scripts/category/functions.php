@@ -122,10 +122,6 @@ function category_public_list($site_id, $lang) {
     // ------------------ get list of categories - end -------------------------
     // ------------------ adjust list of categories - begin --------------------
     // $category_url_prefix = site_root_URL . "/index.php?action=category/browse&site_id={$site_id}&lang={$lang}&category_id=";
-//    $category_url_pattern = str_replace(
-//            Array('{site_id}', '{lang}','{category_id}','{path}','{category_code}'), 
-//            Array((int) $site_id, $lang), 
-//            url_pattern_category);
     //{site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}
     $cnt = count($caterory_list);
     for ($i = 0; $i < $cnt; $i++) {
@@ -134,7 +130,7 @@ function category_public_list($site_id, $lang) {
         $caterory_list[$i]['URL'] = str_replace(
             Array('{site_id}'   , '{lang}','{category_id}','{path}','{category_code}'), 
             Array((int) $site_id, $lang  , $caterory_list[$i]['category_id'], $caterory_list[$i]['path'],$caterory_list[$i]['category_code']),
-            url_pattern_category);
+            \e::config('url_pattern_category'));
         // str_replace('{category_id}', $caterory_list[$i]['category_id'], $category_url_pattern);
 
         $caterory_list[$i]['number_of_news'] = 0;
@@ -218,7 +214,7 @@ function category_info($options) {
     //    $this_category_info['category_title_short'] = shorten($this_category_info['category_title']);
     //}
     $this_category_info['category_description'] = get_langstring($this_category_info['category_description'], $options['lang']);
-    $this_category_info['URL'] = str_replace(Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), Array($this_category_info['path'], $options['lang'], $options['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), url_pattern_category);
+    $this_category_info['URL'] = str_replace(Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), Array($this_category_info['path'], $options['lang'], $options['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), \e::config('url_pattern_category'));
     $this_category_info['date_lang_update'] = get_langstring($this_category_info['date_lang_update'], $options['lang']);
     //prn($this_category_info);
     // $this_category_info['category_icon'] = json_decode($this_category_info['category_icon'], true);
@@ -317,7 +313,7 @@ class CategoryViewModel {
         }else{
             $tor['URL'] = str_replace(
                     Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), 
-                    Array($tor['path'], $this->lang, $this->site_info['id'], $tor['category_id'], $tor['category_code']), url_pattern_category);
+                    Array($tor['path'], $this->lang, $this->site_info['id'], $tor['category_id'], $tor['category_code']), \e::config('url_pattern_category'));
             $tor['redirectURL'] = '';
         }
 

@@ -161,11 +161,11 @@ if ($all_is_ok) {
 
                 $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-big-" . \core\fileutils::encode_file_name($photos['name']);
                 $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
-                ec_img_resize($photos['tmp_name'], $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
+                ec_img_resize($photos['tmp_name'], $big_file_path, \e::config('gallery_big_image_width'), \e::config('gallery_big_image_height'), "resample");
 
                 $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . \core\fileutils::encode_file_name($photos['name']);
                 $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
-                ec_img_resize($photos['tmp_name'], $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
+                ec_img_resize($photos['tmp_name'], $small_file_path, \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), "circumscribe");
 
                 $this_ec_item_info["ec_item_img"][] = Array("gallery/$relative_dir/$small_image_file_name","gallery/$relative_dir/$big_image_file_name");
             }

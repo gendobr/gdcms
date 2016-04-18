@@ -147,8 +147,7 @@ function utf8_to_cp1251($s) {
 // prn($_FILES);
 // prn($_REQUEST);
 
-$gallery_small_image_width  = defined('gallery_small_image_width')?gallery_small_image_width:150;
-$gallery_small_image_height = defined('gallery_small_image_height')?gallery_small_image_height:150;
+
 
 foreach ($_FILES as $uploadedfile) {
 
@@ -190,8 +189,8 @@ foreach ($_FILES as $uploadedfile) {
         img_resize(
                 "$site_root_dir/gallery/$relative_dir/$big_image_file_name", // source image
                 "$site_root_dir/gallery/$relative_dir/$small_image_file_name", // here thumbnail image will be saved
-                $gallery_small_image_width, // new width
-                $gallery_small_image_height, // new height
+                \e::config('gallery_small_image_width'), // new width
+                \e::config('gallery_small_image_height'), // new height
                 $rgb      = 0xFFFFFF, $quality = 100);
         # -------------- create small image - end ------------------------------
         # save to database

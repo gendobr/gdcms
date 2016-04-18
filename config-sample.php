@@ -109,8 +109,7 @@ define('ec_order_status', 'new,completed,rejected,under_processing');
 define('ec_cart_check_product_amount', false);
 
 
-define('gallery_small_image_width', 300);
-define('gallery_small_image_height', 240);
+
 
 
 // number of emails which can be sent at once
@@ -124,12 +123,12 @@ $config->defaultToVisualEditor=1;
 
 # ----------------------------- urls without mod_rewrite - begin ---------------------------
 // ++++++++++++
-//define('url_pattern_category', site_public_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}");
-define('url_pattern_category', 'http://gen.znu.edu.ua/_sites/znu_main/{lang}/{path}');
+//$config->url_pattern_category=site_public_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}";
+$config->url_pattern_category= 'http://gen.znu.edu.ua/_sites/znu_main/{lang}/{path}';
 
 
 $config->url_pattern_gallery_category = site_public_URL . "/index.php?action=gallery/photogallery&rozdilizformy={rozdilizformy}&site_id={site_id}&lang={lang}&start={start}&keywords={keywords}";
-//\e::config('url_pattern_gallery_category')
+
 
 $config->url_pattern_ec_category= site_public_URL . "/index.php?action=ec/item/browse&site_id={site_id}&lang={lang}&ec_category_id={ec_category_id}";
 
@@ -155,9 +154,14 @@ $config->url_prefix_search= sites_root_URL . "/search.php?";
 # ----------------------------- urls using mod_rewrite in apache - end ---------------------
 
 
+$config->gallery_small_image_width = 300;
+$config->gallery_small_image_height=240;
 
-define('gallery_big_image_width', 800);
-define('gallery_big_image_height', 800);
+
+//\e::config('gallery_small_image_width')
+
+$config->gallery_big_image_width= 800;
+$config->gallery_big_image_height= 800;
 
 
 $config->url_template_news_list = site_public_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}";

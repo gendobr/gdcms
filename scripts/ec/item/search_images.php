@@ -120,11 +120,11 @@ if(isset($input_vars['imh']) && is_array($input_vars['imh'])) {
             
             $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-big-" . $newfname;
             $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
-            ec_img_resize($file_path, $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
+            ec_img_resize($file_path, $big_file_path, \e::config('gallery_big_image_width'), \e::config('gallery_big_image_height'), "resample");
 
             $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . $newfname;
             $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
-            ec_img_resize($file_path, $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
+            ec_img_resize($file_path, $small_file_path, \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), "circumscribe");
 
             unlink($file_path);
         }

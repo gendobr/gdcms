@@ -104,7 +104,7 @@ foreach ($menu_groups as $kmg => $mg) {
 }
 //------------------------ get list of languages - begin -----------------------
 //
-  #prn('$news_template',$news_template);
+// prn('$news_template',$news_template);
 
   $startTime=  microtime(true);
   $vyvid=process_template( $news_template
@@ -112,6 +112,8 @@ foreach ($menu_groups as $kmg => $mg) {
                            'news'=>$news
                           ,'rss_url'=>$rss_url
                           ,'txt'=>$txt
+                          ,'site'=>$this_site_info
+                          ,'site_root_url'=>site_root_URL
                      )
          );
   $vyvid.= '<div style="opacity:0.2; font-size:80%;">'.(microtime(true) - $startTime)."</div>";

@@ -76,8 +76,8 @@ class Report {
         //$this->group_by[]=$_field;
             $this->group_by[] = $_alias;
 
-        $tor['url_order_asc'] = "{$_SERVER['PHP_SELF']}?" . $this->create_get_query('^orderby$') . "&orderby={$_name}+asc";
-        $tor['url_order_desc'] = "{$_SERVER['PHP_SELF']}?" . $this->create_get_query('^orderby$') . "&orderby={$_name}+desc";
+        $tor['url_order_asc'] = "{$_SERVER['PHP_SELF']}?" . $this->create_get_query('/^orderby$/') . "&orderby={$_name}+asc";
+        $tor['url_order_desc'] = "{$_SERVER['PHP_SELF']}?" . $this->create_get_query('/^orderby$/') . "&orderby={$_name}+desc";
 
         switch ($_type) {
             case 'string':
@@ -131,7 +131,7 @@ class Report {
                 $filter['form_element_name'] = $varname;
                 if (!isset($input_vars[$varname]))
                     $input_vars[$varname] = '';
-                if (@ereg('^[0-9]+$', $input_vars[$varname])) {
+                if (preg_match('/^[0-9]+$/', $input_vars[$varname])) {
                     $filter['form_element_value'] = $this->checkInt($input_vars[$varname]);
                     $filter['value'] = $input_vars[$varname];
                     if ($_group_operation)
@@ -361,9 +361,9 @@ class Report {
 
         $PARAM = array_merge($_GET, $_POST);
         $newquery = Array();
+        // prn($this->exclude, $to_exclude);
         foreach ($PARAM as $k0 => $v0) {
-            ///prn("{$this->exclude}, {$k0}, => ".eregi($this->exclude, $k0));
-            if (!@eregi($this->exclude, $k0) && !@eregi($to_exclude, $k0) && !@eregi('password', $k0)) {
+            if (!preg_match($this->exclude, $k0) && !preg_match($to_exclude, $k0) && !preg_match('/password/', $k0)) {
                 if (get_magic_quotes_gpc())
                     $newquery[] = "{$k0}=" . rawurlencode(stripslashes($v0));
                 else
@@ -404,7 +404,7 @@ class Report {
         $numrows = \e::db_execute($this->query);
         $to_show['total_rows'] = mysqli_num_rows($numrows);
         unset($numrows);
-        $newquery = $this->create_get_query('^start$');
+        $newquery = $this->create_get_query('/^start$/');
         ///prn($to_show);
         // -------------------- previous page link -- begin -----------------
         $ans = $start - ($this->rows_per_page);
@@ -474,14 +474,14 @@ class Report {
         // --------------- hidden fields -- begin ------------------------------
         $hidden_fields = "";
         //$exclude_pattern='^filter_|^start$';
-        $exclude_pattern = '^filter_';
+        $exclude_pattern = '/^filter_/';
         if (is_array($_GET))
             foreach ($_GET as $key => $val)
-                if (!@eregi($this->exclude, $key) && !@eregi($exclude_pattern, $key))
+                if (!preg_match($this->exclude, $key) && !preg_match($exclude_pattern, $key))
                     $hidden_fields.="<input type=\"hidden\" name=\"{$key}\" value=\"{$val}\">";
         if (is_array($_POST))
             foreach ($_POST as $key => $val)
-                if (!@eregi($this->exclude, $key) && !@eregi($exclude_pattern, $key))
+                if (!preg_match($this->exclude, $key) && !preg_match($exclude_pattern, $key))
                     $hidden_fields.="<input type=\"hidden\" name=\"{$key}\" value=\"{$val}\">";
         $to_show['hidden_fields'] = $hidden_fields;
         // --------------- hidden fields -- end --------------------------------

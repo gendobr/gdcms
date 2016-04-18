@@ -84,7 +84,7 @@ if ($tmp) {
         $pa['URL'] = str_replace(
                 Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
                 Array($pa['path'],$lang   ,$site_id   ,$pa['category_id'],$pa['category_code']),
-                url_pattern_category);
+                \e::config('url_pattern_category'));
     }
     if (!$parents_are_visible) {
         die('Category is hidden');
@@ -121,7 +121,7 @@ if ($tmp) {
         $ch['URL'] = str_replace(
                 Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
                 Array($ch['path'],$lang   ,$site_id   ,$ch['category_id'],$ch['category_code']),
-                url_pattern_category);
+                \e::config('url_pattern_category'));
         //}
     }
     $this_category_info['children']=array_values($this_category_info['children']);
@@ -175,7 +175,7 @@ if(isset($input_vars['keywords'])){
             $ch['URL'] = str_replace(
                     Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
                     Array($ch['path'],$lang   ,$site_id   ,$ch['category_id'],$ch['category_code']),
-                    url_pattern_category);
+                    \e::config('url_pattern_category'));
             //}
         }
         $search_results = array_values($search_results);

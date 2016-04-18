@@ -1570,6 +1570,50 @@ body{
             }
         }
 
+        
+        .znu-2016-news{
+
+            @extend .row;
+            margin-left:0rem;
+            
+            .znu-2016-new{
+                @include make-xs-column(12);
+                padding-left:0;
+                padding-right:0;
+            }
+            .znu-2016-new-img{
+                @include make-xs-column(12);
+                @include make-sm-column(6);
+                @include make-md-column(3);
+                @include make-lg-column(2);
+                padding-right:0px;
+                img{
+                    @media (min-width: $screen-xs-min) {
+                        width:auto;
+                    }
+                    @media (min-width: $screen-sm-min) {
+                    }
+
+                    @media (min-width: $screen-md-min) {
+                    }
+
+                    @media (min-width: $screen-lg-min) {
+                    }
+                    max-width:100%;
+                }
+            }
+            .znu-2016-new-img-list-info{
+                @include make-xs-column(12);
+                @include make-sm-column(6);
+                @include make-md-column(9);
+                @include make-lg-column(10);
+            }
+            
+            .text{
+                max-height:5.3rem;
+                overflow:hidden;
+            }
+        }
 
     }
 

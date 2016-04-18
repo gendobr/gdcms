@@ -60,7 +60,7 @@ run("lib/class_report_extended");
 $re = new report_generator;
 $re->db = $db;
 $re->distinct = false;
-$re->exclude="^add_";
+$re->exclude="/^add_/";
 
 $re->from = "{$table_prefix}news_subscriber AS news_subscriber";
 

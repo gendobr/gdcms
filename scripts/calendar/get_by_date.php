@@ -125,11 +125,11 @@ if($h>=0){
 $event_ids=array_map(function($in){return $in['calendar_id'];},$event_days);
 // prn($event_ids);
 // restrict by category
-if(count($event_ids)>0 &&  isset($input_vars['category_id'])){
+if(count($event_ids)>0 &&  isset($input_vars['category_id']) && $input_vars['category_id']>0){
     // get categories for events
     $ids=Array();
     foreach($event_ids as $event){
-        $ids[]=$event['id'];
+        $ids[]=$event;
     }
     //prn($ids);
     $query="SELECT event_id
@@ -150,7 +150,7 @@ if(count($event_ids)>0 &&  isset($input_vars['category_id'])){
     }
     $cnt=count($event_ids);
     for($i=0; $i<$cnt; $i++){
-        if(!isset($checked_id[$event_ids[$i]['id']])){
+        if(!isset($checked_id[$event_ids[$i]])){
             unset($event_ids[$i]);
         }
     }
@@ -174,9 +174,12 @@ unset($events);
 $cnt=count($event_days);
 for($i=0; $i<$cnt; $i++){
     $event_days[$i]['event']=$map[$event_days[$i]['calendar_id']];
-    $event_days[$i]['startDate']="{$event_days[$i]['y']}-{$event_days[$i]['m']}-{$event_days[$i]['d']} "
+    $event_days[$i]['startDate']="{$event_days[$i]['y']}-".
+        ( $event_days[$i]['m']<10 ? "0{$event_days[$i]['m']}" : $event_days[$i]['m'])
+        .'-'.( $event_days[$i]['d']<10 ? "0{$event_days[$i]['d']}" : $event_days[$i]['d'] )." "
         .($event_days[$i]['h']>=0?$event_days[$i]['h']:0).":".($event_days[$i]['i']>=0?$event_days[$i]['i']:0);
 }
+
 //prn('event_days=', $event_days);
 # check if template name is posted
 $subtemplate=false;
@@ -186,7 +189,7 @@ if (isset($input_vars['template'])) {
 if(!$subtemplate){
     $subtemplate=site_get_template($this_site_info,'template_calendar_view_block');
 }
-// prn('$subtemplate',$subtemplate);
+//prn('$subtemplate',$subtemplate);
 # ---------------------- choose template - end ---------------------------------
 
 $vyvid = process_template($subtemplate

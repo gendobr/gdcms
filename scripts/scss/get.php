@@ -28,7 +28,7 @@ $input_vars['site_id'] = $this_site_info['id'];
 //------------------- site info - end ------------------------------------------
 //$filename = preg_replace("/\\W/",'-',$_REQUEST['f']);
 
-$file = $input_vars['f'];
+$file = \e::request('f');
 $basename = \core\fileutils::encode_file_name(basename($file));
 
 //prn(explode('/', dirname($file)));
@@ -36,8 +36,13 @@ $basename = \core\fileutils::encode_file_name(basename($file));
 //prn(array_filter( array_map(function($d) { return encode_dir_name($d); }, explode('/', dirname($file))),function($f) {  return strlen(trim($f)) > 0;}));
 //prn(join('/',  array_filter( array_map(function($d) { return encode_dir_name($d); }, explode('/', dirname($file))),function($f) {  return strlen(trim($f)) > 0;})));
 
-        
-$dirname = join('/',  array_filter( array_map(function($d) { return \core\fileutils::encode_dir_name($d); }, explode('/', dirname($file))),function($f) {  return strlen(trim($f)) > 0;}));
+$dirname=dirname($file);
+if($dirname!='.'){
+    $dirname = join('/',  array_filter( array_map(function($d) { return \core\fileutils::encode_dir_name($d); }, explode('/', $dirname)),function($f) {  return strlen(trim($f)) > 0;}));
+}else{
+    $dirname='';
+}
+
 
 if ($dirname) {
     $scssRelativePath = "{$dirname}/{$basename}";

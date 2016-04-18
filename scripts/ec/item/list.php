@@ -67,7 +67,7 @@ if($user_cense_level==0)
   $re=new report_generator;
   $re->db=$db;
   $re->distinct=false;
-  $re->exclude='^ec_item';
+  $re->exclude='/^ec_item/';
 
 
   $re->from="{$table_prefix}ec_item AS ec_item";

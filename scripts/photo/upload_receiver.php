@@ -34,8 +34,8 @@ if (!isset($_FILES) && count($_FILES) > 0) {
 }
 
 
-$gallery_small_image_width = defined('gallery_small_image_width') ? gallery_small_image_width : 150;
-$gallery_small_image_height = defined('gallery_small_image_height') ? gallery_small_image_height : 150;
+
+
 
 
 
@@ -92,7 +92,7 @@ foreach ($_FILES as $imagefile) {
     if (move_uploaded_file($imagefile['tmp_name'], "{$dir}/{$bigFileName}")) {
 
         $smallFileName = "photo-{$photo_id}-small-" . \core\fileutils::encode_file_name($imagefile['name']);
-        $img->resize("{$dir}/{$bigFileName}", "{$dir}/{$smallFileName}", gallery_small_image_width, gallery_small_image_height, $rgb = 0xFFFFFF, $quality = 100, \core\img::$MODE_MAX_RATIO);
+        $img->resize("{$dir}/{$bigFileName}", "{$dir}/{$smallFileName}", \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), $rgb = 0xFFFFFF, $quality = 100, \core\img::$MODE_MAX_RATIO);
         $photo_imgfile = ['small' => "{$relative_dir}/{$smallFileName}", "full" => "{$relative_dir}/{$bigFileName}"];
         \e::db_execute(
                 "UPDATE <<tp>>photo

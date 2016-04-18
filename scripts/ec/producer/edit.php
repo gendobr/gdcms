@@ -132,12 +132,11 @@ if ($success) {
             // resize image file
             $big_image_file_name = "{$site_id}-{$data}-{$data}-big-" . \core\fileutils::encode_file_name($photos['name']);
             $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
-            ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
+            ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", $big_file_path, \e::config('gallery_big_image_width'), \e::config('gallery_big_image_height'), "resample");
             // echo ($big_file_path); exit();
 
             //    $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . encode_file_name($photos['name']);
             //    $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
-            //    ec_img_resize($photos['tmp_name'], $small_file_path, gallery_small_image_width, gallery_small_image_width, "circumscribe");
             $ec_producer_img = "gallery/$relative_dir/$big_image_file_name";
             $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_img='" . \e::db_escape($ec_producer_img) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
             \e::db_execute($query);
@@ -168,7 +167,7 @@ if ($success) {
             
             $big_image_file_name = "{$site_id}-{$data}-big-logo" . \core\fileutils::encode_file_name($photos['name']);
             $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
-            ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", $big_file_path, gallery_big_image_width, gallery_big_image_height, "resample");
+            ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", $big_file_path, \e::config('gallery_big_image_width'), \e::config('gallery_big_image_height'), "resample");
 
             // echo "$big_image_file_name";exit();
             

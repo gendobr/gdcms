@@ -106,26 +106,10 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
 
             if(move_uploaded_file($_FILES['news_icon']['tmp_name'], "{$dir}/{$newFileName}") ){
                 $smallFileName="news-{$this_news_info['id']}-{$this_news_info['lang']}-small-".\core\fileutils::encode_file_name($_FILES['news_icon']['name']);
-                img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", gallery_small_image_width, gallery_small_image_height, $type = "circumscribe");
+                img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), $type = "circumscribe");
                 $this_news_info['news_icon']=['small'=>"{$relative_dir}/{$smallFileName}", "full"=>"{$relative_dir}/{$newFileName}"];
             }
-            
-            //
-            //
-            //gallery_big_image_width
-            //gallery_big_image_height
-            //gallery_small_image_width
-            //gallery_small_image_height
-            //img_resize($inputfile, $outputfile, $width, $height, $type = "resample"
-            //path_create($root, $dir)
-            //        [news_icon] => Array
-            //        (
-            //            [name] => 
-            //            [type] => 
-            //            [tmp_name] => 
-            //            [error] => 4
-            //            [size] => 0
-            //        )
+
         }
     }
     # ------------------ upload images - end -----------------------------------

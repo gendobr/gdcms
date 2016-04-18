@@ -58,7 +58,7 @@ if($user_cense_level==0)
   $re=new report_generator;
   $re->db=$db;
   $re->distinct=false;
-  $re->exclude='^ec_producer_comment';
+  $re->exclude='/^ec_producer_comment/';
 
 
   $re->from="

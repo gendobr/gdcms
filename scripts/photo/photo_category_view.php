@@ -163,7 +163,7 @@ if(\e::request('posted','')=='true'){
 
                 // ---------------- upload new icons - begin -------------------
                 $smallFileName="photo_category-{$photo_category_id}-small-".\core\fileutils::encode_file_name($_FILES['photo_category_icon']['name']);
-                $img->resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", gallery_small_image_width, gallery_small_image_height, $rgb = 0xFFFFFF, $quality = 100, \core\img::$MODE_MAX_RATIO);
+                $img->resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), $rgb = 0xFFFFFF, $quality = 100, \core\img::$MODE_MAX_RATIO);
                 $photo_category_icon=['small'=>"{$relative_dir}/{$smallFileName}", "full"=>"{$relative_dir}/{$newFileName}"];
                 \e::db_execute(
                         "UPDATE <<tp>>photo_category
