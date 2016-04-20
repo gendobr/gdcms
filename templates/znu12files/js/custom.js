@@ -47,4 +47,12 @@ $(window).load(function(){
             }, 'html' );
         }
     }
+    
+
+    if(window.location.hash==='#printable'){
+        var printDocument = window.document;
+        //console.log(printDocument);
+        printDocument.getElementById("znu-css-print").media="screen, print";
+        printDocument.getElementById("znu-css-screen").media="none";
+    }
 });

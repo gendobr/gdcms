@@ -17,21 +17,6 @@ function photo_menu($photo_info){
             , 'innerHTML' => text('photo_delete')
             , 'attributes' => ' style="margin-top:10pt;" onclick=\'return confirm("Are you sure?")\''
         );
-        //        $menu[] = Array(
-        //              'url' => \e::url(['action'=>'photo/photo_category_edit','photo_category_id'=>$photo_category_info['photo_category_id']])
-        //            , 'html' => text('photo_category_edit')
-        //            , 'attributes' => ''
-        //        );
-        //        $menu[] = Array(
-        //              'url' => \e::url(['action'=>'photo/photo_category_delete','photo_category_id'=>$photo_category_info['photo_category_id'],'delete_children'=>1])
-        //            , 'html' => text('photo_category_delete_with_children')
-        //            , 'attributes' => ''
-        //        );
-        //        $menu[] = Array(
-        //              'url' => \e::url(['action'=>'photo/photo_category_delete','photo_category_id'=>$photo_category_info['photo_category_id']])
-        //            , 'html' => text('photo_category_delete')
-        //            , 'attributes' => ''
-        //        );
         return $menu;
 }
 

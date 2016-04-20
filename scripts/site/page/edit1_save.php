@@ -50,12 +50,12 @@
 
 
     //------------------ check page abstract - begin ---------------------------
-      if(strlen($input_vars['page_abstract'])>512)
-      {
-          $message.="{$text['ERROR']} : {$text['Page_abstract_is_too_long']}<br>\n";
-          $all_is_ok=false;
-      }
-      $this_page_info['abstract'] = shorten($input_vars['page_abstract'],512);
+    //      if(strlen($input_vars['page_abstract'])>512)
+    //      {
+    //          $message.="{$text['ERROR']} : {$text['Page_abstract_is_too_long']}<br>\n";
+    //          $all_is_ok=false;
+    //      }
+    //      $this_page_info['abstract'] = shorten($input_vars['page_abstract'],512);
     //------------------ check page content - end ------------------------------
 
 

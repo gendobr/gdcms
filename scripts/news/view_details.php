@@ -75,12 +75,12 @@ $this_news_info['categories'] = $tmp;
 //
 # ------------------- get site info - begin ------------------------------------
 $site_id = checkInt($this_news_info['site_id']);
-$this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+$this_site_info = get_site_info($site_id, $input_vars['lang']);
 # prn($this_site_info);
 # prn($input_vars);
-if (!$this_site_info)
+if (!$this_site_info) {
     die($txt['Site_not_found']);
-$this_site_info['title'] = get_langstring($this_site_info['title'], $input_vars['lang']);
+}
 
 $this_site_info['URL_to_view_news'] = str_replace(
     ['{site_id}','{lang}','{other_parameters}'],
@@ -487,8 +487,9 @@ for ($i = 0; $i < $cnt; $i++) {
 //------------------------ get list of languages - end -------------------------
 //------------------------ draw using SMARTY template - begin ----------------
 //prn("{$input_vars['debug']}=={$input_vars['action']}");
-if (isset($input_vars['debug']) && $input_vars['debug'] == $input_vars['action'])
+if (isset($input_vars['debug']) && $input_vars['debug'] == $input_vars['action']) {
     prn('$custom_page_template=' . $custom_page_template);
+}
 
 $file_content = process_template($custom_page_template //$this_site_info['template']
         , Array(
@@ -514,4 +515,3 @@ echo $file_content;
 
 global $main_template_name;
 $main_template_name = '';
-?>

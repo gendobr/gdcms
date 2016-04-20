@@ -15,20 +15,10 @@ if (!$this_site_info['id']) {
 $input_vars['site_id'] = $this_site_info['id'];
 //------------------- site info - end ------------------------------------------
 // ------------------ get language - begin -------------------------------------
-if (isset($input_vars['interface_lang'])) {
-    if ($input_vars['interface_lang']) {
-        $input_vars['lang'] = $input_vars['interface_lang'];
-    }
-}
-if (!isset($input_vars['lang'])) {
-    $input_vars['lang'] = default_language;
-}
-if (strlen($input_vars['lang']) == 0) {
-    $input_vars['lang'] = default_language;
-}
+$input_vars['lang'] = $lang = get_language('lang,interface_lang');
 global $txt;
 $txt = load_msg($input_vars['lang']);
-$input_vars['lang'] = $lang = get_language('lang');
+
 // ------------------ get language - end ---------------------------------------
 
 
@@ -42,94 +32,26 @@ if(!$this_category_info){
     exit('Page not found');
 }
 $category_id = $this_category_info['category_id'];
-// -------------------- do redirect if needed - begin --------------------------
-if (is_valid_url($url = trim($this_category_info['category_description']))) {
-    header("Location: {$url}");
-    return;
-}
-// -------------------- do redirect if needed - end ----------------------------
+
+//// -------------------- do redirect if needed - begin --------------------------
+//if (is_valid_url($url = trim($this_category_info['category_description']))) {
+//    header("Location: {$url}");
+//    return;
+//}
+//// -------------------- do redirect if needed - end ----------------------------
+
+run('news/menu');
+run('calendar/functions');
+run('site/page/page_view_functions');
+
+
+$categoryViewModel=new CategoryViewModel(
+        $this_site_info,
+        $this_category_info,
+        $lang);
 
 
 
-
-// cache info as file in the site dir
-$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", 600);
-
-if ($tmp) {
-    // prn($tmp);
-    $this_category_info['children'] = $tmp['children'];
-    $this_category_info['parents'] = $tmp['parents'];
-} else {
-    // ---------------------------- get parents - begin ------------------------
-    $query = "select pa.category_id, pa.site_id, pa.category_code, pa.category_title,
-                      pa.start, pa.finish, pa.is_deleted, pa.deep, pa.is_part_of,
-                      pa.see_also, pa.is_visible, pa.path
-               from {$table_prefix}category pa, {$table_prefix}category ch
-               WHERE ch.category_id={$category_id} and ch.site_id={$site_id} and pa.site_id={$site_id}
-                 and pa.start<ch.start and ch.finish<pa.finish
-               order by pa.start asc";
-    $this_category_info['parents'] = \e::db_getrows($query);
-
-    // all parents should be visible
-    $parents_are_visible = true;
-    $cnt = count($this_category_info['parents']);
-    for ($i = 0; $i < $cnt; $i++) {
-        $pa = &$this_category_info['parents'][$i];
-        if ($pa['is_visible'] != 1) {
-            $parents_are_visible = false;
-            break;
-        }
-        $pa['category_title'] = get_langstring($pa['category_title'], $lang);
-        //$pa['category_description'] = get_langstring($pa['category_description'], $lang);
-        $pa['URL'] = str_replace(
-                Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
-                Array($pa['path'],$lang   ,$site_id   ,$pa['category_id'],$pa['category_code']),
-                \e::config('url_pattern_category'));
-    }
-    if (!$parents_are_visible) {
-        die('Category is hidden');
-    }
-    // echo '<!-- '; prn($this_category_info['parents']); echo ' -->';
-    // ---------------------------- get parents - end --------------------------
-    // ------------------- get children - begin --------------------------------
-    $query = "select ch.category_id, ch.site_id, ch.category_code, ch.category_title,
-                      ch.start, ch.finish, ch.is_deleted, ch.deep, ch.is_part_of,
-                      ch.see_also, ch.is_visible, ch.path, ch.category_description
-               from {$table_prefix}category pa, {$table_prefix}category ch
-               WHERE pa.category_id={$category_id} and ch.site_id={$site_id} and ch.is_visible
-                 and pa.site_id={$site_id} and ch.deep=" . ($this_category_info['deep'] + 1 ) . "
-                 and pa.start<ch.start and ch.finish<pa.finish
-               order by ch.start asc";
-    //prn(checkStr($query));
-    $this_category_info['children'] = \e::db_getrows($query);
-
-    $cnt = count($this_category_info['children']);
-    for ($i = 0; $i < $cnt; $i++) {
-        $ch_category_title = get_langstring($this_category_info['children'][$i]['category_title'], $lang, true);
-        if(!$ch_category_title){
-            unset($this_category_info['children'][$i]);
-            continue;
-        }
-        
-        $ch = &$this_category_info['children'][$i];
-        $ch['category_title'] = get_langstring($ch['category_title'], $lang, true);
-        $ch['category_description'] = get_langstring($ch['category_description'], $lang);
-        //prn($ch['category_description']);
-        //if(is_valid_url($url=trim($ch['category_description']))){
-        // $ch['URL'] = $url;
-        //}else{
-        $ch['URL'] = str_replace(
-                Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
-                Array($ch['path'],$lang   ,$site_id   ,$ch['category_id'],$ch['category_code']),
-                \e::config('url_pattern_category'));
-        //}
-    }
-    $this_category_info['children']=array_values($this_category_info['children']);
-    //prn($this_category_info['children']);
-    // ------------------- get children - end ----------------------------------
-    $tmp = Array('parents' => $this_category_info['parents'], 'children' => $this_category_info['children']);
-    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/category_{$category_id}_{$lang}.cache", $tmp);
-}
 
 // do search 
 $search_results=Array();
@@ -138,21 +60,22 @@ if(isset($input_vars['keywords'])){
     $words=preg_split("/[; ,.!\t-]+/",$input_vars['keywords']);
     $where=Array();
     foreach($words as $word){
-        $where[]=  " ( LOCATE('".\e::db_escape($word)."',category_description) OR LOCATE('".\e::db_escape($word)."',category_title) )";
+        if(strlen(trim($word))>0){
+            $where[]=  " ( LOCATE('".\e::db_escape($word)."',category_description) OR LOCATE('".\e::db_escape($word)."',category_title) )";
+        }
     }
     if( count($where) > 0 ){
         $sql="SELECT *
-        FROM {$table_prefix}category 
-        WHERE site_id={$this_site_info['id']}  AND is_visible
-        AND ".join(' AND ',$where)."
-        AND {$this_category_info['start']} <= `start` AND `finish` <= {$this_category_info['finish']} 
-        LIMIT 0,101";
+              FROM <<tp>>category 
+              WHERE site_id={$this_site_info['id']}  AND is_visible
+                AND ".join(' AND ',$where)."
+                AND {$this_category_info['start']} <= `start` AND `finish` <= {$this_category_info['finish']} 
+              LIMIT 0,101";
         
         
         
         $search_results=\e::db_getrows($sql);
         $cnt = count($search_results);
-        
         for ($i = 0; $i < $cnt; $i++) {
             $ch_category_title = get_langstring($search_results[$i]['category_title'], $lang, true);
             if(!$ch_category_title){
@@ -162,24 +85,76 @@ if(isset($input_vars['keywords'])){
 
             $ch = &$search_results[$i];
             $ch['category_title'] = get_langstring($ch['category_title'], $lang, true);
-            $ch['category_description'] = strip_tags(get_langstring($ch['category_description'], $lang));
+            $ch['category_title_short'] = get_langstring($ch['category_title_short'], $lang, true);
+            $ch['category_description'] = '';//strip_tags(get_langstring($ch['category_description'], $lang));
+            $ch['category_description_short'] = strip_tags(get_langstring($ch['category_description_short'], $lang));
+            
             if(is_valid_url($ch['category_description'])){
-                $ch['category_min_description']="<a href=\"{$ch['category_description']}\">{$ch['category_description']}</a>";
-            }else{
-                $ch['category_min_description']=shorten($ch['category_description'],128);
+                $ch['category_description_short']="<a href=\"{$ch['category_description']}\">{$ch['category_description']}</a>";
             }
-            //prn($ch['category_description']);
-            //if(is_valid_url($url=trim($ch['category_description']))){
-            // $ch['URL'] = $url;
-            //}else{
             $ch['URL'] = str_replace(
                     Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
                     Array($ch['path'],$lang   ,$site_id   ,$ch['category_id'],$ch['category_code']),
                     \e::config('url_pattern_category'));
-            //}
         }
         $search_results = array_values($search_results);
-        if($cnt>101){
+        
+        
+        // get parents for each child
+        $cnt=count($search_results);
+        $parentPaths=[];
+        $pathCompare=function($a, $b){
+            $la=strlen($a);
+            $lb=strlen($b);
+            if($la==$lb){
+                return 0;
+            }
+            if($la<$lb){
+                return -1;
+            }
+            return 1;
+        };
+        for ($i = 0; $i < $cnt; $i++) {
+            $path=$search_results[$i]['path'];
+            $paths=[];
+            do{
+                $paths[$path]='';
+                $parentPaths[$path]='';
+                $path=preg_replace("/[^\\/]+\$/",'',$path);
+                $path=preg_replace("/\\/\$/",'',$path);
+            }while(strlen($path)>0);
+            uksort($paths, $pathCompare);
+            $search_results[$i]['parents']=$paths;
+        }
+        // prn($search_results);
+        // prn($parentPaths);
+        $sql="SELECT * FROM <<tp>>category WHERE site_id=<<integer site_id>> AND path in(<<string[] path>>)";
+        $result=\e::db_getrows($sql,['path'=>array_keys($parentPaths),'site_id'=>$site_id],false);
+        $parents=[];
+        foreach($result as $pa){
+            $pa['category_title'] = get_langstring($pa['category_title'], $lang, true);
+            $pa['category_title_short'] = get_langstring($pa['category_title_short'], $lang, true);
+            $pa['category_description'] = '';// strip_tags(get_langstring($pa['category_description'], $lang));
+            $pa['category_description_short'] = strip_tags(get_langstring($pa['category_description_short'], $lang));
+            $pa['URL'] = str_replace(
+                    Array('{path}'   ,'{lang}','{site_id}','{category_id}','{category_code}'),
+                    Array($pa['path'],$lang   ,$site_id   ,$pa['category_id'],$pa['category_code']),
+                    \e::config('url_pattern_category'));
+            $parents[$pa['path']]=$pa;
+        }
+        // prn($parents);
+        for ($i = 0; $i < $cnt; $i++) {
+            if(!isset($search_results[$i]['parents'])){
+                $search_results[$i]['parents']=[];
+            }
+            $keys=array_keys($search_results[$i]['parents']);
+            foreach($keys as $key){
+                $search_results[$i]['parents'][$key]=$parents[$key];
+            }
+        }
+        // prn($search_results);
+        
+        if($cnt>=101){
             unset($search_results[100]);
             $too_many=true;
         }
@@ -188,14 +163,15 @@ if(isset($input_vars['keywords'])){
 }
 
 
+
+
 // ---------------------- draw - begin -----------------------------------------
-run('site/page/page_view_functions');
+
 $menu_groups = get_menu_items($site_id, 0, $lang);
 
 // ------------- mark menu items - begin ---------------------------------------
-// $this_category_info['parents']
 $urls = Array();
-foreach ($this_category_info['parents'] as $tmp) {
+foreach ($categoryViewModel->parents as $tmp) {
     $UP = parse_url($tmp['URL']);
     if (isset($UP['query'])) {
         parse_str($UP['query'], $out);
@@ -281,7 +257,11 @@ for ($i = 0; $i < $cnt; $i++) {
         continue;
     }
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
-    $lang_list[$i]['url'] = $lang_list[$i]['href'];
+    $lang_list[$i]['url'] = $lang_list[$i]['href']=
+        str_replace(
+            Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), 
+            Array($this_category_info['path'], $lang_list[$i]['lang'], $this_category_info['site_id'], $this_category_info['category_id'], $this_category_info['category_code']), 
+            \e::config('url_pattern_category'));
 }
 $lang_list=array_values($lang_list);
 //prn($lang_list);
@@ -296,7 +276,7 @@ if(!is_file($_template)){
     $_template='';
 }
 if(!$_template){
-    $prnts=array_reverse($this_category_info['parents']);
+    $prnts=array_reverse($categoryViewModel->parents);
     foreach ($prnts as $tmp) {
         $_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/{$template_name}_{$tmp['category_id']}.html";
         if(is_file($_template)){
@@ -310,20 +290,19 @@ if(!$_template){
     }
 }
 
-
-
-
 $vyvid = process_template($_template
     , Array(
-      'category' => $this_category_info
-    , 'search_results' => $search_results
-    , 'too_many' => $too_many
-    , 'n_results' => count($search_results)
-    , 'keywords' => (isset($input_vars['keywords'])?$input_vars['keywords']:'')
-    , 'action' => site_public_URL.'/index.php'
+      'category' => $categoryViewModel
     , 'text' => $txt
     , 'site' => $this_site_info
     , 'lang' => $lang
+    , 'search_results'=>$search_results
+        
+    , 'too_many' => $too_many
+    , 'n_results' => count($search_results)
+    , 'keywords' => (isset($input_vars['keywords'])?$input_vars['keywords']:'')
+    , 'action' => \e::config('APPLICATION_URL')
+
     ), Array('category_news')
 );
 $this_site_info['title'] = get_langstring($this_site_info['title'], $input_vars['lang']);
@@ -343,4 +322,7 @@ $file_content = process_template($this_site_info['template']
         ));
 echo $file_content;
 // ---------------------- draw - end -------------------------------------------
-?>
+
+
+
+

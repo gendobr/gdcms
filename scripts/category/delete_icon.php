@@ -81,5 +81,6 @@ if ($this_category->info['category_icon'] && is_array($this_category->info['cate
 $sql="UPDATE {$table_prefix}category SET category_icon=NULL WHERE category_id={$category_id}";
 \e::db_execute($sql);
 
+ml('category/delete_icon', ['category_id'=>$category_id]);
 
 header("Location: index.php?action=category/edit&site_id={$site_id}&category_id={$category_id}");

@@ -172,13 +172,19 @@ unset($events);
 // prn($map);
 
 $cnt=count($event_days);
-for($i=0; $i<$cnt; $i++){
-    $event_days[$i]['event']=$map[$event_days[$i]['calendar_id']];
-    $event_days[$i]['startDate']="{$event_days[$i]['y']}-".
-        ( $event_days[$i]['m']<10 ? "0{$event_days[$i]['m']}" : $event_days[$i]['m'])
-        .'-'.( $event_days[$i]['d']<10 ? "0{$event_days[$i]['d']}" : $event_days[$i]['d'] )." "
-        .($event_days[$i]['h']>=0?$event_days[$i]['h']:0).":".($event_days[$i]['i']>=0?$event_days[$i]['i']:0);
+for($i=$cnt-1; $i>=0; $i--){
+    if(isset($map[$event_days[$i]['calendar_id']])){
+       $event_days[$i]['event']=$map[$event_days[$i]['calendar_id']];
+       $event_days[$i]['startDate']="{$event_days[$i]['y']}-".
+           ( $event_days[$i]['m']<10 ? "0{$event_days[$i]['m']}" : $event_days[$i]['m'])
+           .'-'.( $event_days[$i]['d']<10 ? "0{$event_days[$i]['d']}" : $event_days[$i]['d'] )." "
+           .($event_days[$i]['h']>=0?$event_days[$i]['h']:0).":".($event_days[$i]['i']>=0?$event_days[$i]['i']:0);
+    }else{
+       unset($event_days[$i]);
+    }
 }
+$event_days=array_values($event_days);
+
 
 //prn('event_days=', $event_days);
 # check if template name is posted

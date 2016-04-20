@@ -174,12 +174,23 @@ body{
 
     .lang{
         display:inline-block;
-        @include link-style($znu-color-white,$znu-color-white-light, $znu-color-blue-light1);
+        //@include link-style($znu-color-white,$znu-color-white-light, $znu-color-blue-light1);
         font-size:1rem;
+        display:inline-block;
+	line-height:2rem;
+	color:$znu-color-white;
+	font-size:1.2rem;
+	&:hover{
+	    color:$znu-color-white-light;
+	}
+	&:visited{
+	    color:$znu-color-white;
+	}
         &.active{
             color:$znu-color-white;
 	    font-size:1.3rem;
         }
+
     }
 
     .search{
@@ -634,33 +645,7 @@ body{
 
 .znu-2016-block-news{
     @extend .row;
-    /*    @media (min-width: $screen-xs-min) {
-            margin-left: 0;
-            margin-right: 0;
-        }
-        @media (min-width: $screen-sm-min) {
-        //    margin-left: -1rem;
-        //    margin-right: -1rem;
-        }
-        @media (min-width: $screen-md-min) {
-        //    margin-left: -1rem;
-        //    margin-right: -1rem;
-        }
-        @media (min-width: $screen-lg-min) {
-            //margin-left: -1rem;
-        //    margin-right: -1rem;
-        }*/
-    //margin-left: -3rem;
-    //margin-right: -3rem;
 
-
-    /*        @media (min-width: $screen-lg-min) {
-                //padding-left: 1.1rem;
-                //padding-right: 0.5rem;
-            }*/
-
-    //margin-top:1rem;
-    //margin-bottom: 1rem;
 
 
     h3{
@@ -811,156 +796,6 @@ body{
         }
     }
 
-
-
-
-
-
-    /*
-            a{
-                @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
-            }
-            .znu-2016-block-new-one{
-                @include make-xs-column(12);
-                @include make-sm-column(6);
-                @include make-md-column(6);
-                @include make-lg-column(4);
-                box-shadow: $znu-shadow-box;
-                height: 1rem;
-                overflow: hidden;
-    
-                // display: block;
-                background-color: opacity($znu-color-blue);
-                padding-top:1rem;
-                padding-bottom:1rem;
-                a{
-                    @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
-                    font-size: 1.5rem;
-                }
-    
-                .a-container{
-                    @include link-style($znu-color-white, $znu-color-white-light1, $znu-color-white);
-                    font-size: 1.5rem;
-                    color: #fff;
-                    max-height: 1rem;
-                }
-    
-                .date-container{
-                    vertical-align: bottom;
-                    text-align: right;
-                }
-    
-                            .icon{
-                                display:none;
-                                border:none;
-                                width:100%;
-    
-                                @media (min-width: $screen-sm-min) {
-                                    display:inline-block;
-                                    //height:15em;
-                                }
-                                @media (min-width: $screen-md-min) {
-                                    //height:10em;
-                                }
-                                @media (min-width: $screen-lg-min) {
-                                    //height:10em;
-                                }
-                                background-color:$znu-color-blue-light2;
-                                background-position:center center;
-                                background-size:cover;
-                            }
-    
-                @media (min-width : $screen-sm-min) and (max-width : $screen-md-min - 2px){
-                    &:nth-child(2n+1){
-                        clear:left;
-                    }
-                }
-                @media (min-width : $screen-md-min) and (max-width : $screen-lg-min - 1px){
-                    &:nth-child(2n+1){
-                        clear:left;
-                        margin-bottom: 1rem;
-                    }
-                }
-                @media (min-width: $screen-lg-min) {
-                    &:nth-child(3n+1){
-                        clear:left;
-                        margin-bottom: 1rem;
-                    }
-                }
-    
-                &:nth-child(1){
-                    background-color:$znu-color-yellow;
-                    margin-bottom: 1rem;
-                    margin-top: 1rem;
-                    margin-right: 1rem;
-                    margin-left: 1rem;
-                }
-                &:nth-child(2){
-                    background-color:$znu-color-white-light;
-                    margin-bottom: 1rem;
-                    margin-top: 1rem;
-                    margin-right: 1rem;
-                    margin-left: 1rem;
-                }
-                &:nth-child(3){
-                    background-color:$znu-color-rose;//rgba(76, 241, 224, 0.4);
-                    margin-bottom: 1rem;
-                    margin-top: 1rem;
-                    margin-right: 1rem;
-                    margin-left: 1rem;
-                }
-                &:nth-child(4){
-                    background-color:$znu-color-white-light;
-                    margin-bottom: 1rem;
-                    margin-top: 1rem;
-                    margin-right: 1rem;
-                    margin-left: 1rem;
-                }
-                &:nth-child(5){
-                    background-color:$znu-color-green;
-                    margin-bottom: 1rem;
-                    margin-top: 1rem;
-                    margin-right: 1rem;
-                    margin-left: 1rem;
-                }
-                &:nth-child(6){
-                    background-color:$znu-color-white-light;
-                    margin-bottom: 1rem;
-                    margin-top: 1rem;
-                    margin-right: 1rem;
-                    margin-left: 1rem;
-                }
-    
-                line-height: 2rem;
-                @media (min-width: $screen-xs-min) {
-                    min-height:12rem;
-                    max-height: 12rem;
-                    max-width:94%;
-                    overflow:hidden;
-    
-                }
-                @media (min-width: $screen-sm-min) {
-                    min-height:12rem;
-                    max-height: 12rem;
-                    max-width: 47.2%;
-                    overflow:hidden;
-                }
-    
-                @media (min-width: $screen-md-min) {
-                    min-height: 12rem;
-                    max-height: 12rem;
-                    max-width: 47.8%;
-                    overflow:hidden;
-                }
-    
-                @media (min-width: $screen-lg-min) {
-                    min-height: 12rem;
-                    max-height: 12rem;
-                    max-width: 31.5%;
-                    overflow:hidden;
-                }
-            }*/
-
 }
 // ================== events = end =========================
 
@@ -995,10 +830,21 @@ body{
 
     color:$znu-color-white;
     font-size: 1.2rem;
+    
     a{
         display:inline-block;
-        @include link-style($znu-color-white,$znu-color-white-light, $znu-color-white);
+        //@include link-style($znu-color-white,$znu-color-white-light, $znu-color-white);
+	line-height:2rem;
+	color:$znu-color-white;
+	font-size:1.2rem;
+	&:hover{
+	    color:$znu-color-white-light;
+	}
+	&:visited{
+	    color:$znu-color-white;
+	}
     }
+
     .social{
         font-size: 2rem;
         margin: 0 0.5rem 0 0.5rem;
@@ -1183,13 +1029,13 @@ body{
 
     .znu-2016-block-page-content {
 
+        
+        font-size: 1.2rem;
+        
         @media (min-width: $screen-xs-min) {
             padding-right: 2rem;
             padding-left: 2rem;
 	    padding-bottom: 1rem;
-            p{
-                font-size: 1.5rem;
-            }
             h2{
                 font-size: 2.3rem;
             }
@@ -1207,9 +1053,9 @@ body{
         @media (min-width: $screen-lg-min) {
             padding-right: 3rem;
             padding-left: 3rem;
-            p{
-                font-size: 1.2rem;
-            }
+            
+            // font-size: 1.2rem;
+
             h2{
                 font-size: 2.5rem;
             }
@@ -1273,19 +1119,7 @@ body{
         background-color: $znu-color-white-light;
         margin-bottom: 1rem;
         box-shadow: $znu-shadow-box;
-        font-size: $font-size-base;
 
-        @media (min-width: $screen-sm-min) {
-            font-size: $font-size-base;
-        }
-
-        @media (min-width: $screen-md-min) {
-            font-size: $font-size-base;
-        }
-
-        @media (min-width: $screen-lg-min) {
-            font-size: $font-size-base+2pt;
-        }
 
         .highlight {
             padding: 1rem;
@@ -1575,11 +1409,13 @@ body{
 
             @extend .row;
             margin-left:0rem;
+
             
             .znu-2016-new{
                 @include make-xs-column(12);
                 padding-left:0;
                 padding-right:0;
+                margin-bottom:1rem;
             }
             .znu-2016-new-img{
                 @include make-xs-column(12);
@@ -1612,6 +1448,9 @@ body{
             .text{
                 max-height:5.3rem;
                 overflow:hidden;
+            }
+            .date-container{
+                text-align:right;
             }
         }
 

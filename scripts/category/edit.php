@@ -354,6 +354,9 @@ if ($success) {
     #  reload category info
     $this_category->load_node($category_id);
     $this_category->info = adjust($this_category->info, $category_id);
+    
+    // log
+    ml('category/edit', \e::post());
 }
 # --------------------- post-process - end -------------------------------------
 #  ---------------------------- draw - begin -----------------------------------

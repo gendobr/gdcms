@@ -25,7 +25,7 @@ class Report {
     var $group_by;
     var $having;
     var $distinct;         // true|false
-    var $exclude = '^$';     // regexp to exclude from URLs
+    var $exclude = '/^$/';     // regexp to exclude from URLs
 
     function add_where($str) {
         $this->where[] = $str;
