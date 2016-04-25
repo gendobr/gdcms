@@ -1,29 +1,31 @@
-{if $category.parents}
-  {foreach from=$category.parents item=parent}
-    <div style="margin-left:{$parent.deep}0pt"><a href="{$parent.URL}">{$parent.category_title}</a></div>
-  {/foreach}
+{if $category->parents}
+    {foreach from=$category->parents item=parent}
+    <a title="{$parent.category_title|escape}" href="{$site.url}{$text.language_name}/{$parent.path|regex_replace:"/^[^\/]+(\/|$)/":""}{*$parent.URL*}">{if $parent.category_title_short}{$parent.category_title_short}{else}{$parent.category_title}{/if}</a> /
+    {/foreach}
+    <span class="current">{if $category->info.category_title_short}{$category->info.category_title_short}{else}{$category->info.category_title}{/if}</span>
 {/if}
-<div style="margin-left:{$category.deep}0pt; font-weight:bold;">{$category.category_title}</div>
 
+<h1>{$category->info.category_title}</h1>
 
-{if $category.children}
-  <div style="margin-left:20px;">
-  {foreach from=$category.children item=child}
-    <div style="margin-left:{$category.deep}0pt"><a href="{$child.URL}">{$child.category_title}</a></div>
-  {/foreach}
-  </div>
+{if $category->children}
+    <ul id="sub">
+        {foreach from=$category->children item=child}
+        <li class="category-child">
+          {if $child.redirectURL}
+          <a target=_blank title="{$child.category_title|escape}" href="{$child.redirectURL}">{$child.category_title}</a>
+          {else}
+          <a title="{$child.category_title|escape}" href="{$site.url}{$text.language_name}/{$child.path|regex_replace:"/^[^\/]+(\/|$)/":""}{*$child.URL*}">{$child.category_title}</a>
+          {/if}
+        </li>
+        {/foreach}
+    </ul>
 {/if}
+
 
 <span style="display:inline-block;width:99%;margin-top:10pt;">
-{$category.category_description}
-<div style='text-align:right;'>{*$category.date_last_changed*}{$category.date_lang_update}</div>
+{$category->info.category_description}
+<div style='text-align:right;'>{*$category.date_last_changed*}{$category->info.date_lang_update}</div>
 </span>
-
-
-
-
-
-
 
 
 
@@ -228,7 +230,7 @@
 {/if}
  *}
 
-{* list of attached news *}
+{* list of attached news 
 {$news->setRowsPerPage(9)}
 {$news->createDateSelector()}
 {$news->createTagSelector()}
@@ -301,4 +303,4 @@
 	</div>
         {/if}
 {/if}
- {* *}
+ *}

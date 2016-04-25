@@ -1,0 +1,38 @@
+html{
+    font-size:14pt;
+    color:black;
+    font-family:serif;
+}
+
+a{
+    text-decoration:none;
+    color:black;
+}
+.znu-2016-title-block{
+    font-size:1.5rem;
+}
+
+.znu-2016-breadcrumbs-col{
+    margin-top:2rem;
+}
+
+.znu-2016-block-footer-col a{
+    display:block;
+}
+
+.carousel-caption h1{
+    font-size:1.2rem;
+}
+/*.subcategories,*/
+.carousel-caption .btn,
+.znu-2016-block-banner,
+.remark,
+.search,
+
+.znu-2016-nav,
+a.social,
+.znu-2016-overheader-row,
+.carousel-control,
+.carousel-indicators{
+    display:none;
+}

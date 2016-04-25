@@ -104,7 +104,7 @@ run('calendar/functions');
 //    }
 //}
 //if (!$found) {
-//    $lang = default_language;
+//    $lang = \e::config('default_language');
 //}
 
 // 

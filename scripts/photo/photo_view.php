@@ -7,14 +7,27 @@ run('photo/functions');
 run('site/menu');
 
 
-$photo_category_info=photo_category_find(\e::request('photo_category_id',0),\e::request('photo_category_path',''),\e::request('photo_category_code',''));
-if($photo_category_info){
-    $site_id = $photo_category_info['site_id'];
-    $this_site_info = get_site_info($site_id);
-}else{
-    $site_id = \e::cast('integer',\e::request('site_id',0));
-    $this_site_info = get_site_info($site_id);
-    
+$photo_info=photo_info(\e::request('photo_id',0));
+if (!$photo_info) {
+    echo text('Photo_not_found');
+    return 0;
+}
+$photo_id=$photo_info['photo_id'];
+$site_id = $photo_info['site_id'];
+
+
+$input_vars['lang'] = $lang = get_language('lang,interface_lang');
+global $txt;
+$txt = load_msg($input_vars['lang']);
+
+$photo_info['photo_title']= get_langstring($photo_info['photo_title'], $lang);
+$photo_info['photo_author']= get_langstring($photo_info['photo_author'], $lang);
+$photo_info['photo_description']= get_langstring($photo_info['photo_description'], $lang);
+
+$this_site_info = get_site_info($site_id, $lang);
+
+$photo_category_info=photo_category_find($photo_info['photo_category_id'],'','');
+if(!$photo_category_info){
     $photo_category_info=[
         'photo_category_id'=>0,
         'site_id'=>$site_id,
@@ -28,22 +41,11 @@ if($photo_category_info){
         'photo_category_meta'=>''
     ];
 }
-// \e::info($photo_category_info);
-// \e::info($this_site_info);
-if (checkInt($this_site_info['id']) <= 0) {
-    echo text('Site_not_found');
-    return 0;
-}
-
 $photo_category_id=$photo_category_info['photo_category_id'];
 $photo_category_path=$photo_category_info['photo_category_path'];
 $photo_category_code=$photo_category_info['photo_category_code'];
 
 
-
-$input_vars['lang'] = $lang = get_language('lang,interface_lang');
-global $txt;
-$txt = load_msg($input_vars['lang']);
 
 
 
@@ -85,33 +87,33 @@ foreach ($menu_groups as $kmg => $mg) {
 $lang_list = list_of_languages();
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
-
     $lang_list[$i]['href']=$lang_list[$i]['url'] = str_replace([
-        '{photo_category_code}','{photo_category_path}','{photo_category_id}','{lang}', '{site_id}'
+        '{photo_id}','{lang}', '{site_id}'
     ],[
-        $photo_category_info['photo_category_code'],$photo_category_info['photo_category_path'],$photo_category_id,$lang_list[$i]['name'], $site_id
-    ],\e::config('url_pattern_photo_category'));
-
+        $photo_id,$lang_list[$i]['name'], $site_id
+    ],\e::config('url_pattern_photo'));
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }
 $lang_list = array_values($lang_list);
 // -------------- get list of languages - end ----------------------------------
 
-
-
+// \e::info($photoCategoryViewer->info);
 // -------------- apply subtemplate - begin ------------------------------------
-$subtemplate = site_get_template($this_site_info,'template_photo_category_view');
+$subtemplate = site_get_template($this_site_info,'template_photo_view');
 $vyvid=process_template( $subtemplate
                   ,Array(
                          'lang_list'=>$lang_list
                         ,'txt'=>$txt
                         ,'site'=>$this_site_info
                         ,'menu'=>$menu_groups
-                        ,'category'=>$photoCategoryViewer
+                        ,'photo'=>$photo_info
+                        ,'category'=> $photoCategoryViewer->info 
+                        ,'parents'=> $photoCategoryViewer->parents 
                         ,'site_root_url'=>\e::config('APPLICATION_PUBLIC_URL')
                    )
        );
-
+// echo htmlspecialchars($vyvid);
+// echo $vyvid;exit('2');
 // -------------- apply subtemplate - begin ------------------------------------
 
 

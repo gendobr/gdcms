@@ -80,7 +80,7 @@ if($user_level==0)
     $newid=1+(int)$newid['newid'];
 
     $query = "INSERT INTO {$table_prefix}page(id, lang, site_id, title, cense_level, last_change_date, is_under_construction,path	)
-              values($newid, '".default_language."', $site_id, '{$text['New_page']}', {$user_level}, NOW(), 1,	'')";
+              values($newid, '".\e::config('default_language')."', $site_id, '{$text['New_page']}', {$user_level}, NOW(), 1,	'')";
     \e::db_execute($query);
   }
 # -------------------- add page - end ------------------------------------------

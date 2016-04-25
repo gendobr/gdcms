@@ -8,7 +8,7 @@ run('site/menu');
 # -------------------- get ec item info - begin --------------------------------
   $ec_item_id=isset($input_vars['ec_item_id'])?( (int)$input_vars['ec_item_id'] ):0;
 
-  // $ec_item_lang=isset($input_vars['ec_item_lang'])?( $input_vars['ec_item_lang'] ):default_language;
+  // $ec_item_lang=isset($input_vars['ec_item_lang'])?( $input_vars['ec_item_lang'] ):\e::config('default_language');
   $ec_item_lang=get_language('ec_item_lang');
 
   $this_ec_item_info=get_ec_item_info($ec_item_id,$ec_item_lang);

@@ -6,7 +6,7 @@ $GLOBALS['main_template_name']='';
 if(isset($input_vars['interface_lang'])) if(strlen($input_vars['interface_lang'])>0) $input_vars['lang']=$input_vars['interface_lang'];
 if(!isset($input_vars['lang'])) $input_vars['lang']=$_SESSION['lang'];
 if(strlen($input_vars['lang'])==0) $input_vars['lang']=$_SESSION['lang'];
-if(strlen($input_vars['lang'])==0) $input_vars['lang']=default_language;
+if(strlen($input_vars['lang'])==0) $input_vars['lang']=\e::config('default_language');
 
 $txt = load_msg($input_vars['lang']);
 //---------------------- load language - end -----------------------------------

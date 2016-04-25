@@ -655,9 +655,9 @@ class CmsNewsViewer {
     }
 
     private function lang($options) {
-        $lang = isset($options['lang']) ? preg_replace("/\\W/", '', $options['lang']) : default_language;
+        $lang = isset($options['lang']) ? preg_replace("/\\W/", '', $options['lang']) : \e::config('default_language');
         if (strlen($lang) == 0 || !file_exists(\e::config('APP_ROOT') . "/msg/{$lang}.ini")) {
-            $lang = default_language;
+            $lang = \e::config('default_language');
         }
         return $lang;
     }
@@ -711,7 +711,7 @@ class CmsNewsViewer {
                     ) ENGINE MEMORY;";
                     \e::db_execute($query);
                     
-                    $query="INSERT INTO nwsid(id) SELECT news_id FROM {$GLOBALS['table_prefix']}news_category WHERE category_id IN (" . join(',', $category_ids) . ")";
+                    $query="INSERT INTO nwsid(id) SELECT DISTINCT news_id FROM {$GLOBALS['table_prefix']}news_category WHERE category_id IN (" . join(',', $category_ids) . ")";
                     \e::db_execute($query);
 
                     $category_restriction = " INNER JOIN nwsid ON nwsid.id=news.id ";

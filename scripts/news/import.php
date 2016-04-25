@@ -156,7 +156,7 @@ run('site/menu');
       {
           if($kn!='')
           {
-              $uploaded_rows_form.="<tr><td class=nbd>{$kn}:</td><td class=nbd><input type='text' name='import_default[{$kn}]' value='".checkStr(isset($input_vars['import_default'][$kn])?isset($input_vars['import_default'][$kn]):($kn=='lang'?default_language:''))."'></td></tr>\n";
+              $uploaded_rows_form.="<tr><td class=nbd>{$kn}:</td><td class=nbd><input type='text' name='import_default[{$kn}]' value='".checkStr(isset($input_vars['import_default'][$kn])?isset($input_vars['import_default'][$kn]):($kn=='lang'?\e::config('default_language'):''))."'></td></tr>\n";
           }
       }
       $uploaded_rows_form.="</table><br><br>";

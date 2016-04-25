@@ -32,7 +32,7 @@ site_visitor table :
     $_SESSION['lang']  =
     $input_vars['lang']=$input_vars['interface_lang'];
   }
-  if(!isset($_SESSION['lang'])) $_SESSION['lang']=default_language;
+  if(!isset($_SESSION['lang'])) $_SESSION['lang']=\e::config('default_language');
   if(!isset($input_vars['lang'])) $input_vars['lang']=$_SESSION['lang'];
   
   $input_vars['lang'] = get_language('lang');

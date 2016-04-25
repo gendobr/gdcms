@@ -53,7 +53,7 @@ run('poll/functions');
 
 // load language messages
 if( isset($input_vars['interface_lang']) && strlen($input_vars['interface_lang'])>0) $input_vars['lang']=$input_vars['interface_lang'];
-if(!isset($input_vars['lang'])) $input_vars['lang']=default_language;
+if(!isset($input_vars['lang'])) $input_vars['lang']=\e::config('default_language');
 $input_vars['lang']      = get_language('lang');
 $txt = load_msg($input_vars['lang']);
 

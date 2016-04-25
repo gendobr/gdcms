@@ -31,8 +31,8 @@ if($payment_reply->is_valid()) {
 
     # -------------------- set interface language - begin --------------------------
     if(isset($input_vars['interface_lang'])) if($input_vars['interface_lang']) $input_vars['lang']=$input_vars['interface_lang'];
-    if(!isset($input_vars['lang'])   ) $input_vars['lang']=default_language;
-    if(strlen($input_vars['lang'])==0) $input_vars['lang']=default_language;
+    if(!isset($input_vars['lang'])   ) $input_vars['lang']=\e::config('default_language');
+    if(strlen($input_vars['lang'])==0) $input_vars['lang']=\e::config('default_language');
     //$lang=$input_vars['lang'];
     $lang = get_language('lang');
     # -------------------- set interface language - end -----------------------------

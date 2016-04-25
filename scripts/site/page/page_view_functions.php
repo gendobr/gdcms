@@ -139,7 +139,7 @@ function smarty_block_set($params, $content, &$smarty, $repeat) {
 function smarty_get_langstring($params) {
     extract($params);
     if (!isset($lang)) {
-        $lang = default_language;
+        $lang = \e::config('default_language');
     }
     if (!isset($from)) {
         return '------';
@@ -152,7 +152,7 @@ function smarty_get_langstring($params) {
 function smarty_txt($params) {
     extract($params);
     if (!isset($lang))
-        $lang = default_language;
+        $lang = \e::config('default_language');
     if (!isset($variants)) {
         return '------';
     }
@@ -193,7 +193,7 @@ function smarty_getmsgtext($params) {
 function smarty_fragment($params) {
     extract($params);
     if (!isset($lang)){
-        $lang = default_language;
+        $lang = \e::config('default_language');
     }
     if (!isset($place_id)){
         $place_id='';

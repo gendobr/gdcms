@@ -180,6 +180,8 @@ function menu_site($site_info) {
 
 
     if($site_info['is_gallery_enabled']) {
+        
+        
         $tor['gallery/manage']=Array(
                 'URL'=>"index.php?action=gallery/admin/photogalery&site_id=".$site_info['id']
                 ,'innerHTML'=>$text['image_gallery_manage']
@@ -220,7 +222,49 @@ function menu_site($site_info) {
                 ,'innerHTML'=>$text['image_gallery_view']
                 ,'attributes'=>' style="color:green;margin-bottom:20px;" '
         );
+        
+        
+        $tor['photo/photo_list']=Array(
+                'URL'=>"index.php?action=photo/photo_list&site_id=".$site_info['id']
+                ,'innerHTML'=>text('photo_list').'-2'
+                ,'attributes'=>'  style="color:blue;"   '
+        );
+
+
+
+        $tor['photo/upload']=Array(
+                'URL'=>"index.php?action=photo/upload&site_id=".$site_info['id']
+                ,'innerHTML'=>text('photo_upload').'-2'
+                ,'attributes'=>'  '
+        );
+        $tor['photo/photo_category_list']=Array(
+                'URL'=>"index.php?action=photo/photo_category_list&site_id=".$site_info['id']
+                ,'innerHTML'=>text('photo_category_list').'-2'
+                ,'attributes'=>' '
+        );
+
+        $tor['photo/widgets']=Array(
+                'URL'=>"index.php?action=photo/widgets&site_id=".$site_info['id']
+                ,'innerHTML'=>text('photo_widgets').'-2'
+                ,'attributes'=>' target=_blank '
+        );
+        
+        if(is_admin()) {
+            $tor['photo/import']=Array(
+                    'URL'=>"index.php?action=photo/import&site_id=".$site_info['id']
+                    ,'innerHTML'=>text('photo_import').'-2'
+                    ,'attributes'=>' target=_blank '
+            );
+        }        
+        
+        $tor['photo/photo_category_view']=Array(
+                'URL'=>"index.php?action=photo/photo_category_view&site_id={$site_info['id']}&lang={$_SESSION['lang']}"
+                ,'innerHTML'=>text('photo_category_view')
+                ,'attributes'=>' style="color:green;margin-bottom:20px;" '
+        );
+        
     }
+
 
     if($site_info['is_gb_enabled']) {
         $tor['gb/msg_list']=Array(

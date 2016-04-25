@@ -128,7 +128,7 @@ if ($this_site_info['salt'] != $input_vars['api_key']) {
 //    }
 //}
 //if (!$found) {
-//    $lang = default_language;
+//    $lang = \e::config('default_language');
 //}
 
 

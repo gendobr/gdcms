@@ -25,7 +25,7 @@ if (isset($input_vars['ec_item_id'])) {
     }
 }
 if ($ec_item_id == 0) {
-    $this_ec_item_info = get_ec_item_info(0, (isset($input_vars['ec_item_lang']) ? $input_vars['ec_item_lang'] : default_language), ((int) (isset($input_vars['site_id']) ? $input_vars['site_id'] : 0)));
+    $this_ec_item_info = get_ec_item_info(0, (isset($input_vars['ec_item_lang']) ? $input_vars['ec_item_lang'] : \e::config('default_language')), ((int) (isset($input_vars['site_id']) ? $input_vars['site_id'] : 0)));
 }
 //prn('$ec_item_id='.$ec_item_id);
 //prn('$this_ec_item_info',$this_ec_item_info);

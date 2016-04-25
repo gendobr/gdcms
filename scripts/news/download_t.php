@@ -65,7 +65,7 @@ if (isset($input_vars['url'])) {
         }
     }
     if (!$found) {
-        $lang = default_language;
+        $lang = \e::config('default_language');
     }
 
 

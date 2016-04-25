@@ -9,19 +9,19 @@ $icon-font-path: $resourse-root-url + "/css/bootstrap-sass/fonts/bootstrap/";
 $icon-font-name:'glyphicons-halflings-regular';
 
 $screen-xs-min:320px;
-$container-sm:$screen-xs-min - 20px;
+$container-xs:$screen-xs-min - 20px;
 
-$screen-xs-s-min:416px;
-$container-sm:$screen-xs-s-min - 20px;
+// $screen-xs-s-min:416px;
+// $container-xs-s:$screen-xs-s-min - 20px;
 
 $screen-sm-min:760px;
-$container-sm:$screen-sm-min - 20px;
+$container-sm:$screen-sm-min - 46px;
 
 $screen-md-min:970px;
-$container-md:$screen-md-min - 20px;
+$container-md:$screen-md-min - 50px;
 
 $screen-lg-min:1170px;
-$container-lg:$screen-lg-min - 20px;
+$container-lg:$screen-lg-min - 56px;
 
 $font-size-base:1rem;
 
@@ -116,6 +116,19 @@ $font-family-sans-serif: 'Roboto', sans-serif;
         font-size:0;
         position:absolute;
     }
+    // overflow:hidden;
+    @media (min-width: $screen-xs-min){
+       width:90%;
+    }
+    @media (min-width: $screen-sm-min){
+       width:$container-sm;
+    }
+    @media (min-width: $screen-md-min){
+       width:$container-md;
+    }
+    @media (min-width: $screen-lg-min){
+        width:$container-lg;
+    }
 }
 html{
     @media (min-width: $screen-xs-min){
@@ -188,7 +201,7 @@ body{
 	}
         &.active{
             color:$znu-color-white;
-	    font-size:1.3rem;
+	    font-size:1.4rem;
         }
 
     }
@@ -233,9 +246,9 @@ body{
 
 .znu-2016-overheader-col1{
     @include make-xs-column(12);
-    @include make-sm-column(4);
-    @include make-md-column(3);
-    @include make-lg-column(3);
+    @include make-sm-column(6);
+    @include make-md-column(5);
+    @include make-lg-column(5);
 
     padding-top:0.5rem;
     padding-bottom:0.5rem;
@@ -250,9 +263,9 @@ body{
 .znu-2016-overheader-col2{
 
     @include make-xs-column(12);
-    @include make-sm-column(8);
-    @include make-md-column(9);
-    @include make-lg-column(9);
+    @include make-sm-column(6);
+    @include make-md-column(7);
+    @include make-lg-column(7);
 
     padding-bottom:0.5rem;
     padding-top:0.5rem;
@@ -962,7 +975,8 @@ body{
         @include make-xs-column(12);
         @include make-sm-column(9);
         @include make-md-column(9);
-        @include make-lg-column(9);        
+        @include make-lg-column(9);
+        float:right!important;
     }
 
     // есть только позразделы
@@ -1010,6 +1024,13 @@ body{
         @include make-sm-column(9);
         @include make-md-column(9);
         @include make-lg-column(9);
+        
+        &.offset{
+            // @include make-xs-column-offset(12);
+            @include make-sm-column-offset(3);
+            @include make-md-column-offset(3);
+            @include make-lg-column-offset(3);
+        }
     }
 
     // есть только позразделы
@@ -1410,6 +1431,7 @@ body{
             @extend .row;
             margin-left:0rem;
 
+            }
             
             .znu-2016-new{
                 @include make-xs-column(12);
@@ -1443,7 +1465,7 @@ body{
                 @include make-sm-column(6);
                 @include make-md-column(9);
                 @include make-lg-column(10);
-            }
+	}
             
             .text{
                 max-height:5.3rem;
@@ -1452,8 +1474,14 @@ body{
             .date-container{
                 text-align:right;
             }
-        }
-
+	    .d-container{
+		bottom:0;
+		position: absolute;
+		right: 0;
+		margin-bottom: 1rem;
+		margin-right: 3rem;
+		line-height: 1rem;
+	    }
     }
 
 

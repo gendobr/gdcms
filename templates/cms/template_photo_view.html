@@ -1,0 +1,28 @@
+<span class="breadcrumbs">
+{foreach from=$parents item="cat"}
+     / {if $cat.url}
+        <a href="{$cat.url}">{$cat.photo_category_title}</a>
+       {else}
+         {$cat.photo_category_title}
+       {/if}
+{/foreach}
+</span>
+<h1>{if $photo.photo_title}{$photo.photo_title}{else}{$category.photo_category_title}#{$photo.photo_id}{/if}</h1>
+<div class="oneImage">
+<img src="{$site.site_root_url}/{$photo.photo_imgfile.full}" alt="{$photo.photo_title|escape}">
+</div>
+
+{if $photo.photo_author}<div>{msg id="photo_author"} {$photo.photo_author}</div>{/if}
+{if $photo.photo_year}<div>{msg id="photo_year"} {$photo.photo_year}</div>{/if}
+{if $photo.photo_description}<div>{$photo.photo_description}</div>{/if}
+
+
+
+{literal}
+<style type="text/css">
+.oneImage img{
+  max-width:100%;
+}
+</style>
+{/literal}
+<br><br><br>

@@ -6,7 +6,6 @@ $GLOBALS['main_template_name']='';
 run('photo/functions');
 run('site/menu');
 
-
 $photo_category_info=photo_category_find(\e::request('photo_category_id',0),\e::request('photo_category_path',''),\e::request('photo_category_code',''));
 if($photo_category_info){
     $site_id = $photo_category_info['site_id'];
@@ -44,7 +43,6 @@ $photo_category_code=$photo_category_info['photo_category_code'];
 $input_vars['lang'] = $lang = get_language('lang,interface_lang');
 global $txt;
 $txt = load_msg($input_vars['lang']);
-
 
 
 
@@ -100,7 +98,17 @@ $lang_list = array_values($lang_list);
 
 
 // -------------- apply subtemplate - begin ------------------------------------
-$subtemplate = site_get_template($this_site_info,'template_photo_category_view');
+//prn('event_days=', $event_days);
+# check if template name is posted
+$subtemplate=false;
+if (isset($input_vars['template'])) {
+    $subtemplate=site_get_template($this_site_info,$input_vars['template']);
+}
+if(!$subtemplate){
+    $subtemplate = site_get_template($this_site_info,'template_photo_category_block');
+}
+//prn('$subtemplate',$subtemplate);
+
 $vyvid=process_template( $subtemplate
                   ,Array(
                          'lang_list'=>$lang_list
@@ -115,22 +123,10 @@ $vyvid=process_template( $subtemplate
 // -------------- apply subtemplate - begin ------------------------------------
 
 
-// -------------- apply site template - begin ---------------------------------
-$page_content=process_template($this_site_info['template']
-        ,Array(
-        'page'=>Array(
-                 'title'=>$photoCategoryViewer->info['photo_category_title']
-                ,'content'=> $vyvid
-                ,'abstract'=> ''
-                ,'site_id'=>$site_id
-                ,'lang'=>$input_vars['lang']
-                ,'page_meta_tags'=>$photoCategoryViewer->info['photo_category_meta']
-        )
-        ,'lang'=>$lang_list
-        ,'site'=>$this_site_info
-        ,'menu'=>$menu_groups
-        ,'site_root_url'=>site_root_URL
-        ,'text'=>$txt
-));
-echo $page_content;
-// -------------- apply site template - end -----------------------------------
+
+echo $vyvid;
+
+
+
+return '';
+

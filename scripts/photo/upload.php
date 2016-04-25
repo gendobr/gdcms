@@ -48,7 +48,10 @@ $lang = \e::session('lang');
 
 $html="
 
-    <script type=\"text/javascript\" src=\"scripts/lib/langstring.js\"></script>
+
+<a href=\"index.php?action=photo/photo_list&site_id={$site_id}\">&lt;&lt;&lt; ".text('photo_list')."</a>
+
+    <script type=\"text/javascript\" src=\"" . \e::config('APPLICATION_ADMIN_URL') . "/scripts/lib/langstring.js\"></script>
 
     <script type=\"text/javascript\" src=\"" . \e::config('APPLICATION_ADMIN_URL') . "/scripts/lib/plupload/plupload.full.js\"></script>
 

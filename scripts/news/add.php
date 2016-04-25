@@ -110,11 +110,11 @@ if($user_level==0)
 
     // insert new record
     $query = "INSERT INTO {$table_prefix}news(id, lang, site_id, title, cense_level, last_change_date,creation_date, weight)
-              values($newid, '".default_language."', $site_id, '{$text['New_page']}',0, NOW(),NOW(),0)";
+              values($newid, '".\e::config('default_language')."', $site_id, '{$text['New_page']}',0, NOW(),NOW(),0)";
     \e::db_execute($query);
 
     // get news lang
-    $news_lang=default_language;
+    $news_lang=\e::config('default_language');
   }
 //-------------------- add page - end ------------------------------------------
 

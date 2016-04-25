@@ -30,13 +30,13 @@ run('site/page/page_view_functions');
 
 //-------------------------- load messages - begin -----------------------------
 if (isset($input_vars['interface_lang']) && $input_vars['interface_lang']) {
-        $input_vars['lang'] = $input_vars['interface_lang'];
+    $input_vars['lang'] = $input_vars['interface_lang'];
 }
 if (!isset($input_vars['lang'])) {
-    $input_vars['lang'] = default_language;
+    $input_vars['lang'] = \e::config('default_language');
 }
 if (strlen($input_vars['lang']) == 0) {
-    $input_vars['lang'] = default_language;
+    $input_vars['lang'] = \e::config('default_language');
 }
 $lang=$input_vars['lang'] = get_language('lang');
 $txt = load_msg($input_vars['lang']);
@@ -62,8 +62,17 @@ if(isset($input_vars['verbose'])){
     prn($month_table);
 }
 // draw main
-$_template = site_get_template($this_site_info, 'template_calendar_block');
-$vyvid = process_template($_template
+// $_template = site_get_template($this_site_info, 'template_calendar_block');
+
+$subtemplate=false;
+if (isset($input_vars['template'])) {
+    $subtemplate=site_get_template($this_site_info,$input_vars['template']);
+}
+if(!$subtemplate){
+    $subtemplate=site_get_template($this_site_info,'template_calendar_block');
+}
+
+$vyvid = process_template($subtemplate
                 , Array(
                       'month_table' => $month_table
                     , 'text' => $txt

@@ -524,8 +524,8 @@ function load_msg($language='') {
     //------------------ change language - end ----------------------------
 
     //------------------ set default language - begin ---------------------
-    if(!isset($_SESSION['lang']))    $_SESSION['lang'] = default_language;
-    if(strlen($_SESSION['lang'])==0) $_SESSION['lang'] = default_language;
+    if(!isset($_SESSION['lang']))    $_SESSION['lang'] = \e::config('default_language');
+    if(strlen($_SESSION['lang'])==0) $_SESSION['lang'] = \e::config('default_language');
     //------------------ set default language - end -----------------------
 
     //------------------ choose language file - begin ---------------------
@@ -539,7 +539,7 @@ function load_msg($language='') {
 
     //------------------- load from file - begin ----------------------------
     if(!file_exists($file_path)) {
-        $_SESSION['lang'] = default_language;
+        $_SESSION['lang'] = \e::config('default_language');
         $file_path = \e::config('APP_ROOT') ."/msg/{$_SESSION['lang']}.ini";
     }
 
@@ -606,7 +606,7 @@ function list_of_languages($exclude_pattern='') {
     // reorder to make default language the first one
     $default_language_id = -1;
     foreach ($files as $key => $val) {
-        if ($val['name'] == default_language) {
+        if ($val['name'] == \e::config('default_language')) {
             $default_language_id = $key;
             break;
         }
@@ -1042,7 +1042,7 @@ function get_language($varname){
     $names=explode(",",$varname);
     $availableLanguages=list_of_languages();
     
-    $lang=default_language;
+    $lang=\e::config('default_language');
     foreach($names as $name){
         if(!isset($input_vars[$name])){
             continue;

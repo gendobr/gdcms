@@ -19,7 +19,7 @@ if (!isset($input_vars['lang']))
 if (strlen($input_vars['lang']) == 0)
     $input_vars['lang'] = $_SESSION['lang'];
 if (strlen($input_vars['lang']) == 0)
-    $input_vars['lang'] = default_language;
+    $input_vars['lang'] = \e::config('default_language');
 $input_vars['lang'] = get_language('lang');
 //prn($input_vars['lang']);
 $txt = load_msg($input_vars['lang']);

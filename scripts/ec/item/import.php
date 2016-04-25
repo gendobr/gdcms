@@ -373,10 +373,10 @@ if(isset($input_vars['row'])) {
 
                 if(!isset($product_info['ec_item_lang'])) {
                     $fld[]='ec_item_lang';
-                    $val[]="'".default_language."'";
+                    $val[]="'".\e::config('default_language')."'";
                 }
                 if(strlen($product_info['ec_item_lang'])==0) {
-                    $$product_info['ec_item_lang']['dbvalue']="'".default_language."'";
+                    $$product_info['ec_item_lang']['dbvalue']="'".\e::config('default_language')."'";
                 }
 
                 //

@@ -78,7 +78,7 @@ if(\e::request('posted','')=='true'){
         // ------------- post-process - begin ----------------------------------
         $post['photo_category_code'] = \core\fileutils::encode_dir_name(\e::request('photo_category_code',''));
         if(strlen($post['photo_category_code'])==0){
-            $post['photo_category_code'] = \core\fileutils::encode_dir_name(get_langstring($post['photo_category_title'], default_language));
+            $post['photo_category_code'] = \core\fileutils::encode_dir_name(get_langstring($post['photo_category_title'], \e::config('default_language')));
         }
         // check if photo_category_code is unique
         $info = \e::db_getonerow("SELECT * FROM <<tp>>photo_category WHERE photo_category_code=<<string code>> ",['code'=>$post['photo_category_code']]);

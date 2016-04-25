@@ -16,7 +16,7 @@ if (strlen($input_vars['lang']) == 0) {
     $input_vars['lang'] = $_SESSION['lang'];
 }
 if (strlen($input_vars['lang']) == 0) {
-    $input_vars['lang'] = default_language;
+    $input_vars['lang'] = \e::config('default_language');
 }
 $lang = $input_vars['lang'] = get_language('lang');
 

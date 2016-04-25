@@ -21,8 +21,8 @@ nohistory($input_vars['action']);
 # -------------------- set interface language - begin --------------------------
 $debug=false;
 if(isset($input_vars['interface_lang']) && $input_vars['interface_lang']) $input_vars['lang']=$input_vars['interface_lang'];
-if(!isset($input_vars['lang'])   ) $input_vars['lang']=default_language;
-if(strlen($input_vars['lang'])==0) $input_vars['lang']=default_language;
+if(!isset($input_vars['lang'])   ) $input_vars['lang']=\e::config('default_language');
+if(strlen($input_vars['lang'])==0) $input_vars['lang']=\e::config('default_language');
 // $lang=$input_vars['lang'];
 $lang=get_language('lang');
 # -------------------- set interface language - end ----------------------------
@@ -61,7 +61,7 @@ $this_site_info['title']=get_langstring($this_site_info['title'],$lang);
 if(isset($input_vars['ec_item_id'])) {
     # -------------------- get ec item info - begin ----------------------------
     $ec_item_id   = (int)$input_vars['ec_item_id'];
-    $ec_item_lang = isset($input_vars['ec_item_lang'])?( $input_vars['ec_item_lang'] ):default_language;
+    $ec_item_lang = isset($input_vars['ec_item_lang'])?( $input_vars['ec_item_lang'] ):\e::config('default_language');
     $this_ec_item_info=get_ec_item_info($ec_item_id,$ec_item_lang);
     if(!$this_ec_item_info) die('Item not found');
     //prn($this_ec_item_info);

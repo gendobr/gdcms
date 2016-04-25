@@ -18,6 +18,7 @@ define('site_public_URL', "http://gen.znu.edu.ua/cms"); // ZSU
 
 $config->APPLICATION_URL=site_root_URL;
 $config->APPLICATION_ADMIN_URL=site_root_URL;
+$config->APPLICATION_PUBLIC_URL=site_public_URL;
 
 define('site_URL', site_root_URL . '/index.php');
 define('sites_root_URL', 'http://127.0.0.1/_sites');
@@ -86,6 +87,8 @@ define('mail_FromName', 'Site Admin');
 date_default_timezone_set('Europe/Kiev');
 
 define('default_language', 'ukr');
+$config->default_language='ukr';
+// \e::config('default_language')
 
 define('rows_per_page', 10);
 
@@ -123,27 +126,27 @@ $config->defaultToVisualEditor=1;
 
 # ----------------------------- urls without mod_rewrite - begin ---------------------------
 // ++++++++++++
-//$config->url_pattern_category=site_public_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}";
+//$config->url_pattern_category=$config->APPLICATION_PUBLIC_URL . "/index.php?action=category/browse&site_id={site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}";
 $config->url_pattern_category= 'http://gen.znu.edu.ua/_sites/znu_main/{lang}/{path}';
 
 
-$config->url_pattern_gallery_category = site_public_URL . "/index.php?action=gallery/photogallery&rozdilizformy={rozdilizformy}&site_id={site_id}&lang={lang}&start={start}&keywords={keywords}";
+$config->url_pattern_gallery_category = $config->APPLICATION_PUBLIC_URL . "/index.php?action=gallery/photogallery&rozdilizformy={rozdilizformy}&site_id={site_id}&lang={lang}&start={start}&keywords={keywords}";
 
 
-$config->url_pattern_ec_category= site_public_URL . "/index.php?action=ec/item/browse&site_id={site_id}&lang={lang}&ec_category_id={ec_category_id}";
+$config->url_pattern_ec_category= $config->APPLICATION_PUBLIC_URL . "/index.php?action=ec/item/browse&site_id={site_id}&lang={lang}&ec_category_id={ec_category_id}";
 
 
-$config->url_ec_item_order_now_pattern= site_public_URL . "/index.php?action=ec/cart/add&ec_item_lang=%s&ec_item_id=%s";
-$config->url_ec_item_buy_now_pattern= site_public_URL . "/index.php?action=ec/order/new&ec_item_lang=%s&ec_item_id=%s&site_id=%s";
-$config->url_ec_item_details_pattern= site_public_URL . "/index.php?action=ec/item/view&ec_item_lang={ec_item_lang}&ec_item_code={ec_item_code}&ec_item_id={ec_item_id}";
+$config->url_ec_item_order_now_pattern= $config->APPLICATION_PUBLIC_URL . "/index.php?action=ec/cart/add&ec_item_lang=%s&ec_item_id=%s";
+$config->url_ec_item_buy_now_pattern= $config->APPLICATION_PUBLIC_URL . "/index.php?action=ec/order/new&ec_item_lang=%s&ec_item_id=%s&site_id=%s";
+$config->url_ec_item_details_pattern= $config->APPLICATION_PUBLIC_URL . "/index.php?action=ec/item/view&ec_item_lang={ec_item_lang}&ec_item_code={ec_item_code}&ec_item_id={ec_item_id}";
 
 
-$config->url_pattern_gallery_image= site_public_URL . "/index.php?action=gallery/photo&site_id={site_id}&lang={lang}&item={item}";
+$config->url_pattern_gallery_image= $config->APPLICATION_PUBLIC_URL . "/index.php?action=gallery/photo&site_id={site_id}&lang={lang}&item={item}";
 
 # ----------------------------- urls without mod_rewrite - end -----------------------------
 # ----------------------------- urls using mod_rewrite in apache - begin -------------------
 //$config->url_template_news_details=, sites_root_URL . "/news_details.php?news_id={news_id}&lang={lang}&news_code={news_code}");
-$config->url_template_news_details= site_public_URL . "/index.php?action=news/view_details&news_id={news_id}&lang={lang}&news_code={news_code}";
+$config->url_template_news_details= $config->APPLICATION_PUBLIC_URL . "/index.php?action=news/view_details&news_id={news_id}&lang={lang}&news_code={news_code}";
 
 
 
@@ -164,9 +167,13 @@ $config->gallery_big_image_width= 800;
 $config->gallery_big_image_height= 800;
 
 
-$config->url_template_news_list = site_public_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}";
+$config->url_template_news_list = $config->APPLICATION_PUBLIC_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}";
 $config->url_template_news_list_other_parameters= "{key}={value}&"; // template for one (key, value) pair
 $config->url_template_news_list_ignore_parameters="/PHPSESSID|action/i"; // regular expression
+
+
+$config->url_pattern_photo_category = $config->APPLICATION_PUBLIC_URL . "/index.php?action=photo/photo_category_view&site_id={site_id}&lang={lang}&photo_category_id={photo_category_id}&photo_category_path={photo_category_path}&photo_category_code={photo_category_code}";
+$config->url_pattern_photo = $config->APPLICATION_PUBLIC_URL . "/index.php?action=photo/photo_view&site_id={site_id}&lang={lang}&photo_id={photo_id}";
 
 
 $config->search_spider_key='jfdklsjkj98127987iuhfskjahfkjj656hhhh';

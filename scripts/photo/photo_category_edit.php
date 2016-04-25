@@ -88,7 +88,7 @@ if(\e::request('posted','')=='true'){
         // update category code
         $photo_category_code = \core\fileutils::encode_dir_name(\e::request('photo_category_code',''));
         if(strlen($photo_category_code)==0){
-            $photo_category_code = \core\fileutils::encode_dir_name(get_langstring($photo_category_info['photo_category_title'], default_language));
+            $photo_category_code = \core\fileutils::encode_dir_name(get_langstring($photo_category_info['photo_category_title'], \e::config('default_language')));
         }
         $info = \e::db_getonerow("SELECT * FROM <<tp>>photo_category WHERE photo_category_code=<<string code>> AND photo_category_id <> <<integer photo_category_id>>",['photo_category_id'=>$photo_category_id, 'code'=>$photo_category_code]);
         if($info){

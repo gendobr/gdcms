@@ -12,7 +12,7 @@ run('site/page/page_view_functions');
 # -------------------- get ec item info - begin --------------------------------
 $ec_item_id = isset($input_vars['ec_item_id']) ? ( (int) $input_vars['ec_item_id'] ) : 0;
 
-// $ec_item_lang=isset($input_vars['ec_item_lang'])?preg_replace("/\\W/",'', $input_vars['ec_item_lang'] ):default_language;
+// $ec_item_lang=isset($input_vars['ec_item_lang'])?preg_replace("/\\W/",'', $input_vars['ec_item_lang'] ):\e::config('default_language');
 $ec_item_lang = get_language('ec_item_lang');
 
 $ec_item_code = isset($input_vars['ec_item_code']) ? ( $input_vars['ec_item_code'] ) : '';

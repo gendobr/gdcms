@@ -839,17 +839,23 @@ class urlfactory {
     /**
      * Изменение текущих ссылок
      */
-    function url_update($add = Array(), $exclude_pattern = '/^$/') {
+    function url_update($add = Array(), $exclude_pattern = '/^$/', $rootUrl='') {
+        if(!$rootUrl){
+            $rootUrl=\e::config('APPLICATION_URL'). '/index.php?';
+        }
         $data = array_merge(\e::query_array($exclude_pattern), $add);
         // echo "<!-- "; print_r($data);echo " -->";
-        return \e::config('APPLICATION_URL') . '/index.php?' . http_build_query($data);
+        return $rootUrl . http_build_query($data);
     }
 
     /**
      * Составление ссылок
      */
-    function url($data = Array()) {
-        return \e::config('APPLICATION_URL') . '/index.php?' . http_build_query($data);
+    function url($data = Array(), $rootUrl='') {
+        if(!$rootUrl){
+            $rootUrl=\e::config('APPLICATION_URL');
+        }
+        return $rootUrl. '/index.php?' . http_build_query($data);
     }
 
     /**
@@ -2456,7 +2462,7 @@ class gettext {
         }
         // -------------------- загрузить реестр сообщений - конец -------------
         // default language code
-        $lang = \e::config('DEFAULT_LANGUAGE');
+        $lang = \e::config('default_language');
 
         // if session doesn't contains language code ...
         if (!\e::session('lang')) {

@@ -11,7 +11,7 @@ if(isset($input_vars['interface_lang'])
     $input_vars['lang']=$input_vars['interface_lang'];
 }
 if(strlen($input_vars['lang'])==0) $input_vars['lang']=$_SESSION['lang'];
-if(strlen($input_vars['lang'])==0) $input_vars['lang']=default_language;
+if(strlen($input_vars['lang'])==0) $input_vars['lang']=\e::config('default_language');
 $input_vars['lang'] = get_language('lang');
 
 $txt = load_msg($input_vars['lang']);

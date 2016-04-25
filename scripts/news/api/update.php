@@ -72,7 +72,7 @@ foreach ($lang_list as $ln) {
     }
 }
 if (!$found) {
-    $lang = default_language;
+    $lang = \e::config('default_language');
 }
 
 $news_id=(int)$input_vars['id'];

@@ -24,7 +24,15 @@ if (get_level($site_id) == 0) {
 }
 //------------------- check permission - end -----------------------------------
 
+
 run('photo/functions');
+
+// ------------------ delete photo - begin -------------------------------------
+$delete_photo_id=\e::request('delete_photo_id',false);
+if($delete_photo_id && is_array($delete_photo_id)){
+    photo_delete($this_site_info, $delete_photo_id);
+}
+// ------------------ delete photo - end ---------------------------------------
 
 
 
@@ -124,7 +132,9 @@ for ($i = 0; $i < $cnt; $i++) {
         $response['rows'][$i]['photo_imgfile']='';
     }
     
-    // 
+    $response['rows'][$i]['photo_title']=  get_langstring($response['rows'][$i]['photo_title']);
+    $response['rows'][$i]['photo_id'] = "<label style='white-space:nowrap;'><input type=checkbox name=\"delete_photo_id[]\" value=\"{$response['rows'][$i]['photo_id']}\">&nbsp;".$response['rows'][$i]['photo_id'].'</label>' ;
+    
     // $response['rows'][$i]['tags'] = mb_wordwrap($response['rows'][$i]['tags'], 10, "&shy;",true);
     
     // $response['rows'][$i]['n_translations'] = $news_translations[$response['rows'][$i]['id']];
@@ -138,7 +148,9 @@ for ($i = 0; $i < $cnt; $i++) {
 
 
 $html=$re->draw_header($response);
-$html.="<form action=\"{$response['action']}\" name=\"{$response['form_name']}\" method=\"post\">
+$html.=" 
+<a href=\"index.php?action=photo/upload&site_id={$site_id}\">".text('photo_upload')."</a>
+<form action=\"{$response['action']}\" name=\"{$response['form_name']}\" method=\"post\">
        {$response['hidden_fields']}
            
 <style type=\"text/css\">
@@ -228,14 +240,7 @@ foreach ($re->field as $fld) {
     if ($fld['options']['hidden'] == 'yes') {
         continue;
     }
-    if($fld['alias']=='n_translations'){
-    $html.="
-              <th align=center valign=bottom>
-               <b>{$response['fields'][$fld['alias']]['label']}</b><br>
-               </th>
-               \n";
-        
-    }else{
+
     $html.="
               <th align=center valign=bottom>
                <b>{$response['fields'][$fld['alias']]['label']}</b><br>
@@ -243,14 +248,13 @@ foreach ($re->field as $fld) {
                <a href=\"{$response['fields'][$fld['alias']]['url_order_desc']}\">&Lambda;</a>
                </th>
                \n";
-        
-    }
 }
 $html.="</tr>\n";
 
 $html.=$re->draw_rows($response);
 $html.=$re->draw_paging($response);
 $html.="</table>\n";
+$html.="<input type=submit value=\"".text('photo_delete')."\">\n";
 $html.="</form>\n";
 
 
