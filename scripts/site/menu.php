@@ -226,7 +226,7 @@ function menu_site($site_info) {
         
         $tor['photo/photo_list']=Array(
                 'URL'=>"index.php?action=photo/photo_list&site_id=".$site_info['id']
-                ,'innerHTML'=>text('photo_list').'-2'
+                ,'innerHTML'=>text('photo_list')
                 ,'attributes'=>'  style="color:blue;"   '
         );
 
@@ -234,25 +234,25 @@ function menu_site($site_info) {
 
         $tor['photo/upload']=Array(
                 'URL'=>"index.php?action=photo/upload&site_id=".$site_info['id']
-                ,'innerHTML'=>text('photo_upload').'-2'
+                ,'innerHTML'=>text('photo_upload')
                 ,'attributes'=>'  '
         );
         $tor['photo/photo_category_list']=Array(
                 'URL'=>"index.php?action=photo/photo_category_list&site_id=".$site_info['id']
-                ,'innerHTML'=>text('photo_category_list').'-2'
+                ,'innerHTML'=>text('photo_category_list')
                 ,'attributes'=>' '
         );
 
         $tor['photo/widgets']=Array(
                 'URL'=>"index.php?action=photo/widgets&site_id=".$site_info['id']
-                ,'innerHTML'=>text('photo_widgets').'-2'
+                ,'innerHTML'=>text('photo_widgets')
                 ,'attributes'=>' target=_blank '
         );
         
         if(is_admin()) {
             $tor['photo/import']=Array(
                     'URL'=>"index.php?action=photo/import&site_id=".$site_info['id']
-                    ,'innerHTML'=>text('photo_import').'-2'
+                    ,'innerHTML'=>text('photo_import')
                     ,'attributes'=>' target=_blank '
             );
         }        
