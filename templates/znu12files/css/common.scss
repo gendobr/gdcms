@@ -356,8 +356,8 @@ body{
 
 
             @media (min-width: $screen-xs-min) {
-                margin-left: 0rem;
-                margin-top: 0rem;
+                margin-left:7rem;
+		margin-top:1.3rem;
                 .w {
                     display: inline-block;
                 }
@@ -371,7 +371,7 @@ body{
                 }
             }
             @media (min-width: $screen-md-min) {
-                margin-left: 7rem;
+                margin-left: 9rem;
                 margin-top: 1.3rem;
             }
 
@@ -390,7 +390,7 @@ body{
                 }
 
                 @media (min-width: $screen-xs-min) {
-                    font-size: 3rem;
+                    font-size: 2.5rem;
                     line-height: 3rem;
                 }
                 @media (min-width: $screen-sm-min) {
@@ -398,11 +398,11 @@ body{
                     line-height: 3rem;
                 }
                 @media (min-width: $screen-md-min) {
-                    font-size: 3rem;
+                    font-size: 3.5rem;
                     line-height: 5rem;
                 }
                 @media (min-width: $screen-lg-min) {
-                    font-size: 3.8rem;
+                    font-size: 3.5rem;
                     line-height: 5rem;
                 }
 

@@ -369,7 +369,7 @@ class CmsNewsViewer {
         //    </form>
 
         $this->_keywordselector = Array(
-            'action' => $this->url(Array('keywords' => $this->keywords)),
+            'action' => $this->url(Array('start'=>0,'keywords' => $this->keywords)),
             'name' => 'keywords',
             'value' => htmlspecialchars($this->keywords)
         );
@@ -423,7 +423,7 @@ class CmsNewsViewer {
             $children[$i]['category_title'] = get_langstring($children[$i]['category_title'], $this->lang);
             $children[$i]['category_description'] = get_langstring($children[$i]['category_description'], $this->lang);
             $children[$i]['date_lang_update'] = get_langstring($children[$i]['date_lang_update'], $this->lang);
-            $children[$i]['URL'] = $this->url(Array('category_id' => $children[$i]['category_id']));
+            $children[$i]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => $children[$i]['category_id']));
         }
         $this->_categoryselector['children'] = $children;
 
@@ -442,7 +442,7 @@ class CmsNewsViewer {
             $parents[$i]['date_lang_update'] = get_langstring($parents[$i]['date_lang_update'], $this->lang);
             $parents[$i]['URL'] = $this->url(Array('category_id' => $parents[$i]['category_id']));
         }
-        $parents[0]['URL'] = $this->url(Array('category_id' => ''));
+        $parents[0]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => ''));
 
         $this->_categoryselector['parents'] = $parents;
         //prn($this->_categoryselector);

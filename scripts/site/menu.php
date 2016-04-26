@@ -180,49 +180,49 @@ function menu_site($site_info) {
 
 
     if($site_info['is_gallery_enabled']) {
-        
-        
-        $tor['gallery/manage']=Array(
-                'URL'=>"index.php?action=gallery/admin/photogalery&site_id=".$site_info['id']
-                ,'innerHTML'=>$text['image_gallery_manage']
-                ,'attributes'=>'  style="color:blue;"  '
-        );
-
-        $tor['gallery/rozdilimages']=Array(
-                'URL'=>"index.php?action=gallery/admin/rozdilimages&site_id=".$site_info['id']
-                ,'innerHTML'=>text('image_rozdilimages')
-                ,'attributes'=>'"  '
-        );
-
-        $tor['gallery/category_ordering']=Array(
-                'URL'=>"index.php?action=gallery/admin/category_ordering&site_id=".$site_info['id']
-                ,'innerHTML'=>text('gallery_category_ordering')
-                ,'attributes'=>'"  '
-        );
-
-        $tor['gallery/add']=Array(
-               'URL'=>"index.php?action=gallery/admin/photos&site_id=".$site_info['id']."&lang=".$_SESSION['lang']
-               ,'innerHTML'=>text('Gallery_add_new_image')
-               ,'attributes'=>''
-        );
-
-        $tor['gallery/addMany']=Array(
-                'URL'=>"index.php?action=gallery/admin/upload&site_id=".$site_info['id']."&lang=".$_SESSION['lang']
-                ,'innerHTML'=>text('Gallery_upload_multiple_images')
-                ,'attributes'=>''
-        );
-
-        $tor['gallery/html']=Array(
-                'URL'=>"index.php?action=gallery/admin/html_code&site_id=".$site_info['id']
-                ,'innerHTML'=>$text['Gallery_get_html_code']
-                ,'attributes'=>'  '
-        );
-        $tor['gallery/view']=Array(
-                'URL'=>"index.php?action=gallery/photogallery&site_id=".$site_info['id'].'&'.$sid
-                ,'innerHTML'=>$text['image_gallery_view']
-                ,'attributes'=>' style="color:green;margin-bottom:20px;" '
-        );
-        
+        //        
+        //        
+        //        $tor['gallery/manage']=Array(
+        //                'URL'=>"index.php?action=gallery/admin/photogalery&site_id=".$site_info['id']
+        //                ,'innerHTML'=>$text['image_gallery_manage']
+        //                ,'attributes'=>'  style="color:blue;"  '
+        //        );
+        //
+        //        $tor['gallery/rozdilimages']=Array(
+        //                'URL'=>"index.php?action=gallery/admin/rozdilimages&site_id=".$site_info['id']
+        //                ,'innerHTML'=>text('image_rozdilimages')
+        //                ,'attributes'=>'"  '
+        //        );
+        //
+        //        $tor['gallery/category_ordering']=Array(
+        //                'URL'=>"index.php?action=gallery/admin/category_ordering&site_id=".$site_info['id']
+        //                ,'innerHTML'=>text('gallery_category_ordering')
+        //                ,'attributes'=>'"  '
+        //        );
+        //
+        //        $tor['gallery/add']=Array(
+        //               'URL'=>"index.php?action=gallery/admin/photos&site_id=".$site_info['id']."&lang=".$_SESSION['lang']
+        //               ,'innerHTML'=>text('Gallery_add_new_image')
+        //               ,'attributes'=>''
+        //        );
+        //
+        //        $tor['gallery/addMany']=Array(
+        //                'URL'=>"index.php?action=gallery/admin/upload&site_id=".$site_info['id']."&lang=".$_SESSION['lang']
+        //                ,'innerHTML'=>text('Gallery_upload_multiple_images')
+        //                ,'attributes'=>''
+        //        );
+        //
+        //        $tor['gallery/html']=Array(
+        //                'URL'=>"index.php?action=gallery/admin/html_code&site_id=".$site_info['id']
+        //                ,'innerHTML'=>$text['Gallery_get_html_code']
+        //                ,'attributes'=>'  '
+        //        );
+        //        $tor['gallery/view']=Array(
+        //                'URL'=>"index.php?action=gallery/photogallery&site_id=".$site_info['id'].'&'.$sid
+        //                ,'innerHTML'=>$text['image_gallery_view']
+        //                ,'attributes'=>' style="color:green;margin-bottom:20px;" '
+        //        );
+        //        
         
         $tor['photo/photo_list']=Array(
                 'URL'=>"index.php?action=photo/photo_list&site_id=".$site_info['id']
