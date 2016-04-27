@@ -319,7 +319,7 @@ $input_vars['page_content'] = "
 </span><br>
 <span class=fbl style='width:100%;'>
 <span class=fbl><span class=lab>id  </span><br><input type=text name=filter_id class=num value=\"{$input_vars['filter_id']}\"></span>
-<span class=fbl style='width:414px'><span class=lab>".  text("Calendar_event_title")." </span><br><input type=text name=filter_title class=num style='width:314px' value=\"" . checkStr($input_vars['filter_title']) . "\"></span>
+<span class=fbl style='width:414px'><span class=lab>".  text("Calendar_event_title")." </span><br><input type=text name=filter_title class=num style='width:314px' value=\"" . htmlspecialchars($input_vars['filter_title']) . "\"></span>
 <span class=fbl style='float:right;'><span class=lab>&nbsp;</span><br><input type=submit value=\"{$text['Search']}\"></span>
 </span>
 <!-- search form - finish -->
@@ -464,7 +464,7 @@ $input_vars['page_title'] =
 # ------------------------------------------------------------------------------
 # site context menu
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 ?>

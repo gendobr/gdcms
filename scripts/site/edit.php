@@ -338,7 +338,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
   {
     $this_site_info=get_site_info($rep->id);
     $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-    $input_vars['page_menu']['site']=Array('title'=>"<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>",'items'=>Array());
+    $input_vars['page_menu']['site']=Array('title'=>"<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>",'items'=>Array());
     $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
   }
 //----------------------------- site context menu - end ------------------------

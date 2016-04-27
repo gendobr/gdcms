@@ -320,7 +320,7 @@
         <input type=text name='ordering[{$it['id']}]' value='{$it['ordering']}' style='width:50px;border:1px solid silver;'>
         </nobr></td>
         <td class=noborder valign=top>
-        ".( (strlen($it['url'])>1)?"<a href=\"{$it['url']}\"> ".checkStr($it['html'])."</a>":"{$it['ordering']} ".checkStr($it['html'])."")."
+        ".( (strlen($it['url'])>1)?"<a href=\"{$it['url']}\"> ".htmlspecialchars($it['html'])."</a>":"{$it['ordering']} ".htmlspecialchars($it['html'])."")."
         </td>
         </tr>
         ";
@@ -366,7 +366,7 @@ $input_vars['page_header'] = $this_site_info['title'] .' - '. $text['Edit_naviga
     $input_vars['page_menu']['page']['items'] = menu_page($this_page_info);
   }
   $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-  $Site_menu="<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>";
+  $Site_menu="<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>";
   $input_vars['page_menu']['site']=Array('title'=>$Site_menu,'items'=>Array());
 
 

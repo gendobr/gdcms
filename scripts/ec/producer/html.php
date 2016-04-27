@@ -47,14 +47,14 @@ $iframe ='';
     $iframe.='
     <h4>'.text('ec_producer_list_page').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>'.
-    checkStr("
+    htmlspecialchars("
         <a href=\"".site_root_URL."/index.php?action=ec/producer/names&site_id={$site_id}&lang={$_SESSION['lang']}\">".text('EC_producer_list')."</a>
     ").'</pre></div>';
 
     $iframe.='
     <h4>'.text('EC_producer_html_code').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>'.
-    checkStr("<div id=brands$uid></div>
+    htmlspecialchars("<div id=brands$uid></div>
 <script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\"></script>
 <script type=\"text/javascript\">
 ajax_loadblock('brands{$uid}','".site_public_URL."/index.php?action=ec/producer/block&site_id={$site_id}&lang={$_SESSION['lang']}&rows_per_page=10&template=template_ec_producer_block',null);

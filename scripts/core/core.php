@@ -902,6 +902,21 @@ class urlfactory {
         }
         return $pageURL;
     }
+    
+    function url_from_template($tpl,$vars){
+        if ($vars && is_array($vars) && count($vars) > 0) {
+            $from = Array();
+            $to = Array();
+            foreach ($vars as $key => $val) {
+                $from[] = "{" . $key . "}";
+                $to[] = $val;
+            }
+            $tor = str_replace($from, $to, $tpl);
+        }else{
+            $tor=$tpl;
+        }
+        return $tor;
+    }
 
     /**
      * Edited by Nitin Kr. Gupta, publicmind.in

@@ -220,7 +220,7 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
     $iframe.='
     <h4>'.text('news_html_tag_list').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>'.
-    checkStr("
+    htmlspecialchars("
         <script type=\"text/javascript\" src=\"".site_public_URL."/scripts/lib/ajax.js\"></script>
         <script type=\"text/javascript\">
           var request=new ajax(
@@ -245,7 +245,7 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
     $iframe.='
     <h4>'.text('news_html_dates').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>'.
-    checkStr("
+    htmlspecialchars("
       <div id=news_dates_{$uid}>&nbsp;</div>
       <iframe style='width:1px;height:1px;border:none;opacity:0;' src='".site_public_URL."/index.php?action=news%2Fblock_dates&site_id={$site_id}&lang={$_SESSION['lang']}&template=template_news_dates_block&element=news_dates_{$uid}'></iframe>
     ").'</pre></div>';
@@ -255,14 +255,14 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
     $iframe.='
     <h4>'.text('news_html_subscription_form').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>'.
-    checkStr("
+    htmlspecialchars("
         <a href=\"".site_public_URL."/index.php?action=news_subscription/subscribe&site_id={$site_id}\">".text('news_html_subscribe')."</a>
     ").'</pre></div>';
 
     $iframe.='
     <h4>'.text('news_html_unsubscription_form').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>'.
-    checkStr("
+    htmlspecialchars("
         <a href=\"".site_public_URL."/index.php?action=news_subscription/unsubscribe&site_id={$site_id}\">".text('news_html_unsubscribe')."</a>
     ").'</pre></div>';
 
@@ -271,7 +271,7 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
     $iframe.='
     <h4>'.text('news_html_rss_aggregator').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>'.
-    checkStr("
+    htmlspecialchars("
         <script type=\"text/javascript\" src=\"".site_public_URL."/scripts/lib/ajax.js\"></script>
         <script type=\"text/javascript\">
           var request=new ajax(

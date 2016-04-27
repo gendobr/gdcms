@@ -76,7 +76,7 @@ $form_name_prefix='svr_';
 
   # to prevent twin nicknames
     $form[$nm]['value']=map_nick($form[$nm]['value']);
-    $form[$nm]['form_element_value']=checkStr($form[$nm]['value']);
+    $form[$nm]['form_element_value']=htmlspecialchars($form[$nm]['value']);
 
   # name_first       varchar(50)    - required
     $nm='name_first';
@@ -282,10 +282,10 @@ if($all_is_ok)
     $education_selector='';
     for($i=0;$i<5;$i++)
     {
-      $edu_place       = isset($input_vars['education'][$i]['place'])?checkStr($input_vars['education'][$i]['place']):'';
-      $edu_year        = isset($input_vars['education'][$i]['year'])?checkStr($input_vars['education'][$i]['year']):'';
-      $edu_faculty     = isset($input_vars['education'][$i]['faculty'])?checkStr($input_vars['education'][$i]['faculty']):'';
-      $edu_speciality  = isset($input_vars['education'][$i]['speciality'])?checkStr($input_vars['education'][$i]['speciality']):'';
+      $edu_place       = isset($input_vars['education'][$i]['place'])?htmlspecialchars($input_vars['education'][$i]['place']):'';
+      $edu_year        = isset($input_vars['education'][$i]['year'])?htmlspecialchars($input_vars['education'][$i]['year']):'';
+      $edu_faculty     = isset($input_vars['education'][$i]['faculty'])?htmlspecialchars($input_vars['education'][$i]['faculty']):'';
+      $edu_speciality  = isset($input_vars['education'][$i]['speciality'])?htmlspecialchars($input_vars['education'][$i]['speciality']):'';
       $education_selector.="
       <tr>
       <td>{$edu_place}</td>
@@ -393,10 +393,10 @@ else
     $education_selector='';
     for($i=0;$i<5;$i++)
     {
-      $edu_place       = isset($input_vars['education'][$i]['place'])?checkStr($input_vars['education'][$i]['place']):'';
-      $edu_year        = isset($input_vars['education'][$i]['year'])?checkStr($input_vars['education'][$i]['year']):'';
-      $edu_faculty     = isset($input_vars['education'][$i]['faculty'])?checkStr($input_vars['education'][$i]['faculty']):'';
-      $edu_speciality  = isset($input_vars['education'][$i]['speciality'])?checkStr($input_vars['education'][$i]['speciality']):'';
+      $edu_place       = isset($input_vars['education'][$i]['place'])?htmlspecialchars($input_vars['education'][$i]['place']):'';
+      $edu_year        = isset($input_vars['education'][$i]['year'])?htmlspecialchars($input_vars['education'][$i]['year']):'';
+      $edu_faculty     = isset($input_vars['education'][$i]['faculty'])?htmlspecialchars($input_vars['education'][$i]['faculty']):'';
+      $edu_speciality  = isset($input_vars['education'][$i]['speciality'])?htmlspecialchars($input_vars['education'][$i]['speciality']):'';
       $education_selector.="
       <tr>
       <td><input type=text size=4 style='width:100px;' name='education[{$i}][place]'      value='{$edu_place}'></td>

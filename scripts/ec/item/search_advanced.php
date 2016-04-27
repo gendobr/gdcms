@@ -125,7 +125,7 @@ if(isset($input_vars['ec_category_id'])) {
                     $value=isset($input_vars['extrafld'][$fld['ec_category_item_field_id']])?$input_vars['extrafld'][$fld['ec_category_item_field_id']]:'';
                     $class=strlen($value)>0?'filled':'';
                     //prn('$value='.var_dump($value));
-                    $extrafld.="<input class='txt {$class}' type='text' name='extrafld[{$fld['ec_category_item_field_id']}]' value='".checkStr($value)."'>";
+                    $extrafld.="<input class='txt {$class}' type='text' name='extrafld[{$fld['ec_category_item_field_id']}]' value='".htmlspecialchars($value)."'>";
                 }
             }
             $extrafld.='<br/>';

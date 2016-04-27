@@ -170,13 +170,13 @@ function preview()
 {$text['Get_html_link_man']}
  <font color=blue><div style='padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid blue;padding:10px;'><pre>
 ".
-        checkStr("
+        htmlspecialchars("
 <script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\"></script>
 <div id={$element_id}> </div>
 <script type=\"text/javascript\">
 ").
 "\najax_loadblock('{$element_id}','<span id=s_url1></span>',null);\n".
-checkStr("</script>"
+htmlspecialchars("</script>"
             )
 ."
 

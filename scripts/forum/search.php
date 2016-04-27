@@ -415,7 +415,7 @@ $input_vars['page_content']="
 
 
   $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-  $Site_menu="<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>";
+  $Site_menu="<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>";
   $input_vars['page_menu']['site']=Array('title'=>$Site_menu,'items'=>Array());
   run('site/menu');
   $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);

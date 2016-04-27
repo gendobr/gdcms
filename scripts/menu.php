@@ -73,22 +73,28 @@ if (is_logged()) {
     if (is_admin()) {
         $input_vars['page_menu']['admin']['items']['user/list'] = Array(
             'URL' => "index.php?action=user/list"
-            , 'innerHTML' => $text['List_of_users']
+            , 'innerHTML' => text('List_of_users')
             , 'attributes' => ''
         );
         $input_vars['page_menu']['admin']['items']['site/list'] = Array(
             'URL' => "index.php?action=site/list"
-            , 'innerHTML' => $text['List_of_sites']
+            , 'innerHTML' => text('List_of_sites')
             , 'attributes' => ''
         );
         $input_vars['page_menu']['admin']['items']['site/edit'] = Array(
             'URL' => "index.php?action=site/edit"
-            , 'innerHTML' => $text['Add_site']
+            , 'innerHTML' => text('Add_site')
             , 'attributes' => ''
         );
         $input_vars['page_menu']['admin']['items']['user/edit'] = Array(
             'URL' => "index.php?action=user/edit"
-            , 'innerHTML' => $text['Add_user']
+            , 'innerHTML' => text('Add_user')
+            , 'attributes' => ''
+        );
+
+        $input_vars['page_menu']['admin']['items']['update/update'] = Array(
+            'URL' => "index.php?action=update/update"
+            , 'innerHTML' => text('DB_updates')
             , 'attributes' => ''
         );
 

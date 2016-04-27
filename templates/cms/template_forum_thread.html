@@ -57,7 +57,17 @@ List of thread in selected forum
   <div>
       {msg id="Name"}:Anonymous(<a href="{$visitor.URL_login}"  target=popup>{msg id="Login"}</a> <a href="{$visitor.URL_signup}" target=popup>{msg id="Signup"}</a> )
   </div><br/>
-{else}
+
+  <div>
+   <b>{msg id="Name"}</b><br/>
+   <INPUT type='text' NAME='{$form.fld_name.name}'  SIZE='25' style='width:100%;' value="{$form.fld_name.value|escape:"html"}">
+  </div><br/>
+
+  <div>
+   <b>{msg id="Email"}</b><br/>
+   <INPUT type='text' NAME='{$form.fld_email.name}'  SIZE='25' style='width:100%;' value="{$form.fld_email.value|escape:"html"}">
+  </div><br/>
+  {else}
   <div>
       {msg id="Name"} : {$visitor.site_visitor_login|escape:"html"}( <a href="{$visitor.URL_logout}"  target=popup>{msg id="Logout"}</a> )<br/>
       {msg id="Email"}: {$visitor.site_visitor_email|escape:"html"}<br/>

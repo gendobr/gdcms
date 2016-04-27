@@ -85,7 +85,7 @@ else
   <font color=red><b>$error_msg</b></font>
   <form action=index.php method=post>
   <input type=hidden name=action value='site_visitor/login'>
-  {$text['Login_name']} : <input type=text name=nick value='".checkStr($input_vars['nick'])."'><br>
+  {$text['Login_name']} : <input type=text name=nick value='".htmlspecialchars($input_vars['nick'])."'><br>
   {$text['Password']} : <input type=password name=lp value=''><br>
   <input type=submit value='{$text['Enter']}'>
   </form>

@@ -164,7 +164,7 @@ for ($i = 0; $i < $cnt; $i++) {
     $list_of_pages[$i]['url'] = ereg_replace('^/+', '', "{$list_of_pages[$i]['path']}/{$list_of_pages[$i]['id']}.{$list_of_pages[$i]['lang']}.html");
     $list_of_pages[$i]['url'] = $this_site_info['site_root_url'] . '/' . $list_of_pages[$i]['url'];
 
-    $list_of_pages[$i]['size'] = checkStr(round($list_of_pages[$i]['size'], 2));
+    $list_of_pages[$i]['size'] = htmlspecialchars(round($list_of_pages[$i]['size'], 2));
 }
 # prn($query,$list_of_pages);
 # -------------------- adjust list - end -----------------------------------

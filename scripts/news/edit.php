@@ -25,7 +25,7 @@ $lang = get_language('lang');
 //\e::db_getonerow($query);
 $this_news_info = news_info($news_id, $lang);
 if ($debug) {
-    prn(checkStr($query), $this_news_info);
+    prn(htmlspecialchars($query), $this_news_info);
 }
 if (checkInt($this_news_info['id']) <= 0) {
     $main_template_name = '';
@@ -369,7 +369,7 @@ $input_vars['page_content'] = "
   <div class=big>{$this_site_info['title']}</div>
 
   <div class=label>{$text['News_title']} :</div>
-  <div class=big><input type=text name=news_title value=\"" . checkStr($this_news_info['title']) . "\"></div>
+  <div class=big><input type=text name=news_title value=\"" . htmlspecialchars($this_news_info['title']) . "\"></div>
 
 
   <span class=blk8><!-- 
@@ -398,7 +398,7 @@ $input_vars['page_content'] = "
       <div class=big>{$expiration_date_selector}</div>
     </span><!-- 
  --><div class=label>{$text['News_tags']} ({$text['CSV']}):</div>
-    <div class=big><input type=text MAXLENGTH=255 name=tags value=\"" . checkStr($this_news_info['tags']) . "\"></div><!-- 
+    <div class=big><input type=text MAXLENGTH=255 name=tags value=\"" . htmlspecialchars($this_news_info['tags']) . "\"></div><!-- 
  --></span><!-- 
  --><span class=blk4>
     <div class=label>" . text('Icon') . " :</div>
@@ -422,7 +422,7 @@ $input_vars['page_content'] = "
   <div  style='border:1px solid #00334c;'>
       <div class=big>
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_news_info['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -434,7 +434,7 @@ $input_vars['page_content'] = "
                   class='wysiswyg'
                   " . str_replace("%s", 'page_abstract', (false ? $attributes : '')) . "
                   cols=50 rows=7>" .
-        checkStr($this_news_info['abstract'])
+        htmlspecialchars($this_news_info['abstract'])
         . "</textarea>
       </div>
   </div>
@@ -448,7 +448,7 @@ $input_vars['page_content'] = "
 
       $page_content_textarea
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_news_info['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -459,14 +459,14 @@ $input_vars['page_content'] = "
             tabindex='3'
             class='wysiswyg'
             cols=80 rows=20>" .
-            checkStr($this_news_info['content'])
+            htmlspecialchars($this_news_info['content'])
         . "</textarea>
 
  </div>
  </div>
 
   <div class=label>".text('news_code')." :</div>
-  <div class=big><input type=text name=\"news_code\" value=\"" . checkStr($this_news_info['news_code']) . "\"></div>
+  <div class=big><input type=text name=\"news_code\" value=\"" . htmlspecialchars($this_news_info['news_code']) . "\"></div>
 
   <div class=label>".text('news_meta_info')." :</div>
   <div class=big>
@@ -476,14 +476,14 @@ $input_vars['page_content'] = "
      metaTagsButtons('news_meta_info');
   });
   </script>
-  <textarea name=\"news_meta_info\" id=\"news_meta_info\" style=\"width:100%; height:100px;\">" . checkStr($this_news_info['news_meta_info']) . "</textarea>
+  <textarea name=\"news_meta_info\" id=\"news_meta_info\" style=\"width:100%; height:100px;\">" . htmlspecialchars($this_news_info['news_meta_info']) . "</textarea>
   </div>
 
   <div class=label>".text('news_extra_1')." :</div>
-  <div class=big><input type=text name=\"news_extra_1\" value=\"" . checkStr($this_news_info['news_extra_1']) . "\"></div>
+  <div class=big><input type=text name=\"news_extra_1\" value=\"" . htmlspecialchars($this_news_info['news_extra_1']) . "\"></div>
 
   <div class=label>".text('news_extra_2')." :</div>
-  <div class=big><input type=text name=\"news_extra_2\" value=\"" . checkStr($this_news_info['news_extra_2']) . "\"></div>
+  <div class=big><input type=text name=\"news_extra_2\" value=\"" . htmlspecialchars($this_news_info['news_extra_2']) . "\"></div>
 
         
         
@@ -523,7 +523,7 @@ if ($tmp) {
         $input_vars['page_menu']['page']['items']["news/{$this_news_info['id']}/{$news_translation['lang']}"] = Array(
             'URL' => "index.php?action=news/edit&aed={$input_vars['aed']}&site_id={$this_news_info['site_id']}&news_id={$this_news_info['id']}&lang={$news_translation['lang']}"
             , 'innerHTML' => "{$news_translation['lang']}: " . shorten(strip_tags($news_translation['title']), 30)
-            , 'attributes' => "title=\"" . checkStr(strip_tags($news_translation['title'])) . "\""
+            , 'attributes' => "title=\"" . htmlspecialchars(strip_tags($news_translation['title'])) . "\""
         );
     }
 }
@@ -532,7 +532,7 @@ if ($tmp) {
 
 
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 25) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 25) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //----------------------------- context menu - end -----------------------------

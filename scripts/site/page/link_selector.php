@@ -41,7 +41,7 @@ switch($input_vars['view'])
         <a href=\"index.php?action=site/page/link_selector&site_id={$this_site_info['id']}\">���� URL</a>/ {$text['News']}<br><br>
         <form action=index.php>
         ".hidden_form_elements('^filter_')."
-        <input type=text name=filter_kw value=\"".checkStr(isset($input_vars['filter_kw'])?$input_vars['filter_kw']:'')."\">
+        <input type=text name=filter_kw value=\"".htmlspecialchars(isset($input_vars['filter_kw'])?$input_vars['filter_kw']:'')."\">
         <input type=submit value=\"{$text['Search']}\">
         </form>
         ";
@@ -159,7 +159,7 @@ switch($input_vars['view'])
 
         <form action=index.php>
         ".hidden_form_elements('^filter_')."
-        <input type=text name=filter_kw value=\"".checkStr(isset($input_vars['filter_kw'])?$input_vars['filter_kw']:'')."\">
+        <input type=text name=filter_kw value=\"".htmlspecialchars(isset($input_vars['filter_kw'])?$input_vars['filter_kw']:'')."\">
         <input type=submit value=\"{$text['Search']}\">
         </form>
         ";

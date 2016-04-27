@@ -289,14 +289,14 @@ class node {
                 || $this->finish - $this->info['finish'] != 0
                 || $this->deep - $this->info['deep'] != 0) {
                 // echo "{$cat['start_new']}-{$cat['start']}!=0 || {$cat['finish_new']}-{$cat['finish']}!=0 || {$cat['deep_new']}-{$cat['deep']}!=0";
-                echo checkStr("UPDATE {$table_prefix}category
+                echo htmlspecialchars("UPDATE {$table_prefix}category
                                   SET start={$this->start},
                                       finish={$this->finish},
                                       deep={$this->deep}
                                   WHERE site_id=$site_id AND category_id={$this->info['category_id']}") . ';<br/>';
             }
         } else {
-            echo checkStr("INSERT INTO {$table_prefix}category
+            echo htmlspecialchars("INSERT INTO {$table_prefix}category
                                   SET site_id=$site_id,
                                       category_code='{$this->info['category_code']}',
                                       category_title='{$this->info['category_code']}',

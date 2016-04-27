@@ -17,7 +17,7 @@
        {
           #prn($nm.': data posted');
           $tr['value']=trim($input_vars[$tr['form_element_name']]);
-          $tr['form_element_value']=checkStr($tr['value']);
+          $tr['form_element_value']=htmlspecialchars($tr['value']);
        }
     }
     return $tr;

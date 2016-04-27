@@ -3,8 +3,7 @@
 $link = $db;
 $data=date ("Y.m.d H:i");
 
-if(isset($input_vars['interface_lang'])) if(strlen($input_vars['interface_lang'])>0) $input_vars['lang']=$input_vars['interface_lang'];
-$input_vars['lang'] = get_language('lang');
+$input_vars['lang'] = $lang = get_language('lang,interface_lang');
 $txt = load_msg($input_vars['lang']);
 $echo='
 
@@ -33,7 +32,7 @@ if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_temp
 
 // ------------------ forum info - begin ---------------------------------------
 $forum_id = checkInt($input_vars['forum_id']);
-//$this_forum_info = \e::db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$forum_id}");
+//$this_forum_info = \e::db_getonerow("SELECT * FROM <<tp>>forum_list WHERE id={$forum_id}");
 $this_forum_info = get_forum_info($forum_id);
 
 // prn($this_forum_info);
@@ -75,41 +74,93 @@ if(isset($input_vars['msg'])) {
     $errors=Array();
 
     $input_vars['msg']=trim(strip_tags($input_vars['msg']));
-    if(strlen($input_vars['msg'])==0) $errors[]="<b><font color=red>{$txt['ERROR']} : {$txt['Value_of']} \"{$txt['Message']}\" {$txt['is_empty']}</font></b><br/>";
+    if (strlen($input_vars['msg']) == 0) {
+        $errors[] = "<b><font color=red>{$txt['ERROR']} : {$txt['Value_of']} \"{$txt['Message']}\" {$txt['is_empty']}</font></b><br/>";
+    }
 
     $input_vars['subject']=trim(strip_tags($input_vars['subject']));
-    if(strlen($input_vars['subject'])==0) $errors[]="<b><font color=red>{$txt['ERROR']} : {$txt['Value_of']} \"{$txt['forum_thread_subject']}\" {$txt['is_empty']}</font></b><br/>";
+    if (strlen($input_vars['subject']) == 0) {
+        $errors[] = "<b><font color=red>{$txt['ERROR']} : {$txt['Value_of']} \"{$txt['forum_thread_subject']}\" {$txt['is_empty']}</font></b><br/>";
+    }
 
     if($_REQUEST['postedcode']!=$_SESSION['code'] OR strlen($_SESSION['code'])==0) $errors[]="<b><font color=red>{$txt['ERROR']} : {$txt['Value_of']} \"{$txt['Retype_the_number']}\" {$txt['is_empty']}</font></b><br/>";
 
 
 
     if(count($errors)==0) {
+        // \e::info("creating thread"); 
         run('notifier/functions');
-        function ch($name) {return \e::db_escape(strip_tags(trim($name)));}
-        $_SESSION['code']='';
-        $name   = ch($_SESSION['site_visitor_info']['site_visitor_login']);
-        $email  = ch($_SESSION['site_visitor_info']['site_visitor_email']);   if(!is_valid_email($email)) $email='';
-        $www    = ch($_SESSION['site_visitor_info']['site_visitor_home_page_url']);     if(!is_valid_url($www))     $www='';
-        $subject= ch($input_vars['subject']); if(strlen($subject)==0)     $subject='############';
+        
+        
+        
+        $name   = \e::cast('plaintext',\e::request('name', $_SESSION['site_visitor_info']['site_visitor_login']));
+        
+        $email  = \e::cast('plaintext',\e::request('email',$_SESSION['site_visitor_info']['site_visitor_email']));
+        if(!is_valid_email($email)) $email='';
+        
+        $www    = \e::cast('plaintext',\e::request('www',$_SESSION['site_visitor_info']['site_visitor_home_page_url']));
+        if (!is_valid_url($www)) {
+            $www = '';
+        }
+
+        $subject= \e::cast('plaintext',\e::request('subject','')); 
+        if (strlen($subject) == 0) {
+            $subject = '---------';
+        }
 
         $is_visible=($this_forum_info['is_premoderated']==1)?0:1;
 
-        $msg    = ch($input_vars['msg']);
+        $msg    = \e::cast('plaintext',\e::request('msg',''));
 
-        $query = "INSERT INTO {$table_prefix}forum_thread (subject, forum_id, site_id, data)
-                  VALUES ('$subject', '$forum_id', '$site_id', '$data')";
+        // $query = "INSERT INTO <<tp>>forum_thread (subject, forum_id, site_id, data)
+        //           VALUES ('$subject', '$forum_id', '$site_id', '$data')";
+        // mysql_query($query, $link);
+        
+        
+        \e::db_execute(
+                "INSERT INTO <<tp>>forum_thread (subject, forum_id, site_id, data)
+                  VALUES ( <<string subject>>, <<integer forum_id>>, <<integer site_id>>, <<string data>>)",
+                ['subject'=>$subject, 'forum_id'=>$forum_id, 'site_id'=>$site_id, 'data'=>date ("Y-m-d H:i:s")],
+                true
+        );
+        
 
-        mysql_query($query, $link);
-        $query="select LAST_INSERT_ID()";
-        $result= mysql_query($query, $link);
-        $num = mysql_fetch_array($result);
-        $num=$num[0];
+        $num=\e::db_getonerow("SELECT LAST_INSERT_ID() as num");
+        $thread_id=$num["num"];
+        //\e::info("thread_id=$thread_id");
 
-        $query = "INSERT INTO {$table_prefix}forum_msg (name, forum_id, site_id, thread_id, email, www, subject, msg, data, is_first_msg,is_visible)
-                  VALUES ('$name', '$forum_id', '$site_id', '$num', '$email', '$www', '$subject', '$msg', '$data',1,$is_visible)";
-        mysql_query($query, $link);
+        //        $query = "INSERT INTO <<tp>>forum_msg (name, forum_id, site_id, thread_id, email, www, subject, msg, data, is_first_msg,is_visible)
+        //                  VALUES ('$name', '$forum_id', '$site_id', '$num', '$email', '$www', '$subject', '$msg', '$data',1,$is_visible)";
+        //        mysql_query($query, $link);
+        \e::db_execute(
+                "INSERT INTO <<tp>>forum_msg (name, forum_id, site_id, thread_id, email, www, subject, msg, data, is_first_msg,is_visible)
+                  VALUES (
+                  <<string name>>, 
+                  <<integer forum_id>>, 
+                  <<integer site_id>>, 
+                  <<integer thread_id>>, 
+                  <<string email>>,
+                  <<string www>>, 
+                  <<string subject>>, 
+                  <<string msg>>, 
+                  <<string data>>,
+                  <<integer is_first_msg>>,
+                  <<integer is_visible>>)",
+            [
+                'name'=>$name,
+                'forum_id'=>$forum_id,
+                'site_id'=>$site_id,
+                'thread_id'=>$thread_id,
+                'email'=>$email,
+                'www'=>$www,
+                'subject'=>$subject,
+                'msg'=>$msg,
+                'data'=>date('Y-m-d H:i:s'),
+                'is_first_msg'=>1,
+                'is_visible'=>$is_visible
+            ],true);
 
+        // exit('333');       
 
         if(!isset($_SESSION['msg'])) $_SESSION['msg']='';
         $_SESSION['msg'].='<div style="color:green;font-weight:bold;">'.text('New_thread_is_started').'</div>';
@@ -117,8 +168,8 @@ if(isset($input_vars['msg'])) {
 
 
         //---------------- notify site admin - begin ---------------------------
-        //$site_admin=\e::db_getonerow("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
-        $site_admin_list=  \e::db_getrows("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']}");
+        //$site_admin=\e::db_getonerow("SELECT u.email FROM <<tp>>site_user AS su INNER JOIN <<tp>>user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
+        $site_admin_list=  \e::db_getrows("SELECT u.email FROM <<tp>>site_user AS su INNER JOIN <<tp>>user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']}");
         foreach($site_admin_list as $site_admin){
             if(is_valid_email($site_admin['email'])) {
 
@@ -140,13 +191,13 @@ if(isset($input_vars['msg'])) {
             }
         }
         //---------------- notify site admin - end -----------------------------
-// --------------- notify forum moderators - begin ---------------------
+        // --------------- notify forum moderators - begin ---------------------
         if($this_forum_info['moderators'] && is_array($this_forum_info['moderators']) && count($this_forum_info['moderators'])>0){
            $query=Array();
            foreach($this_forum_info['moderators'] as $moderator_login){
                $query[]=  \e::db_escape($moderator_login);
            }
-           $query="SELECT * FROM {$table_prefix}site_visitor WHERE site_visitor_login in ('".join("','",$query)."')";
+           $query="SELECT * FROM <<tp>>site_visitor WHERE site_visitor_login in ('".join("','",$query)."')";
            $moderators=  \e::db_getrows($query);
            if($moderators){
                 $path=$this_site_info['title']."/".$this_forum_info['name'].'/'.$input_vars['subject'];
@@ -169,7 +220,19 @@ if(isset($input_vars['msg'])) {
            }
         }
         // --------------- notify forum moderators - end -----------------------
-        header("Location: ".site_root_URL."/index.php?action=forum/thread&site_id=$site_id&forum_id=$forum_id&lang={$input_vars['lang']}");
+        // header("Location: ".\e::config('APPLICATION_PUBLIC_URL')."/index.php?action=forum/thread&site_id=$site_id&forum_id=$forum_id&lang={$input_vars['lang']}");
+        
+        header("Location: ".
+        \e::url_from_template(
+            \e::config('url_template_thread_list'),
+            [
+                'site_id'=>$site_id,
+                'lang'=>$input_vars['lang'],
+                'forum_id'=>$forum_id,
+                'start'=>0
+            ])
+        );
+        $_SESSION['code']='';
         run("session_finish");         //finish session
         exit();
     }
@@ -208,59 +271,48 @@ $start=isset($input_vars['start'])?( (int)$input_vars['start'] ):0;
 // if($this_forum_info['is_premoderated']==1) {
     if($visitor['is_moderator']){
         $some_messages_visible='';
-        $n_messages="count(DISTINCT {$table_prefix}forum_msg.id)";
-        $last_message_date="MAX({$table_prefix}forum_msg.data)";
+        $n_messages="count(DISTINCT <<tp>>forum_msg.id)";
+        $last_message_date="MAX(<<tp>>forum_msg.data)";
     }else{
         $some_messages_visible="HAVING some_messages_visible>0";
-        $n_messages="count(DISTINCT if({$table_prefix}forum_msg.is_visible,{$table_prefix}forum_msg.id,null))";
-        $last_message_date="MAX( if({$table_prefix}forum_msg.is_visible, {$table_prefix}forum_msg.data,null) )";
+        $n_messages="count(DISTINCT if(<<tp>>forum_msg.is_visible,<<tp>>forum_msg.id,null))";
+        $last_message_date="MAX( if(<<tp>>forum_msg.is_visible, <<tp>>forum_msg.data,null) )";
     }
     $query=
-   "SELECT SQL_CALC_FOUND_ROWS {$table_prefix}forum_thread.*
+   "SELECT SQL_CALC_FOUND_ROWS <<tp>>forum_thread.*
           ,{$n_messages} AS n_messages
           ,$last_message_date AS  last_message_data
-          ,MAX({$table_prefix}forum_msg.is_visible) AS  some_messages_visible
+          ,MAX(<<tp>>forum_msg.is_visible) AS  some_messages_visible
+          ,m1.msg as first_msg
     FROM
     (
-        (`{$table_prefix}forum_thread` LEFT JOIN `{$table_prefix}forum_msg`
-          ON (     {$table_prefix}forum_thread.id={$table_prefix}forum_msg.thread_id
-               AND {$table_prefix}forum_thread.site_id=$site_id
-               )
-         )
+        `<<tp>>forum_thread`
+        LEFT JOIN `<<tp>>forum_msg`  ON (     <<tp>>forum_thread.id=<<tp>>forum_msg.thread_id  AND <<tp>>forum_thread.site_id=$site_id  )
+        LEFT JOIN `<<tp>>forum_msg` m1  ON (  <<tp>>forum_thread.id=m1.thread_id  AND <<tp>>forum_thread.site_id=$site_id   and m1.is_first_msg )
+        
      )
-     WHERE     {$table_prefix}forum_thread.site_id=$site_id
-           AND {$table_prefix}forum_thread.forum_id=$forum_id
-     GROUP BY {$table_prefix}forum_thread.id
+     WHERE     <<tp>>forum_thread.site_id=$site_id
+           AND <<tp>>forum_thread.forum_id=$forum_id
+     GROUP BY <<tp>>forum_thread.id
      {$some_messages_visible}
      ORDER BY last_message_data DESC
      LIMIT $start, 10";
-//}
-//else {
-//    $query=
-//   "SELECT SQL_CALC_FOUND_ROWS {$table_prefix}forum_thread.*
-//          ,count(DISTINCT {$table_prefix}forum_msg.id) AS n_messages
-//          ,MAX({$table_prefix}forum_msg.data) AS  last_message_data
-//          ,1 AS  some_messages_visible
-//    FROM
-//    (
-//        (`{$table_prefix}forum_thread` LEFT JOIN `{$table_prefix}forum_msg`
-//          ON (     {$table_prefix}forum_thread.id={$table_prefix}forum_msg.thread_id
-//               AND {$table_prefix}forum_thread.site_id=$site_id
-//               )
-//         )
-//     )
-//     WHERE     {$table_prefix}forum_thread.site_id=$site_id
-//           AND {$table_prefix}forum_thread.forum_id=$forum_id
-//     GROUP BY {$table_prefix}forum_thread.id ORDER BY last_message_data DESC
-//     LIMIT $start, 10";
-//}
-//prn($query);
-$result = \e::db_getrows($query);
 
+//prn($query);
+$result = \e::db_getrows($query,[],true);
+// \e::info($result);
 $cnt=count($result);
 for($i=0;$i<$cnt;$i++) {
     if($visitor['is_moderator'] || $result[$i]['some_messages_visible']) {
-       $result[$i]['URL_view_thread']=site_root_URL."/index.php?action=forum/msglist&thread_id={$result[$i]['id']}&site_id=$site_id&forum_id=$forum_id&lang={$input_vars['lang']}";
+       $result[$i]['URL_view_thread']=\e::url_from_template(
+            \e::config('url_template_message_list'),
+            [
+                'site_id'=>$site_id,
+                'lang'=>$lang,
+                'forum_id'=>$forum_id,
+                'thread_id'=>$result[$i]['id'],
+                'start'=>0
+            ]);
     }
     else{
        $result[$i]['URL_view_thread']='';
@@ -270,15 +322,27 @@ for($i=0;$i<$cnt;$i++) {
 
 
 # --------------------- paging - begin ------------------------
-$n_records = mysql_query($query="SELECT FOUND_ROWS() AS n_records;", $link)    or die("Querry failed");
-$num = mysql_fetch_array($n_records);
-$num=$num[0];
+$n_records = \e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
+$n_records=$n_records['n_records'];
 $pages='';
-if($num>10) {
+if($n_records>10) {
     $pages=" {$txt['Pages']} :";
-    for($i=0;$i<$num; $i=$i+10) {
-        if( $i==$start ) $to='<b>['.(1+$i/10).']</b>'; else $to=(1+$i/10);
-        $pages.="<a href=\"".sites_root_URL."/thread.php?site_id={$site_id}&start={$i}&forum_id=$forum_id&lang={$input_vars['lang']}\">".$to."</a>\n";
+    for($i=0;$i<$n_records; $i=$i+10) {
+        if( $i==$start ) 
+            $to='<b>['.(1+$i/10).']</b>'; 
+        else 
+            $to=(1+$i/10);
+        
+        $url=\e::url_from_template(
+            \e::config('url_template_message_list'),
+            [
+                'site_id'=>$site_id,
+                'lang'=>$lang,
+                'forum_id'=>$forum_id,
+                'thread_id'=>$result[$i]['id'],
+                'start'=>$i
+        ]);
+        $pages.="<a href=\"{$url}\">".$to."</a>\n";
     }
 }
 # --------------------- paging - end --------------------------
@@ -305,9 +369,11 @@ $form=Array('hiddent_fields'=>"<INPUT type='hidden' NAME='action' value='forum/t
                                <INPUT type='hidden' NAME='lang' value='{$input_vars['lang']}'>",
             'action'=>site_root_URL.'/index.php',
             'errors'=>$errors,
+            'fld_name'=>Array('name'=>'name','value'=>\e::request('name')),
+            'fld_email'=>Array('name'=>'email','value'=>\e::request('email')),
             'fld_subject'=>Array('name'=>'subject','value'=>$input_vars['subject']),
             'fld_msg'=>Array('name'=>'msg','value'=>$input_vars['msg']),
-            'fld_postedcode'=>Array('name'=>'postedcode','value'=>site_root_URL."/index.php?action=gb/bookcode")
+            'fld_postedcode'=>Array('name'=>'postedcode','value'=> \e::config('APPLICATION_PUBLIC_URL')."/index.php?action=gb/bookcode")
      );
 
 
@@ -319,13 +385,14 @@ $menu_groups = get_menu_items($this_site_info['id'],0,$_SESSION['lang']);
 $lang_list=list_of_languages();
 $cnt=count($lang_list);
 for($i=0;$i<$cnt;$i++) {
-    $lang_list[$i]['url']=$lang_list[$i]['href'];
-
-    $lang_list[$i]['url']=str_replace('action=forum%2Fthread','',$lang_list[$i]['url']);
-    $lang_list[$i]['url']=str_replace('index.php','thread.php',$lang_list[$i]['url']);
-    $lang_list[$i]['url']=str_replace(site_root_URL,sites_root_URL,$lang_list[$i]['url']);
-    $lang_list[$i]['url']=str_replace('?&','?',$lang_list[$i]['url']);
-    $lang_list[$i]['url']=str_replace('&&','&',$lang_list[$i]['url']);
+    $lang_list[$i]['url']=\e::url_from_template(
+            \e::config('url_template_thread_list'),
+            [
+                'site_id'=>$site_id,
+                'lang'=>$lang_list[$i]['name'],
+                'forum_id'=>$forum_id,
+                'start'=>0
+            ]);
 
     $lang_list[$i]['lang']=$lang_list[$i]['name'];
 }

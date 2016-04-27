@@ -42,9 +42,6 @@ function run($fname,$arguments=Array()) {
 
 
 //----------------------------- check basic types -- begin ---------------------
-function checkStr($tostr) {
-    if(isset($tostr)) return trim(htmlspecialchars ($tostr,ENT_QUOTES,'cp1251'));else return '';
-}
 function checkInt($tostr) {
     if(isset($tostr)) return round(1*$tostr); else return 0;
 }
@@ -55,7 +52,8 @@ function checkDatetime($tostr) {
     if (!(($timestamp = strtotime($tostr)) === -1) ) return $tostr; else return false;
 }
 function is_valid_email($email) {
-    $to_return=preg_match('/^([a-zA-Z_0-9\.-]+)@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/', $email);
+    //$to_return=preg_match('/^([a-zA-Z_0-9\.-]+)@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/', $email);
+    $to_return=preg_match('/[^@]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/', $email);
     return $to_return;
 }
 function is_valid_url($URL) {
@@ -407,64 +405,7 @@ function getAsciiUrl($ditryUrl){
 }
 //----------------------------- check basic types -- end -----------------------
 
-// ---------------------- database interface -- begin --------------------------
-// MySQL functions
-//
-//function DbStr($ffff) {
-//    return mysql_real_escape_string($ffff);
-//}
-//function db_connect($db_host,$db_user,$db_pass,$db_name) {
-//    if($db=mysql_connect($db_host,$db_user,$db_pass)) {
-//        if(mysql_select_db($db_name,$db)) return $db;     else return false;
-//    } else return false;
-//}
-//function db_close($dblink) {
-//    mysql_close($dblink);
-//}
-// new versions
-//function db_execute($query) {
-//    if(debug & debug_level_show_sql_query) prn("<b><font color=\"red\">$query</font></b>");
-//    $result_id=mysql_query(trim($query));
-//    if(!$result_id && (debug & debug_level_show_sql_errors)) {
-//        prn($query.'<br>'.mysql_error());
-//    } return
-//    $result_id;
-//}
-//function db_getrows($query) {
-//    $result_id=\e::db_execute($query);
-//    $tor=Array(); while($row=mysql_fetch_array($result_id,MYSQL_ASSOC)) $tor[]=$row;
-//    mysql_free_result($result_id);
-//    return $tor;
-//}
-//function db_getonerow($query) {
-//    //if($_REQUEST['v']==1) prn($query);
-//    $result_id=\e::db_execute($query);
-//    $tor=mysql_fetch_array($result_id, MYSQL_ASSOC);
-//    mysql_free_result($result_id);
-//    return $tor;
-//}
-//function db_get_associated_array($sql) {
-//    $tor=Array();
-//    $tmp=\e::db_getrows($sql);
-//    if(!$tmp) return $tor;
-//    foreach($tmp as $tm) {
-//        $tm=array_values($tm);
-//        if(!isset($tm[1])) $tm[1]=$tm[0];
-//        $tor[$tm[0]]=$tm[1];
-//    }
-//    return $tor;
-//}
-//
-//function SelectLimit($dblink,$query,$start,$rows) {
-//    $limit_query=ereg_replace(';?( |'."\n".'|'."\r".')*$','',$query.'  LIMIT '.checkInt($start).','.checkInt($rows).';');
-//    ///prn($limit_query);
-//    return \e::db_getrows($limit_query);
-//}
-//function GetNumRows($result_id) {
-//    return mysql_num_rows ($result_id);
-//}
 
-// ---------------------- database interface -- end ----------------------------
 
 
 //------------------------- print debug info -- begin --------------------------
@@ -478,6 +419,7 @@ function prn() {
     }
     echo "\n<hr color=lime size=2px>\n";
 }
+
 function filelog() {
     $filepath=\e::config('CACHE_ROOT').'/log_'.preg_replace("/\\W/",'_',$_REQUEST['action']);
     
@@ -558,7 +500,8 @@ function load_msg($language='') {
     return $text;
 }
 
-function text($string_name) {
+
+function text($string_name, $vars=null) {
     global $text;
     if(!is_array($text)) load_msg();
     
@@ -566,6 +509,15 @@ function text($string_name) {
         $tor=Array();
         foreach($string_name as $key){
             $tor[$key]=isset($text[$key])?$text[$key]:($_SESSION['lang'].':'.$key);
+        }
+        if ($vars && is_array($vars) && count($vars) > 0) {
+            $from = Array();
+            $to = Array();
+            foreach ($vars as $key => $val) {
+                $from[] = "{" . $key . "}";
+                $to[] = $val;
+            }
+            $tor = str_replace($from, $to, $tor);
         }
         return $tor;
     }else{
@@ -735,7 +687,7 @@ function hidden_form_elements($exclude_pattern) {
     $request=query_array($exclude_pattern);
     # prn($request);
     $cnt=array_keys($request);
-    foreach($cnt as $key) $tor[]="<input type=hidden name=\"".checkStr($key)."\" value=\"".checkStr($request[$key])."\">\r\n";
+    foreach($cnt as $key) $tor[]="<input type=hidden name=\"".htmlspecialchars($key)."\" value=\"".htmlspecialchars($request[$key])."\">\r\n";
     return join(' ',$tor);
 }
 
@@ -744,7 +696,7 @@ function preg_hidden_form_elements($exclude_pattern) {
     $request=preg_query_array($exclude_pattern);
     # prn($request);
     $cnt=array_keys($request);
-    foreach($cnt as $key) $tor[]="<input type=hidden name=\"".checkStr($key)."\" value=\"".checkStr($request[$key])."\">\r\n";
+    foreach($cnt as $key) $tor[]="<input type=hidden name=\"".htmlspecialchars($key)."\" value=\"".htmlspecialchars($request[$key])."\">\r\n";
     return join(' ',$tor);
 }
 
@@ -782,7 +734,7 @@ function draw_options($value,$options) {
             $val=array_values(array_unique($val));
             if(!isset($val[1])) $val[1]=$val[0];
             if($val[0]==$value && strlen($val[0])==strlen($value)) $selected=' selected '; else $selected='';
-            $to_return.="<option value=\"".checkStr(trim($val[0]))."\" $selected>{$val[1]}</option>\n";
+            $to_return.="<option value=\"".htmlspecialchars(trim($val[0]))."\" $selected>{$val[1]}</option>\n";
         }
         else {
             if($key==$value && strlen($key)==strlen($value)) $selected=' selected '; else $selected='';
@@ -800,7 +752,7 @@ function draw_radio($value,$options,$name) {
             $val=array_values($val);
             if(!isset($val[1])) $val[1]=$val[0];
             if($val[0]==$value && strlen($val[0])==strlen($value)) $selected=' checked '; else $selected='';
-            $to_return.="<label><input type=radio name=\"{$name}\" value=\"".checkStr(trim($val[0]))."\" $selected> {$val[1]}</label>\n";
+            $to_return.="<label><input type=radio name=\"{$name}\" value=\"".htmlspecialchars(trim($val[0]))."\" $selected> {$val[1]}</label>\n";
         }
         else {
             if($key==$value && strlen($key)==strlen($value)) $selected=' checked '; else $selected='';

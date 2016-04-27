@@ -110,7 +110,7 @@ else
       <table>
       <tr>
         <td><b>{$txt['Name']} <font color=red>*</font></b></td>
-        <td><input type=text name=site_visitor_login value=\"".checkStr($input_vars['site_visitor_login'])."\"></td>
+        <td><input type=text name=site_visitor_login value=\"".htmlspecialchars($input_vars['site_visitor_login'])."\"></td>
       </tr>
       <tr>
         <td><b>{$txt['Password']} <font color=red>*</font></b></td>
@@ -122,12 +122,12 @@ else
       </tr>
       <tr>
         <td><b>{$txt['Email']} <font color=red>*</font></b></td>
-        <td><input type=text name=site_visitor_email value=\"".checkStr($input_vars['site_visitor_email'])."\"></td>
+        <td><input type=text name=site_visitor_email value=\"".htmlspecialchars($input_vars['site_visitor_email'])."\"></td>
       </tr>
 
       <tr>
         <td><b>WWW</b></td>
-        <td><input type=text name=site_visitor_home_page_url value=\"".checkStr($input_vars['site_visitor_home_page_url'])."\"></td>
+        <td><input type=text name=site_visitor_home_page_url value=\"".htmlspecialchars($input_vars['site_visitor_home_page_url'])."\"></td>
       </tr>
       <tr>
         <td></td>

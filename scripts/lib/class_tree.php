@@ -166,7 +166,7 @@ class tree
                "WHERE s.{$this->id}={$node_id} ".
                "GROUP BY ".join(',',$grps).' '.
                "ORDER BY c.{$this->start}";
-        if($this->debug) prn(checkStr($query));
+        if($this->debug) prn(htmlspecialchars($query));
 
         $item_list=\e::db_getrows($query);
 
@@ -212,7 +212,7 @@ class tree
                "GROUP BY ".join(',',$grps).' '.
                "HAVING n_parents=1 ".
                "ORDER BY c.{$this->start}";
-        if($this->debug) prn(checkStr($query));
+        if($this->debug) prn(htmlspecialchars($query));
 
         $item_list=\e::db_getrows($query);
 

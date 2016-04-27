@@ -402,7 +402,7 @@ $input_vars['page_title'] = text("News_import");
 $input_vars['page_header'] = text("News_import");
 
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

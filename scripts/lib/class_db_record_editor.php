@@ -405,12 +405,12 @@ class db_record_editor {
                             break;
 
                         case 'string':
-                            $this->field[$key]['form_element_value'] = checkStr($result[$key]);
+                            $this->field[$key]['form_element_value'] = htmlspecialchars($result[$key]);
                             $this->field[$key]['value'] = $result[$key];
                             break;
 
                         case 'enum':
-                            $this->field[$key]['form_element_value'] = checkStr($result[$key]);
+                            $this->field[$key]['form_element_value'] = htmlspecialchars($result[$key]);
                             $this->field[$key]['value'] = $result[$key];
                             $this->field[$key]['form_element_options'] = $this->draw_options($this->field[$key]['value'], $this->field[$key]['options']);
                             break;
@@ -648,7 +648,7 @@ class db_record_editor {
                     $selected = ' selected ';
                 else
                     $selected = '';
-                $to_return.="<option value=\"" . checkStr(trim($val[0])) . "\" $selected>{$val[1]}</option>\n";
+                $to_return.="<option value=\"" . htmlspecialchars(trim($val[0])) . "\" $selected>{$val[1]}</option>\n";
             }
             else {
                 if ($this->eq($key, $value))

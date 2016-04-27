@@ -216,7 +216,7 @@ $input_vars['page_content'].= "<br/>
 <input type=hidden name=ec_item_id   value='$ec_item_id'>
 <input type=hidden name=ec_item_lang value='$ec_item_lang'>
 <select name=imgsz>".draw_options($input_vars['imgsz'], Array('icon'=>'icon','small'=>'small','medium'=>'medium','large'=>'large','xlarge'=>'xlarge','xxlarge'=>'xxlarge','huge'=>'huge'))."</select>
-<input style='width:300px;' type=text name=query value='".checkStr($query)."'>
+<input style='width:300px;' type=text name=query value='".htmlspecialchars($query)."'>
 <input type=submit value=\"".text('Search')."\"><br/><br/>
 <br/>
 width:<input type=text name=w value={$input_vars['w']}>
@@ -274,7 +274,7 @@ $input_vars['page_menu']['page']=Array('title'=>text('EC_item'),'items'=>Array()
 $input_vars['page_menu']['page']['items'] = menu_ec_item($this_ec_item_info);
 
 $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-$input_vars['page_menu']['site']=Array('title'=>"<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>",'items'=>Array());
+$input_vars['page_menu']['site']=Array('title'=>"<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>",'items'=>Array());
 
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 

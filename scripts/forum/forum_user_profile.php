@@ -16,7 +16,7 @@ $txt = load_msg($input_vars['lang']);
 $user_id = isset($input_vars['user_id']) ? ( (int) $input_vars['user_id'] ) : 0;
 if ($user_id == 0)
     die('User not found');
-$this_user_info = \e::db_getonerow("SELECT * FROM {$table_prefix}forum_user WHERE id={$user_id}");
+$this_user_info = \e::db_getonerow("SELECT * FROM <<tp>>forum_user WHERE id={$user_id}");
 if (!$this_user_info)
     die('User not found');
 # ------------------ get user info - end ---------------------------------------
@@ -40,7 +40,7 @@ exit($echo);
 
 //------------------- site info - begin ----------------------------------------
 $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id} AND is_forum_enabled=1");
+  $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id} AND is_forum_enabled=1");
 // prn($this_site_info);
 if (checkInt($this_site_info['id']) <= 0) {
     $input_vars['page_title'] = $txt['Forum_not_found'];
@@ -57,7 +57,7 @@ $echo.=login_info();
 # ------------------- login info - end -----------------------------------------
 //------------------- forum info - begin ---------------------------------------
 $forum_id = checkInt($input_vars['forum_id']);
-$this_forum_info = \e::db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$forum_id}");
+$this_forum_info = \e::db_getonerow("SELECT * FROM <<tp>>forum_list WHERE id={$forum_id}");
 // prn($this_forum_info);
 if (checkInt($this_forum_info['id']) <= 0) {
     header("Location: " . sites_root_URL . "/forum.php?site_id=$site_id");
@@ -71,27 +71,55 @@ if (strlen($input_vars['name']) > 0 && strlen($input_vars['msg']) > 0) {
         return mysql_escape_string(strip_tags($name));
     }
 
-    $name = ch($input_vars['name']);
-    $email = is_valid_email($input_vars['email']) ? ch($input_vars['email']) : '';
-    $www = ch($input_vars['www']);
-    $subject = ch($input_vars['subject']);
-    $msg = ch($input_vars['msg']);
+    $name = \e::cast('plaintext',\e::request('name',''));
+    
+    $email  = \e::cast('plaintext',\e::request('email',''));
+    if(!is_valid_email($email)){
+        $email='';
+    }
+    
+    $www = \e::cast('plaintext',\e::request('www'));
+    if (!is_valid_url($www)) {
+        $www = '';
+    }
+        
+    $subject = \e::cast('plaintext',\e::request('subject'));
+    $msg = \e::cast('plaintext',\e::request('msg'));
 
-    $query = "INSERT INTO {$table_prefix}forum_thread (subject, forum_id, site_id, data)
-                VALUES ('$subject', '$forum_id', '$site_id', '$data')";
 
-    mysql_query($query, $link);
-    $query = "select LAST_INSERT_ID()";
-    $result = mysql_query($query, $link);
-    $num = mysql_fetch_array($result);
-    $num = $num[0];
+    \e::db_execute(
+            "INSERT INTO <<tp>>forum_thread (subject, forum_id, site_id, data)
+                VALUES (<<string subject>>, <<integer forum_id>>, <<integer site_id>>, <<string data>>)"
+            , [
+                'subject'=>$subject,
+                'forum_id'=>$forum_id,
+                'site_id'=>$site_id,
+                'data'=>$data
+            ]);
+    
+    $num=\e::db_getonerow("select LAST_INSERT_ID() as id");
+    $num=$num['id'];
 
-    $query = "INSERT INTO {$table_prefix}forum_msg (name, forum_id, site_id, thread_id, email, www, subject, msg, data, is_first_msg)
-                Values ('$name', '$forum_id', '$site_id', '$num', '$email', '$www', '$subject', '$msg', '$data',1)";
-    mysql_query($query, $link);
+
+    \e::db_execute(
+            "INSERT INTO <<tp>>forum_msg (name, forum_id, site_id, thread_id, email, www, subject, msg, data, is_first_msg)
+                Values (<<string name>>, <<integer forum_id>>, <<integer site_id>>, <<integer num>>, <<string email>>, <<string www>>, <<string subject>>, <<string msg>>, <<string data>>,1)"
+            , [
+                'name'=>$name,
+                'forum_id'=>$forum_id,
+                'site_id'=>$site_id,
+                'thread_id'=>$num,
+                'email'=>$email,
+                'www'=>$www,
+                'subject'=>$subject,
+                'msg'=>$msg,
+                'data'=>$data,
+                'is_first_msg'=>1
+            ]);
+    // mysql_query($query, $link);
 
     //---------------- notify site admin - begin ---------------------------------
-    $site_admin = \e::db_getonerow("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
+    $site_admin = \e::db_getonerow("SELECT u.email FROM <<tp>>site_user AS su INNER JOIN <<tp>>user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
     if (is_valid_email($site_admin['email'])) {
         run("lib/class.phpmailer");
         run("lib/mailing");
@@ -122,16 +150,18 @@ $echo.="
 
 
 $start = (int) $input_vars['start'];
-$result = mysql_query("SELECT count(*) FROM {$table_prefix}forum_thread WHERE site_id=$site_id AND forum_id=$forum_id", $link) or die("Querry failed");
-$num = mysql_fetch_array($result);
-$num = $num[0];
+$result = \e::db_getonerow("SELECT count(*) as n FROM <<tp>>forum_thread WHERE site_id=$site_id AND forum_id=$forum_id");
+$num = $result['n'];
+
+
 $pages = '';
 
 for ($i = 0; $i < $num; $i = $i + 10) {
-    if ($i == $start)
+    if ($i == $start) {
         $to = '<b>[' . (1 + $i / 10) . ']</b>';
-    else
+    } else {
         $to = (1 + $i / 10);
+    }
     $pages.="<a href=\"" . sites_root_URL . "/thread.php?site_id={$site_id}&start={$i}&forum_id=$forum_id&lang={$input_vars['lang']}\">" . $to . "</a>\n";
 }
 
@@ -141,22 +171,22 @@ for ($i = 0; $i < $num; $i = $i + 10) {
 
 
 
-$query = "SELECT {$table_prefix}forum_thread.* 
-          ,count(DISTINCT {$table_prefix}forum_msg.id) AS n_messages
-          ,MAX({$table_prefix}forum_msg.data) AS  last_message_data
+$query = "SELECT <<tp>>forum_thread.* 
+          ,count(DISTINCT <<tp>>forum_msg.id) AS n_messages
+          ,MAX(<<tp>>forum_msg.data) AS  last_message_data
     FROM 
     (
-        (`{$table_prefix}forum_thread` LEFT JOIN `{$table_prefix}forum_msg`
-          ON (     {$table_prefix}forum_thread.id={$table_prefix}forum_msg.thread_id 
-               AND {$table_prefix}forum_thread.site_id=$site_id
+        (`<<tp>>forum_thread` LEFT JOIN `<<tp>>forum_msg`
+          ON (     <<tp>>forum_thread.id=<<tp>>forum_msg.thread_id 
+               AND <<tp>>forum_thread.site_id=$site_id
                )
          )
      )
-     WHERE     {$table_prefix}forum_thread.site_id=$site_id
-           AND {$table_prefix}forum_thread.forum_id=$forum_id
-     GROUP BY {$table_prefix}forum_thread.id ORDER BY `id` DESC
+     WHERE     <<tp>>forum_thread.site_id=$site_id
+           AND <<tp>>forum_thread.forum_id=$forum_id
+     GROUP BY <<tp>>forum_thread.id ORDER BY `id` DESC
      LIMIT $start, 10";
-$result = mysql_query($query, $link) or die("Query failed");
+$result = \e::db_getrows($query);
 
 $a = mysql_num_rows($result);
 

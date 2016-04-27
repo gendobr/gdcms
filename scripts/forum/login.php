@@ -69,7 +69,7 @@ echo "
   <form action=" . site_root_URL . "/index.php style='width:300px;text-align:right;' method='POST'>
    <input type=hidden name=action value=forum/login>
    <input type=hidden name=lang   value={$input_vars['lang']}>
-   {$txt['User_Login']}:<input type=text name=name value=\"" . checkStr($input_vars['name']) . "\"><br>
+   {$txt['User_Login']}:<input type=text name=name value=\"" . htmlspecialchars($input_vars['name']) . "\"><br>
    {$txt['Password']}:<input type=password name=pswd><br>
    <a href=\"index.php?action=forum/resetpassword\">{$text['Password_reminder']}</a>
    <input type=submit value=\"{$txt['Enter']}\">

@@ -75,7 +75,7 @@ if ($rozdilizformy != '') {
     //       <iframe style='width:1px;height:1px;border:none;' src='" . site_root_URL . "/index.php?action=gallery/html&site_id={$site_id}&lang={$_SESSION['lang']}&cat=" . rawurlencode($rozdilizformy) . "&element={$element_id}&orderBy=date_desc'></iframe>"
     //            ) . '</div></p>';
     $vyvid.="<p>{$text['Gallery_html_code']} : <div style='border:1px solid blue;padding:20px;'>" .
-            checkStr("
+            htmlspecialchars("
              <script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\"></script>
              <div id={$element_id}> </div>
              <script type=\"text/javascript\">
@@ -111,7 +111,7 @@ if ($rozdilizformy != '') {
     # ----------------------------- draw HTML code - begin --------------------
     $element_id = "d" . time();
     $vyvid.="<p>{$text['Gallery_html_code']} : <div style='border:1px solid blue;padding:20px;'>" .
-            checkStr("
+            htmlspecialchars("
              <script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\"></script>
              <div id={$element_id}> </div>
              <script type=\"text/javascript\">
@@ -214,7 +214,7 @@ $input_vars['page_content'] = $vyvid;
 
 //--------------------------- context menu -- begin ----------------------------
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

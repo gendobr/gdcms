@@ -186,10 +186,10 @@ $vyvid = process_template($search_template
     , 'text' => $txt
     , 'search_result' => $search_result
     , 'urls_found' => $num_rows
-    , 'form_keywords' => checkStr(isset($input_vars['keywords']) ? $input_vars['keywords'] : '')
+    , 'form_keywords' => htmlspecialchars(isset($input_vars['keywords']) ? $input_vars['keywords'] : '')
     , 'form_action' => \e::config('url_prefix_search')
     , 'form_site_id' => join(',', $siteIds)
-    , 'form_lang' => checkStr($input_vars['lang'])
+    , 'form_lang' => htmlspecialchars($input_vars['lang'])
         ));
 $vyvid .= "<div style='opacity:0.4;font-size:10px;'>" . (microtime(true) - $timestart) . 's</div>';
 // -------------------------- draw - end ---------------------------------------

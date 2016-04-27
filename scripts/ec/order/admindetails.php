@@ -446,13 +446,13 @@ $input_vars['page_content'] = $tor;
 # --------------------------- context menu -- begin ----------------------------
 
 $sti=text('EC_order_details').' #'.$this_ec_order_info['ec_order_id'];
-$_menu="<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>";
+$_menu="<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>";
 $input_vars['page_menu']['page']=Array('title'=>$_menu,'items'=>Array());
 $input_vars['page_menu']['page']['items'] = menu_ec_order($this_ec_order_info);
 
 
 $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-$Site_menu="<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>";
+$Site_menu="<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>";
 $input_vars['page_menu']['site']=Array('title'=>$Site_menu,'items'=>Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 

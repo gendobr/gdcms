@@ -151,7 +151,7 @@
   $input_vars['page_menu']['page']['items'] = menu_page($this_page_info);
 
     $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-    $input_vars['page_menu']['site']=Array('title'=>"<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>",'items'=>Array());
+    $input_vars['page_menu']['site']=Array('title'=>"<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>",'items'=>Array());
   $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 
 //----------------------------- context menu - end -----------------------------

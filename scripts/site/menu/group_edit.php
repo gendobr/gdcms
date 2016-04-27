@@ -173,10 +173,10 @@
     <tr><td><b>{$text['Site']} : </b></td> <td>{$this_site_info['title']}</td></tr>
     <tr><td><b>{$text['Is_main_menu']} : </b></td> <td><select name=menu_group_is_main>".draw_options($menu_group_info['is_main'],Array('-1'=>$text['negative_answer'],'0'=>$text['positive_answer']))."</select></td></tr>
     <tr><td><b>{$text['Language']}<font color=red>*</font> : </b></td> <td><select name=menu_group_lang>".draw_options($menu_group_info['lang'],\e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name;"))."</select></td></tr>
-    <tr><td><b>{$text['Title']}<font color=red>*</font></b> : </td> <td><input type=text name=menu_group_html value=\"".checkStr($menu_group_info['html'])."\"></td></tr>
-    <tr><td><b>{$text['Icon']} : </b></td>   <td><input type=text name=menu_group_icon value=\"".checkStr($menu_group_info['icon'])."\"></td></tr>
-    <tr><td><b>{$text['URL']} : </b></td>   <td><input type=text name=menu_group_url value=\"".checkStr($menu_group_info['url'])."\"></td></tr>
-    <tr><td><b>{$text['UID']} : </b></td>   <td><input type=text name=menu_group_code value=\"".checkStr($menu_group_info['code'])."\"></td></tr>
+    <tr><td><b>{$text['Title']}<font color=red>*</font></b> : </td> <td><input type=text name=menu_group_html value=\"".htmlspecialchars($menu_group_info['html'])."\"></td></tr>
+    <tr><td><b>{$text['Icon']} : </b></td>   <td><input type=text name=menu_group_icon value=\"".htmlspecialchars($menu_group_info['icon'])."\"></td></tr>
+    <tr><td><b>{$text['URL']} : </b></td>   <td><input type=text name=menu_group_url value=\"".htmlspecialchars($menu_group_info['url'])."\"></td></tr>
+    <tr><td><b>{$text['UID']} : </b></td>   <td><input type=text name=menu_group_code value=\"".htmlspecialchars($menu_group_info['code'])."\"></td></tr>
     <tr><td></td><td><input type=submit value=\"{$text['Save']}\"></td></tr>
   </form>
   </table>

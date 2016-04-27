@@ -143,7 +143,7 @@ $category_filter = "
   <input type=hidden name=action value=gallery/admin/photogalery>
   <input type=hidden name=site_id value=$site_id>
   <input type=hidden name=start value=0>
-  {$text['Gallery_category']}: <input type=text name=show_category value=\"" . checkStr($show_category) . "\" style='width:200px;'>
+  {$text['Gallery_category']}: <input type=text name=show_category value=\"" . htmlspecialchars($show_category) . "\" style='width:200px;'>
   <input type=submit value=\"{$text['Search']}\">
   </form>
   <form action=index.php style='margin:0;'>
@@ -229,7 +229,7 @@ $input_vars['page_content'] = $vyvid;
 
 //--------------------------- context menu -- begin ----------------------------
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

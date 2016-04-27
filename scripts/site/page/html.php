@@ -55,7 +55,7 @@ run('site/menu');
   {$text['Get_html_link_man']}
   <div style='padding:10px;border:1px solid green;'>
   <code style='color:green;font-size:110%; font-weight:bold;'>".
-  checkStr("<a href=\"{$page_path}\">{$this_page_info['title']}</a>")
+  htmlspecialchars("<a href=\"{$page_path}\">{$this_page_info['title']}</a>")
   ."</code>
   </div>
   <br>

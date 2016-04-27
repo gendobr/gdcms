@@ -31,7 +31,7 @@ if(isset($input_vars['help'])){
 
     $elementId='newsTags'.time();
     echo '<pre>'.
-    checkStr("
+    htmlspecialchars("
         <script type=\"text/javascript\" src=\"".site_root_URL."/scripts/lib/ajax.js\"></script>
         <script type=\"text/javascript\">
           var request=new ajax(
@@ -77,7 +77,7 @@ if (count($tags) > 0) {
     $cnt = count($tags);
     for ($i = 0; $i < $cnt; $i++) {
         $tags[$i] = Array(
-            'html'=>  checkStr($tags[$i]['tag']),
+            'html'=>  htmlspecialchars($tags[$i]['tag']),
             'url'=>$url_prefix.  rawurlencode($tags[$i]['tag']),
             'n'=>$tags[$i]['n_news']);
     }

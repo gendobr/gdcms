@@ -120,7 +120,7 @@ echo "
   <form action=" . site_root_URL . "/index.php style='width:300px;text-align:right;'>
    <input type=hidden name=action value=forum/resetpassword>
    <input type=hidden name=lang   value={$input_vars['lang']}>
-   {$txt['User_Login']}:<input type=text name=name value=\"" . checkStr($input_vars['name']) . "\"><br>
+   {$txt['User_Login']}:<input type=text name=name value=\"" . htmlspecialchars($input_vars['name']) . "\"><br>
    <input type=submit value=\"{$txt['Send_me_password']}\">
   </form>
 ";

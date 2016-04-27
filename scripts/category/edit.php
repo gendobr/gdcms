@@ -461,7 +461,7 @@ foreach ($list_of_languages as $lng) {
     </div>
     <div class=big>
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$lng['name']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -469,7 +469,7 @@ foreach ($list_of_languages as $lng) {
      <textarea name='{$form['elements']['category_description']->form_element_name}_{$lng['name']}'
                id='{$form['elements']['category_description']->form_element_name}_{$lng['name']}'
                style='width:100%;height:300px;' class=\"wysiswyg\">"
-            . checkStr(get_langstring($form['elements']['category_description']->value, $lng['name']))
+            . htmlspecialchars(get_langstring($form['elements']['category_description']->value, $lng['name']))
             . "</textarea>
      <div align=right><input type=submit value='{$text['Save']}'></div>
     </div>
@@ -517,7 +517,7 @@ foreach ($list_of_languages as $lng) {
     </div>
     <div class=big>
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$lng['name']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -525,7 +525,7 @@ foreach ($list_of_languages as $lng) {
      <textarea name='{$form['elements']['category_description_short']->form_element_name}_{$lng['name']}'
                id='{$form['elements']['category_description_short']->form_element_name}_{$lng['name']}'
                style='width:100%;height:100px;' class=\"wysiswyg\">"
-            . checkStr(get_langstring($form['elements']['category_description_short']->value, $lng['name']))
+            . htmlspecialchars(get_langstring($form['elements']['category_description_short']->value, $lng['name']))
             . "</textarea>
     </div>
     ";
@@ -555,7 +555,7 @@ foreach ($list_of_languages as $lng) {
      <textarea name='{$form['elements']['category_meta']->form_element_name}_{$lng['name']}'
                id='{$form['elements']['category_meta']->form_element_name}_{$lng['name']}'
                style='width:100%;height:100px;'>"
-            . checkStr(get_langstring($form['elements']['category_meta']->value, $lng['name']))
+            . htmlspecialchars(get_langstring($form['elements']['category_meta']->value, $lng['name']))
             . "</textarea>
   <script type=\"text/javascript\">
   $(document).ready(function(){
@@ -687,7 +687,7 @@ foreach ($this_category->parents as $row) {
          <a href=\"{$row['URL']}\" title=\"{$row['category_title']}\" "
             . ( ($row['is_visible'] == '0') ? " style='color:silver;'" : '' ) . '>'
             . ($row['category_code'] ? $row['category_code'] : $row['category_id']) . " &nbsp;&nbsp;&nbsp; {$row['category_title_short']}</a><br/>
-         <a href='{$parent_url}' style='color:silver;'>" . checkStr($parent_url) . "</a>
+         <a href='{$parent_url}' style='color:silver;'>" . htmlspecialchars($parent_url) . "</a>
          <br>
           ";
 
@@ -710,7 +710,7 @@ $tor.="
     <a href=\"#\" style='margin-left:-25px;' class=context_menu_link onclick=\"report_change_state('cm{$category['category_id']}'); return false;\"><img src=img/context_menu.gif border=0 width=20 height=15></a>
     <span title=\"{$category['category_title']}\" style='" . (($category['is_visible'] == 0) ? " color:silver;" : '') . ";font-size:150%;'>
     " . ($category['category_code'] ? $category['category_code'] : $category['category_id']) . " &nbsp;&nbsp;&nbsp; {$category['category_title_short']}<br/>
-    <a style='font-size:80%;color:silver;' href='{$this_category_url}'>" . checkStr($this_category_url) . "</a>
+    <a style='font-size:80%;color:silver;' href='{$this_category_url}'>" . htmlspecialchars($this_category_url) . "</a>
     </span>
     <br>
     <div id=\"cm{$category['category_id']}\" class=menu_block style='display:none;'>";
@@ -737,7 +737,7 @@ $input_vars['page_menu']['category']['items'] = menu_category($this_category->in
 //prn($input_vars['page_menu']['category']);
 # site context menu
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 ?>

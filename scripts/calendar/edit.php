@@ -380,7 +380,7 @@ $input_vars['page_content'].= "
     <form method=post action=index.php?site_id={$site_id}&action=calendar/edit&event_id={$event_id}>
           <input type=hidden name='upd' value='1'>
           <p>" . text('Calendar_event_title') . "<br />
-          <INPUT type=text name=nazva1 value=\"" . checkStr($this_event_info['nazva']) . "\" SIZE=50></p>
+          <INPUT type=text name=nazva1 value=\"" . htmlspecialchars($this_event_info['nazva']) . "\" SIZE=50></p>
 
           <p>" . text('Calendar_event_image') . "<br />
           <INPUT type=text name=kartynka1 value=\"{$this_event_info['kartynka']}\"  SIZE=50></p>
@@ -474,12 +474,12 @@ $input_vars['page_content'].= "
 <p>
 " . text('Calendar_event_description') . "<br />
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$_SESSION['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
       </div>
-     <textarea name=description rows='10' style='width:100%;' class='wysiswyg'>" . checkStr($this_event_info['description']) . "</textarea>
+     <textarea name=description rows='10' style='width:100%;' class='wysiswyg'>" . htmlspecialchars($this_event_info['description']) . "</textarea>
 </p>
 
 <input type=submit value=\"" . text('Save_Changes') . "\">
@@ -492,7 +492,7 @@ $input_vars['page_content'].= "
 //  //prn($input_vars['page_menu']['category']);
 # site context menu
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 

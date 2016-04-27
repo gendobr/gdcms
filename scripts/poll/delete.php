@@ -33,12 +33,12 @@ if(get_level($site_id)==0)
   if($delete_poll_id>0)
   {
      $query="DELETE FROM {$table_prefix}golos_pynannja WHERE id={$delete_poll_id} AND site_id={$site_id}";
-     if($debug) prn(checkStr($query));
+     if($debug) prn(htmlspecialchars($query));
      #prn($query);
      \e::db_execute($query);
 
      $query="DELETE FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id={$delete_poll_id} AND site_id={$site_id}";
-     if($debug) prn(checkStr($query));
+     if($debug) prn(htmlspecialchars($query));
      #prn($query);
      \e::db_execute($query);
   }

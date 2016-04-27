@@ -121,7 +121,7 @@ $page_content=process_template($_template
               , 'data_is_correct' => $data_is_correct
               , 'text' => $txt
               , 'message' => $message
-              , 'news_subscriber_email' => (isset($input_vars['news_subscriber_email'])?checkStr($input_vars['news_subscriber_email']):'')
+              , 'news_subscriber_email' => (isset($input_vars['news_subscriber_email'])?htmlspecialchars($input_vars['news_subscriber_email']):'')
         )
         // , Array('show_related_news', 'show_news_categories')
 );

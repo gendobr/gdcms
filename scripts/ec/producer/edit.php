@@ -217,13 +217,13 @@ $input_vars['page_title'] = $input_vars['page_header'] = text('EC_edit_producer'
 $input_vars['page_content'] = $rep->draw($form) . "
 
             <div id=\"insert_links_butons1\">
-                <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+                <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$_SESSION['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
                 <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
                 <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
                 <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
             </div>
             <div id=\"insert_links_butons2\">
-                <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+                <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$_SESSION['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
                 <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
                 <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
                 <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -251,14 +251,14 @@ $input_vars['page_content'] = $rep->draw($form) . "
 //----------------------------- context menu - begin ---------------------------
 if ($rep->id > 0) {
     $sti = $text['EC_producer'] . ' "' . $this_producer_info['ec_producer_title'] . '"';
-    $input_vars['page_menu']['producer'] = Array('title' => "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>", 'items' => Array());
+    $input_vars['page_menu']['producer'] = Array('title' => "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>", 'items' => Array());
     $input_vars['page_menu']['producer']['items'] = menu_ec_producer($this_producer_info);
 }
 //----------------------------- context menu - end -----------------------------
 //--------------------------- context menu -- begin ----------------------------
 
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

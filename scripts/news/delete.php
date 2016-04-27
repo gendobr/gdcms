@@ -47,20 +47,20 @@ if (isset($input_vars['delete_news_id'])) {
             // delete news categories if there are no translations
             $query = "DELETE FROM {$table_prefix}news_category WHERE news_id={$delete_news_id}";
             if ($debug) {
-                prn(checkStr($query));
+                prn(htmlspecialchars($query));
             }
             \e::db_execute($query);
         }
         
         $query = "DELETE FROM {$table_prefix}news WHERE id={$delete_news_id} AND lang='$delete_news_lang' AND site_id={$site_id}";
         if ($debug) {
-            prn(checkStr($query));
+            prn(htmlspecialchars($query));
         }
         \e::db_execute($query);
 
         $query = "DELETE FROM {$table_prefix}news_tags WHERE news_id={$delete_news_id} AND lang='$delete_news_lang'";
         if ($debug) {
-            prn(checkStr($query));
+            prn(htmlspecialchars($query));
         }
         \e::db_execute($query);
 
@@ -68,7 +68,7 @@ if (isset($input_vars['delete_news_id'])) {
         if (!\e::db_getonerow("SELECT id FROM {$table_prefix}news WHERE id={$delete_news_id} AND site_id={$site_id} LIMIT 0,1")) {
             $query = "DELETE FROM {$table_prefix}news_comment WHERE news_id={$delete_news_id} AND site_id={$site_id}";
             if ($debug) {
-                prn(checkStr($query));
+                prn(htmlspecialchars($query));
             }
             \e::db_execute($query);
         }

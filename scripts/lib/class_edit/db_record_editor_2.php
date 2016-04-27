@@ -169,7 +169,7 @@ class db_record_editor_2 extends db_record_editor_common {
                 if ($this->debug)
                     $this->prn($query);
                 else {
-                    $this->prn(checkStr($query));
+                    $this->prn(htmlspecialchars($query));
                     $retcode = \e::db_execute($query);
 
                     return $retcode;

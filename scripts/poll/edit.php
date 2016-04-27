@@ -164,7 +164,7 @@ foreach($this_poll_info['vidpovidi'] as $id=>$fld) {
               <input type=text
                      name=poll[vidpovidi][{$fld['id']}][html]
                      id=vidpovidi_html_{$row_id}
-                     value=\"".checkStr($fld['html'])."\"
+                     value=\"".htmlspecialchars($fld['html'])."\"
                      style='width:300px;'><input type=button value=\"{$text['Delete']}\" onclick=\"del_row('vidpovidi_row_{$row_id}')\">
               </div>\n";
     $row_id++;
@@ -275,7 +275,7 @@ $input_vars['page_content']= "
         $messages
 
   <small>{$text['Poll_question']}:</small><br>
-  <textarea type=text name=poll[title] style='width:320px;height:120px;'>".checkStr($this_poll_info['title'])."</textarea><br>
+  <textarea type=text name=poll[title] style='width:320px;height:120px;'>".htmlspecialchars($this_poll_info['title'])."</textarea><br>
 
   <input type=checkbox name=poll[is_active] ".($this_poll_info['is_active']==1?'checked':'').">{$text['Poll_is_active']};
   <br>{$text['Poll_type']}
@@ -299,7 +299,7 @@ run('poll/functions');
 $input_vars['page_menu']['page']['items'] = menu_poll($this_poll_info);
 
 $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-$Site_menu="<span title=\"".checkStr($sti)."\">".shorten($sti,25)."</span>";
+$Site_menu="<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,25)."</span>";
 $input_vars['page_menu']['site']=Array('title'=>$Site_menu,'items'=>Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //----------------------------- context menu - end -----------------------------

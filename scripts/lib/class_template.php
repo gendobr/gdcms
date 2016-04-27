@@ -153,7 +153,7 @@ class gd_template
 
               $this->variables['block-'.$block_name]=substr($tpl,$inner_block_begin,$inner_block_end-$inner_block_begin);
               
-              if($debug) prn(checkStr($tpl));
+              if($debug) prn(htmlspecialchars($tpl));
               $tpl=substr($tpl,0,$begin_block_pos)."<%block-{$block_name}%>".substr($tpl,$end_block_pos);
               $is_changed=true;
 

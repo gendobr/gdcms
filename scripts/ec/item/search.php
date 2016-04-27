@@ -99,7 +99,7 @@ include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
                            'text'=>$txt,
                            'site'=>$this_site_info,
                            'hidden_form_fields'=>hidden_form_elements('^ec_item_keywords$'),
-                           'ec_item_keywords'=>checkStr(isset($input_vars['ec_item_keywords'])?$input_vars['ec_item_keywords']:'')
+                           'ec_item_keywords'=>htmlspecialchars(isset($input_vars['ec_item_keywords'])?$input_vars['ec_item_keywords']:'')
                      )
   )
   .process_template( $ec_item_template_list

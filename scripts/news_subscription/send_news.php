@@ -16,7 +16,7 @@ $lang = get_language('lang');
 $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
 $this_news_info = \e::db_getonerow($query);
 if ($debug) {
-    prn(checkStr($query), $this_news_info);
+    prn(htmlspecialchars($query), $this_news_info);
 }
 if (checkInt($this_news_info['id']) <= 0) {
     if (!isset($input_vars['site_id'])) {

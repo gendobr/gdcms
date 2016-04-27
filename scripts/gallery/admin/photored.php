@@ -106,15 +106,15 @@ $vyvid.="
 
 $vyvid .="
       <td valign=top>{$text['Gallery_image_label']}</td>
-      <td valign=top><INPUT type=text name=pidpys1  style='width:100%;' value=\"" . checkStr($row['pidpys']) . "\"></td>
+      <td valign=top><INPUT type=text name=pidpys1  style='width:100%;' value=\"" . htmlspecialchars($row['pidpys']) . "\"></td>
       </tr>
       <tr>
         <td valign=top>{$text['Gallery_image_author']}</td>
-        <td valign=top><INPUT type=text name=autor1  value='" . checkStr($row['autor']) . "' style='width:100%;'></td>
+        <td valign=top><INPUT type=text name=autor1  value='" . htmlspecialchars($row['autor']) . "' style='width:100%;'></td>
       </tr>
       <tr>
         <td valign=top>{$text['Gallery_image_rik']}</td>
-        <td valign=top><INPUT type=text name=rik1 value=" . checkStr($row['rik']) . " style='width:100%;'>
+        <td valign=top><INPUT type=text name=rik1 value=" . htmlspecialchars($row['rik']) . " style='width:100%;'>
 			</td></tr>
       <tr>
       <td valign=top>{$text['Gallery_image_published']}</td>
@@ -135,7 +135,7 @@ $vyvid .= ">{$text['positive_answer']}</OPTION>
 
       <tr>
         <td valign=top>{$text['Gallery_category']}:</td>
-        <td valign=top><textarea name=rozdil1 id=rozdil style='width:100%;'>" . checkStr($row['rozdil']) . "</textarea>
+        <td valign=top><textarea name=rozdil1 id=rozdil style='width:100%;'>" . htmlspecialchars($row['rozdil']) . "</textarea>
 			<p>{$text['Gallery_existing_categories']}:<br />
         <small>{$text['Gallery_existing_categories_tip']}</small>
         <script type=\"text/javascript\">
@@ -185,7 +185,7 @@ $vyvid .= "
 $vyvid .="</div></td>
       </tr>
       <tr>
-      <tr><td></td><td valign=top>".text('Long_description')."</td><td><textarea name=description1 id=wysiswyg style='width:100%'>" . checkStr($row['description']) . "</textarea></td></tr>
+      <tr><td></td><td valign=top>".text('Long_description')."</td><td><textarea name=description1 id=wysiswyg style='width:100%'>" . htmlspecialchars($row['description']) . "</textarea></td></tr>
       </tr>
 
       <tr><td></td><td></td><td><input type=submit value=\"OK\"></td></tr>
@@ -198,7 +198,7 @@ $input_vars['page_content'] = $vyvid;
 
 //--------------------------- context menu -- begin ----------------------------
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

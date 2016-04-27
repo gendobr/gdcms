@@ -400,7 +400,7 @@ $input_vars['page_content'].="
   </tr>
   <tr>
     <td>" . text('Title') . ":</td>
-    <td colspan=5><input type=text MAXLENGTH=128 name=ec_item_title value=\"" . checkStr($this_ec_item_info['ec_item_title']) . "\" style='width:100%'></td>
+    <td colspan=5><input type=text MAXLENGTH=128 name=ec_item_title value=\"" . htmlspecialchars($this_ec_item_info['ec_item_title']) . "\" style='width:100%'></td>
   </tr>
 
   <tr>
@@ -433,12 +433,12 @@ $input_vars['page_content'].="
 
   <tr>
     <td>" . text('ec_material') . ":</td>
-    <td colspan=5><input type=text name=ec_item_material value=\"" . checkStr($this_ec_item_info['ec_item_material']) . "\" style='width:100%'></td>
+    <td colspan=5><input type=text name=ec_item_material value=\"" . htmlspecialchars($this_ec_item_info['ec_item_material']) . "\" style='width:100%'></td>
   </tr>
 
   <tr>
     <td>" . text('Tags') . ":</td>
-    <td colspan=5><input type=text name=ec_item_tags value=\"" . checkStr($this_ec_item_info['ec_item_tags']) . "\" style='width:100%'></td>
+    <td colspan=5><input type=text name=ec_item_tags value=\"" . htmlspecialchars($this_ec_item_info['ec_item_tags']) . "\" style='width:100%'></td>
   </tr>
 
   <tr>
@@ -449,7 +449,7 @@ $input_vars['page_content'].="
 
 
     <td align=right>" . text('Ec_item_UID') . ":</td>
-    <td><input type=text MAXLENGTH=50 name=ec_item_uid value=\"" . checkStr($this_ec_item_info['ec_item_uid']) . "\" style='width:100%;'></td>
+    <td><input type=text MAXLENGTH=50 name=ec_item_uid value=\"" . htmlspecialchars($this_ec_item_info['ec_item_uid']) . "\" style='width:100%;'></td>
     </td>
 
     <td align=right>{$text['EC_item_publication']}:</td>
@@ -466,15 +466,15 @@ $input_vars['page_content'].="
 
   <tr>
     <td>" . text('Number_of_items') . ":</td>
-    <td><input type=text name=ec_item_amount value=\"" . checkStr($this_ec_item_info['ec_item_amount']) . "\" style='width:100%'></td>
+    <td><input type=text name=ec_item_amount value=\"" . htmlspecialchars($this_ec_item_info['ec_item_amount']) . "\" style='width:100%'></td>
     <td align=right>" . text('Price') . ":</td>
     <td><nobr>
-    <input type=text name=ec_item_price value=\"" . checkStr($this_ec_item_info['ec_item_price']) . "\" style='width:40pt'><!--
+    <input type=text name=ec_item_price value=\"" . htmlspecialchars($this_ec_item_info['ec_item_price']) . "\" style='width:40pt'><!--
  -->" . (isset($list_of_currencies[$this_ec_item_info['ec_item_currency']]) ? $list_of_currencies[$this_ec_item_info['ec_item_currency']] : $this_ec_item_info['ec_item_currency']) . "</nobr>
     </td>
     <td align=right>" . text('Mark') . ":</td>
     <td>
-    <input type=text name=ec_item_mark value=\"" . checkStr($this_ec_item_info['ec_item_mark']) . "\" style='width:100%'>
+    <input type=text name=ec_item_mark value=\"" . htmlspecialchars($this_ec_item_info['ec_item_mark']) . "\" style='width:100%'>
     </td>
   </tr>
 
@@ -483,11 +483,11 @@ $input_vars['page_content'].="
   <tr>
     <td>" . text('ec_size') . ":</td>
     <td colspan=1><nobr>
-     <input type=text MAXLENGTH=60 name=ec_item_size[0] value=\"" . checkStr($this_ec_item_info['ec_item_size'][0]) . "\" style='width:45pt;'><!--
+     <input type=text MAXLENGTH=60 name=ec_item_size[0] value=\"" . htmlspecialchars($this_ec_item_info['ec_item_size'][0]) . "\" style='width:45pt;'><!--
   -->x<!--
-  --><input type=text MAXLENGTH=60 name=ec_item_size[1] value=\"" . checkStr($this_ec_item_info['ec_item_size'][1]) . "\" style='width:45pt;'><!--
+  --><input type=text MAXLENGTH=60 name=ec_item_size[1] value=\"" . htmlspecialchars($this_ec_item_info['ec_item_size'][1]) . "\" style='width:45pt;'><!--
   -->x<!--
-  --><input type=text MAXLENGTH=60 name=ec_item_size[2] value=\"" . checkStr($this_ec_item_info['ec_item_size'][2]) . "\" style='width:45pt;'><!--
+  --><input type=text MAXLENGTH=60 name=ec_item_size[2] value=\"" . htmlspecialchars($this_ec_item_info['ec_item_size'][2]) . "\" style='width:45pt;'><!--
   --><select name=ec_item_size[3] style='width:40pt;'>" .
         draw_options($this_ec_item_info['ec_item_size'][3], $list_of_length_units)
         . "</select></nobr></td>
@@ -495,14 +495,14 @@ $input_vars['page_content'].="
 
     <td align=\"right\">" . text('ec_weight') . ":</td>
     <td colspan=1>
-     <input type=text MAXLENGTH=60 name=ec_item_weight[0] value=\"" . checkStr($this_ec_item_info['ec_item_weight'][0]) . "\" style='width:30pt;'><!--
+     <input type=text MAXLENGTH=60 name=ec_item_weight[0] value=\"" . htmlspecialchars($this_ec_item_info['ec_item_weight'][0]) . "\" style='width:30pt;'><!--
   --><select name=ec_item_weight[1] style='width:40pt;'>" .
         draw_options($this_ec_item_info['ec_item_weight'][1], $list_of_weight_units)
         . "</select></td>
 
     <td align=\"right\">" . text('ec_item_ordering_') . ":</td>
     <td colspan=1>
-     <input type=text MAXLENGTH=60 name=ec_item_ordering value=\"" . checkStr(isset($this_ec_item_info['ec_item_ordering']) ? $this_ec_item_info['ec_item_ordering'] : 0) . "\" style='width:30pt;'><!--
+     <input type=text MAXLENGTH=60 name=ec_item_ordering value=\"" . htmlspecialchars(isset($this_ec_item_info['ec_item_ordering']) ? $this_ec_item_info['ec_item_ordering'] : 0) . "\" style='width:30pt;'><!--
   --></td>
 
 
@@ -511,7 +511,7 @@ $input_vars['page_content'].="
   <tr>
     <td>" . text('ec_item_code') . ":</td>
     <td colspan=5>
-     <input type=text MAXLENGTH=255 name=ec_item_code value=\"" . checkStr($this_ec_item_info['ec_item_code']) . "\" style='width:100%;'>
+     <input type=text MAXLENGTH=255 name=ec_item_code value=\"" . htmlspecialchars($this_ec_item_info['ec_item_code']) . "\" style='width:100%;'>
      </td>
   </tr>
 
@@ -555,7 +555,7 @@ $input_vars['page_content'].="
   <td colspan=6><br><br>
   <b>" . text('Short_description') . ":</b><br>
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_ec_item_info['ec_item_lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -566,7 +566,7 @@ $input_vars['page_content'].="
             tabindex='3'
             class=\"wysiswyg\"
             style=\"width:100%; height:100px;\">" .
-        checkStr($this_ec_item_info['ec_item_abstract'])
+        htmlspecialchars($this_ec_item_info['ec_item_abstract'])
         . "</textarea>
   </td>
   </tr>
@@ -576,7 +576,7 @@ $input_vars['page_content'].="
   <td colspan=6><br><br>
   <b>" . text('Long_description') . "</b>:<br>
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_ec_item_info['ec_item_lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -587,7 +587,7 @@ $input_vars['page_content'].="
             tabindex='3'
             class=\"wysiswyg\"
             style=\"width:100%; height:300px;\">" .
-        checkStr($this_ec_item_info['ec_item_content'])
+        htmlspecialchars($this_ec_item_info['ec_item_content'])
         . "</textarea>
   <div>
   {$text['Upload_page']}
@@ -613,7 +613,7 @@ $input_vars['page_content'].="
     <b>" . text('Variants') . "</b>:<br/>
     " . text('ec_variant_format') . "
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_ec_item_info['ec_item_lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -624,7 +624,7 @@ $input_vars['page_content'].="
             tabindex='3'
             class=\"wysiswyg\"
             style=\"width:100%; height:300px;\">" .
-        checkStr($this_ec_item_info['ec_item_variants'])
+        htmlspecialchars($this_ec_item_info['ec_item_variants'])
         . "</textarea>
     <div style='color:silver;'>
      " . text('ec_variant_sample') . "
@@ -667,7 +667,7 @@ $input_vars['page_menu']['page'] = Array('title' => text('EC_item'), 'items' => 
 $input_vars['page_menu']['page']['items'] = menu_ec_item($this_ec_item_info);
 
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$input_vars['page_menu']['site'] = Array('title' => "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>", 'items' => Array());
+$input_vars['page_menu']['site'] = Array('title' => "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>", 'items' => Array());
 
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 

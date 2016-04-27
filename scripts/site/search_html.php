@@ -41,7 +41,7 @@ $vyvid="
 </form>
 ";
 
-$vyvid=checkStr($vyvid);
+$vyvid=htmlspecialchars($vyvid);
 
 echo "
 <div id=toinsert>

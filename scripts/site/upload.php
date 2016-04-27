@@ -112,7 +112,7 @@ Directory <b><a href=\"index.php?action=site/files&site_id=$site_id&current_dir=
     <input type=\"hidden\" name=\"action\"  id=\"action\"  value=\"site/upload_receiver\">
     <input type=\"hidden\" name=\"site_id\" id=\"site_id\" value=\"{$site_id}\">
     <input type=\"hidden\" name=\"".session_name()."\" id=\"session_name\" value=\"".session_id()."\">
-    <input type=\"hidden\" name=\"dirname\" id=\"dirname\" value=\"".  checkStr($input_vars['dirname'])."\">
+    <input type=\"hidden\" name=\"dirname\" id=\"dirname\" value=\"".  htmlspecialchars($input_vars['dirname'])."\">
 
     <div id=\"uploader\"><p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p></div>
     <div><a href=\"javascript:void(upload_again())\">Upload more files</a></div>
@@ -123,7 +123,7 @@ Directory <b><a href=\"index.php?action=site/files&site_id=$site_id&current_dir=
 
 //--------------------------- context menu -- begin ----------------------------
   $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-  $input_vars['page_menu']['site']=Array('title'=>"<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>" ,'items'=>Array());
+  $input_vars['page_menu']['site']=Array('title'=>"<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>" ,'items'=>Array());
   $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------
 

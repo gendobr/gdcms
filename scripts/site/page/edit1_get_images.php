@@ -176,8 +176,8 @@ function html_get_title($file_content)
       $upload_files_link="";
       $upload_files_link.="
       <form action=index.php>
-      <input type=hidden name=action value='".checkStr($input_vars['action'])."'>
-      <input type=hidden name=current_dir value='".checkStr($current_dir)."'>
+      <input type=hidden name=action value='".htmlspecialchars($input_vars['action'])."'>
+      <input type=hidden name=current_dir value='".htmlspecialchars($current_dir)."'>
       <nobr>{$text['Create_subdirectory']}<input type=text name=create_dir_name><input type=submit value=OK></nobr>
       </form>
       ";
@@ -185,8 +185,8 @@ function html_get_title($file_content)
       $upload_files_link.="
       <form action=index.php method=post  enctype=\"multipart/form-data\">
       <b>{$text['File']}</b>:<br>
-      <input type=hidden name=action value='".checkStr($input_vars['action'])."'>
-      <input type=hidden name=current_dir value='".checkStr($current_dir)."'>
+      <input type=hidden name=action value='".htmlspecialchars($input_vars['action'])."'>
+      <input type=hidden name=current_dir value='".htmlspecialchars($current_dir)."'>
       <nobr><input type=file name=userfile><input type=submit value=\"{$text['Upload']}\"></nobr>
       </form>
       <a href=\"".site_root_URL."/index.php?action=site/swfupload_form&site_id=$this_site_id&dirname=".str_replace("/$this_site_dir",'/',$current_dir)."\" target=_blank>{$text['Upload_more_files']}</a>

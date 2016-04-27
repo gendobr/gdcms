@@ -123,6 +123,15 @@ define('emails_at_once',1);
 $config->defaultToVisualEditor=1;
 
 
+$config->gallery_small_image_width = 300;
+$config->gallery_small_image_height=240;
+
+
+//\e::config('gallery_small_image_width')
+
+$config->gallery_big_image_width= 800;
+$config->gallery_big_image_height= 800;
+
 
 # ----------------------------- urls without mod_rewrite - begin ---------------------------
 // ++++++++++++
@@ -157,15 +166,9 @@ $config->url_prefix_search= sites_root_URL . "/search.php?";
 # ----------------------------- urls using mod_rewrite in apache - end ---------------------
 
 
-$config->gallery_small_image_width = 300;
-$config->gallery_small_image_height=240;
-
-
-//\e::config('gallery_small_image_width')
-
-$config->gallery_big_image_width= 800;
-$config->gallery_big_image_height= 800;
-
+$config->url_template_forum_list=$config->APPLICATION_PUBLIC_URL . "/index.php?action=forum/forum&site_id={site_id}&lang={lang}&id}&start={start}";
+$config->url_template_thread_list=$config->APPLICATION_PUBLIC_URL . "/index.php?action=forum/thread&site_id={site_id}&lang={lang}&forum_id={forum_id}&start={start}";
+$config->url_template_message_list=$config->APPLICATION_PUBLIC_URL . "/index.php?action=forum/msglist&thread_id={thread_id}&forum_id={forum_id}&site_id={site_id}&lang={lang}&start={start}";
 
 $config->url_template_news_list = $config->APPLICATION_PUBLIC_URL . "/index.php?action=news/view&site_id={site_id}&lang={lang}&{other_parameters}";
 $config->url_template_news_list_other_parameters= "{key}={value}&"; // template for one (key, value) pair

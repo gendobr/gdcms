@@ -64,7 +64,7 @@ echo "
 
 foreach($page_list as $pa)
 {
-  echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+  echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
 }
 
 
@@ -75,7 +75,7 @@ echo '<br>';
 // Browse pages by category
         $pa['title'] = $txt['Browse_pages'];
         $pa['url']   = site_root_URL."/index.php?action=site/page/browse&site_id={$this_site_info['id']}&lang={$lang}";
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
 
 
       // search form
@@ -83,7 +83,7 @@ echo '<br>';
       {
         $pa['title'] = $txt['Site_search'];
         $pa['url']   = sites_root_URL."/search.php?site_id={$this_site_info['id']}&lang={$lang}";
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
       }
     
       // site news
@@ -91,7 +91,7 @@ echo '<br>';
       {
         $pa['title'] = $txt['News'];
         $pa['url']   = sites_root_URL."/news.php?site_id={$this_site_info['id']}&lang={$lang}";
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
       }
 
       // site map
@@ -99,7 +99,7 @@ echo '<br>';
       {
         $pa['title'] = $txt['Site_map'];
         $pa['url']   = sites_root_URL."/map.php?site_id={$this_site_info['id']}&lang={$lang}";
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
       }
 
 
@@ -108,7 +108,7 @@ echo '<br>';
       {
         $pa['title'] = $txt['forum_list'];
         $pa['url']   = sites_root_URL."/forum.php?site_id={$this_site_info['id']}&lang={$lang}";
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
       }
 
       // guestbook
@@ -116,7 +116,7 @@ echo '<br>';
       {
         $pa['title'] = $txt['guestbook'];
         $pa['url']   = sites_root_URL."/guestbook.php?site_id={$this_site_info['id']}&lang={$lang}";
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
       }
 
 
@@ -125,7 +125,7 @@ echo '<br>';
       {
         $pa['title'] = $txt['image_gallery_view'];
         $pa['url']   = sites_root_URL."/gallery.php?site_id={$this_site_info['id']}&lang={$lang}";
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
       }
 
       // e-commerce
@@ -134,35 +134,35 @@ echo '<br>';
           echo '<br><br>';
         $pa['url']   = site_root_URL."/index.php?action=ec/producer/names&site_id={$this_site_info['id']}";
         $pa['title'] = $txt['EC_item_producers'];
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
 
         $pa['url']   = site_root_URL."/index.php?action=ec/item/search&site_id={$this_site_info['id']}";
         $pa['title'] = $txt['EC_item_search'];
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
 
         $pa['url']   = site_root_URL."/index.php?action=ec/item/search_advanced&site_id={$this_site_info['id']}";
         $pa['title'] = $txt['EC_item_search_advanced'];
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
 
         $pa['url']   = site_root_URL."/index.php?action=ec/item/list_by_tag&site_id={$this_site_info['id']}";
         $pa['title'] = $txt['EC_item_list_by_tag'];
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
 
         $pa['url']   = site_root_URL."/index.php?action=ec/item/browse&site_id={$this_site_info['id']}";
         $pa['title'] = $txt['EC_item_browse'];
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
 
         $pa['url']   = site_root_URL."/index.php?action=ec/cart/view&site_id={$this_site_info['id']}&lang={$lang}";
         $pa['title'] = $txt['EC_shopping_cart'];
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
 
         $pa['url']   = site_root_URL."/index.php?action=ec/item/compare&site_id={$this_site_info['id']}&lang={$lang}";
         $pa['title'] = $txt['EC_items_compare'];
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
 
         $pa['url']   = site_root_URL."/index.php?action=site_visitor/personalpage&site_id={$this_site_info['id']}&lang={$lang}";
         $pa['title'] = $txt['Personal_page'];
-        echo "<a href=\"javascript:void(insert_url('".checkStr($pa['title'])."','".checkStr($pa['url'])."'))\">{$pa['title']}</a><br>";
+        echo "<a href=\"javascript:void(insert_url('".htmlspecialchars($pa['title'])."','".htmlspecialchars($pa['url'])."'))\">{$pa['title']}</a><br>";
       }
 echo
 "

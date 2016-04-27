@@ -33,7 +33,7 @@ $default_site_visitor_info = Array(
 
 function show_message($msg) {
     $tmp = $msg;
-    $tmp = checkStr($tmp);
+    $tmp = htmlspecialchars($tmp);
     $tmp = str_replace("\r", '', $tmp);
     $tmp = preg_replace("/ +\\n/", "\n", $tmp);
 

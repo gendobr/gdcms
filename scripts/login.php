@@ -77,7 +77,7 @@ if(isset($input_vars['user_login'])){
     $page_content=
     "<form action=index.php method=post id=loginform>"
     ."<input type=hidden name=action value='login'>"
-    ."{$text['Login_name']} : <input type=text     name=user_login    value='".checkStr(isset($input_vars['user_login'])?$input_vars['user_login']:'')."' style='width:100%;'><br>"
+    ."{$text['Login_name']} : <input type=text     name=user_login    value='".htmlspecialchars(isset($input_vars['user_login'])?$input_vars['user_login']:'')."' style='width:100%;'><br>"
     .text('Password')." : <input type=password name=user_password value='' style='width:100%;'><br>"
     ."<input type=submit value='{$text['Enter']}'>"
     ."</form>";

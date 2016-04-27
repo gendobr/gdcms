@@ -139,8 +139,8 @@ run('site/menu');
    <input type='hidden' name='site_id' value='{$site_id}'>
    <table>
    <tr><td class=nbd>File: </td><td class=nbd><input type='file' name='userfile' style='width:300px;'></td></tr>
-   <tr><td class=nbd>Row divider:</td><td class=nbd><input type='text' name='import_row_divider' value='".checkStr($input_vars['import_row_divider'])."'> as regexp</td></tr>
-   <tr><td class=nbd>Column divider:</td><td class=nbd><input type='text' name='import_column_divider' value='".checkStr($input_vars['import_column_divider'])."'> as regexp</td></tr>
+   <tr><td class=nbd>Row divider:</td><td class=nbd><input type='text' name='import_row_divider' value='".htmlspecialchars($input_vars['import_row_divider'])."'> as regexp</td></tr>
+   <tr><td class=nbd>Column divider:</td><td class=nbd><input type='text' name='import_column_divider' value='".htmlspecialchars($input_vars['import_column_divider'])."'> as regexp</td></tr>
    <tr><td></td><td class=nbd><input type='submit' value='Upload'></td></tr>
    </table>
    </form>
@@ -156,7 +156,7 @@ run('site/menu');
       {
           if($kn!='')
           {
-              $uploaded_rows_form.="<tr><td class=nbd>{$kn}:</td><td class=nbd><input type='text' name='import_default[{$kn}]' value='".checkStr(isset($input_vars['import_default'][$kn])?isset($input_vars['import_default'][$kn]):($kn=='lang'?\e::config('default_language'):''))."'></td></tr>\n";
+              $uploaded_rows_form.="<tr><td class=nbd>{$kn}:</td><td class=nbd><input type='text' name='import_default[{$kn}]' value='".htmlspecialchars(isset($input_vars['import_default'][$kn])?isset($input_vars['import_default'][$kn]):($kn=='lang'?\e::config('default_language'):''))."'></td></tr>\n";
           }
       }
       $uploaded_rows_form.="</table><br><br>";
@@ -174,7 +174,7 @@ run('site/menu');
           $uploaded_rows_form.="<div><span class=nm>$i</span>";
           for($j=0;$j<$n_columns;$j++)
           {
-              $uploaded_rows_form.="<textarea class=cl name=import_row[$i][$j] rows=4>".checkStr(isset($rows[$i][$j])?$rows[$i][$j]:'')."</textarea>";
+              $uploaded_rows_form.="<textarea class=cl name=import_row[$i][$j] rows=4>".htmlspecialchars(isset($rows[$i][$j])?$rows[$i][$j]:'')."</textarea>";
           }
           $uploaded_rows_form.="</div>\n\n";
       }
@@ -194,7 +194,7 @@ run('site/menu');
 
 //----------------------------- context menu - begin ---------------------------
   $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-  $Site_menu="<span title=\"".checkStr($sti)."\">".shorten($sti,25)."</span>";
+  $Site_menu="<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,25)."</span>";
   $input_vars['page_menu']['site']=Array('title'=>$Site_menu,'items'=>Array());
   $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //----------------------------- context menu - end -----------------------------

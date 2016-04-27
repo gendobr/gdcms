@@ -168,7 +168,7 @@ if (isset($input_vars['reply_to_msg'])) {
     }
 }
 if(!$form['elements']['msg']['value']){
-    $form['elements']['msg']['form_element_value']=  checkStr($reply_to_msg_text);
+    $form['elements']['msg']['form_element_value']=  htmlspecialchars($reply_to_msg_text);
 }
 
 $form['hidden_elements'] = $rep->hidden_fields('^msg_id$') .
@@ -239,7 +239,7 @@ $input_vars['page_menu']['forum'] = Array('title' => $text['Forum'], 'items' => 
 $input_vars['page_menu']['forum']['items'] = menu_forum($this_forum_info);
 
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

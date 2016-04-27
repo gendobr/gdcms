@@ -265,7 +265,7 @@ function draw_file_as_table($site_id,$file_data, $field_name_options) {
         $page_content.="<tr>";
         $page_content.=" <td> <input name=\"row[$row_i][import_row]\" type=checkbox checked=true value=\"1\"></td>";
         for($col_i=0;$col_i<$n_columns;$col_i++) {
-            $page_content.=" <td> <input class=cd name=\"row[$row_i][$col_i]\" type=text value=\"".checkStr(isset($file_data[$row_i][$col_i])?$file_data[$row_i][$col_i]:'')."\"></td>";
+            $page_content.=" <td> <input class=cd name=\"row[$row_i][$col_i]\" type=text value=\"".htmlspecialchars(isset($file_data[$row_i][$col_i])?$file_data[$row_i][$col_i]:'')."\"></td>";
         }
         $page_content.="</tr>";
     }

@@ -52,7 +52,7 @@ for ($i = 0; $i < $cnt; $i++) {
         'url' => $url_prefix.rawurlencode($pagelist[$i]['rozdil']),
         'prefix' => str_repeat('&nbsp+&nbsp', substr_count($pagelist[$i]['rozdil'], '/')),
         'htmlblock' =>    "<iframe style='width:1px;height:1px;border:none;opacity:0;' src='" . site_root_URL . "/index.php?action=gallery/html&site_id={$site_id}&lang={$_SESSION['lang']}&cat=" . rawurlencode($pagelist[$i]['rozdil']) . "&element={$element_id}'></iframe>"
-        ."<div id={$element_id}><a href='".$url_prefix.rawurlencode($pagelist[$i]['rozdil'])."'>".  checkStr($name)."</a></div>"
+        ."<div id={$element_id}><a href='".$url_prefix.rawurlencode($pagelist[$i]['rozdil'])."'>".  htmlspecialchars($name)."</a></div>"
 
     );
 }

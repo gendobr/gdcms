@@ -307,7 +307,7 @@ foreach ($ec_category_item_field as $fld) {
            <select style='width:100%;' name=\"ec_category_item_field[{$fld['ec_category_item_field_id']}][type]\">" . draw_options($fld['ec_category_item_field_type'], $types) . "</select><br/>
 
            <br/><b>" . text('field_options') . ":</b><br/>
-           <textarea style='width:100%;height:150px;' name=\"ec_category_item_field[{$fld['ec_category_item_field_id']}][options]\">" . checkStr($fld['ec_category_item_field_options']) . "</textarea><br/>
+           <textarea style='width:100%;height:150px;' name=\"ec_category_item_field[{$fld['ec_category_item_field_id']}][options]\">" . htmlspecialchars($fld['ec_category_item_field_options']) . "</textarea><br/>
         </div>
         ";
 }
@@ -570,7 +570,7 @@ $input_vars['page_menu']['category']['items'] = menu_ec_category($this_category-
 //prn($input_vars['page_menu']['category']);
 # site context menu
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 ?>

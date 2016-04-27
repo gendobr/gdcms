@@ -439,7 +439,7 @@ if(isset($input_vars['row'])) {
 
 
             foreach($columns as $na=>$id) {
-                $page_content.=" <td valign=top> ".checkStr($row[$id])."</td>";
+                $page_content.=" <td valign=top> ".htmlspecialchars($row[$id])."</td>";
             }
             $page_content.="</tr>";
         }
@@ -447,7 +447,7 @@ if(isset($input_vars['row'])) {
             // --------------- draw form to re-import - begin -----------------
             $page_content.=" <tr>  <td valign=top><input type=checkbox name=row[$row_i][import_row] checked value=1><br>{$error_messages}</td> ";
             foreach($columns as $na=>$id) {
-                $page_content.=" <td valign=top> <input class=cd name=\"row[$row_i][$id]\" type=text value=\"".checkStr(isset($product_info[$na]['html'])?$product_info[$na]['html']:$product_info[$na]['value'])."\"></td>";
+                $page_content.=" <td valign=top> <input class=cd name=\"row[$row_i][$id]\" type=text value=\"".htmlspecialchars(isset($product_info[$na]['html'])?$product_info[$na]['html']:$product_info[$na]['value'])."\"></td>";
             }
             $page_content.=" </tr> ";
             $row_i++;
@@ -551,7 +551,7 @@ $input_vars['page_content']= "
 //--------------------------- context menu -- begin ----------------------------
 
 $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-$Site_menu="<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>";
+$Site_menu="<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>";
 $input_vars['page_menu']['site']=Array('title'=>$Site_menu,'items'=>Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

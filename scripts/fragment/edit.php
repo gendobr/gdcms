@@ -16,7 +16,7 @@ $lang = get_language('lang');
 $query = "SELECT * FROM {$table_prefix}fragment WHERE fragment_id={$fragment_id} AND fragment_lang='$lang'";
 $this_fragment_info =\e::db_getonerow($query);
 if ($debug) {
-    prn(checkStr($query), $this_fragment_info);
+    prn(htmlspecialchars($query), $this_fragment_info);
 }
 # prn($this_fragment_info);
 # ------------------- check fragment id - end ----------------------------------
@@ -142,7 +142,7 @@ $form['elements']['site_id2']=Array(
 
 $form['elements']['fragment_html']['before']="
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={{$rep->field['fragment_lang']['value']}}&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>

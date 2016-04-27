@@ -119,7 +119,7 @@ $vyvid.= process_template($_template, Array(
     , 'site' => $this_site_info
     , 'lang' => $lang
     , 'cms_root_url' => site_root_URL
-    , 'keywords' => checkStr($keywords)
+    , 'keywords' => htmlspecialchars($keywords)
         )
 );
 //prn($category);

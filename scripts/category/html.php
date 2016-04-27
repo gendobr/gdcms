@@ -55,13 +55,13 @@ $input_vars['page_title'] =
 $input_vars['page_header'] = $this_site_info['title'] . ' - ' . text('Page_and_news_category_html_code');
 $input_vars['page_content'] = "
     <pre style='width:100%; overflow:scroll;height:200px;'>
-    ".  checkStr($vyvid)."
+    ".  htmlspecialchars($vyvid)."
     </pre>
 ";
 
 //--------------------------- context menu -- begin ----------------------------
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

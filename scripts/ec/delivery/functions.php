@@ -77,7 +77,7 @@ function delivery_parse_cost($ec_delivery_cost,$ec_delivery_id,$request) {
         foreach($regs[1] as $key=>$val) {
             $value=isset($request['ec_delivery_parameter']["{$ec_delivery_id}_{$key}"])?$request['ec_delivery_parameter']["{$ec_delivery_id}_{$key}"]:'';
             $tmp=str_replace($regs[0][$key],
-                             "<input type=text size=3 name=\"ec_delivery_parameter[{$ec_delivery_id}_{$key}]\" value=\"".checkStr($value)."\">&nbsp;{$regs[1][$key]}",
+                             "<input type=text size=3 name=\"ec_delivery_parameter[{$ec_delivery_id}_{$key}]\" value=\"".htmlspecialchars($value)."\">&nbsp;{$regs[1][$key]}",
                              $tmp);
         }
         $tmp=str_replace('*','&times;',$tmp);
@@ -278,7 +278,7 @@ function delivery_show_cost($ec_delivery_cost,$ec_delivery_id,$request) {
         $tmp=$ec_delivery_cost;
         foreach($regs[1] as $key=>$val) {
             $value=isset($request['ec_delivery_parameter']["{$ec_delivery_id}_{$key}"])?$request['ec_delivery_parameter']["{$ec_delivery_id}_{$key}"]:'';
-            $tmp=str_replace($regs[0][$key],'<b>'.checkStr($value)."&nbsp;".$regs[1][$key].'</b>',$tmp);
+            $tmp=str_replace($regs[0][$key],'<b>'.htmlspecialchars($value)."&nbsp;".$regs[1][$key].'</b>',$tmp);
         }
         $tmp=str_replace('*','&times;',$tmp);
         return $tmp;

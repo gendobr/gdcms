@@ -483,7 +483,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
 
   <div class=label>{$text['Page_Title']} :</div>
   <div class=big>
-     <input type=text MAXLENGTH=512 name=page_title value=\"".checkStr($this_page_info['title'])."\">
+     <input type=text MAXLENGTH=512 name=page_title value=\"".htmlspecialchars($this_page_info['title'])."\">
   </div>
 
 
@@ -529,7 +529,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
   <div class=label>{$text['Abstract']} :</div>
   <div class=big>
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_page_info['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -540,7 +540,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
                 tabindex='3'
                 class='wysiswyg'
                 style=\"width:100%; height:100px;\">".
-      checkStr($this_page_info['abstract'])
+      htmlspecialchars($this_page_info['abstract'])
       ."</textarea>
   </div>
 
@@ -548,7 +548,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
   <div class=label>".text('Contents')." :</div>
   <div class=big>
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=gallery/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
+          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_page_info['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
@@ -559,7 +559,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
             tabindex='3'
             class='wysiswyg'
             style=\"width:100%; height:400px;\">".
-  checkStr($this_page_info['content'])
+  htmlspecialchars($this_page_info['content'])
   ."</textarea>
   </div>
   <div class=big>
@@ -574,11 +574,11 @@ if(!isset($file_upload_form)) $file_upload_form='';
   -->
   <div class=label>{$text['Page_Path']} :</div>
   <div class=big>
-     <input type=text MAXLENGTH=128 name=page_path value=\"".checkStr($this_page_info['path'])."\">
+     <input type=text MAXLENGTH=128 name=page_path value=\"".htmlspecialchars($this_page_info['path'])."\">
   </div>
   <div class=label>".text('Page_file')." :</div>
   <div class=big>
-     <input type=text MAXLENGTH=128 name=page_file_name value=\"".checkStr($this_page_info['page_file_name'])."\">
+     <input type=text MAXLENGTH=128 name=page_file_name value=\"".htmlspecialchars($this_page_info['page_file_name'])."\">
   </div>
   <div class=label>".text('Page_meta_tags')." :</div>
   <div class=big>
@@ -588,7 +588,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
        metaTagsButtons('page_meta_tags');
     });
     </script>
-     <textarea style=\"width:100%; height:150px;\" name=\"page_meta_tags\" id=\"page_meta_tags\">".checkStr($this_page_info['page_meta_tags'])."</textarea>
+     <textarea style=\"width:100%; height:150px;\" name=\"page_meta_tags\" id=\"page_meta_tags\">".htmlspecialchars($this_page_info['page_meta_tags'])."</textarea>
   </div>
 {$notify_managers_form}
 
@@ -627,7 +627,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
   $input_vars['page_menu']['page']['items'] = menu_page($this_page_info);
 
     $sti=$text['Site'].' "'. $this_site_info['title'].'"';
-    $input_vars['page_menu']['site']=Array('title'=>"<span title=\"".checkStr($sti)."\">".shorten($sti,30)."</span>",'items'=>Array());
+    $input_vars['page_menu']['site']=Array('title'=>"<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>",'items'=>Array());
 
   $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 

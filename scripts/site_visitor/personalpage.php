@@ -207,7 +207,7 @@ else
       <input type=hidden name=site_id value='{$input_vars['site_id']}'>
       <input type=hidden name=lang value='{$lang}'>
       <table>
-          <tr><td>{$txt['Email']} :</td><td><input type=text name=nick style='width:100%;' value='".checkStr($input_vars['nick'])."'></td></tr>
+          <tr><td>{$txt['Email']} :</td><td><input type=text name=nick style='width:100%;' value='".htmlspecialchars($input_vars['nick'])."'></td></tr>
           <tr><td>{$txt['Password']}   :</td><td><input type=password style='width:100%;' name=lp value=''></td></tr>
           <tr>
               <td></td>

@@ -94,7 +94,7 @@ $photogalery_rozdil_list = \e::db_getrows(
 // prn($photogalery_rozdil_list);
 $vyvid.="<ul id='sortable'>";
 foreach($photogalery_rozdil_list as $photogalery_rozdil){
-    $vyvid.="<li class='cat' data-id=\"".  checkStr($photogalery_rozdil['id'])."\">{$photogalery_rozdil['rozdil']}</li>";
+    $vyvid.="<li class='cat' data-id=\"".  htmlspecialchars($photogalery_rozdil['id'])."\">{$photogalery_rozdil['rozdil']}</li>";
 }
 $vyvid.="</ul>";
 // ------------------ get list of categories - end -----------------------------
@@ -108,7 +108,7 @@ $input_vars['page_content'] = $vyvid;
 
 //--------------------------- context menu -- begin ----------------------------
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

@@ -49,7 +49,7 @@ $iframe = '';
 $iframe.='
     <h4>'.text('rss_imported_items_page').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>' .
-        checkStr("
+        htmlspecialchars("
         <a href=\"" . site_root_URL . "/index.php?action=rss_aggregator/view&site_id={$site_id}&lang={$_SESSION['lang']}\">'.text('rss_imported_items_page').'</a>
     ") . '</pre></div>';
 
@@ -57,7 +57,7 @@ $iframe.='
 $iframe.='
     <h4>'.text('rss_imported_items_rss').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>' .
-        checkStr("
+        htmlspecialchars("
         <a href=\"" . site_root_URL . "/index.php?action=rss_aggregator/rss&site_id={$site_id}&lang={$_SESSION['lang']}\">".text('rss_imported_items_rss')."</a>
     ") . '</pre></div>';
 
@@ -65,7 +65,7 @@ $iframe.='
 $iframe.='
     <h4>'.text('rss_imported_items_block').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>' .
-        checkStr("
+        htmlspecialchars("
 <div id=rssitems$uid></div>
 <iframe style='width:1px;height:1px;border:none;opacity:0;' src='"
                 . site_root_URL

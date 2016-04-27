@@ -49,7 +49,7 @@ function menu_category($_info = false) {
             $menu[] = Array(
                 'url' => 'index.php?action=category/list&category_delete=yes&category[' . $_info['category_id'] . ']=' . $_info['category_id'] . "&site_id={$_info['site_id']}"
                 , 'html' => text('Delete')
-                , 'attributes' => ' style="color:red;margin-top:20px;" onclick="return confirm(\'�� ������������� ������ ������� ��������� ' . checkStr(" {$_info['category_title']} ") . '\')" '
+                , 'attributes' => ' style="color:red;margin-top:20px;" onclick="return confirm(\'�� ������������� ������ ������� ��������� ' . htmlspecialchars(" {$_info['category_title']} ") . '\')" '
             );
     }# ------------------------ selected menu - end -----------------------
 

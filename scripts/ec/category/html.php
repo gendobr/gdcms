@@ -56,7 +56,7 @@ $input_vars['page_title'] =
         $input_vars['page_header'] = $this_site_info['title'] . ' - ' . text('HTML_code_to_insert_list_of_categories');
 $input_vars['page_content'] = "
     <pre style='width:100%; overflow:scroll;height:200px;'>
-    " . checkStr($vyvid) . "
+    " . htmlspecialchars($vyvid) . "
     </pre>
     <b>site_id</b> - ".text('ec_category_html_site_id')."<br>
     <b>lang</b> - ".text('ec_category_html_lang')."<br>
@@ -87,7 +87,7 @@ foreach($caterory_list as $cat){
 
 //--------------------------- context menu -- begin ----------------------------
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$Site_menu = "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>";
+$Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>";
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------

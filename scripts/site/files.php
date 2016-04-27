@@ -489,7 +489,7 @@ $input_vars['page_content'].="
     <input type=\"hidden\" name=\"" . session_name() . "\" id=\"session_name\" value=\"" . session_id() . "\">
 
     <!-- {$text['into']} <select name=\"dirname\">" . draw_options($input_vars['current_dir'], $dir_list) . "</select> -->
-    <input type=\"hidden\" name=\"dirname\" id=\"dirname\" value=\"" . checkStr($current_dir_relative) . "\">
+    <input type=\"hidden\" name=\"dirname\" id=\"dirname\" value=\"" . htmlspecialchars($current_dir_relative) . "\">
 
     <div id=\"uploader\"><p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p></div>
     <div><a href=\"javascript:void(upload_again())\">" . text('Upload_more_files') . "</a></div>
@@ -507,7 +507,7 @@ $input_vars['page_title'] = $this_site_info['title'] . ' - ' . $text['List_of_fi
 $input_vars['page_header'] = $this_site_info['title'] . ' - ' . $text['List_of_files'];
 //--------------------------- context menu -- begin ----------------------------
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
-$input_vars['page_menu']['site'] = Array('title' => "<span title=\"" . checkStr($sti) . "\">" . shorten($sti, 30) . "</span>", 'items' => Array());
+$input_vars['page_menu']['site'] = Array('title' => "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>", 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------
 ?>

@@ -625,7 +625,7 @@ if (!$form_can_be_accepted) {
 
         foreach ($attributes as $nm => $vl) {
             if ($nm != 'name') {
-                $new_tag.=" $nm=\"" . checkStr($vl) . "\" ";
+                $new_tag.=" $nm=\"" . htmlspecialchars($vl) . "\" ";
             }
         }
         $new_tag.='>';
@@ -661,12 +661,12 @@ if (!$form_can_be_accepted) {
 
         foreach ($attributes as $nm => $vl) {
             if ($nm != 'name') {
-                $new_tag.=" $nm=\"" . checkStr($vl) . "\" ";
+                $new_tag.=" $nm=\"" . htmlspecialchars($vl) . "\" ";
             }
         }
         $new_tag.='>';
 
-        $new_tag.=checkStr($value) . '</textarea>';
+        $new_tag.=htmlspecialchars($value) . '</textarea>';
         if (isset($messages[$attributes['name']])) {
             $new_tag.=$messages[$attributes['name']];
             unset($messages[$attributes['name']]);
@@ -699,7 +699,7 @@ if (!$form_can_be_accepted) {
 
         foreach ($attributes as $nm => $vl) {
             if ($nm != 'name') {
-                $new_tag.=" $nm=\"" . checkStr($vl) . "\" ";
+                $new_tag.=" $nm=\"" . htmlspecialchars($vl) . "\" ";
             }
         }
         $new_tag.='>';
@@ -742,10 +742,10 @@ if (!$form_can_be_accepted) {
        ";
     if (is_array($input_vars['form'])) {
         foreach ($input_vars['form'] as $key => $val) {
-            $new_form_tag.="<input type=hidden name=form[$key] value='" . checkStr($val) . "'>\n";
+            $new_form_tag.="<input type=hidden name=form[$key] value='" . htmlspecialchars($val) . "'>\n";
         }
     } else {
-        $new_form_tag.="<input type=hidden name=form value='" . checkStr($input_vars['form']) . "'>\n";
+        $new_form_tag.="<input type=hidden name=form value='" . htmlspecialchars($input_vars['form']) . "'>\n";
     }
     $vyvid = substr_replace($vyvid, $new_form_tag, $form_tag[0][1], strlen($form_tag[0][0]));
 
