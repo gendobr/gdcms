@@ -95,6 +95,10 @@ $menu_groups = get_menu_items($this_site_info['id'], 0, $_SESSION['lang']);
 $lang_list = list_of_languages();
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
+    if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['lang']])){
+        unset($lang_list[$i]);
+        continue;
+    }
     $lang_list[$i]['url'] = \e::url_from_template(
             \e::config('url_template_forum_list'),
             [

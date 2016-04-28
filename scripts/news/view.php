@@ -73,6 +73,10 @@ for ($i = 0; $i < $cnt; $i++) {
         unset($lang_list[$i]);
         continue;
     }
+    if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['name']])){
+        unset($lang_list[$i]);
+        continue;
+    }
     //prn('OK');
     $lang_list[$i]['url'] = $news->url(Array('lang'=>$lang_list[$i]['name']));
     $lang_list[$i]['href']=$lang_list[$i]['url'];

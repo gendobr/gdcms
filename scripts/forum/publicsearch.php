@@ -150,14 +150,11 @@ $menu_groups = get_menu_items($this_site_info['id'], 0, $_SESSION['lang']);
 $lang_list = list_of_languages();
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
+    if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['lang']])){
+        unset($lang_list[$i]);
+        continue;
+    }
     $lang_list[$i]['url'] = $lang_list[$i]['href'];
-
-    // $lang_list[$i]['url']=str_replace('action=forum%2Fthread','',$lang_list[$i]['url']);
-    // $lang_list[$i]['url']=str_replace('index.php','thread.php',$lang_list[$i]['url']);
-    // $lang_list[$i]['url']=str_replace(site_root_URL,sites_root_URL,$lang_list[$i]['url']);
-    // $lang_list[$i]['url']=str_replace('?&','?',$lang_list[$i]['url']);
-    // $lang_list[$i]['url']=str_replace('&&','&',$lang_list[$i]['url']);
-
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }
 // prn($lang_list);

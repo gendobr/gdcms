@@ -146,6 +146,10 @@ for ($i = 0; $i < $cnt; $i++) {
         unset($lang_list[$i]);
         continue;
     }
+    if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['name']])){
+        unset($lang_list[$i]);
+        continue;
+    }
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
     $lang_list[$i]['url'] = $lang_list[$i]['href']=
         str_replace(

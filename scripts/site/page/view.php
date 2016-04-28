@@ -66,6 +66,10 @@ for($i=count($this_page_info['templates'])-1; $i>=0; $i--){
 $lang_list = \e::db_getrows("SELECT lang FROM {$table_prefix}page WHERE id={$this_page_info['id']}");
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
+    if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['lang']])){
+        unset($lang_list[$i]);
+        continue;
+    }
     $lang_list[$i]['url'] = "index.php?action=site/page/view&page_id={$this_page_info['id']}&lang={$lang_list[$i]['lang']}";
     if (isset($GLOBALS['text'][$lang_list[$i]['lang']])) {
         $lang_list[$i]['title'] = $GLOBALS['text'][$lang_list[$i]['lang']];

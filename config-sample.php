@@ -120,6 +120,22 @@ define('emails_at_once',1);
 
 
 
+$config->site_extra_setting=[
+    'lang'=>[
+        'type'=>'checkbox',
+        'getoptions'=>function(){
+            $langs=list_of_languages();
+            $toe=[];
+            foreach($langs as $lang){
+                $toe[$lang['name']]=$lang['name'];
+            }
+            return $toe;
+        },
+        'value'=>[$config->default_language=>$config->default_language]
+    ]
+];
+
+
 $config->defaultToVisualEditor=1;
 
 

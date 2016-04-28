@@ -85,7 +85,10 @@ foreach ($menu_groups as $kmg => $mg) {
 $lang_list = list_of_languages();
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
-
+    if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['lang']])){
+        unset($lang_list[$i]);
+        continue;
+    }
     $lang_list[$i]['href']=$lang_list[$i]['url'] = str_replace([
         '{photo_category_code}','{photo_category_path}','{photo_category_id}','{lang}', '{site_id}'
     ],[

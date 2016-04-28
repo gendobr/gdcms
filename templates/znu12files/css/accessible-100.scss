@@ -1,0 +1,70 @@
+// parameters
+
+$resourse-root-url:"/cms/templates/znu12files";
+
+
+$grid-gutter-width:4rem;
+
+$icon-font-path: $resourse-root-url + "/css/bootstrap-sass/fonts/bootstrap/";
+$icon-font-name:'glyphicons-halflings-regular';
+
+$screen-xs-min:320px;
+$container-xs:$screen-xs-min - 20px;
+
+// $screen-xs-s-min:416px;
+// $container-xs-s:$screen-xs-s-min - 20px;
+
+$screen-sm-min:760px;
+$container-sm:$screen-sm-min - 46px;
+
+$screen-md-min:970px;
+$container-md:$screen-md-min - 50px;
+
+$screen-lg-min:1170px;
+$container-lg:$screen-lg-min - 56px;
+
+$font-size-base:1rem;
+
+$znu-color-blue-bak: rgba(150, 175, 245, 0.16);
+$znu-color-black:#000000;
+$znu-color-blue:#3852A6;
+$znu-color-blue-light:#3361B7;
+$znu-color-blue-light-link:rgba(52, 82, 166, 0.5);
+$znu-color-blue-a:rgba(56, 82, 166, 0.88);
+$znu-color-white-light:rgba(255, 255, 255, 0.5);
+$znu-color-white-light1:rgba(255, 255, 255, 0.7);
+$znu-color-white: #fff;
+$znu-color-blue-1:#337ab7;
+$znu-color-blue-dark:#223264;
+
+/*$znu-color-yellow:rgba(188, 241, 17, 0.4);
+$znu-color-rose:rgba(234, 49, 182, 0.4);
+$znu-color-green:rgba(76, 241, 224, 0.4); //#F0F2E5;*/
+
+$znu-color-yellow:rgb(156, 204, 1);
+$znu-color-rose:rgb(212, 110, 108);
+$znu-color-green:rgb(67, 192, 212); 
+
+$znu-background-color: #f2f2f2;
+
+//$znu-color-sand-light1:#FEF5E6;
+
+//$znu-color-green-light:#29C8B6;
+//$znu-color-green-dark:#14645B;
+
+//$znu-color-green:#23AA9C;
+//$znu-color-rose:#BC127E;
+//$znu-color-rose-dark:#640944;
+//$znu-color-rose-light1:#FCBDE5;
+
+
+$znu-shadow-box:0px 3px 5px -1px rgba(0,0,0,0.14);
+//0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);//3px 3px 5px 2px rgba(0, 0, 0, 0.1), 3px 3px 5px 1px transparent;
+$znu-shadow-box-inset: 0px 0px 16px -1px rgba(0,0,0,0.14);//0 -1px 0 #e5e5e5,0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);//0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+
+$font-family-sans-serif: 'Roboto', sans-serif;
+
+
+
+// imports
+@import 'accessible-common';

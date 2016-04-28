@@ -194,15 +194,15 @@ function show_related_news($params) {
 #     {show_news_categories news_id=$news.id site_id=$news.site_id}
 #
 function show_news_categories($params) {
-    global $table_prefix, $db;
+    //global $table_prefix, $db;
     // echo '<!-- '; prn($params); echo ' -->';
     extract($params);
     # required parameters are news_id, site_id
 
     $query = "SELECT DISTINCT pa.category_id, pa.category_title, pa.deep
-              FROM {$table_prefix}category as c
-                  ,{$table_prefix}category as pa
-                  ,{$table_prefix}news_category as nc
+              FROM <<tp>>category as c
+                  ,<<tp>>category as pa
+                  ,<<tp>>news_category as nc
               WHERE nc.category_id=c.category_id
                 AND nc.news_id={$news_id}
                 AND pa.start<=c.start
@@ -472,14 +472,19 @@ for ($i = 0; $i < $cnt; $i++) {
         unset($lang_list[$i]);
         continue;
     }
+    if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['name']])){
+        unset($lang_list[$i]);
+        continue;
+    }
+    $lang_list[$i]['url'] = $lang_list[$i]['href']= \e::url_from_template(
+        \e::config('url_template_news_details'),
+        [
+            'news_id'=>$this_news_info['id'],
+            'lang'=>$lang_list[$i]['name'],
+            'news_code'=>$this_news_info['news_code']
+        ]
+    );
 
-    $lang_list[$i]['url'] = $lang_list[$i]['href'];
-
-    $lang_list[$i]['url'] = str_replace('action=news%2Fview_details', '', $lang_list[$i]['url']);
-    $lang_list[$i]['url'] = str_replace('index.php', 'news_details.php', $lang_list[$i]['url']);
-    $lang_list[$i]['url'] = str_replace(site_root_URL, sites_root_URL, $lang_list[$i]['url']);
-    $lang_list[$i]['url'] = str_replace('?&', '?', $lang_list[$i]['url']);
-    $lang_list[$i]['url'] = str_replace('&&', '&', $lang_list[$i]['url']);
 
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }

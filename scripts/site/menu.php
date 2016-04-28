@@ -559,6 +559,17 @@ function get_site_info($site_id,$lang='') {
     }
 
     $this_site_info['title']=get_langstring($this_site_info['title'],$lang);
+    
+    $this_site_info['extra_setting']=json_decode($this_site_info['extra_setting'],true);
+    if(!$this_site_info['extra_setting']){
+        $this_site_info['extra_setting']=[];
+    }
+    $pattern=\e::config('site_extra_setting');
+    foreach($pattern as $key=>$val){
+        if(!isset($this_site_info['extra_setting'][$key])){
+            $this_site_info['extra_setting'][$key]=$val['value'];
+        }
+    }
 
     # ----------------------- list of site managers - begin ----------------------
     # if user is logged in

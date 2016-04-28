@@ -52,7 +52,7 @@ $i = isset($input_vars['i']) ? (int) $input_vars['i'] : date('i');// -1; // minu
 //$timestamp_end=mktime($h, $i, 59, $m, $d, $y);
 //$event_ids=event_get_inside($site_id, $timestamp_start, $timestamp_end, $verbose=isset($input_vars['verbose']));
 $query="SELECT *
-        FROM {$GLOBALS['table_prefix']}calendar_days_cache 
+        FROM <<tp>>calendar_days_cache 
         WHERE Y={$y} AND m={$m} AND d={$d} AND site_id={$this_site_info['id']}
         ORDER BY h ASC, i ASC;";
 //prn($query);
@@ -133,10 +133,10 @@ if(count($event_ids)>0 &&  isset($input_vars['category_id']) && $input_vars['cat
     }
     //prn($ids);
     $query="SELECT event_id
-            FROM {$GLOBALS['table_prefix']}calendar_category AS cc
+            FROM <<tp>>calendar_category AS cc
             WHERE category_id IN(
                     SELECT ch.category_id
-                    FROM  {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
+                    FROM  <<tp>>category pa, <<tp>>category ch
                     WHERE pa.site_id={$site_id}
                       AND ch.site_id={$site_id}
                       AND pa.category_id=".( (int)$input_vars['category_id'] )."
@@ -159,7 +159,7 @@ if(count($event_ids)>0 &&  isset($input_vars['category_id']) && $input_vars['cat
 // prn($event_ids);
 
 if(count($event_ids)>0){
-    $event_list = \e::db_getrows("select * from {$GLOBALS['table_prefix']}calendar where vis and id in(".join(',',$event_ids).")");
+    $event_list = \e::db_getrows("select * from <<tp>>calendar where vis and id in(".join(',',$event_ids).")");
 }else{
     $event_list=Array();
 }

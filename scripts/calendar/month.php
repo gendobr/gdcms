@@ -219,6 +219,10 @@ $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 $lang_list = list_of_languages();
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
+    if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['lang']])){
+        unset($lang_list[$i]);
+        continue;
+    }
     $lang_list[$i]['url'] = $lang_list[$i]['href'];
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }

@@ -107,8 +107,13 @@ $tmp = \e::db_getrows(
                   WHERE pg.site_id={$site_id}
                     AND pg.cense_level>={$this_site_info['cense_level']}");
 $existing_languages = Array();
-foreach ($tmp as $tm)
+foreach ($tmp as $tm) {
+    if(!isset($this_site_info['extra_setting']['lang'][$tm['lang']])){
+        unset($lang_list[$i]);
+        continue;
+    }
     $existing_languages[$tm['lang']] = $tm['lang'];
+}
 #prn($existing_languages);
 $lang_list = Array();
 foreach ($existing_languages as $lng) {

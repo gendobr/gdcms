@@ -130,7 +130,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
   $rep->use_db($db);
   $rep->debug=false;
   $rep->set_table("{$table_prefix}site");
-  $rep->exclude='^site_id$';
+  $rep->exclude='site_id|extra_setting';
   $rep->add_field( 'id'
                   ,'site_id'
                   ,'integer:hidden=yes&default='.$site_id
@@ -289,6 +289,11 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
          }
       }
     }
+    
+    $extra_setting=\e::request('extra_setting',[]);
+    \e::db_execute("UPDATE <<tp>>site SET extra_setting=<<string extra_setting>> WHERE id=<<integer site_id>>",
+    ['extra_setting'=>  json_encode($extra_setting),'site_id'=>$this_site_info['id']]);
+    
     //--------------------- update site dir - end ------------------------------
     ml('site/edit',$input_vars);
   }
@@ -309,7 +314,40 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
   }
 
   $form['hidden_elements'].="\n<input type=hidden name=site_id value={$rep->id}>\n";
-  //prn($form);
+  
+  
+  $extra_settings_html='';
+  
+  $pattern=\e::config('site_extra_setting');
+  foreach($pattern as $key=>$val){
+      switch($val['type']){
+          case 'checkbox':
+              $extra_settings_html.="<div class='site_extra_setting site_extra_setting_checkbox'>";
+              $extra_settings_html.="<div><b>".text('site_extra_setting_'.$key)."</b></div>";
+              $ops=$val['getoptions']();
+              foreach($ops as $k=>$v){
+                  if(isset($this_site_info['extra_setting'][$key][$v])){
+                      $checked='checked';
+                  }else{
+                      $checked='';
+                  }
+                  $extra_settings_html.="<label><input type=checkbox name=\"extra_setting[$key][$v]\" $checked> {$v}</label>";
+              }
+              $extra_settings_html.="</div>";
+              break;
+      }
+      
+  }
+  
+  $form['elements']['extra_settings']=[
+                    'field' => 'extra_settings',
+                    'alias' => 'extra_settings',
+                    'type' => 'custom',
+                    'label' => '<h3>'.text('site_extra_settings').'</h3>',
+                    'form_element_html' => $extra_settings_html,
+                    'comments'=>''
+  ];
+  // prn($form['elements']);
   $input_vars['page_title']   = $text['Site properties'];
   $input_vars['page_header']  = $text['Site properties'];
   $input_vars['page_content'] = $rep->draw($form);

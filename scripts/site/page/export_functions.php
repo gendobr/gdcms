@@ -65,6 +65,10 @@ function export_page($_page_id, $_lang) {
     $cnt = count($lang_list);
     $url_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']);
     for ($i = 0; $i < $cnt; $i++) {
+        if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['lang']])){
+            unset($lang_list[$i]);
+            continue;
+        }
         $lang_list[$i]['url'] = "{$this_page_info['id']}.{$lang_list[$i]['lang']}.html";
         if (strlen($lang_list[$i]['path']) > 0){
             //$lang_list[$i]['url'] = ereg_replace('^/+|/+$', '', $lang_list[$i]['path']) . '/' . $lang_list[$i]['url'];
