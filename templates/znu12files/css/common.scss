@@ -1,7 +1,10 @@
 // parameters
 
 $resourse-root-url:"/cms/templates/znu12files";
-
+$root-font-size-xs:8pt;
+$root-font-size-sm:8pt;
+$root-font-size-md:8pt;
+$root-font-size-lg:10pt;
 
 $grid-gutter-width:4rem;
 
@@ -132,12 +135,17 @@ $font-family-sans-serif: 'Roboto', sans-serif;
 }
 html{
     @media (min-width: $screen-xs-min){
-        font-size:8pt;
+        font-size:$root-font-size-xs;
+    }
+    @media (min-width: $screen-sm-min){
+        font-size:$root-font-size-sm;
+    }
+    @media (min-width: $screen-md-min){
+        font-size:$root-font-size-md;
     }
     @media (min-width: $screen-lg-min){
-        font-size:10pt;
+        font-size:$root-font-size-lg;
     }
-
 }
 body{
     background-color: $znu-background-color;
@@ -175,16 +183,49 @@ body{
     .glyph{
         @include link-style($znu-color-white, $znu-color-white-light,$znu-color-white);
         display:inline-block;
-        width:2rem;
-        height:1rem;
+        // width:2rem;
+        // height:1rem;
         font-size:1.3rem;
         border-bottom-width:0;
         margin-top:0.1rem;
+        vertical-align: middle;
         &:hover, &:active, &:focus, &:link{
             border-bottom-width:0;
         }
     }
 
+    .skin-selector-container{
+        @extend .btn-group;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        .skin-selector{
+            @extend .btn;
+            @extend .btn-default;
+            @extend .dropdown-toggle;
+            .caret{
+                margin-left:0.5rem;
+            }
+            padding:2px 1rem;
+            background-color:$znu-color-blue;
+            color:$znu-color-white;
+	    border-color:$znu-color-blue;
+	    &:hover, &:focus, &:active{
+		background-color:$znu-color-blue;
+		border-color:$znu-color-blue;
+		color:$znu-color-white;
+	    }
+	    &:hover{
+		color:$znu-color-white-light;
+	    }
+	    .dropdown-menu{
+		border:none;
+	    }
+
+	
+        }
+
+    }
+    
     .lang{
         display:inline-block;
         //@include link-style($znu-color-white,$znu-color-white-light, $znu-color-blue-light1);
@@ -193,6 +234,7 @@ body{
 	line-height:2rem;
 	color:$znu-color-white;
 	font-size:1.2rem;
+        vertical-align: middle;
 	&:hover{
 	    color:$znu-color-white-light;
 	}
@@ -1536,6 +1578,8 @@ body{
         a {
             @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-rose-dark);
             text-decoration: none;
+        }
+        .child, a{
             @media (min-width: $screen-xs-min){
                 font-size:130%;
             }
@@ -1547,7 +1591,7 @@ body{
             }
             @media (min-width: $screen-lg-min){
                 font-size:130%;
-            }
+            }            
         }
         ul {
             display: block;

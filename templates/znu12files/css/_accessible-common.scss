@@ -16,9 +16,11 @@
 @mixin link-style($color-default, $color-active, $color-visited : $znu-color-rose-dark) {
 
     color:$color-default;
+    border-bottom:1px solid rgba(red($color-default), green($color-default), blue($color-default), 0.3);
     &:link{
         color:$color-default;
         text-decoration:none;
+        border-bottom:1px solid rgba(red($color-default), green($color-default), blue($color-default), 0.3);
     }
 
     text-decoration:none;
@@ -32,8 +34,7 @@
     &:hover, &:active, &:focus{
         text-decoration:none;
         color:$color-active;
-        border-bottom:1px solid transparent;
-        border-bottom-color:rgba(red($color-default), green($color-active), blue($color-active), 0.5)
+        border-bottom-color:rgba(red($color-active), green($color-active), blue($color-active), 0.5)
     }
 }
 
@@ -53,13 +54,13 @@
     }
     // overflow:hidden;
     @media (min-width: $screen-xs-min){
-       width:90%;
+        width:90%;
     }
     @media (min-width: $screen-sm-min){
-       width:$container-sm;
+        width:$container-sm;
     }
     @media (min-width: $screen-md-min){
-       width:$container-md;
+        width:$container-md;
     }
     @media (min-width: $screen-lg-min){
         width:$container-lg;
@@ -67,12 +68,17 @@
 }
 html{
     @media (min-width: $screen-xs-min){
-        font-size:8pt;
+        font-size:$root-font-size-xs;
+    }
+    @media (min-width: $screen-sm-min){
+        font-size:$root-font-size-sm;
+    }
+    @media (min-width: $screen-md-min){
+        font-size:$root-font-size-md;
     }
     @media (min-width: $screen-lg-min){
-        font-size:10pt;
+        font-size:$root-font-size-lg;
     }
-
 }
 body{
     background-color: $znu-background-color;
@@ -119,24 +125,42 @@ body{
             border-bottom-width:0;
         }
     }
+    .skin-selector-container{
+        @extend .btn-group;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        margin-top: -4px;
+        .skin-selector{
+            @extend .btn;
+            @extend .btn-default;
+            @extend .dropdown-toggle;
+            .caret{
+                margin-left:0.5rem;
+            }
+            padding:2px 1rem;
+            background-color:$znu-color-white-light;
+            color:$znu-color-white;
+        }
+    }
 
     .lang{
         display:inline-block;
-        //@include link-style($znu-color-white,$znu-color-white-light, $znu-color-blue-light1);
+        @include link-style($znu-color-white,$znu-color-white-light, $znu-color-blue-light1);
         font-size:1rem;
         display:inline-block;
-	line-height:2rem;
-	color:$znu-color-white;
-	font-size:1.2rem;
-	&:hover{
-	    color:$znu-color-white-light;
-	}
-	&:visited{
-	    color:$znu-color-white;
-	}
+        //line-height:2rem;
+        color:$znu-color-white;
+        font-size:1.2rem;
+        &:hover{
+            color:$znu-color-white-light;
+        }
+        &:visited{
+            color:$znu-color-white;
+        }
         &.active{
             color:$znu-color-white;
-	    font-size:1.4rem;
+            font-size:1.6rem;
+            border:none;
         }
 
     }
@@ -191,7 +215,7 @@ body{
         display:inline-block;
         width:auto;
     }
-    
+
 }
 
 
@@ -203,7 +227,7 @@ body{
     @include make-lg-column(7);
 
     padding-bottom:0.5rem;
-    padding-top:0.5rem;
+    padding-top:0.8rem;
     text-align:right;
     @media (max-width: $screen-sm-min - 1px) {
         text-align:left;
@@ -235,7 +259,7 @@ body{
 
         @media (min-width: $screen-lg-min){
             padding-left: 2rem;
-            padding-righr: 2rem;
+            padding-right: 2rem;
         }
 
         .w1{
@@ -243,6 +267,7 @@ body{
             margin-right: 1rem;
             a{
                 font-size: 1.3rem;
+                @include link-style($znu-color-blue,$znu-color-blue-light-link, $znu-color-blue-light);
             }
         }
 
@@ -266,7 +291,7 @@ body{
             @media (min-width: $screen-sm-min) {
                 margin-top: 2rem;
                 margin-bottom: 1rem;
-	        width: 7rem;
+                width: 7rem;
                 height: 7rem;
             }
 
@@ -292,7 +317,7 @@ body{
 
             @media (min-width: $screen-xs-min) {
                 margin-left:7rem;
-		margin-top:1.3rem;
+                margin-top:1.3rem;
                 .w {
                     display: inline-block;
                 }
@@ -334,10 +359,10 @@ body{
                 }
                 @media (min-width: $screen-md-min) {
                     font-size: 3.5rem;
-                    line-height: 5rem;
+                    line-height: 4rem;
                 }
                 @media (min-width: $screen-lg-min) {
-                    font-size: 3.5rem;
+                    font-size: 3.4rem;
                     line-height: 5rem;
                 }
 
@@ -377,28 +402,84 @@ body{
     margin-right:-3.5rem;
 
     .link {
-        @include make-xs-column(6);
-        @include make-sm-column(4);
-        @include make-md-column(2);
+        @include make-xs-column(12);
+        @include make-sm-column(6);
+        @include make-md-column(4);
         @include make-lg-column(2);
         padding-left:0px;
         padding-right:0px;
 
 
         a {
-            text-align: center;
             display: block;
             margin: 0.5rem 1.5rem 0.5rem 1.5rem;
-            height: 9rem;
-            padding-top:1.2rem;
             line-height:1.2rem;
+
+            &:hover{
+                text-decoration:none;
+            }
+
+            padding:1.2rem 1.2rem 1.2rem 3rem;
+            text-indent:-1rem;
+            // height: 9rem;
+            text-align: left;
+            // @media (min-width: $screen-xs-min) {            }
+            // @media (min-width: $screen-sm-min) {          }
+            @media (min-width: $screen-md-min) {
+               text-align: center;
+               height: 9rem;
+               padding:1.2rem;
+               text-indent:0;
+            }
+
+            
+            
+            @media (min-width: $screen-lg-min) {
+                
+            }
             i {
-                font-size: 4.5rem;
+                font-size: 1.5rem;
+                @media (min-width: $screen-xs-min) {
+                }
+                @media (min-width: $screen-sm-min) {
+                }
+
+                @media (min-width: $screen-md-min) {
+                    font-size: 4.5rem;
+                }
+
+                @media (min-width: $screen-lg-min) {
+                }
             }
             .text {
                 font-size: 1.5rem;
-                display: block;
+                display: inline;
                 margin-top: 0.5rem;
+                margin-left:1rem;
+                
+                .lnk-text{
+                    @include link-style($znu-color-blue,$znu-color-blue-light-link, $znu-color-blue-light);
+                }
+               
+                @media (min-width: $screen-xs-min) {
+                }
+                @media (min-width: $screen-sm-min) {
+                    //&.longlink{
+                    //    font-size:1.2rem;
+                    //}
+                }
+
+                @media (min-width: $screen-md-min) {
+                   display: block;
+                   margin-left:0;
+                }
+
+                @media (min-width: $screen-lg-min) {
+                    &.longlink{
+                        font-size:1.2rem;
+                        margin-top: 0rem;
+                    }
+                }
             }
         }
         .color1 {
@@ -625,7 +706,7 @@ body{
 
         padding-left:1rem;
         padding-right:1rem;
-        
+
         &:nth-child(1){
             .znu-2016-block-new-one-content{
                 background-color:$znu-color-yellow;
@@ -778,19 +859,19 @@ body{
 
     color:$znu-color-white;
     font-size: 1.2rem;
-    
+
     a{
-        display:inline-block;
-        //@include link-style($znu-color-white,$znu-color-white-light, $znu-color-white);
-	line-height:2rem;
-	color:$znu-color-white;
-	font-size:1.2rem;
-	&:hover{
-	    color:$znu-color-white-light;
-	}
-	&:visited{
-	    color:$znu-color-white;
-	}
+        // display:inline-block;
+        @include link-style($znu-color-white,$znu-color-white-light, $znu-color-white);
+        line-height:2rem;
+        color:$znu-color-white;
+        font-size:1.2rem;
+        &:hover{
+            color:$znu-color-white-light;
+        }
+        &:visited{
+            color:$znu-color-white;
+        }
     }
 
     .social{
@@ -908,8 +989,8 @@ body{
     // есть позразделы и содержание
     .znu-2016-breadcrumbs-ch-content{
         @include make-xs-column(12);
-        @include make-sm-column(9);
-        @include make-md-column(9);
+        @include make-sm-column(12);
+        @include make-md-column(8);
         @include make-lg-column(9);
         float:right!important;
     }
@@ -937,15 +1018,15 @@ body{
         position: relative;
         .znu-2016-breadcrumbs-col {
             background-color: rgba(255, 255, 255, 0.5);
-            padding: 1rem 3rem 1rem 3rem;
+            padding: 1rem 2rem 1rem 2rem;
             box-shadow: 0px 1px 5px -1px rgba(0, 0, 0, 0.14);
 
             a {
                 @include link-style($znu-color-blue-2, $znu-color-blue-dark);
-                font-size: 1.2rem;
+                font-size: 1.5rem;
             }
             span{
-                font-size:1.2rem;
+                font-size:1.5rem;
             }
             .current {
             }
@@ -956,13 +1037,13 @@ body{
     // есть позразделы и содержание
     .znu-2016-block-page-content-ch-content{
         @include make-xs-column(12);
-        @include make-sm-column(9);
-        @include make-md-column(9);
+        @include make-sm-column(12);
+        @include make-md-column(8);
         @include make-lg-column(9);
-        
+
         &.offset{
             // @include make-xs-column-offset(12);
-            @include make-sm-column-offset(3);
+            // @include make-sm-column-offset(3);
             @include make-md-column-offset(3);
             @include make-lg-column-offset(3);
         }
@@ -985,13 +1066,13 @@ body{
 
     .znu-2016-block-page-content {
 
-        
-        font-size: 1.2rem;
-        
+
+        font-size: 1.5rem;
+
         @media (min-width: $screen-xs-min) {
             padding-right: 2rem;
             padding-left: 2rem;
-	    padding-bottom: 1rem;
+            padding-bottom: 1rem;
             h2{
                 font-size: 2.3rem;
             }
@@ -1009,7 +1090,7 @@ body{
         @media (min-width: $screen-lg-min) {
             padding-right: 3rem;
             padding-left: 3rem;
-            
+
             // font-size: 1.2rem;
 
             h2{
@@ -1018,6 +1099,9 @@ body{
         }
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
             line-height: 1.3;
+        }
+        a{
+            @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-rose-dark);
         }
 
         .znu-2016-page-header {
@@ -1061,11 +1145,16 @@ body{
         .search input#search{
             height: 2.2rem;
             background: $znu-color-white-light;
-            border: none;
+            border: 1px solid darken($znu-background-color, 20%);
+            border-radius:2px;
             float: left;
             color: $znu-color-blue;
             padding: 0 0 0 1rem;
             width: 100%;
+            &:focus{
+                border-color:$znu-color-blue;
+                background: $znu-color-green;
+            }
         }
         input[type="search"]::-webkit-input-placeholder {color:$znu-color-blue-light; opacity: 0.5}
         input[type="search"]::-moz-placeholder          {color:$znu-color-blue-light; opacity: 0.5}/* Firefox 19+ */
@@ -1144,6 +1233,9 @@ body{
         img {
             max-width: 100%;
             margin: 1rem 0 1rem 0;
+            &:hover{
+                opacity:0.8;
+            }
         }
         img[align="right"] {
             margin: 0 0 2rem 2rem;
@@ -1353,78 +1445,85 @@ body{
                 .znu-2016-block-new-title{
                     display:block;
                     @media (min-width: $screen-sm-min) {
-                        height:9.5rem;
+                        height:9.0rem;
                         overflow:hidden;
                     }
                 }
             }
         }
 
-        
+
         .znu-2016-news{
 
             @extend .row;
             margin-left:0rem;
 
-            }
-            
-            .znu-2016-new{
-                @include make-xs-column(12);
-                padding-left:0;
-                padding-right:0;
-                margin-bottom:1rem;
-            }
-            .znu-2016-new-img{
-                @include make-xs-column(12);
-                @include make-sm-column(6);
-                @include make-md-column(3);
-                @include make-lg-column(2);
-                padding-right:0px;
-                img{
-                    @media (min-width: $screen-xs-min) {
-                        width:auto;
-                    }
-                    @media (min-width: $screen-sm-min) {
-                    }
+        }
 
-                    @media (min-width: $screen-md-min) {
-                    }
-
-                    @media (min-width: $screen-lg-min) {
-                    }
-                    max-width:100%;
+        .znu-2016-new{
+            @include make-xs-column(12);
+            padding-left:0;
+            padding-right:0;
+            margin-bottom:1rem;
+        }
+        .znu-2016-new-img{
+            @include make-xs-column(12);
+            @include make-sm-column(6);
+            @include make-md-column(3);
+            @include make-lg-column(2);
+            padding-right:0px;
+            img{
+                @media (min-width: $screen-xs-min) {
+                    width:auto;
                 }
+                @media (min-width: $screen-sm-min) {
+                }
+
+                @media (min-width: $screen-md-min) {
+                }
+
+                @media (min-width: $screen-lg-min) {
+                }
+                max-width:100%;
             }
-            .znu-2016-new-img-list-info{
-                @include make-xs-column(12);
-                @include make-sm-column(6);
-                @include make-md-column(9);
-                @include make-lg-column(10);
-	}
-            
-            .text{
-                max-height:5.3rem;
-                overflow:hidden;
+        }
+        .znu-2016-new-img-list-info{
+            @include make-xs-column(12);
+            @include make-sm-column(6);
+            @include make-md-column(9);
+            @include make-lg-column(10);
+        }
+
+        .text{
+            max-height:5.3rem;
+            overflow:hidden;
+        }
+        .date-container{
+            text-align:right;
+        }
+        .d-container{
+            bottom:0;
+            position: absolute;
+            right: 0;
+            margin-bottom: 1rem;
+            margin-right: 3rem;
+            line-height: 1rem;
+        }
+        
+        .allimgs a{
+            border:none;
+            &.active{
+                color:$znu-color-white;
             }
-            .date-container{
-                text-align:right;
-            }
-	    .d-container{
-		bottom:0;
-		position: absolute;
-		right: 0;
-		margin-bottom: 1rem;
-		margin-right: 3rem;
-		line-height: 1rem;
-	    }
+        }
     }
 
 
     // есть позразделы и содержание
     .subcategories {
         @include make-xs-column(12);
-        @include make-sm-column(3);
-        @include make-md-column(3);
+        @include make-sm-column(12);
+        @include make-md-column(4);
         @include make-lg-column(3);
 
         @media (min-width: $screen-xs-min){
@@ -1435,7 +1534,7 @@ body{
 
         @media (min-width: $screen-sm-min) {
             margin-bottom: 2rem;
-            padding-right: 2rem;
+            // padding-right: 2rem;
         }
         @media (min-width: $screen-md-min) {
             margin-bottom: 2rem;
@@ -1471,18 +1570,25 @@ body{
         a {
             @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-rose-dark);
             text-decoration: none;
+
+        }
+        a {
+            @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-rose-dark);
+            text-decoration: none;
+        }
+        .child, a{
             @media (min-width: $screen-xs-min){
-                font-size:130%;
+                font-size:1.5rem;
             }
             @media (min-width: $screen-sm-min){
-                font-size:130%;
+                font-size:1.5rem;
             }
             @media (min-width: $screen-md-min){
-                font-size:130%;
+                font-size:1.5rem;
             }
             @media (min-width: $screen-lg-min){
-                font-size:130%;
-            }
+                font-size:1.5rem;
+            }        
         }
         ul {
             display: block;
@@ -1495,6 +1601,17 @@ body{
             &:hover {
                 background-color: #ddd;
                 text-decoration: none;
+            }
+            @media (min-width: $screen-xs-min){
+
+            }
+            @media (min-width: $screen-sm-min){
+                display:inline-block;
+                width:50%;
+            }
+            @media (min-width: $screen-md-min){
+                display:block;
+                width:auto;
             }
         }
         .category-child {

@@ -374,7 +374,7 @@ class CategoryViewModel {
                       ch.start, ch.finish, ch.is_deleted, ch.deep, ch.is_part_of,
                       ch.see_also, ch.is_visible, ch.path, ch.category_description,
                       ch.category_icon, ch.category_title_short, ch.category_description_short,
-                      BIT_AND(pa.is_visible) as parentsVisible
+                      BIT_AND(pa.is_visible) as parentsVisible, ch.start,ch.finish
                from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
                WHERE ch.site_id={$this->site_info['id']}
                  AND ch.is_visible
@@ -391,6 +391,10 @@ class CategoryViewModel {
         $cnt = count($this->category_children);
         for ($i = 0; $i < $cnt; $i++) {
             $this->category_children[$i] = $this->getView($this->category_children[$i]);
+            $this->category_children[$i]['category_description_exists']=(
+                strlen(trim($this->category_children[$i]['category_description']))>0
+                || ( $this->category_children[$i]['finish']-$this->category_children[$i]['start'] > 1)
+            );
             $this->category_children[$i]['category_description']='';
             if (!$this->category_children[$i]['category_title_short']) {
                 unset($this->category_children[$i]);

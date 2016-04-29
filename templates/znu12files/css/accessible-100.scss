@@ -1,7 +1,10 @@
 // parameters
 
 $resourse-root-url:"/cms/templates/znu12files";
-
+$root-font-size-xs:8pt;
+$root-font-size-sm:8pt;
+$root-font-size-md:8pt;
+$root-font-size-lg:10pt;
 
 $grid-gutter-width:4rem;
 
@@ -14,10 +17,10 @@ $container-xs:$screen-xs-min - 20px;
 // $screen-xs-s-min:416px;
 // $container-xs-s:$screen-xs-s-min - 20px;
 
-$screen-sm-min:760px;
+$screen-sm-min:560px;
 $container-sm:$screen-sm-min - 46px;
 
-$screen-md-min:970px;
+$screen-md-min:760px;
 $container-md:$screen-md-min - 50px;
 
 $screen-lg-min:1170px;
@@ -41,12 +44,13 @@ $znu-color-blue-dark:#223264;
 $znu-color-rose:rgba(234, 49, 182, 0.4);
 $znu-color-green:rgba(76, 241, 224, 0.4); //#F0F2E5;*/
 
-$znu-color-yellow:rgb(156, 204, 1);
-$znu-color-rose:rgb(212, 110, 108);
-$znu-color-green:rgb(67, 192, 212); 
+$znu-color-yellow:#EAFCB0;// rgb(156, 204, 1);
+$znu-color-rose:#FFDBDB;// rgb(212, 110, 108);
+$znu-color-green:#C5F2F9;// rgb(67, 192, 212); 
 
 $znu-background-color: #f2f2f2;
 
+// ......................
 //$znu-color-sand-light1:#FEF5E6;
 
 //$znu-color-green-light:#29C8B6;
