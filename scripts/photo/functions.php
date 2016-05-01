@@ -158,7 +158,9 @@ class PhotoCategoryViewer {
 
     // parameters
     private $rowsPerPage = 10;
-
+    
+    private $_includeSubcategories = 10;
+    
     private $orderBy = 'photo_category_title ASC, id ASC';
     // mapping of the sortable_columns
     private $sortable_columns = Array(
@@ -245,6 +247,10 @@ class PhotoCategoryViewer {
         return null;
     }
 
+    public function includeSubcategories($v){
+        $this->_includeSubcategories=$v?1:0;
+    }
+    
     public function orderBy($attr){
         $opt = explode(',', $attr);
         
@@ -365,9 +371,28 @@ class PhotoCategoryViewer {
 
     private function images(){
         if($this->photo_category_info && strlen($this->photo_category_info['photo_category_path'])>0 ){
-            $result=\e::db_getrows("SELECT * FROM <<tp>>photo WHERE site_id=<<integer site_id>> AND photo_visible AND photo_category_id=<<integer photo_category_id>> ORDER BY ".($this->orderBy? $this->orderBy:'photo_category_id desc'),['site_id'=>$this->site_info['id'], 'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
+            if($this->_includeSubcategories){
+                $result=\e::db_getrows(
+                        "SELECT * FROM <<tp>>photo 
+                         WHERE site_id=<<integer site_id>> AND photo_visible 
+                           AND photo_category_id IN (
+                               SELECT photo_category_id FROM <<tp>>photo_category 
+                               WHERE site_id=<<integer site_id>> 
+                                AND ( photo_category_path LIKE '".\e::db_escape($this->photo_category_info['photo_category_path'])."/%' 
+                                      OR photo_category_path = '".\e::db_escape($this->photo_category_info['photo_category_path'])."'   ) ) 
+                         ORDER BY ".($this->orderBy? $this->orderBy:'photo_category_id desc')." 
+                         LIMIT 0,{$this->rowsPerPage}",
+                        ['site_id'=>$this->site_info['id']]);                
+            }else{
+                $result=\e::db_getrows("SELECT * FROM <<tp>>photo WHERE site_id=<<integer site_id>> AND photo_visible AND photo_category_id=<<integer photo_category_id>> ORDER BY ".($this->orderBy? $this->orderBy:'photo_category_id desc')." LIMIT 0,{$this->rowsPerPage}",['site_id'=>$this->site_info['id'], 'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
+            }
+            
         }else{
-            $result=\e::db_getrows("SELECT * FROM <<tp>>photo WHERE site_id=<<integer site_id>> AND photo_visible AND photo_category_id=0 ORDER BY ".($this->orderBy? $this->orderBy:'photo_category_id desc'),['site_id'=>$this->site_info['id'],'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
+            if($this->_includeSubcategories){
+                $result=\e::db_getrows("SELECT * FROM <<tp>>photo WHERE site_id=<<integer site_id>> AND photo_visible ORDER BY ".($this->orderBy? $this->orderBy:'photo_category_id desc')." LIMIT 0,{$this->rowsPerPage}",['site_id'=>$this->site_info['id'],'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
+            }else{
+                $result=\e::db_getrows("SELECT * FROM <<tp>>photo WHERE site_id=<<integer site_id>> AND photo_visible AND photo_category_id=0 ORDER BY ".($this->orderBy? $this->orderBy:'photo_category_id desc')." LIMIT 0,{$this->rowsPerPage}",['site_id'=>$this->site_info['id'],'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
+            }
         }
         
         for($i=0, $cnt=count($result); $i<$cnt; $i++){
