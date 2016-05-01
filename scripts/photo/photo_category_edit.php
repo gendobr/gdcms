@@ -284,6 +284,7 @@ $html.="
                $photo_category_info['photo_category_id']."\">&times;</a>"
             . "<a href=\"{$this_site_info['site_root_url']}/{$photo_category_info['photo_category_icon']['full']}\" target=_blank>"
             . "<img src=\"{$this_site_info['site_root_url']}/{$photo_category_info['photo_category_icon']['small']}\" style=\"max-width:100%;\">"
+            . "</a>"
         : ''
       )."
 
