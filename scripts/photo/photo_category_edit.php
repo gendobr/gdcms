@@ -78,8 +78,8 @@ if(\e::request('posted','')=='true'){
                  SET photo_category_title=<<string photo_category_title>>,
                      photo_category_ordering=<<integer photo_category_ordering>>,
                      photo_category_description=<<string photo_category_description>>,
-                     photo_category_visible=<<integer photo_category_visible>>
-                     photo_category_meta=<<string photo_category_meta>>,
+                     photo_category_visible=<<integer photo_category_visible>>,
+                     photo_category_meta=<<string photo_category_meta>>
                  WHERE photo_category_id=<<integer photo_category_id>>",
                 $photo_category_info);
         
