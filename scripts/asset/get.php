@@ -23,5 +23,5 @@ if ($filepath && strlen($filepath) > strlen(\e::config('APP_ROOT'))) {
     header("Content-Type:" . $mime_type);
     readfile($filepath);
 } else {
-    echo "File $filepath not found";
+    echo "File ".\e::config('APP_ROOT') . '/' . $rel_file_path." not found";
 }
