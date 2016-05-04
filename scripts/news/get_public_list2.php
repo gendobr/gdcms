@@ -563,7 +563,7 @@ class CmsNewsViewer {
             );
 
 
-            $cachefilepath = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_months_site{$this->site_id}_lang{$this->lang}_year{$this->year}.cache";
+            $cachefilepath = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_months_site{$this->site_id}_lang{$this->lang}_year{$this->year}.cache";
             $tmp = \core\fileutils::get_cached_info($cachefilepath, cachetime);
             if (!$tmp) {
                 $tmp = \e::db_getrows("SELECT DISTINCT month(last_change_date) AS month
@@ -588,7 +588,7 @@ class CmsNewsViewer {
                 , 'innerHTML' => text('All_dates')
             );
 
-            $cachefilepath = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_years_site{$this->site_id}_lang{$this->lang}.cache";
+            $cachefilepath = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_years_site{$this->site_id}_lang{$this->lang}.cache";
             $tmp = \core\fileutils::get_cached_info($cachefilepath, cachetime);
             if (!$tmp) {
                 $tmp = \e::db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$GLOBALS['table_prefix']}news as news WHERE news.site_id={$this->site_id} AND  news.cense_level>={$this->this_site_info['cense_level']} AND news.lang='{$this->lang}' ORDER BY year ASC");
@@ -609,7 +609,7 @@ class CmsNewsViewer {
 
         // get list of tags
         // cache info as file in the site dir
-        $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
+        $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
         if ($tmp) {
             $this->_tagSelector = $tmp;
         } else {
@@ -625,7 +625,7 @@ class CmsNewsViewer {
                        ORDER BY news_tags.lang, news_tags.tag";
             //prn($query);
             $this->_tagSelector = \e::db_getrows($query);
-            \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->_tagSelector);
+            \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", $this->_tagSelector);
         }
         $cnt = count($this->_tagSelector);
         for ($i = 0; $i < $cnt; $i++) {

@@ -43,8 +43,8 @@ if (!isset($input_vars['newdir']) || strlen($input_vars['newdir']) == 0) {
 }
 
 
-$log_file_path=\e::config('CACHE_ROOT')."/directory_creator.log.txt";
-
+$log_file_path=\e::config('CACHE_ROOT')."/{$this_site_info['dir']}/directory_creator.log.txt";
+\core\fileutils::path_create(\e::config('CACHE_ROOT'), \e::config('CACHE_ROOT')."/{$this_site_info['dir']}/");
 
 // save log
 ml('site/file_directory_creator', Array($this_site_info, $input_vars));
@@ -135,4 +135,3 @@ if(mkdir($path)){
 
 file_put_contents($log_file_path, strip_tags($log)."\n");
 echo $log;
-?>

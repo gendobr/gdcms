@@ -50,13 +50,16 @@ $news=new CmsNewsViewer($input_vars);
   
 # -------------------- get list of page languages - begin --------------------
 
-$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
+$cachePath=\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_lang_{$site_id}.cache";
+\core\fileutils::path_create(\e::config('CACHE_ROOT'), \e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/");
+
+$tmp = \core\fileutils::get_cached_info($cachePath, cachetime);
 if (!$tmp) {
     $tmp = \e::db_getrows("SELECT DISTINCT lang
                      FROM {$table_prefix}news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
-    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
+    \core\fileutils::set_cached_info($cachePath, $tmp);
 }
 
 $existing_languages = Array();

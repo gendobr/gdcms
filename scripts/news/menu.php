@@ -277,7 +277,7 @@ class CategoryNews {
 
         // get list of tags
         // cache info as file in the site dir
-        $cachefilepath=\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/cache/news_tags_category{$this->category_info['category_id']}_lang{$this->lang}.cache";
+        $cachefilepath=\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_tags_category{$this->category_info['category_id']}_lang{$this->lang}.cache";
         $tmp = \core\fileutils::get_cached_info($cachefilepath, cachetime);
         if ($tmp) {
             $this->tagSelector = $tmp;

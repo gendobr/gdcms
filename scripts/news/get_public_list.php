@@ -151,7 +151,7 @@ $lang = \e::db_escape($input_vars['lang']);
 
 // -------------------- get cached list of tags - begin ------------------------
 // cache info as file in the site dir
-$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", cachetime);
+$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_tags_site{$site_id}_lang{$lang}.cache", cachetime);
 if ($tmp) {
     $tags = $tmp;
 } else {
@@ -164,7 +164,7 @@ if ($tmp) {
                  AND news.site_id={$site_id}
                  AND news.lang='{$lang}'";
     $tags = \e::db_getrows($query);
-    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_tags_site{$site_id}_lang{$lang}.cache", $tags);
+    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_tags_site{$site_id}_lang{$lang}.cache", $tags);
 }
 // -------------------- get cached list of tags - end --------------------------
 
@@ -249,7 +249,7 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
             $day_options = join(' ', $days);
         }
     } else {
-        $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", cachetime);
+        $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", cachetime);
         if (!$tmp) {
             $tmp = \e::db_getrows("SELECT DISTINCT month(last_change_date) AS month
                                       FROM {$table_prefix}news as news
@@ -258,7 +258,7 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
                                        AND news.lang='{$lang}'
                                        AND year(last_change_date)=$news_date_year
                                       ORDER BY month ASC");
-            \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", $tmp);
+            \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", $tmp);
         }
         $months = Array();
         $href = \e::config('url_prefix_news_list') . query_string('^start$|^' . session_name() . '$|^news_date_day$|^news_keywords$|^action$') . "&news_date_month=";
@@ -274,10 +274,10 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
 
 
 
-    $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", cachetime);
+    $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_years_site{$site_id}_lang{$lang}.cache", cachetime);
     if (!$tmp) {
         $tmp = \e::db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$table_prefix}news as news WHERE news.site_id={$site_id} AND  news.cense_level>={$this_site_info['cense_level']} AND news.lang='{$lang}' ORDER BY year ASC");
-        \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_years_site{$site_id}_lang{$lang}.cache", $tmp);
+        \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_years_site{$site_id}_lang{$lang}.cache", $tmp);
     }
 
 
@@ -568,13 +568,13 @@ foreach ($menu_groups as $kmg => $mg) {
 //------------------------ get list of languages - begin -----------------------
 # -------------------- get list of page languages - begin --------------------
 
-$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", cachetime);
+$tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_lang_{$site_id}.cache", cachetime);
 if (!$tmp) {
     $tmp = \e::db_getrows("SELECT DISTINCT lang
                      FROM {$table_prefix}news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
-    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/cache/news_lang_{$site_id}.cache", $tmp);
+    \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_lang_{$site_id}.cache", $tmp);
 }
 
 $existing_languages = Array();

@@ -244,8 +244,8 @@ class CategoryViewModel {
         $this->site_info = $site_info;
         $this->category_info = $category_info;
 
-        $this->cache_path=$this->site_info['site_root_dir'] . "/cache/category_{$this->category_info['category_id']}_{$this->lang}.cache";
-        \core\fileutils::path_create($this->site_info['site_root_dir'], $this->cache_path);
+        $this->cache_path=\e::config('CACHE_ROOT')."/{$this->site_info['dir']}/category_{$this->category_info['category_id']}_{$this->lang}.cache";
+        \core\fileutils::path_create(\e::config('CACHE_ROOT'), $this->cache_path);
         
         $tmp = \core\fileutils::get_cached_info($this->cache_path, 600);
         if ($tmp) {

@@ -11,11 +11,11 @@
         <link href='https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
         
         {if $smarty.cookies.css eq "accessible-100"}
-           <link rel='stylesheet' id='znu-css-screen' data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id=62&f=znu12files/css/accessible-100.scss"  href='{$site_root_url}/index.php?action=scss%2Fget&site_id=62&f=znu12files/css/accessible-100.scss' type='text/css' media='screen' />
+           <link rel='stylesheet' id='znu-css-screen' data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/accessible-100.scss"  href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/accessible-100.scss' type='text/css' media='screen' />
         {else}
-           <link rel='stylesheet' id='znu-css-screen' data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id=62&f=znu12files/css/common.scss"  href='{$site_root_url}/index.php?action=scss%2Fget&site_id=62&f=znu12files/css/common.scss' type='text/css' media='screen' />
+           <link rel='stylesheet' id='znu-css-screen' data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/common.scss"  href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/common.scss' type='text/css' media='screen' />
         {/if}
-        <link rel='stylesheet' id='znu-css-print'  data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id=62&f=znu12files/css/print.scss" href='{$site_root_url}/index.php?action=scss%2Fget&site_id=62&f=znu12files/css/print.scss' type='text/css' media='print' />
+        <link rel='stylesheet' id='znu-css-print'  data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/print.scss" href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/print.scss' type='text/css' media='print' />
 
         {literal}
         <script type="application/javascript">

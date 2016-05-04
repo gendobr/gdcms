@@ -62,7 +62,10 @@ if (!$scssFilepath) {
 }
 
 
-$cachePath = "{$this_site_info['site_root_dir']}/cache/" . md5($scssFilepath) . '.css';
+//$cachePath = "{$this_site_info['site_root_dir']}/cache/" . md5($scssFilepath) . '.css';
+$cachePath = \e::config('CACHE_ROOT')."/{$this_site_info['dir']}/" . md5($scssFilepath) . '.css';
+\core\fileutils::path_create(\e::config('CACHE_ROOT'), \e::config('CACHE_ROOT')."/{$this_site_info['dir']}/");
+
 echo "/* cache $cachePath */";
 if (!file_exists($cachePath) || filemtime($scssFilepath) > filemtime($cachePath)) {
 
