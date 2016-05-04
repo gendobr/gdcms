@@ -2,7 +2,10 @@
 
 $GLOBALS['main_template_name'] = '';
 
-$rel_file_path = substr($_SERVER['REQUEST_URI'], strlen(dirname($_SERVER['PHP_SELF'])) + 1);
+
+$dirname=preg_replace("/^\//",'',dirname($_SERVER['PHP_SELF']));
+$rel_file_path = substr($_SERVER['REQUEST_URI'], strlen($dirname) + 1);
+// $rel_file_path = substr($_SERVER['REQUEST_URI'], strlen(dirname($_SERVER['PHP_SELF'])));
 
 $filepath = realpath(\e::config('APP_ROOT') . '/' . $rel_file_path);
 if ($filepath && strlen($filepath) > strlen(\e::config('APP_ROOT'))) {
@@ -23,5 +26,6 @@ if ($filepath && strlen($filepath) > strlen(\e::config('APP_ROOT'))) {
     header("Content-Type:" . $mime_type);
     readfile($filepath);
 } else {
+    // echo "File ".\e::config('APP_ROOT') . '/' . $rel_file_path." not found";
     echo "File ".\e::config('APP_ROOT') . '/' . $rel_file_path." not found";
 }
