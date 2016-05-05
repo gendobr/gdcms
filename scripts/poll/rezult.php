@@ -19,14 +19,14 @@ global $main_template_name; $main_template_name='';
 
 
 // ------------------ get poll - begin -----------------------------------------
-   $polls=\e::db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1");
+   $polls=\e::db_getrows("SELECT * FROM <<tp>>golos_pynannja WHERE site_id={$site_id} AND is_active=1");
    if(!$polls) return '';
    //prn('$polls',$polls);
 
    $poll_ids=Array();
    foreach($polls as $key=>$val) $poll_ids[$key]=(int)$val['id'];
 
-   $vidpovidi=\e::db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
+   $vidpovidi=\e::db_getrows("SELECT * FROM <<tp>>golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
 
    $poll_ids=array_flip($poll_ids);
    foreach($vidpovidi as $val)

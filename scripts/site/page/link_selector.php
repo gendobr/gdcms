@@ -83,7 +83,7 @@ switch($input_vars['view'])
                   ,ne.abstract AS abstract
                   ,ne.last_change_date
                   ,IF(LENGTH(TRIM(ne.content))>0,1,0) as content_present
-            FROM {$table_prefix}news AS ne
+            FROM <<tp>>news AS ne
                  $category_restriction
             WHERE ne.site_id={$this_site_info['id']}
               AND ne.cense_level>={$this_site_info['cense_level']}
@@ -202,7 +202,7 @@ switch($input_vars['view'])
                   ,pg.last_change_date
                   ,pg.path
                   ,IF(LENGTH(TRIM(pg.content))>0,1,0) as content_present
-            FROM {$table_prefix}page AS pg
+            FROM <<tp>>page AS pg
                  $category_restriction
             WHERE pg.site_id={$this_site_info['id']}
               $page_keywords_restriction

@@ -48,7 +48,7 @@ if($payment_reply->is_valid()) {
     switch($payment_reply->get_status()) {
         case 'success':
         # set order as paid
-            $query="UPDATE {$table_prefix}ec_order
+            $query="UPDATE <<tp>>ec_order
                     SET ec_order_paid=1 , ec_order_paid_amount=".$payment_reply->get_amount()."
                     WHERE ec_order_id=$ec_order_id";
             //prn($query);
@@ -67,8 +67,8 @@ if($payment_reply->is_valid()) {
                            ec_user.site_visitor_id,
                            ec_order.site_id,
                            0 as user_id
-                    FROM {$table_prefix}ec_order as ec_order
-                         INNER JOIN {$table_prefix}ec_user as ec_user
+                    FROM <<tp>>ec_order as ec_order
+                         INNER JOIN <<tp>>ec_user as ec_user
                          ON ec_order.ec_user_id=ec_user.ec_user_id
                     WHERE ec_order_id=$ec_order_id
                     ";
@@ -141,8 +141,8 @@ if($payment_reply->is_valid()) {
                            ec_user.site_visitor_id,
                            ec_order.site_id,
                            0 as user_id
-                    FROM {$table_prefix}ec_order as ec_order
-                         INNER JOIN {$table_prefix}ec_user as ec_user
+                    FROM <<tp>>ec_order as ec_order
+                         INNER JOIN <<tp>>ec_user as ec_user
                          ON ec_order.ec_user_id=ec_user.ec_user_id
                     WHERE ec_order_id=$ec_order_id
                     ";
@@ -216,8 +216,8 @@ if($payment_reply->is_valid()) {
                            ec_user.site_visitor_id,
                            ec_order.site_id,
                            0 as user_id
-                    FROM {$table_prefix}ec_order as ec_order
-                         INNER JOIN {$table_prefix}ec_user as ec_user
+                    FROM <<tp>>ec_order as ec_order
+                         INNER JOIN <<tp>>ec_user as ec_user
                          ON ec_order.ec_user_id=ec_user.ec_user_id
                     WHERE ec_order_id=$ec_order_id
                     ";
@@ -302,8 +302,8 @@ else {
                    ec_user.site_visitor_id,
                    ec_order.site_id,
                    0 as user_id
-            FROM {$table_prefix}ec_order as ec_order
-                 INNER JOIN {$table_prefix}ec_user as ec_user
+            FROM <<tp>>ec_order as ec_order
+                 INNER JOIN <<tp>>ec_user as ec_user
                  ON ec_order.ec_user_id=ec_user.ec_user_id
             WHERE ec_order_id=$ec_order_id
             ";
@@ -365,7 +365,7 @@ else {
 }
 
 ml('ec/order/pay#success',$order_history_query);
-$order_history_query="INSERT INTO {$table_prefix}ec_order_history(
+$order_history_query="INSERT INTO <<tp>>ec_order_history(
                     ec_order_history_title,
                     ec_order_history_details,
                     ec_order_history_date,

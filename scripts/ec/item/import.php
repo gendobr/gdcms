@@ -160,7 +160,7 @@ if(isset($input_vars['row'])) {
     // prn('Importing ....');
 
 
-    // -------------- get structure of the {$GLOBALS['table_prefix']}ec_item table - begin -----------
+    // -------------- get structure of the <<tp>>ec_item table - begin -----------
     $field_names=get_importable_fields($site_id);
     $field_name_options=Array();
     foreach($field_names as $fn) {
@@ -168,7 +168,7 @@ if(isset($input_vars['row'])) {
     }
     asort($field_name_options);
     //prn($field_name_options);
-    // -------------- get structure of the {$GLOBALS['table_prefix']}ec_item table - end -------------
+    // -------------- get structure of the <<tp>>ec_item table - end -------------
 
     // ------------------------- get imporable columns - begin -----------------
     $columns=Array();
@@ -340,7 +340,7 @@ if(isset($input_vars['row'])) {
             // ----------------- check if record exists - begin ---------------
             $found_ec_item_id=false;
             if(isset($product_info['ec_item_uid'])) {
-                $found_ec_item_id=\e::db_getonerow("SELECT ec_item_id,ec_item_lang FROM {$table_prefix}ec_item WHERE ec_item_uid<>'' AND ec_item_uid={$product_info['ec_item_uid']['dbvalue']}");
+                $found_ec_item_id=\e::db_getonerow("SELECT ec_item_id,ec_item_lang FROM <<tp>>ec_item WHERE ec_item_uid<>'' AND ec_item_uid={$product_info['ec_item_uid']['dbvalue']}");
             }
             // ----------------- check if record exists - end -----------------
 
@@ -354,7 +354,7 @@ if(isset($input_vars['row'])) {
                         $fld[]=$tm['Field'].'='.$tm['dbvalue'];
                     }
                 }
-                $query="update {$table_prefix}ec_item set ".join(',',$fld).",cache_datetime='2000-01-01 00:00:00' WHERE ec_item_id={$found_ec_item_id['ec_item_id']}  and ec_item_lang='{$found_ec_item_id['ec_item_lang']}'";
+                $query="update <<tp>>ec_item set ".join(',',$fld).",cache_datetime='2000-01-01 00:00:00' WHERE ec_item_id={$found_ec_item_id['ec_item_id']}  and ec_item_lang='{$found_ec_item_id['ec_item_lang']}'";
                 //prn($query);
                 \e::db_execute($query);
 
@@ -386,10 +386,10 @@ if(isset($input_vars['row'])) {
                         $val[]=$tm['dbvalue'];
                     }
                 }
-                $query="insert into {$table_prefix}ec_item (".join(',',$fld).") values(".join(',',$val).")";
+                $query="insert into <<tp>>ec_item (".join(',',$fld).") values(".join(',',$val).")";
                 //prn($query);
                 \e::db_execute($query);
-                $found_ec_item_id=\e::db_getonerow("SELECT ec_item_id, ec_item_lang FROM {$table_prefix}ec_item WHERE LAST_INSERT_ID() = ec_item_id");
+                $found_ec_item_id=\e::db_getonerow("SELECT ec_item_id, ec_item_lang FROM <<tp>>ec_item WHERE LAST_INSERT_ID() = ec_item_id");
             }
 
 

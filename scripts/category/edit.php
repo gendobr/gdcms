@@ -45,9 +45,9 @@ if (isset($input_vars['category_id'])) {
     $this_category->name_start = 'start';
     $this_category->name_finish = 'finish';
     $this_category->name_deep = 'deep';
-    $this_category->name_table = $table_prefix . 'category';
+    $this_category->name_table = '<<tp>>category';
 
-    $this_category->where[] = " {$table_prefix}category.site_id={$site_id} ";
+    $this_category->where[] = " <<tp>>category.site_id={$site_id} ";
 
     $this_category->load_node($category_id);
 
@@ -125,7 +125,7 @@ $rep->use_db($GLOBALS['db']);
 $rep->debug = false;
 #$rep->text=$text;
 $rep->exclude = '^category_id$';
-$rep->set_table("{$table_prefix}category");
+$rep->set_table("<<tp>>category");
 
 # category_id           bigint(20)
 $rep->field['category_id'] = new db_record_editor_field_integer(
@@ -166,7 +166,7 @@ $rep->field['category_title_short'] = new db_record_editor_field_string(
 #                ,'Удалена');
 # is_part_of            bigint(20)
 if ($this_category->info['start'] > 0) {
-    $list_of_categories = "SELECT * FROM {$table_prefix}category WHERE site_id={$site_id} ORDER BY start";
+    $list_of_categories = "SELECT * FROM <<tp>>category WHERE site_id={$site_id} ORDER BY start";
     $list_of_categories = \e::db_getrows($list_of_categories);
     //prn($list_of_categories);
     $tmp = Array();
@@ -223,7 +223,7 @@ $rep->set_primary_key('category_id', $category_id);
 #------------------------------ pre-process - begin ----------------------------
 if ($rep->form_is_posted()) {
     // check if category_code is unique
-    $query = "SELECT count(*) as n FROM {$table_prefix}category WHERE category_id<>{$category_id} AND category_code='" . \e::db_escape($rep->field['category_code']->value) . "'";
+    $query = "SELECT count(*) as n FROM <<tp>>category WHERE category_id<>{$category_id} AND category_code='" . \e::db_escape($rep->field['category_code']->value) . "'";
     $n_category_code =\e::db_getonerow($query);
     if ($n_category_code['n'] > 0) {
         $rep->field['category_code']->posted_data = $rep->field['category_code']->value . "-{$category_id}";
@@ -239,9 +239,8 @@ $success = $rep->process();
 if ($success) {
 
     function re_create_path($category_id, $site_id) {
-        global $table_prefix;
         $query = "select pa.*
-                 from {$table_prefix}category pa, {$table_prefix}category ch
+                 from <<tp>>category pa, <<tp>>category ch
                  WHERE ch.category_id={$category_id} and ch.site_id={$site_id} and pa.site_id={$site_id}
                    and pa.start<=ch.start and ch.finish<=pa.finish
                  order by pa.start asc";
@@ -252,7 +251,7 @@ if ($success) {
             $tmp[] = ($pa['category_code'] ? $pa['category_code'] : $pa['category_id']);
         }
         $path = join('/', $tmp);
-        $query = "UPDATE {$table_prefix}category
+        $query = "UPDATE <<tp>>category
                   SET path='" . \e::db_escape($path) . "'
                   WHERE category_id={$category_id}";
         //prn($query);
@@ -266,7 +265,7 @@ if ($success) {
         if (!$this_category->move_to($rep->value_of('is_part_of'))) {
             // some errors occur
             // change to previous value
-            $query = "UPDATE {$table_prefix}category
+            $query = "UPDATE <<tp>>category
                     SET is_part_of=" . ((int) $this_category->info['is_part_of']) . "
                     WHERE category_id={$category_id}";
             \e::db_execute($query);
@@ -277,7 +276,7 @@ if ($success) {
     // recreate paths for all the children
     //re_create_path($category_id, $site_id);
     $query = "select ch.*
-             from {$table_prefix}category pa, {$table_prefix}category ch
+             from <<tp>>category pa, <<tp>>category ch
              WHERE pa.category_id={$category_id} and ch.site_id={$site_id} and pa.site_id={$site_id}
                and pa.start<=ch.start and ch.finish<=pa.finish";
     $child_or_self = \e::db_getrows($query);
@@ -299,7 +298,7 @@ if ($success) {
     }
 
 
-    $query = "UPDATE {$table_prefix}category
+    $query = "UPDATE <<tp>>category
               SET date_last_changed=now(),
                   date_lang_update='" . \e::db_escape($date_lang_update) . "'
               WHERE category_id={$category_id}";
@@ -341,7 +340,7 @@ if ($success) {
             $smallFileName="category-{$category_id}-small-".\core\fileutils::encode_file_name($_FILES['category_icon']['name']);
             img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), $type = "circumscribe");
             $category_icon=['small'=>"{$relative_dir}/{$smallFileName}", "full"=>"{$relative_dir}/{$newFileName}"];
-            $query = "UPDATE {$table_prefix}category
+            $query = "UPDATE <<tp>>category
                       SET category_icon='" . \e::db_escape(json_encode($category_icon)) . "'
                       WHERE category_id={$category_id}";
             \e::db_execute($query);
@@ -375,7 +374,7 @@ foreach ($cnt as $i) {
 #prn($this_category);
 # -------------------- get category parents - end ---------------------------
 # -------------------- get name of the neares parent - begin ----------------
-$this_category->info['is_part_of_name'] =\e::db_getonerow("SELECT category_title FROM {$table_prefix}category WHERE category_id=" . ( (int) $this_category->info['is_part_of'] ));
+$this_category->info['is_part_of_name'] =\e::db_getonerow("SELECT category_title FROM <<tp>>category WHERE category_id=" . ( (int) $this_category->info['is_part_of'] ));
 $this_category->info['is_part_of_name'] = $this_category->info['is_part_of_name']['category_title'];
 #prn($this_category->info['is_part_of_name']);
 # -------------------- get name of the neares parent - end ------------------

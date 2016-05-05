@@ -11,7 +11,7 @@ $debug = false;
 
 //------------------- site info - begin ----------------------------------------
 $site_id = checkInt($input_vars['site_id']);
-$this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+$this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
 if ($debug) {
     prn('$this_site_info=', $this_site_info);
 }
@@ -31,7 +31,7 @@ $GLOBALS['main_template_name'] = '';
 #
 #    $category=<category_id> restrict category
 # ------------------------ list of categories - begin -------------------------
-$query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
+$query = "SELECT category_id, category_title, deep FROM <<tp>>category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
 $tmp = \e::db_getrows($query);
 $list_of_categories = Array();
 foreach ($tmp as $tm) {

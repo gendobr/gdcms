@@ -56,9 +56,9 @@ $this_category->name_id     ='ec_category_id';
 $this_category->name_start  ='start';
 $this_category->name_finish ='finish';
 $this_category->name_deep   ='deep';
-$this_category->name_table  =$table_prefix.'ec_category';
+$this_category->name_table  ='<<tp>>ec_category';
 
-$this_category->where[]     =" {$table_prefix}ec_category.site_id={$site_id} ";
+$this_category->where[]     =" <<tp>>ec_category.site_id={$site_id} ";
 
 $this_category->load_node(isset($input_vars['ec_category_id'])?( (int)$input_vars['ec_category_id'] ):0);
 
@@ -80,7 +80,7 @@ unset($input_vars['ec_item_state']);
 
 # -------------------- get list of page languages - begin ----------------------
     $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
-                     FROM {$table_prefix}ec_item  AS ec_item
+                     FROM <<tp>>ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
     $existing_languages=Array();

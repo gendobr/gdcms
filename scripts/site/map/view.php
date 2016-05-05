@@ -30,7 +30,7 @@ $txt=load_msg($input_vars['lang']);
 
 //------------------- draw map - begin -----------------------------------------
   $query="SELECT pa.id, pa.lang, pa.title, pa.map_position, pa.map_indent
-          FROM {$table_prefix}page AS  pa INNER JOIN {$table_prefix}site AS si ON(pa.site_id=si.id)
+          FROM <<tp>>page AS  pa INNER JOIN <<tp>>site AS si ON(pa.site_id=si.id)
           WHERE     pa.site_id={$this_site_info['id']}
                 AND pa.lang='".\e::db_escape($input_vars['lang'])."'
 								AND pa.cense_level>=si.cense_level 

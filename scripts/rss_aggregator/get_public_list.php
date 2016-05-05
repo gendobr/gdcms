@@ -12,7 +12,7 @@ function rss_aggregator_get_list($site_id, $lang, $_start, $_rows_per_page, $fil
         $rows_per_page = \e::config('rows_per_page');
     }
 
-    $query = "SELECT SQL_CALC_FOUND_ROWS * FROM {$GLOBALS['table_prefix']}rsssourceitem
+    $query = "SELECT SQL_CALC_FOUND_ROWS * FROM <<tp>>rsssourceitem
             WHERE site_id=" . ( (int) $site_id ) . "
               AND rsssourceitem_lang='" . \e::db_escape($lang) . "'
               AND rsssourceitem_is_visiblle

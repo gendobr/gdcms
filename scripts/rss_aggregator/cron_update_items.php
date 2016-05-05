@@ -37,8 +37,8 @@ run('site/menu');
 //// ------------------ get site info - end --------------------------------------
 // ------------------ get feed URL - begin -------------------------------------
 // load one source with teh least date
-//$query = "SELECT * FROM {$table_prefix}rsssource WHERE rsssource_is_visible AND site_id={$site_id} ORDER BY rsssource_last_updated ASC limit 0,1";
-$query = "SELECT * FROM {$table_prefix}rsssource WHERE rsssource_is_visible ORDER BY rsssource_last_updated ASC limit 0,1";
+//$query = "SELECT * FROM <<tp>>rsssource WHERE rsssource_is_visible AND site_id={$site_id} ORDER BY rsssource_last_updated ASC limit 0,1";
+$query = "SELECT * FROM <<tp>>rsssource WHERE rsssource_is_visible ORDER BY rsssource_last_updated ASC limit 0,1";
 $rsssource_info = \e::db_getonerow($query);
 if (!$rsssource_info) {
     exit("There are not RSS sources to update");
@@ -47,7 +47,7 @@ prn($rsssource_info);
 
 $rsssource_id = $rsssource_info['rsssource_id'];
 $site_id = $rsssource_info['site_id'];
-$query="UPDATE {$table_prefix}rsssource SET rsssource_last_updated=now() WHERE rsssource_id=$rsssource_id AND site_id=$site_id";
+$query="UPDATE <<tp>>rsssource SET rsssource_last_updated=now() WHERE rsssource_id=$rsssource_id AND site_id=$site_id";
 \e::db_execute($query);
 
 $site_id = checkInt($rsssource_info['site_id']);
@@ -127,13 +127,13 @@ foreach ($x as $item) {
     // create or update
     // try search the item
     $query = "SELECT *
-            FROM {$table_prefix}rsssourceitem
+            FROM <<tp>>rsssourceitem
             WHERE site_id={$site_id}
               AND rsssource_id={$rsssource_id}
               AND rsssourceitem_guid='" . \e::db_escape($rsssourceitem_guid) . "'";
     $item_info = \e::db_getonerow($query);
     if($item_info){
-        $query="UPDATE {$table_prefix}rsssourceitem
+        $query="UPDATE <<tp>>rsssourceitem
                 SET
                     rsssourceitem_lang='".  \e::db_escape($rsssourceitem_lang)."',
                     rsssourceitem_datetime='".  \e::db_escape($rsssourceitem_datetime)."',
@@ -152,7 +152,7 @@ foreach ($x as $item) {
         // rsssourceitem_is_visiblle=".  ($rsssourceitem_is_visiblle?1:0).",
         \e::db_execute($query);
     }else{
-        $query="INSERT INTO {$table_prefix}rsssourceitem(
+        $query="INSERT INTO <<tp>>rsssourceitem(
                     site_id,
                     rsssource_id,
                     rsssourceitem_lang,

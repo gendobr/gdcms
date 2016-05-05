@@ -12,7 +12,7 @@ $news_subscriber_is_valid = (int)$input_vars['value'];
 // echo "news_subscriber_id=$news_subscriber_id; news_subscriber_is_valid=$news_subscriber_is_valid";
 // exit();
 // get subscriber info
-$subscriber_info = \e::db_getonerow("SELECT * FROM {$table_prefix}news_subscriber  WHERE news_subscriber_id=$news_subscriber_id");
+$subscriber_info = \e::db_getonerow("SELECT * FROM <<tp>>news_subscriber  WHERE news_subscriber_id=$news_subscriber_id");
 if (!$subscriber_info) {
     //echo htmlspecialchars(iconv('cp1251','UTF-8',$news_subscriber_is_valid));
     echo htmlspecialchars(iconv(site_charset,'UTF-8',$news_subscriber_is_valid));
@@ -40,7 +40,7 @@ if (get_level($site_id) == 0) {
 # ------------------- check permission - end -----------------------------------
 
 $value  = \e::db_escape($news_subscriber_is_valid);
-\e::db_execute("UPDATE {$table_prefix}news_subscriber SET news_subscriber_is_valid='$value' WHERE news_subscriber_id=$news_subscriber_id");
+\e::db_execute("UPDATE <<tp>>news_subscriber SET news_subscriber_is_valid='$value' WHERE news_subscriber_id=$news_subscriber_id");
 //echo htmlspecialchars(iconv('cp1251','UTF-8',$news_subscriber_is_valid));
 echo htmlspecialchars(iconv(site_charset,'UTF-8',$news_subscriber_is_valid));
 ?>

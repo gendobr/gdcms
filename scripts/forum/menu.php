@@ -6,7 +6,7 @@
  */
 
 function menu_forum($forum_info) {
-    global $text, $db, $table_prefix;
+    global $text;
     $tor = Array();
     // prn($msg_info);
     $tor['forum/thread_list'] = Array(
@@ -36,7 +36,7 @@ function menu_forum($forum_info) {
 }
 
 function menu_thread($thread_info) {
-    global $text, $db, $table_prefix;
+    global $text;
     $tor = Array();
     // prn($msg_info);
     $tor['forum/thread_list'] = Array(
@@ -67,7 +67,7 @@ function menu_thread($thread_info) {
 }
 
 function menu_msg($msg_info) {
-    global $text, $db, $table_prefix;
+    global $text;
     $tor = Array();
 
     $tor['forum/msg_reply'] = Array(

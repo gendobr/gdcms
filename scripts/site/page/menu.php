@@ -6,7 +6,7 @@
  */
 
 function menu_page($page_info) {
-    global $text, $db, $table_prefix;
+    global $text, $db;
     $tor = Array();
     $sid = session_name() . '=' . $GLOBALS['_COOKIE'][session_name()];
 
@@ -91,12 +91,12 @@ function menu_page($page_info) {
 }
 
 function get_page_info($page_id, $page_lang) {
-    global $table_prefix;
+
     $_id = (int) $page_id;
     $_lang = \e::db_escape($page_lang);
     $query = "SELECT page.* ,site.url as site_url
-              FROM {$table_prefix}page page
-                  ,{$table_prefix}site as site
+              FROM <<tp>>page page
+                  ,<<tp>>site as site
               WHERE page.id={$_id} AND page.lang='{$_lang}' AND page.site_id=site.id";
     $this_page_info = \e::db_getonerow($query);
 

@@ -80,24 +80,23 @@ function ec_adjust($_info,$category_id)
 
 function move_down($parent_id,$category_id)
 {
-  global $db,$table_prefix;
 
   $query=Array(
 		'BEGIN',
 		"set @id=$category_id;",
 		"select @start:=start, @finish:=finish,@deep:=deep, @site_id:=site_id
-		 FROM {$table_prefix}ec_category where ec_category_id=@id;",
+		 FROM <<tp>>ec_category where ec_category_id=@id;",
 		// get nearest parent:
 		"select @parent_id:=pa.ec_category_id, @parent_start:=pa.start,
 		 @parent_finish:=pa.finish, @parent_deep:=pa.deep
-		 from {$table_prefix}ec_category pa
+		 from <<tp>>ec_category pa
 		 where pa.site_id=@site_id and pa.start<@start
 		   and @finish<pa.finish and pa.deep=(@deep-1)",
 
 		// get nearest bottom sibling:
 		"select @sibling_id:=ch.ec_category_id, @sibling_start:=ch.start,
 		        @sibling_finish:=ch.finish, @sibling_deep:=ch.deep
-		 from {$table_prefix}ec_category ch
+		 from <<tp>>ec_category ch
 		 where @parent_start<ch.start and ch.finish<@parent_finish
 		   and ch.deep=@deep and ch.start > @finish
 		   and ch.site_id=@site_id
@@ -105,18 +104,18 @@ function move_down($parent_id,$category_id)
 
 		// move down:
 		"set @dt=@sibling_finish-@finish",
-		"UPDATE {$table_prefix}ec_category
+		"UPDATE <<tp>>ec_category
 		 SET start=-start, finish=-finish
 		 WHERE site_id=@site_id
 		   AND @sibling_start<=start AND finish<=@sibling_finish",
 
-		"UPDATE {$table_prefix}ec_category
+		"UPDATE <<tp>>ec_category
 		 SET start=start+@dt, finish=finish+@dt
 		 WHERE site_id=@site_id AND @start<=start AND finish<=@finish",
 
 		"set @dt=-(@start+@dt-@sibling_finish-1)",
 
-		"UPDATE {$table_prefix}ec_category
+		"UPDATE <<tp>>ec_category
 		 SET start=abs(start+@dt), finish=abs(finish+@dt)
 		 WHERE site_id=@site_id AND start<0 AND finish<0",
 		'COMMIT' );
@@ -129,27 +128,26 @@ function move_down($parent_id,$category_id)
 
 function move_up($parent_id,$category_id)
 {
-  global $table_prefix;
 
   $query=Array(
 		'BEGIN',
 		// load category properties
         "set @id=$category_id",
         "select @start:=start, @finish:=finish,@deep:=deep, @site_id:=site_id
-		 FROM {$table_prefix}ec_category
+		 FROM <<tp>>ec_category
 		 where ec_category_id=@id",
 
         // get nearest parent:
         "select @parent_id:=pa.ec_category_id, @parent_start:=pa.start,
 		        @parent_finish:=pa.finish, @parent_deep:=pa.deep
-		 from {$table_prefix}ec_category pa
+		 from <<tp>>ec_category pa
 		 where pa.site_id=@site_id and pa.start<@start
 		   and @finish<pa.finish   and pa.deep=(@deep-1)",
 
         // get nearest top sibling:
         "select @sibling_id:=ch.ec_category_id, @sibling_start:=ch.start,
 		        @sibling_finish:=ch.finish, @sibling_deep:=ch.deep
-		 from {$table_prefix}ec_category ch
+		 from <<tp>>ec_category ch
 		 where @parent_start<ch.start and ch.finish<@parent_finish
 		   and ch.deep=@deep  and ch.finish < @start
 		   and ch.site_id=@site_id
@@ -157,16 +155,16 @@ function move_up($parent_id,$category_id)
 
         // move up:
         "set @dt=@start-@sibling_start",
-        "UPDATE {$table_prefix}ec_category
+        "UPDATE <<tp>>ec_category
 		 SET start=-start, finish=-finish
 		 WHERE site_id=@site_id AND @sibling_start<=start AND finish<=@sibling_finish",
 
-        "UPDATE {$table_prefix}ec_category
+        "UPDATE <<tp>>ec_category
 		 SET start=start-@dt, finish=finish-@dt
 		 WHERE site_id=@site_id AND @start<=start AND finish<=@finish",
 
         "SET @dt=@finish-@dt+1 - @sibling_start",
-        "UPDATE {$table_prefix}ec_category
+        "UPDATE <<tp>>ec_category
 		 SET start=abs(start-@dt), finish=abs(finish-@dt)
 		 WHERE site_id=@site_id AND start<0 AND finish<0",
 		'COMMIT'

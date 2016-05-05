@@ -32,10 +32,10 @@ $news_id = isset($input_vars['news_id']) ? ((int) $input_vars['news_id']) : 0;
 $news_code=isset($input_vars['news_code']) ? $input_vars['news_code'] : '';
 $this_news_info = false;
 if($news_id > 0){
-  $this_news_info = \e::db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='" . \e::db_escape($input_vars['lang']) . "'");    
+  $this_news_info = \e::db_getonerow("SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='" . \e::db_escape($input_vars['lang']) . "'");    
 }
 if(!$this_news_info && strlen($news_code)>0){
-  $this_news_info = \e::db_getonerow("SELECT * FROM {$table_prefix}news WHERE news_code='" . \e::db_escape($news_code) . "' AND lang='" . \e::db_escape($input_vars['lang']) . "'");
+  $this_news_info = \e::db_getonerow("SELECT * FROM <<tp>>news WHERE news_code='" . \e::db_escape($news_code) . "' AND lang='" . \e::db_escape($input_vars['lang']) . "'");
 }
 
 if (!$this_news_info) {
@@ -48,8 +48,8 @@ if (!$this_news_info) {
 
 // get news categories
 $query = "SELECT DISTINCT pa.category_id, pa.category_code,pa.category_title, pa.deep
-          FROM {$table_prefix}category as pa
-              ,{$table_prefix}news_category as nc
+          FROM <<tp>>category as pa
+              ,<<tp>>news_category as nc
           WHERE nc.category_id=pa.category_id
             AND nc.news_id={$this_news_info['id']}
             AND pa.site_id={$this_news_info['site_id']}
@@ -139,7 +139,6 @@ if (get_level($site_id) <= 0 && $this_news_info['cense_level'] < $this_site_info
 //   {/if}
 
 function show_related_news($params) {
-    global $table_prefix, $db;
     // echo '<!-- '; prn($params); echo ' -->';
     extract($params);
     $news_id*=1;
@@ -152,7 +151,7 @@ function show_related_news($params) {
 
 
     # ---------------- get all tags of the current news - begin ------------
-    $query = "select nt.tag from {$table_prefix}news_tags as nt where nt.lang='{$lang}' and nt.news_id={$news_id} ";
+    $query = "select nt.tag from <<tp>>news_tags as nt where nt.lang='{$lang}' and nt.news_id={$news_id} ";
     $tags = \e::db_getrows($query);
     $cnt = count($tags);
     if ($cnt == 0)
@@ -163,8 +162,8 @@ function show_related_news($params) {
     # ---------------- get all tags of the current news - end --------------
     # ---------------- get news using tags - begin -------------------------
     $query = "select distinct nws.id,nws.lang,nws.site_id,nws.title,nws.news_code
-              from  {$table_prefix}news as nws,
-                      {$table_prefix}news_tags as nt
+              from  <<tp>>news as nws,
+                      <<tp>>news_tags as nt
               where nws.id=nt.news_id
                   and nws.id<>{$news_id}
                   and nws.lang=nt.lang
@@ -194,7 +193,7 @@ function show_related_news($params) {
 #     {show_news_categories news_id=$news.id site_id=$news.site_id}
 #
 function show_news_categories($params) {
-    //global $table_prefix, $db;
+
     // echo '<!-- '; prn($params); echo ' -->';
     extract($params);
     # required parameters are news_id, site_id
@@ -232,12 +231,12 @@ function show_news_categories($params) {
 // hide comment
 if (isset($input_vars['hide_comment']) && $visitor['is_moderator']) {
     $news_comment_id = (int) $input_vars['hide_comment'];
-    \e::db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=0 WHERE news_id={$news_id} AND site_id={$site_id} AND news_comment_id={$news_comment_id}");
+    \e::db_execute("UPDATE <<tp>>news_comment SET news_comment_is_visible=0 WHERE news_id={$news_id} AND site_id={$site_id} AND news_comment_id={$news_comment_id}");
 }
 // show comment
 if (isset($input_vars['show_comment']) && $visitor['is_moderator']) {
     $news_comment_id = (int) $input_vars['show_comment'];
-    \e::db_execute("UPDATE {$GLOBALS['table_prefix']}news_comment SET news_comment_is_visible=1 WHERE news_id={$news_id} AND site_id={$site_id} AND news_comment_id={$news_comment_id}");
+    \e::db_execute("UPDATE <<tp>>news_comment SET news_comment_is_visible=1 WHERE news_id={$news_id} AND site_id={$site_id} AND news_comment_id={$news_comment_id}");
 }
 
 // add comment
@@ -251,7 +250,7 @@ if (isset($input_vars['news_comment_content'])) {
     $news_comment_sender = $visitor['site_visitor_login'];
     $news_comment_is_visible = isset($input_vars['news_comment_is_visible']) && $input_vars['news_comment_is_visible'] ? 1 : 0;
     if (strlen($news_comment_content) > 0 && !isset($errors)) {
-        \e::db_execute("INSERT INTO {$GLOBALS['table_prefix']}news_comment
+        \e::db_execute("INSERT INTO <<tp>>news_comment
                           (  news_id  , news_lang                           ,  site_id  ,  news_comment_datetime, news_comment_content              , news_comment_is_visible   , news_comment_sender              ,  news_comment_parent_id    )
                     VALUES( {$news_id}, '" . \e::db_escape($this_news_info['lang']) . "', {$site_id},  now()                , '" . \e::db_escape($news_comment_content) . "', {$news_comment_is_visible}, '" . \e::db_escape($news_comment_sender) . "',  {$news_comment_parent_id} )
                    ");
@@ -312,14 +311,14 @@ class NewsComments {
 
         // get all visible comments
         //$query = "SELECT *
-        //          FROM {$GLOBALS['table_prefix']}news_comment
+        //          FROM <<tp>>news_comment
         //          WHERE news_id={$news_id}
         //            and news_lang='".  DbStr($news_lang)."'
         //            AND site_id={$site_id}
         //          ORDER BY news_comment_datetime ASC
         //          ";
         $query = "SELECT *
-                  FROM {$GLOBALS['table_prefix']}news_comment
+                  FROM <<tp>>news_comment
                   WHERE news_id={$news_id}
                     AND site_id={$site_id}
                   ORDER BY news_comment_datetime ASC
@@ -457,7 +456,7 @@ $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 
 
 //------------------------ get list of languages - begin -----------------------
-$tmp = \e::db_getrows("SELECT DISTINCT lang FROM {$table_prefix}news WHERE id={$news_id}");
+$tmp = \e::db_getrows("SELECT DISTINCT lang FROM <<tp>>news WHERE id={$news_id}");
 $this_news_languages = Array();
 foreach ($tmp as $tm) {
     $this_news_languages[$tm['lang']] = $tm['lang'];

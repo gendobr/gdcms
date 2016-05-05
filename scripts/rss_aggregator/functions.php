@@ -3,7 +3,7 @@
  *
  */
 function menu_rsssource($info){
-    global $text, $db, $table_prefix;
+    global $text, $db;
     $tor = Array();
     $sid = session_name() . '=' . $GLOBALS['_COOKIE'][session_name()];
 
@@ -22,7 +22,7 @@ function menu_rsssource($info){
 }
 
 function get_rsssource_info($rsssource_id){
-    $query = "SELECT * FROM {$GLOBALS['table_prefix']}rsssource WHERE rsssource_id=" . ( (int)$rsssource_id);
+    $query = "SELECT * FROM <<tp>>rsssource WHERE rsssource_id=" . ( (int)$rsssource_id);
     $info = \e::db_getonerow($query);
     // prn($query, $info);
     return $info;
@@ -30,7 +30,7 @@ function get_rsssource_info($rsssource_id){
 
 
 function menu_rsssourceitem($info){
-    global $text, $db, $table_prefix;
+    global $text, $db;
     $tor = Array();
 
     $tor['rsssourceitem/allow'] = Array(
@@ -53,7 +53,7 @@ function menu_rsssourceitem($info){
 }
 
 function get_rsssourceitem_info($rsssourceitem_id){
-    $query = "SELECT * FROM {$GLOBALS['table_prefix']}rsssourceitem WHERE rsssourceitem_id=" . ( (int)$rsssourceitem_id);
+    $query = "SELECT * FROM <<tp>>rsssourceitem WHERE rsssourceitem_id=" . ( (int)$rsssourceitem_id);
     $info = \e::db_getonerow($query);
     // prn($query, $info);
     return $info;

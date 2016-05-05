@@ -15,7 +15,7 @@ if (strlen($this_ec_item_info['ec_item_title']) == 0) {
 $lng = $input_vars['ec_item_lang_new'];
 if ($lng != $this_ec_item_info['ec_item_lang']) {
     //-------------------- get existing page languages - begin -----------------
-    $query = "SELECT ec_item_lang FROM {$table_prefix}ec_item WHERE ec_item_id={$this_ec_item_info['ec_item_id']}";
+    $query = "SELECT ec_item_lang FROM <<tp>>ec_item WHERE ec_item_id={$this_ec_item_info['ec_item_id']}";
     $tmp = \e::db_getrows($query);
     $existins_langs = Array();
     foreach ($tmp as $ln) {
@@ -25,7 +25,7 @@ if ($lng != $this_ec_item_info['ec_item_lang']) {
     //-------------------- get available languages - begin ---------------------
     $existins_langs[] = '';
     $query = "SELECT id
-                FROM {$table_prefix}languages
+                FROM <<tp>>languages
                 WHERE is_visible=1 AND id NOT IN('" . join("','", $existins_langs) . "')";
     $tmp = \e::db_getrows($query);
     $avail_lang = Array();
@@ -118,7 +118,7 @@ if (strlen($this_ec_item_info['ec_item_code']) == 0) {
     $this_ec_item_info['ec_item_code'] = \core\fileutils::encode_dir_name($input_vars['ec_item_title']);
 }
 // ec_item_code must be unique
-$query = "SELECT * from  {$GLOBALS['table_prefix']}ec_item "
+$query = "SELECT * from  <<tp>>ec_item "
         . "WHERE ec_item_code='" . \e::db_escape($this_ec_item_info['ec_item_code']) . "'"
         . " AND ec_item_id<>{$this_ec_item_info['ec_item_id']}";
 // prn($query);
@@ -231,7 +231,7 @@ if ($all_is_ok) {
         }
         $ec_item_img=join("\n",$ec_item_img);
         
-        $query = "UPDATE {$table_prefix}ec_item
+        $query = "UPDATE <<tp>>ec_item
                    SET
                       ec_item_lang='{$lng}',
 	              site_id='{$this_ec_item_info['site_id']}',
@@ -264,22 +264,22 @@ if ($all_is_ok) {
 
         // ------------- update language in related tables - begin -------------
         if ($this_ec_item_info['ec_item_lang'] != $lng) {
-            // {$GLOBALS['table_prefix']}ec_item_comment
-            $query = "UPDATE {$table_prefix}ec_item_comment SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
+            // <<tp>>ec_item_comment
+            $query = "UPDATE <<tp>>ec_item_comment SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
             \e::db_execute($query);
 
-            // {$GLOBALS['table_prefix']}ec_item_variant
-            $query = "UPDATE {$table_prefix}ec_item_variant SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
+            // <<tp>>ec_item_variant
+            $query = "UPDATE <<tp>>ec_item_variant SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
             \e::db_execute($query);
 
-            // {$GLOBALS['table_prefix']}ec_category_item_field_value
-            $query = "UPDATE {$table_prefix}ec_category_item_field_value SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
+            // <<tp>>ec_category_item_field_value
+            $query = "UPDATE <<tp>>ec_category_item_field_value SET ec_item_lang='$lng' WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
             \e::db_execute($query);
         }
         // ------------- update language in related tables - end ---------------
         $this_ec_item_info['ec_item_lang'] = $lng;
     } else {
-        $query = "SELECT max(ec_item_id) as newid FROM {$table_prefix}ec_item";
+        $query = "SELECT max(ec_item_id) as newid FROM <<tp>>ec_item";
         $newid =\e::db_getonerow($query);
         //prn($newid);
         $this_ec_item_info['ec_item_id'] = $newid['newid'] + 1;
@@ -287,7 +287,7 @@ if ($all_is_ok) {
             $this_ec_item_info['ec_item_img'] = Array();
         }
 
-        $query = "insert into {$table_prefix}ec_item (
+        $query = "insert into <<tp>>ec_item (
                         ec_item_id,
                         ec_item_lang,
 	                site_id,
@@ -346,7 +346,7 @@ if ($all_is_ok) {
     }
 
     # ---------------- update tags - begin -------------------------------------
-    \e::db_execute("DELETE FROM {$table_prefix}ec_item_tags WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
+    \e::db_execute("DELETE FROM <<tp>>ec_item_tags WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
     $tmp = preg_split('/,|;/', $this_ec_item_info['ec_item_tags']);
     $query = Array();
     foreach ($tmp as $tag) {
@@ -356,7 +356,7 @@ if ($all_is_ok) {
         }
     }
     if (count($query) > 0) {
-        $query = "INSERT INTO {$table_prefix}ec_item_tags(ec_item_id,ec_item_tag,site_id) values " . join(',', $query);
+        $query = "INSERT INTO <<tp>>ec_item_tags(ec_item_id,ec_item_tag,site_id) values " . join(',', $query);
         \e::db_execute($query);
     }
     # ---------------- update tags - end ---------------------------------------
@@ -427,7 +427,7 @@ if ($all_is_ok) {
         // prn($ec_item_variants);
         // exit();
         // extract old variants
-        $tmp = \e::db_getrows("SELECT * FROM {$table_prefix}ec_item_variant
+        $tmp = \e::db_getrows("SELECT * FROM <<tp>>ec_item_variant
                                     WHERE ec_item_id={$this_ec_item_info['ec_item_id']}
                                       AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'");
         $old_item_variants = Array();
@@ -450,14 +450,14 @@ if ($all_is_ok) {
     }
 
     // delete old variants
-    \e::db_execute("DELETE FROM {$table_prefix}ec_item_variant
+    \e::db_execute("DELETE FROM <<tp>>ec_item_variant
                 WHERE ec_item_id={$this_ec_item_info['ec_item_id']}
                   AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'");
 
     // insert updated variants
     for ($i = 0, $cnt = count($ec_item_variants); $i < $cnt; $i++) {
         $val = $ec_item_variants[$i];
-        $query = "INSERT INTO {$table_prefix}ec_item_variant(
+        $query = "INSERT INTO <<tp>>ec_item_variant(
             ec_item_variant_ordering,
             ec_item_variant_indent,
             ec_item_variant_code,
@@ -481,7 +481,7 @@ if ($all_is_ok) {
     $this_ec_item_info['ec_item_variant'] = $ec_item_variants;
     # ---------------- save variants - end -------------------------------------
     # ---------------- save additional fields - begin --------------------------
-    \e::db_execute("DELETE FROM {$table_prefix}ec_category_item_field_value
+    \e::db_execute("DELETE FROM <<tp>>ec_category_item_field_value
                 WHERE ec_item_id={$this_ec_item_info['ec_item_id']}
                   and ec_item_lang='{$this_ec_item_info['ec_item_lang']}'");
     //prn($input_vars['ec_item_extra_field']); die();
@@ -493,7 +493,7 @@ if ($all_is_ok) {
             $keep_keys[] = $key;
             if ($val['type'] == 'number')
                 $val['value'] = checkFloat($val['value']);
-            $query = "replace {$table_prefix}ec_category_item_field_value(
+            $query = "replace <<tp>>ec_category_item_field_value(
                                 	ec_item_id,
 	                                ec_item_lang,
                                 	ec_category_item_field_id,
@@ -511,7 +511,7 @@ if ($all_is_ok) {
 
     # ---------------------- delete unused fields - begin ----------------------
     if (count($keep_keys) > 0) {
-        $query = "delete from {$table_prefix}ec_category_item_field_value
+        $query = "delete from <<tp>>ec_category_item_field_value
                 WHERE ec_item_id={$this_ec_item_info['ec_item_id']}
                       and ec_item_lang='{$this_ec_item_info['ec_item_lang']}'
                       and ec_category_item_field_id not in (" . join(',', $keep_keys) . ")";
@@ -520,7 +520,7 @@ if ($all_is_ok) {
     # ---------------------- delete unused fields - end ------------------------
     # ---------------- save additional fields - end ----------------------------
     # ---------------- save additional categories - begin ----------------------
-    \e::db_execute("DELETE FROM {$table_prefix}ec_item_category WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
+    \e::db_execute("DELETE FROM <<tp>>ec_item_category WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
 
     if (isset($input_vars['additional_category']) && is_array($input_vars['additional_category'])) {
         $cats = Array();
@@ -531,7 +531,7 @@ if ($all_is_ok) {
             }
         }
         if (count($cats) > 0) {
-            $query = "INSERT INTO {$table_prefix}ec_item_category(ec_item_id,ec_category_id)
+            $query = "INSERT INTO <<tp>>ec_item_category(ec_item_id,ec_category_id)
                      VALUES " . join(',', $cats);
             \e::db_execute($query);
             //prn($query);//die();
@@ -615,7 +615,7 @@ $search_index = str_replace(Array("\n", "\r"), ' ', $search_index);
 $search_index = preg_replace('/ +/', ' ', $search_index);
 //prn($search_index);
 //prn($this_ec_item_info);
-\e::db_execute("UPDATE  {$table_prefix}ec_item SET ec_item_keywords='" . \e::db_escape($search_index) . "' WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
+\e::db_execute("UPDATE  <<tp>>ec_item SET ec_item_keywords='" . \e::db_escape($search_index) . "' WHERE ec_item_id={$this_ec_item_info['ec_item_id']}");
 // ---------------------- update search index - end ----------------------------
 //die();
 

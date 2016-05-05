@@ -52,7 +52,7 @@ foreach($this_news_info['news_icon'] as $pt){
     }
 }
 
-$sql="UPDATE {$table_prefix}news SET news_icon=NULL WHERE id={$this_news_info['id']} AND lang='{$this_news_info['lang']}'";
+$sql="UPDATE <<tp>>news SET news_icon=NULL WHERE id={$this_news_info['id']} AND lang='{$this_news_info['lang']}'";
 \e::db_execute($sql);
 
 

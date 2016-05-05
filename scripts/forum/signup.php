@@ -41,14 +41,14 @@ if(isset($input_vars['site_visitor_login']))
                       user_login as site_visitor_login,
                       email as site_visitor_email,
                       '' as site_visitor_home_page_url
-               FROM {$table_prefix}user
+               FROM <<tp>>user
                WHERE user_login='".\e::db_escape($input_vars['site_visitor_login'])."'
                UNION
                SELECT  site_visitor_id,
                        site_visitor_login,
                        site_visitor_email,
                        '' as site_visitor_home_page_url
-               FROM {$table_prefix}site_visitor
+               FROM <<tp>>site_visitor
                WHERE site_visitor_login='".\e::db_escape($input_vars['site_visitor_login'])."'";
        $info=\e::db_getonerow($query);
        if($info) $errors[]="<b><font color=red>{$txt['ERROR']} : {$txt['Login_already_exists']}</font></b><br/>";
@@ -60,7 +60,7 @@ if(isset($input_vars['site_visitor_login']))
        $site_visitor_login=\e::db_escape($input_vars['site_visitor_login']);
        $site_visitor_email=\e::db_escape($input_vars['site_visitor_email']);
        $site_visitor_home_page_url=\e::db_escape($input_vars['site_visitor_home_page_url']);
-       $query="insert into {$table_prefix}site_visitor (
+       $query="insert into <<tp>>site_visitor (
                         site_visitor_password,
                         site_visitor_login,
                         site_visitor_email,
@@ -76,7 +76,7 @@ if(isset($input_vars['site_visitor_login']))
                 ";
         \e::db_execute($query);
 
-        $_SESSION['site_visitor_info']=\e::db_getonerow("SELECT * FROM {$table_prefix}site_visitor WHERE site_visitor_id=LAST_INSERT_ID()");
+        $_SESSION['site_visitor_info']=\e::db_getonerow("SELECT * FROM <<tp>>site_visitor WHERE site_visitor_id=LAST_INSERT_ID()");
         echo "
            <h1>{$txt['Signup']}</h1>
            <b><font color=green>{$txt['Signup_finished_successfully']}</font>

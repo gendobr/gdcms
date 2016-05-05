@@ -76,22 +76,22 @@ if (!class_exists('news_browse_tree')) {
         function news_browse_tree($category_id, $site_id) {
             $this->site_id = $site_id;
             $this->exclude = '^start$|^' . session_name() . '$|^news_date_|^news_keywords$|^tags$';
-            parent::browse_tree($category_id, $GLOBALS['db'], $GLOBALS['table_prefix'], $site_id);
+            parent::browse_tree($category_id, $site_id);
         }
 
         // --------------------- restrict children - begin --------------------------
         function restrict_children() {
-            global $table_prefix, $db, $input_vars;
+            global $input_vars;
             $child_ids = Array();
             foreach ($this->children as $ke => $ch) {
                 $child_ids[$ke] = (int) $ch['category_id'];
             }
             if (count($child_ids) > 0) {
                 $query = "select pa.category_id
-                from {$table_prefix}category as pa
-                     STRAIGHT_JOIN {$table_prefix}category as ch
-                     STRAIGHT_JOIN {$table_prefix}news_category as nc
-                     STRAIGHT_JOIN {$table_prefix}news as news
+                from <<tp>>category as pa
+                     STRAIGHT_JOIN <<tp>>category as ch
+                     STRAIGHT_JOIN <<tp>>news_category as nc
+                     STRAIGHT_JOIN <<tp>>news as news
                 where pa.category_id in(" . join(',', $child_ids) . ")
                   and news.lang='" . \e::db_escape($input_vars['lang']) . "'
                   and news.id=nc.news_id
@@ -156,8 +156,8 @@ if ($tmp) {
     $tags = $tmp;
 } else {
     $query = "SELECT DISTINCT news_tags.tag
-               FROM {$table_prefix}news_tags AS news_tags
-                  , {$table_prefix}news AS news
+               FROM <<tp>>news_tags AS news_tags
+                  , <<tp>>news AS news
                WHERE news_tags.news_id=news.id
                  AND news.lang=news_tags.lang
                  AND news.cense_level>={$this_site_info['cense_level']}
@@ -235,7 +235,7 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
             $day_options = "<b>$news_date_day</b>";
         } else {
             $tmp = \e::db_getrows("SELECT DISTINCT DAYOFMONTH(last_change_date) AS day
-                           FROM {$table_prefix}news as news
+                           FROM <<tp>>news as news
                            WHERE news.site_id={$site_id}
                              AND news.cense_level>={$this_site_info['cense_level']}
                              AND news.lang='{$lang}'
@@ -252,7 +252,7 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
         $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_months_site{$site_id}_lang{$lang}_year{$news_date_year}.cache", cachetime);
         if (!$tmp) {
             $tmp = \e::db_getrows("SELECT DISTINCT month(last_change_date) AS month
-                                      FROM {$table_prefix}news as news
+                                      FROM <<tp>>news as news
                                       WHERE news.site_id={$site_id}
                                        AND  news.cense_level>={$this_site_info['cense_level']}
                                        AND news.lang='{$lang}'
@@ -276,7 +276,7 @@ if (isset($input_vars['news_date_year']) && strlen($input_vars['news_date_year']
 
     $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_years_site{$site_id}_lang{$lang}.cache", cachetime);
     if (!$tmp) {
-        $tmp = \e::db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM {$table_prefix}news as news WHERE news.site_id={$site_id} AND  news.cense_level>={$this_site_info['cense_level']} AND news.lang='{$lang}' ORDER BY year ASC");
+        $tmp = \e::db_getrows("SELECT DISTINCT YEAR(last_change_date) AS year FROM <<tp>>news as news WHERE news.site_id={$site_id} AND  news.cense_level>={$this_site_info['cense_level']} AND news.lang='{$lang}' ORDER BY year ASC");
         \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_years_site{$site_id}_lang{$lang}.cache", $tmp);
     }
 
@@ -345,14 +345,14 @@ if (isset($input_vars['category_id'])) {
         $category_ids = join(',', $category_ids);
         if (isset($input_vars['category_filter_mode'])) {
             $category_restriction = "
-               inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
-               inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id)
-               inner join {$GLOBALS['table_prefix']}category as pa on (pa.start<=ch.start and ch.finish<=pa.finish and pa.category_id in({$category_ids}))
+               inner join <<tp>>news_category as nc on (nc.news_id=ne.id)
+               inner join <<tp>>category as ch on (nc.category_id=ch.category_id)
+               inner join <<tp>>category as pa on (pa.start<=ch.start and ch.finish<=pa.finish and pa.category_id in({$category_ids}))
               ";
         } else {
             $category_restriction = "
-               inner join {$GLOBALS['table_prefix']}news_category as nc on (nc.news_id=ne.id)
-               inner join {$GLOBALS['table_prefix']}category as ch on (nc.category_id=ch.category_id and ch.category_id  in({$category_ids}))
+               inner join <<tp>>news_category as nc on (nc.news_id=ne.id)
+               inner join <<tp>>category as ch on (nc.category_id=ch.category_id and ch.category_id  in({$category_ids}))
               ";
         }
     }
@@ -483,7 +483,7 @@ $query = "SELECT DISTINCT SQL_CALC_FOUND_ROWS
                   ,ne.expiration_date
                   ,ne.content
                   ,IF(LENGTH(TRIM(ne.content))>0,1,0) as content_present
-            FROM {$table_prefix}news AS ne
+            FROM <<tp>>news AS ne
                  $category_restriction
             WHERE ne.site_id={$site_id}
               AND ne.cense_level>={$this_site_info['cense_level']}
@@ -571,7 +571,7 @@ foreach ($menu_groups as $kmg => $mg) {
 $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_lang_{$site_id}.cache", cachetime);
 if (!$tmp) {
     $tmp = \e::db_getrows("SELECT DISTINCT lang
-                     FROM {$table_prefix}news  AS ne
+                     FROM <<tp>>news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
     \core\fileutils::set_cached_info(\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_lang_{$site_id}.cache", $tmp);

@@ -6,7 +6,7 @@
 
 $ids=isset($input_vars['ids'])?explode(',',$input_vars['ids']):Array();
 if(count($ids)==0){
-    $tmp = \e::db_getrows("SELECT id FROM {$table_prefix}calendar");
+    $tmp = \e::db_getrows("SELECT id FROM <<tp>>calendar");
     $ids=Array();
     foreach($tmp as $tm){
         $ids[]=$tm['id'];

@@ -37,13 +37,13 @@ $re = new report_generator;
 $re->distinct = false;
 
 
-//$re->from = "{$table_prefix}news AS news
-//             LEFT JOIN {$table_prefix}category AS category
+//$re->from = "<<tp>>news AS news
+//             LEFT JOIN <<tp>>category AS category
 //             ON (category.site_id=news.site_id AND category.category_id=news.category_id)
-//             left join {$table_prefix}news as tr
+//             left join <<tp>>news as tr
 //             on(news.id=tr.id and news.lang<>tr.lang)
 //             ";
-$re->from = "{$table_prefix}news AS news";
+$re->from = "<<tp>>news AS news";
 
 $re->add_where(" news.site_id={$site_id} ");
 
@@ -56,7 +56,7 @@ $re->add_field($field = 'news.id'
 
 //---------------- list of languages - begin ---------------------------------
 //
-$LL = join('&', \e::db_get_associated_array("SELECT DISTINCT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}news WHERE site_id={$site_id}"));
+$LL = join('&', \e::db_get_associated_array("SELECT DISTINCT lang,CONCAT(lang,'=',lang) FROM <<tp>>news WHERE site_id={$site_id}"));
 $re->add_field($field = 'news.lang'
         , $alias = 'lang'
         , $type = 'enum:' . $LL
@@ -142,7 +142,7 @@ unset($field, $alias, $type, $label, $_group_operation);
 
 $filter_category=isset($input_vars['filter_category'])? ( (int)$input_vars['filter_category'] ):0;
 if($filter_category>0){
-    $re->add_where(" news.id in (SELECT news_id FROM {$table_prefix}news_category WHERE category_id={$filter_category}) ");
+    $re->add_where(" news.id in (SELECT news_id FROM <<tp>>news_category WHERE category_id={$filter_category}) ");
 }
 
 //prn($re->create_query());
@@ -168,8 +168,8 @@ $news_translations=Array();
 if(count($news_ids)>0){
     $tmp=\e::db_getrows(
             "SELECT news_category.news_id, category.category_title
-             FROM {$table_prefix}news_category news_category 
-                  INNER JOIN {$table_prefix}category category
+             FROM <<tp>>news_category news_category 
+                  INNER JOIN <<tp>>category category
                   ON news_category.category_id=category.category_id
              WHERE news_category.news_id IN(".join(',',$news_ids).")");
     foreach($tmp as $tm){
@@ -184,7 +184,7 @@ if(count($news_ids)>0){
     
     $tmp=\e::db_getrows(
             "SELECT news.id, count(*) as n
-             FROM {$table_prefix}news news 
+             FROM <<tp>>news news 
              WHERE news.id IN(".join(',',$news_ids).")
              GROUP BY news.id
              ");
@@ -287,7 +287,7 @@ $html.="<span class=\"filter_element_m\">
 //
 # ------------------------ list of categories - begin -------------------------
 $query = "SELECT category_id, category_title, deep
-            FROM {$table_prefix}category
+            FROM <<tp>>category
             WHERE start>0 AND site_id={$site_id}
             ORDER BY start ASC";
 $tmp = \e::db_getrows($query);

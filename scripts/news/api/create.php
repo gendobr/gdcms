@@ -85,7 +85,7 @@ if ($this_site_info['salt'] != $input_vars['api_key']) {
 
 
 // calculate news id
-$query = "SELECT max(id) AS newid FROM {$table_prefix}news";
+$query = "SELECT max(id) AS newid FROM <<tp>>news";
 $newid =\e::db_getonerow($query);
 $news_id = $newid = 1 + (int) $newid['newid'];
 
@@ -162,7 +162,7 @@ $news_extra_2 = \e::db_escape($input_vars['news_extra_2']);
 
 
 $query = "
-INSERT INTO {$GLOBALS['table_prefix']}news 
+INSERT INTO <<tp>>news 
 	(id, 
 	lang, 
 	site_id, 
@@ -206,7 +206,7 @@ INSERT INTO {$GLOBALS['table_prefix']}news
 
 
 # ------------------ rebuild tags - begin -------------------------------
-\e::db_execute("DELETE FROM {$table_prefix}news_tags WHERE news_id={$news_id} AND lang='{$lang}'");
+\e::db_execute("DELETE FROM <<tp>>news_tags WHERE news_id={$news_id} AND lang='{$lang}'");
 if (strlen(trim($tags)) > 0) {
     // $query=explode(',',$this_news_info['tags']);
     $query = preg_split("/,|;|\\./", $tags);
@@ -218,13 +218,13 @@ if (strlen(trim($tags)) > 0) {
                 $query[$i] = "({$news_id},'{$lang}','" . \e::db_escape($query[$i]) . "')";
             }
         }
-        $query = "INSERT INTO {$table_prefix}news_tags(news_id,lang,tag) VALUES" . join(',', $query);
+        $query = "INSERT INTO <<tp>>news_tags(news_id,lang,tag) VALUES" . join(',', $query);
         \e::db_execute($query);
     }
 }
 # ------------------ rebuild tags - end ---------------------------------
-//echo "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'";exit('115');
-$news_info =\e::db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'");
+//echo "SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='{$lang}'";exit('115');
+$news_info =\e::db_getonerow("SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='{$lang}'");
 
 
 

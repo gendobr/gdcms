@@ -5,7 +5,7 @@ global $main_template_name;
 $main_template_name = '';
 //------------------- check site id - begin ------------------------------------
   $site_id=checkInt($input_vars['site_id']);
-  $this_site_info=\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info=\e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
   if(checkInt($this_site_info['id'])<=0)
   {
      echo $text['Site_not_found'];

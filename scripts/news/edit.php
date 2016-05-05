@@ -21,7 +21,7 @@ $message = '';
 $news_id = checkInt((isset($input_vars['news_id']) ? $input_vars['news_id'] : 0));
 $lang = get_language('lang');
 
-// $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
+// $query = "SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='$lang'";
 //\e::db_getonerow($query);
 $this_news_info = news_info($news_id, $lang);
 if ($debug) {
@@ -63,7 +63,7 @@ $this_site_info = get_site_info($site_id);
 # ----------------------- list of site managers - begin ------------------------
 $tmp = \e::db_getrows(
         "select u.id, u.full_name, u.user_login, u.email, su.level
-        from {$GLOBALS['table_prefix']}user AS u, {$GLOBALS['table_prefix']}site_user AS su
+        from <<tp>>user AS u, <<tp>>site_user AS su
         where u.id = su.user_id AND su.site_id = {$this_site_info['id']}
         order by level desc");
 $this_site_info['managers'] = Array();
@@ -251,7 +251,7 @@ $expiration_date_selector = get_date_selector('expiration_date_posted', $this_ne
 
 
 # ------------------------ list of all categories - begin ----------------------
-$query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>=0 AND site_id={$site_id} ORDER BY start ASC";
+$query = "SELECT category_id, category_title, deep FROM <<tp>>category WHERE start>=0 AND site_id={$site_id} ORDER BY start ASC";
 $tmp = \e::db_getrows($query);
 $list_of_categories = Array();
 foreach ($tmp as $tm) {
@@ -260,7 +260,7 @@ foreach ($tmp as $tm) {
 unset($tmp, $tm);
 //prn($list_of_categories);
 
-$news_categories = \e::db_getrows("SELECT category_id FROM {$table_prefix}news_category WHERE news_id={$this_news_info['id']}");
+$news_categories = \e::db_getrows("SELECT category_id FROM <<tp>>news_category WHERE news_id={$this_news_info['id']}");
 $cnt = count($news_categories);
 $news_categories_selector = "
     <div id=list_of_categories>
@@ -377,7 +377,7 @@ $input_vars['page_content'] = "
     <div class=label>{$text['Language']} : </div>
     <div class=big>
       <select name=news_lang>" .
-          draw_options($this_news_info['lang'], \e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
+          draw_options($this_news_info['lang'], \e::db_getrows("SELECT id, name FROM <<tp>>languages WHERE is_visible=1 ORDER BY name ASC;"))
           . "</select>
     </div>
     </span><!-- 
@@ -510,7 +510,7 @@ $input_vars['page_menu']['page']['items'] = menu_news($this_news_info);
 // ---------------------- list of translations - begin -------------------------
 
 
-$query = "SELECT id, lang, title FROM {$table_prefix}news WHERE site_id={$site_id} and id={$this_news_info['id']} and lang<>'{$this_news_info['lang']}'";
+$query = "SELECT id, lang, title FROM <<tp>>news WHERE site_id={$site_id} and id={$this_news_info['id']} and lang<>'{$this_news_info['lang']}'";
 $tmp = \e::db_getrows($query);
 if ($tmp) {
     $input_vars['page_menu']['page']['items']['news/translations_links'] = Array(

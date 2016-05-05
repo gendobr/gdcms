@@ -39,14 +39,14 @@ if(get_level($site_id)==0)
     $delete_page_info=get_page_info($delete_page_id,\e::db_escape($input_vars['delete_page_lang']));
 
     # --------------------- delete from DB - begin -----------------------------
-      $query="DELETE FROM {$table_prefix}page
+      $query="DELETE FROM <<tp>>page
               WHERE id      = {$delete_page_info['id']}
                 AND lang    ='{$delete_page_info['lang']}'
                 AND site_id = {$delete_page_info['site_id']}";
     # prn($query);
       \e::db_execute($query);
 
-      $query="DELETE FROM {$table_prefix}page_menu_group
+      $query="DELETE FROM <<tp>>page_menu_group
               WHERE page_id = {$delete_page_info['id']}
                 AND lang    ='{$delete_page_info['lang']}'
                 AND site_id = {$delete_page_info['site_id']}";
@@ -76,9 +76,9 @@ if(get_level($site_id)==0)
   $re->db=$db;
   $re->distinct=false;
 
-  $re->from="{$table_prefix}page AS page
+  $re->from="<<tp>>page AS page
              LEFT JOIN
-             {$table_prefix}category as category
+             <<tp>>category as category
              ON (page.site_id=category.site_id
                  AND page.category_id=category.category_id)";
 
@@ -91,7 +91,7 @@ if(get_level($site_id)==0)
                  ,$_group_operation=false);
 
   //---------------- list of languages - begin ---------------------------------
-    $LL = join('&',\e::db_get_associated_array("SELECT lang,CONCAT(lang,'=',lang) FROM {$table_prefix}page WHERE site_id={$site_id}"));
+    $LL = join('&',\e::db_get_associated_array("SELECT lang,CONCAT(lang,'=',lang) FROM <<tp>>page WHERE site_id={$site_id}"));
     $re->add_field( $field='page.lang'
                    ,$alias='lang'
                    ,$type ='enum:'.$LL
@@ -131,7 +131,7 @@ if(get_level($site_id)==0)
 
 
  # ------------------------ list of categories - begin -------------------------
-    $query="SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
+    $query="SELECT category_id, category_title, deep FROM <<tp>>category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
     $tmp=\e::db_getrows($query);
     $list_of_categories=Array();
     foreach($tmp as $tm) $list_of_categories[]=$tm['category_id'].'='.rawurlencode(str_repeat(' + ',$tm['deep']).get_langstring($tm['category_title']));

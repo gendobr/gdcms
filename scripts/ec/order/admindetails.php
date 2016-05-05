@@ -63,17 +63,17 @@ if( isset($input_vars['ec_order_history_status']) && $input_vars['ec_order_histo
     for($i=0;$i<$cnt;$i++) $ec_order_status_options[$tmp[$i]]=text('ec_order_status_'.$tmp[$i]);
     if($input_vars['ec_order_history_status']=='Ec_order_is_paid_successfully') {
         $history_message=text('Changed_ec_order_status_to').' <b>'.text('Ec_order_is_paid_successfully').'</b><br/>';
-        $query="UPDATE {$table_prefix}ec_order SET ec_order_paid=1 where ec_order_id=$ec_order_id";
+        $query="UPDATE <<tp>>ec_order SET ec_order_paid=1 where ec_order_id=$ec_order_id";
         \e::db_execute($query);
     }
     elseif($input_vars['ec_order_history_status']=='Ec_order_is_not_paid') {
         $history_message=text('Changed_ec_order_status_to').' <b>'.text('Ec_order_is_not_paid').'</b><br/>';
-        $query="UPDATE {$table_prefix}ec_order SET ec_order_paid=0 where ec_order_id=$ec_order_id";
+        $query="UPDATE <<tp>>ec_order SET ec_order_paid=0 where ec_order_id=$ec_order_id";
         \e::db_execute($query);
     }
     elseif(isset($ec_order_status_options[$input_vars['ec_order_history_status']])) {
         $history_message=text('Changed_ec_order_status_to').' <b>'.$ec_order_status_options[$input_vars['ec_order_history_status']].'</b><br/>';
-        $query="UPDATE {$table_prefix}ec_order SET ec_order_status='".\e::db_escape($input_vars['ec_order_history_status'])."' where ec_order_id=$ec_order_id";
+        $query="UPDATE <<tp>>ec_order SET ec_order_status='".\e::db_escape($input_vars['ec_order_history_status'])."' where ec_order_id=$ec_order_id";
         \e::db_execute($query);
     }
     //prn($query);

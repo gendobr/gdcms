@@ -35,7 +35,7 @@ if(get_level($site_id)==0)
     $input_vars['move_up']=checkInt($input_vars['move_up']);
     if($input_vars['move_up']>0)
     {
-       $query="UPDATE {$table_prefix}page 
+       $query="UPDATE <<tp>>page 
                SET map_position=map_position-1 
                WHERE     id={$input_vars['move_up']} 
                      AND site_id={$this_site_info['id']}
@@ -51,7 +51,7 @@ if(get_level($site_id)==0)
     $input_vars['move_down']=checkInt($input_vars['move_down']);
     if($input_vars['move_down']>0)
     {
-       $query="UPDATE {$table_prefix}page 
+       $query="UPDATE <<tp>>page 
                SET map_position=map_position+1 
                WHERE     id={$input_vars['move_down']} 
                      AND site_id={$this_site_info['id']}";
@@ -66,7 +66,7 @@ if(get_level($site_id)==0)
     $input_vars['move_left']=checkInt($input_vars['move_left']);
     if($input_vars['move_left']>0)
     {
-       $query="UPDATE {$table_prefix}page 
+       $query="UPDATE <<tp>>page 
                SET map_indent=map_indent-1 
                WHERE     id={$input_vars['move_left']} 
                      AND site_id={$this_site_info['id']}
@@ -82,7 +82,7 @@ if(get_level($site_id)==0)
     $input_vars['move_right']=checkInt($input_vars['move_right']);
     if($input_vars['move_right']>0)
     {
-       $query="UPDATE {$table_prefix}page 
+       $query="UPDATE <<tp>>page 
                SET map_indent=map_indent+1 
                WHERE     id={$input_vars['move_right']} 
                      AND site_id={$this_site_info['id']}";
@@ -99,7 +99,7 @@ if(get_level($site_id)==0)
   {
     foreach($input_vars['map_position'] as $key=>$val)
     {
-       $query="UPDATE {$table_prefix}page 
+       $query="UPDATE <<tp>>page 
                SET map_position='$val' 
                WHERE     id='$key' 
                      AND site_id={$this_site_info['id']}";
@@ -168,7 +168,7 @@ if(get_level($site_id)==0)
       </tr>
   ";
   $query="SELECT *
-          FROM {$table_prefix}page
+          FROM <<tp>>page
           WHERE site_id={$this_site_info['id']}
           ORDER BY map_position, id, lang";
   $page_list=\e::db_getrows($query);

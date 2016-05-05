@@ -43,9 +43,9 @@ if (get_level($site_id) == 0) {
 
 
 // ------------------ deleting - begin -----------------------------------------
-$query="delete from {$table_prefix}rsssourceitem WHERE site_id={$site_id} AND rsssource_id={$rsssource_id}";
+$query="delete from <<tp>>rsssourceitem WHERE site_id={$site_id} AND rsssource_id={$rsssource_id}";
 \e::db_execute($query);
-$query="delete from {$table_prefix}rsssource WHERE site_id={$site_id} AND rsssource_id={$rsssource_id}";
+$query="delete from <<tp>>rsssource WHERE site_id={$site_id} AND rsssource_id={$rsssource_id}";
 \e::db_execute($query);
 // ------------------ deleting - end -------------------------------------------
 

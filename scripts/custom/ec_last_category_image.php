@@ -6,9 +6,9 @@ $ec_category_id=isset($input_vars['ec_category_id'])?( (int)$input_vars['ec_cate
 
 $query="select ec_item.ec_item_img1 as img, ec_item.site_id
 from
-{$GLOBALS['table_prefix']}ec_category as pa,
-{$GLOBALS['table_prefix']}ec_category as ch,
-{$GLOBALS['table_prefix']}ec_item as ec_item
+<<tp>>ec_category as pa,
+<<tp>>ec_category as ch,
+<<tp>>ec_item as ec_item
 
 where
     pa.start<=ch.start and ch.finish<=pa.finish

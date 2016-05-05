@@ -10,9 +10,9 @@ $deep=(int)$deep;
 if($deep>0) $deep_restriction=" and pa.deep=$deep";
 else $deep_restriction="";
 $query="SELECT DISTINCT pa.*
-        FROM {$table_prefix}ec_category as pa,
-             {$table_prefix}ec_category as ch,
-             {$table_prefix}ec_item as ec_item
+        FROM <<tp>>ec_category as pa,
+             <<tp>>ec_category as ch,
+             <<tp>>ec_item as ec_item
         WHERE pa.start<=ch.start and ch.finish<=pa.finish
           and ch.ec_category_id=ec_item.ec_category_id
           and ch.site_id=$site_id

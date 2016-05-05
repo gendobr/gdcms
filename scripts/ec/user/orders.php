@@ -244,10 +244,10 @@ run('site_visitor/functions');
 
     $query="SELECT SQL_CALC_FOUND_ROWS
                  ec_order.*,ec_user.*,site_visitor.*, '' as site_visitor_password
-            FROM {$table_prefix}ec_order as ec_order
-                 INNER JOIN {$table_prefix}ec_user as ec_user
+            FROM <<tp>>ec_order as ec_order
+                 INNER JOIN <<tp>>ec_user as ec_user
                  ON ec_order.ec_user_id=ec_user.ec_user_id
-                 INNER JOIN {$table_prefix}site_visitor as site_visitor
+                 INNER JOIN <<tp>>site_visitor as site_visitor
                  ON site_visitor.site_visitor_id=ec_user.site_visitor_id
             WHERE ( ".join(' AND ',$query)." ) $sql_filter
             ORDER BY ec_order.ec_date_created DESC

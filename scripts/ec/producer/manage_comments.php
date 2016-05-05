@@ -42,7 +42,7 @@ if($user_cense_level==0)
       foreach( $input_vars['ec_producer_comment'] as $ec_producer_comment_id ) $query[]=(int)$ec_producer_comment_id;
       if(count($query)>0)
       {
-         $query="DELETE FROM {$table_prefix}ec_producer_comment WHERE ec_producer_comment_id IN(".join(',',$query).")";
+         $query="DELETE FROM <<tp>>ec_producer_comment WHERE ec_producer_comment_id IN(".join(',',$query).")";
          // prn($query);
          \e::db_execute($query);
       }
@@ -62,9 +62,9 @@ if($user_cense_level==0)
 
 
   $re->from="
-       {$table_prefix}ec_producer_comment AS ec_producer_comment
+       <<tp>>ec_producer_comment AS ec_producer_comment
        INNER JOIN
-       {$table_prefix}ec_producer AS ec_producer
+       <<tp>>ec_producer AS ec_producer
        ON (ec_producer.ec_producer_id=ec_producer_comment.ec_producer_id)
       ";
   $re->add_where(" ec_producer_comment.site_id={$site_id} ");

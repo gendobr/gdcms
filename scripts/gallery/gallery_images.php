@@ -117,7 +117,7 @@ class GalleryImages {
             $images = \e::db_getrows(
                     "SELECT SQL_CALC_FOUND_ROWS *,
                             FLOOR(1 + RAND() * 10000) as rand_ind
-                     FROM {$GLOBALS['table_prefix']}photogalery
+                     FROM <<tp>>photogalery
                      WHERE $cond vis = 1
                        AND site = {$this->this_site_info['id']}
                      ORDER BY {$this->orderBy}
@@ -140,7 +140,7 @@ class GalleryImages {
             }
             $query = "SELECT SQL_CALC_FOUND_ROWS *,
                             FLOOR(1 + RAND() * 10000) as rand_ind
-                     FROM {$GLOBALS['table_prefix']}photogalery
+                     FROM <<tp>>photogalery
                      WHERE  vis = 1
                        AND site = {$this->this_site_info['id']}
                        {$cond}

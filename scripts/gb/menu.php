@@ -14,7 +14,7 @@
 
 function menu_gb_msg($msg_info)
 {
-   global $text, $db,$table_prefix;
+   global $text;
    $tor=Array();
    // prn($msg_info);
      if($msg_info['is_visible']==1)

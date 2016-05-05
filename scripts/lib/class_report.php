@@ -978,7 +978,7 @@ class Report {
   ///
   prn($response);
 
-  $list_thread_names=join('&',array_map('getenum',\e::db_getrows("SELECT id,subject as name FROM {$table_prefix}forum_thread WHERE site_id={$this_site_info['id']}")));
+  $list_thread_names=join('&',array_map('getenum',\e::db_getrows("SELECT id,subject as name FROM <<tp>>forum_thread WHERE site_id={$this_site_info['id']}")));
 
  */
 ?>

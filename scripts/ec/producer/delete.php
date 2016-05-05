@@ -48,7 +48,7 @@ if($this_site_info['admin_level']==0 && !is_admin())
 # ---------------- delete image - end ------------------------------------------
 
 
-$query="DELETE FROM {$table_prefix}ec_producer WHERE ec_producer_id=$ec_producer_id";
+$query="DELETE FROM <<tp>>ec_producer WHERE ec_producer_id=$ec_producer_id";
 \e::db_execute($query);
 
 $main_template_name='';

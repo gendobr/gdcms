@@ -24,13 +24,13 @@ if(isset($input_vars['site_visitor_code'])){
                          0 as is_cms_user,
                          site_visitor_password,
                          site_visitor_code
-                  FROM {$table_prefix}site_visitor
+                  FROM <<tp>>site_visitor
                   WHERE site_visitor_code like '{$site_visitor_code}.%'";
         $info =\e::db_getonerow($query);
         if($info){
             $new_password=explode('.',$info['site_visitor_code']);
             $new_password=md5($new_password[1]);
-            $query = "UPDATE {$table_prefix}site_visitor
+            $query = "UPDATE <<tp>>site_visitor
                       SET site_visitor_code=NULL,
                           site_visitor_password='{$new_password}'
                       WHERE site_visitor_id={$info['site_visitor_id']}";
@@ -57,7 +57,7 @@ if (isset($input_vars['name'])) {
                      '' as site_visitor_home_page_url,
                      1 as is_cms_user,
                      user_password as site_visitor_password
-              FROM {$table_prefix}user
+              FROM <<tp>>user
               WHERE user_login='{$user_login}'
               UNION
               SELECT site_visitor_id,
@@ -66,7 +66,7 @@ if (isset($input_vars['name'])) {
                      '' as site_visitor_home_page_url,
                      0 as is_cms_user,
                      site_visitor_password
-              FROM {$table_prefix}site_visitor
+              FROM <<tp>>site_visitor
               WHERE site_visitor_login='{$user_login}'";
     //prn($query);
     $info =\e::db_getonerow($query);
@@ -77,10 +77,10 @@ if (isset($input_vars['name'])) {
         $site_visitor_code = md5(session_id());
 
         // create a new random password
-        $new_password=  substr(md5($site_visitor_code.$table_prefix),0,10);
+        $new_password=  substr(md5($site_visitor_code.\e::config('db_table_prefix')),0,10);
 
         // save codes
-        $query="UPDATE {$table_prefix}site_visitor
+        $query="UPDATE <<tp>>site_visitor
                 SET site_visitor_code='{$site_visitor_code}.{$new_password}'
                 WHERE site_visitor_login='{$user_login}'
                 AND site_visitor_id={$info['site_visitor_id']}";

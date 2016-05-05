@@ -23,7 +23,7 @@ $this_category->name_id     ='category_id';
 $this_category->name_start  ='start';
 $this_category->name_finish ='finish';
 $this_category->name_deep   ='deep';
-$this_category->name_table  =$table_prefix.'category';
+$this_category->name_table  ='<<tp>>category';
 
 
 
@@ -73,12 +73,12 @@ for($row_counter=0;$row_counter<500;$row_counter++)
 {
 
 # read row from dl_tmp_udc_codes
-  $query="SELECT * FROM {$table_prefix}tmp_udc_codes WHERE imported_successfully=0 ORDER BY code ASC LIMIT 0,1";
+  $query="SELECT * FROM <<tp>>tmp_udc_codes WHERE imported_successfully=0 ORDER BY code ASC LIMIT 0,1";
   $this_node_info=\e::db_getonerow($query);
   #prn($this_node_info);  die();
 
 # get parent node from imported categories
-  $query="SELECT * FROM {$table_prefix}category WHERE LENGTH(category_code)>0 AND LOCATE(category_code,'".\e::db_escape($this_node_info['code'])."')=1 ORDER BY category_code DESC LIMIT 0,1";
+  $query="SELECT * FROM <<tp>>category WHERE LENGTH(category_code)>0 AND LOCATE(category_code,'".\e::db_escape($this_node_info['code'])."')=1 ORDER BY category_code DESC LIMIT 0,1";
   $parent_node_info=\e::db_getonerow($query);
   //prn(htmlencode($query),$parent_node_info); 
 
@@ -99,7 +99,7 @@ for($row_counter=0;$row_counter<500;$row_counter++)
   $child_id=$this_category->add_child();
   
 # copy data to table
-  $see_also=\e::db_getrows("SELECT more FROM {$table_prefix}tmp_udc_codes WHERE code='".\e::db_escape($this_node_info['code'])."'");
+  $see_also=\e::db_getrows("SELECT more FROM <<tp>>tmp_udc_codes WHERE code='".\e::db_escape($this_node_info['code'])."'");
   $cnt=count($see_also);
   for($i=0;$i<$cnt;$i++) $see_also[$i]=$see_also[$i]['more'];
   $see_also=join(' <br> ',$see_also);
@@ -114,7 +114,7 @@ for($row_counter=0;$row_counter<500;$row_counter++)
   );
   prn($new_category_info);
 
-  $query="UPDATE {$table_prefix}category
+  $query="UPDATE <<tp>>category
           SET category_code='".\e::db_escape($new_category_info['category_code'])."'
              ,category_title='".\e::db_escape($new_category_info['category_title'])."'
              ,category_description='".\e::db_escape($new_category_info['category_description'])."'
@@ -125,7 +125,7 @@ for($row_counter=0;$row_counter<500;$row_counter++)
 
 
 # mark rows as imported
- \e::db_getonerow("UPDATE {$table_prefix}tmp_udc_codes
+ \e::db_getonerow("UPDATE <<tp>>tmp_udc_codes
                 SET imported_successfully=1
                 WHERE code='".\e::db_escape($this_node_info['code'])."'");
 

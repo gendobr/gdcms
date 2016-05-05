@@ -15,7 +15,7 @@ $report = '';
 
 // count all pages
 $query1 = "select count(page.id) as n_pages
-from {$table_prefix}page as page, {$table_prefix}site as site
+from <<tp>>page as page, <<tp>>site as site
 where page.site_id=site.id
 and page.cense_level>=site.cense_level
 and not is_under_construction
@@ -31,7 +31,7 @@ $report .= "exporting about 5 pages ... <br/>";
 $export_probability = 5 / $n_pages;
 
 $query2 = "select page.id as page_id,page.lang as page_lang, site.id as site_id, page.path
-from {$table_prefix}page as page, {$table_prefix}site as site
+from <<tp>>page as page, <<tp>>site as site
 where page.site_id=site.id
 and page.cense_level>=site.cense_level
 and not is_under_construction

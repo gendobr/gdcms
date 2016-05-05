@@ -39,7 +39,7 @@
   // $lang      = DbStr($input_vars['lang']);
   $lang=$input_vars['lang'] = get_language('lang');
 
-  $query="SELECT * FROM {$table_prefix}page WHERE id={$page_id} AND lang='$lang'";
+  $query="SELECT * FROM <<tp>>page WHERE id={$page_id} AND lang='$lang'";
   $this_page_info=\e::db_getonerow($query);
   $this_page_info['id']=checkInt($this_page_info['id']);
   //prn('$this_page_info',$this_page_info);
@@ -60,13 +60,13 @@
 // --------------------- update ordering - begin -------------------------------
    if(isset($input_vars['ordering']) && is_array($input_vars['ordering'])){
        foreach($input_vars['ordering'] as $itid=>$itval){
-           $query="UPDATE {$table_prefix}menu_item SET ordering=".( (int)$itval )." WHERE id=".( (int)$itid );
+           $query="UPDATE <<tp>>menu_item SET ordering=".( (int)$itval )." WHERE id=".( (int)$itid );
            \e::db_execute($query);
        }
    }
    if(isset($input_vars['mord']) && is_array($input_vars['mord'])){
        foreach($input_vars['mord'] as $gid=>$gval){
-           $query="UPDATE {$table_prefix}menu_group SET ordering=".( (int)$gval )." WHERE id=".( (int)$gid );
+           $query="UPDATE <<tp>>menu_group SET ordering=".( (int)$gval )." WHERE id=".( (int)$gid );
            \e::db_execute($query);
        }
    }
@@ -77,8 +77,8 @@
   if((int)$input_vars['moveup']>0)
   {
     $query="SELECT mi.id
-            FROM {$table_prefix}menu_item AS mi,
-                 {$table_prefix}menu_group AS mg
+            FROM <<tp>>menu_item AS mi,
+                 <<tp>>menu_group AS mg
             WHERE mg.site_id={$this_site_info['id']}
               AND mg.id=mi.menu_group_id
               AND mi.id=".( (int)$input_vars['moveup'] );
@@ -86,7 +86,7 @@
     #prn($query, $mi_id);
     if($mi_id)
     {
-      $query="UPDATE {$table_prefix}menu_item
+      $query="UPDATE <<tp>>menu_item
               SET ordering=IF(ordering-1>0,ordering-1,0)
               WHERE id={$mi_id['id']}";
       #prn($query);
@@ -97,8 +97,8 @@
   if((int)$input_vars['movedown']>0)
   {
     $query="SELECT mi.id
-            FROM {$table_prefix}menu_item AS mi,
-                 {$table_prefix}menu_group AS mg
+            FROM <<tp>>menu_item AS mi,
+                 <<tp>>menu_group AS mg
             WHERE mg.site_id={$this_site_info['id']}
               AND mg.id=mi.menu_group_id
               AND mi.id=".( (int)$input_vars['movedown'] );
@@ -106,7 +106,7 @@
     #prn($query, $mi_id);
     if($mi_id)
     {
-      $query="UPDATE {$table_prefix}menu_item
+      $query="UPDATE <<tp>>menu_item
               SET ordering=ordering+1
               WHERE id={$mi_id['id']}";
       #prn($query);
@@ -125,18 +125,18 @@
         $ttt=Explode(';',$input_vars['add_item_to']);
         $ttt[0]=checkInt($ttt[0]);
         $ttt[1]=\e::db_escape($ttt[1]);
-        $menu_group_id=\e::db_getonerow("SELECT count(*) AS df FROM {$table_prefix}menu_group WHERE id={$ttt[0]} AND lang='{$ttt[1]}'");
+        $menu_group_id=\e::db_getonerow("SELECT count(*) AS df FROM <<tp>>menu_group WHERE id={$ttt[0]} AND lang='{$ttt[1]}'");
         if($menu_group_id['df']>0)
         {
 
 
          // get new id
-            $query="SELECT MAX(id) AS newid FROM  {$table_prefix}menu_item";
+            $query="SELECT MAX(id) AS newid FROM  <<tp>>menu_item";
             $newid=\e::db_getonerow($query);
             $newid=$newid['newid']+1;
 
          // create new item
-            $query="INSERT INTO {$table_prefix}menu_item(id,html,url,menu_group_id,lang)
+            $query="INSERT INTO <<tp>>menu_item(id,html,url,menu_group_id,lang)
                     VALUES ({$newid},'{$text['New_menu_item']}','#',{$ttt[0]},'{$ttt[1]}')";
             //prn($query);
             \e::db_execute($query);
@@ -153,15 +153,15 @@
   {
      $delete_item_id=checkInt($input_vars['delete_item_id']);
      $query="SELECT *
-             FROM {$table_prefix}menu_item AS mi,
-                  {$table_prefix}menu_group AS mg
+             FROM <<tp>>menu_item AS mi,
+                  <<tp>>menu_group AS mg
              WHERE     mg.site_id={$this_site_info['id']}
                    AND mg.id=mi.menu_group_id
                    AND mi.id=$delete_item_id
              ";
      if(count(\e::db_getrows($query))>0)
      {
-        $query="DELETE FROM {$table_prefix}menu_item WHERE id=$delete_item_id";
+        $query="DELETE FROM <<tp>>menu_item WHERE id=$delete_item_id";
         \e::db_execute($query);
      }
   }
@@ -176,18 +176,18 @@
      $delete_group[0] = checkInt($delete_group[0]);
      $delete_group[1] = \e::db_escape($delete_group[1])   ;
      $query="SELECT *
-             FROM {$table_prefix}menu_group AS mg
+             FROM <<tp>>menu_group AS mg
              WHERE     mg.site_id={$this_site_info['id']}
                    AND mg.id={$delete_group[0]}
                    AND mg.lang='{$delete_group[1]}'
              ";
      if(count(\e::db_getrows($query))>0)
      {
-        $query="DELETE FROM {$table_prefix}menu_item
+        $query="DELETE FROM <<tp>>menu_item
                 WHERE     menu_group_id={$delete_group[0]}
                       AND lang='{$delete_group[1]}'";
         \e::db_execute($query);
-        $query="DELETE FROM {$table_prefix}menu_group
+        $query="DELETE FROM <<tp>>menu_group
                 WHERE     id={$delete_group[0]}
                       AND lang='{$delete_group[1]}'";
         \e::db_execute($query);
@@ -203,12 +203,12 @@
      //prn('Adding group ...');
 
      // get new id
-        $query="SELECT MAX(id) AS newid FROM  {$table_prefix}menu_group";
+        $query="SELECT MAX(id) AS newid FROM  <<tp>>menu_group";
         $newid=\e::db_getonerow($query);
         $newid=$newid['newid']+1;
 
      // create new item
-        $query="INSERT INTO {$table_prefix}menu_group(id,site_id,page_id,html)
+        $query="INSERT INTO <<tp>>menu_group(id,site_id,page_id,html)
                 VALUES ({$newid},{$this_site_info['id']},-1,'{$text['New_menu_item']}')";
         //prn($query);
         \e::db_execute($query);
@@ -224,14 +224,14 @@
      $add_lang=checkInt($input_vars['add_lang']);
      // get new language
         $query="SELECT la.id AS lang
-                FROM {$table_prefix}languages AS la LEFT JOIN {$table_prefix}menu_group AS mg ON(la.id=mg.lang  AND mg.id=$add_lang)
+                FROM <<tp>>languages AS la LEFT JOIN <<tp>>menu_group AS mg ON(la.id=mg.lang  AND mg.id=$add_lang)
                 WHERE la.is_visible=1 AND mg.lang is null
                 LIMIT 0,1;";
         $newid=\e::db_getonerow($query);
         // prn($newid);
 
      // create new item
-        $query="INSERT INTO {$table_prefix}menu_group(id,site_id,page_id,html, lang)
+        $query="INSERT INTO <<tp>>menu_group(id,site_id,page_id,html, lang)
                 VALUES ({$add_lang},{$this_site_info['id']},{$this_page_info['id']},'{$text['New_menu_item']}','{$newid['lang']}')";
         // prn($query);
         \e::db_execute($query);
@@ -244,7 +244,7 @@
 //------------------- get existing menu - begin --------------------------------
   //----------------- menu groups - begin --------------------------------------
      $query = "SELECT *
-               FROM {$table_prefix}menu_group
+               FROM <<tp>>menu_group
                WHERE     site_id={$this_site_info['id']}
                ORDER BY ordering, id, lang ";
      $tmp=\e::db_getrows($query);
@@ -263,7 +263,7 @@
      foreach($menu_groups as $tm) $mmm[]=$tm['id'];
      $mmm=join(',',$mmm);
      $query = "SELECT *
-               FROM {$table_prefix}menu_item
+               FROM <<tp>>menu_item
                WHERE  menu_group_id IN($mmm)
                ORDER BY menu_group_id, ordering ASC";
      $tmp=\e::db_getrows($query);

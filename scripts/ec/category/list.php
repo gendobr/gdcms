@@ -42,15 +42,15 @@ $this_category->name_id     ='ec_category_id';
 $this_category->name_start  ='start';
 $this_category->name_finish ='finish';
 $this_category->name_deep   ='deep';
-$this_category->name_table  =$table_prefix.'ec_category';
+$this_category->name_table  ='<<tp>>ec_category';
 
-$this_category->where[]     =" {$table_prefix}ec_category.site_id={$site_id} ";
+$this_category->where[]     =" <<tp>>ec_category.site_id={$site_id} ";
 
 $this_category->load_node(isset($input_vars['category_id'])?( (int)$input_vars['category_id'] ):0);
 
 if($this_category->id==0)
 {
-   $query="INSERT INTO {$table_prefix}ec_category(ec_category_title,start,finish, deep, site_id) VALUES ('EC root category',0,1,0,$site_id)";
+   $query="INSERT INTO <<tp>>ec_category(ec_category_title,start,finish, deep, site_id) VALUES ('EC root category',0,1,0,$site_id)";
    \e::db_execute($query);
    $this_category->load_node(0);
 }
@@ -82,7 +82,7 @@ if(isset($_REQUEST['debug'])) prn($this_category);
 if(isset($input_vars['add_child']  ))
 {
    $new_child_category_id=$this_category->add_child();
-   $query="UPDATE {$table_prefix}ec_category SET site_id={$site_id} WHERE ec_category_id={$new_child_category_id}";
+   $query="UPDATE <<tp>>ec_category SET site_id={$site_id} WHERE ec_category_id={$new_child_category_id}";
    \e::db_execute($query);
    $this_category->load_node($this_category->id);
 }

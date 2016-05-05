@@ -49,7 +49,7 @@ $category_info = false;
 if (isset($input_vars['ec_category_id'])) {
     $ec_category_id = (int) $input_vars['ec_category_id'];
     if ($ec_category_id > 0) {
-        $category_info =\e::db_getonerow("SELECT ec_category_id, start, finish FROM {$GLOBALS['table_prefix']}ec_category WHERE ec_category_id={$ec_category_id} and site_id=" . $site_id . "");
+        $category_info =\e::db_getonerow("SELECT ec_category_id, start, finish FROM <<tp>>ec_category WHERE ec_category_id={$ec_category_id} and site_id=" . $site_id . "");
     }
 }
 
@@ -59,8 +59,8 @@ if ($category_info) {
     $finish = (int) $category_info['finish'];
     // ------------------ get list of categories - begin -----------------------
     $query = "select ch.*, bit_and(pa.is_visible) as visible
-              from {$GLOBALS['table_prefix']}ec_category pa,
-                   {$GLOBALS['table_prefix']}ec_category ch
+              from <<tp>>ec_category pa,
+                   <<tp>>ec_category ch
               where pa.start<=ch.start and ch.finish<=pa.finish
                 and pa.site_id=" . ((int) $site_id) . "
                 and ch.site_id=" . ((int) $site_id) . "
@@ -76,8 +76,8 @@ if ($category_info) {
 } else {
     // ------------------ get list of categories - begin -----------------------
     $query = "select ch.*, bit_and(pa.is_visible) as visible
-              from {$GLOBALS['table_prefix']}ec_category pa,
-                   {$GLOBALS['table_prefix']}ec_category ch
+              from <<tp>>ec_category pa,
+                   <<tp>>ec_category ch
               where pa.start<=ch.start and ch.finish<=pa.finish
                 and pa.site_id=" . ((int) $site_id) . "
                 and ch.site_id=" . ((int) $site_id) . "

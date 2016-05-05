@@ -30,7 +30,7 @@ if (get_level($site_id) == 0) {
 // -------------------- delete fragment - begin --------------------------------
 if(isset($input_vars['delete_fragment'])){
     $delete_fragment=explode('.',$input_vars['delete_fragment']);
-    $query="DELETE FROM {$table_prefix}fragment
+    $query="DELETE FROM <<tp>>fragment
             WHERE site_id={$site_id}
               AND fragment_id=".( (int)$delete_fragment[0] )."
               AND fragment_lang='".\e::db_escape($delete_fragment[1])."'
@@ -57,7 +57,7 @@ $re->rows_per_page=100;
 // fragment_label       varchar(128)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references
 
 
-$re->from = "{$table_prefix}fragment AS fragment";
+$re->from = "<<tp>>fragment AS fragment";
 
 $re->add_where(" fragment.site_id={$site_id} ");
 
@@ -68,7 +68,7 @@ $re->add_field($field = 'fragment.fragment_id'
         , $_group_operation = false);
 
 //---------------- list of languages - begin ---------------------------------
-$LL = join('&', \e::db_get_associated_array("SELECT fragment_lang,CONCAT(fragment_lang,'=',fragment_lang) FROM {$table_prefix}fragment WHERE site_id={$site_id}"));
+$LL = join('&', \e::db_get_associated_array("SELECT fragment_lang,CONCAT(fragment_lang,'=',fragment_lang) FROM <<tp>>fragment WHERE site_id={$site_id}"));
 $re->add_field($field = 'fragment.fragment_lang'
         , $alias = 'fragment_lang'
         , $type = 'enum:' . $LL

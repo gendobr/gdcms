@@ -19,7 +19,7 @@
     if($input_vars['page_lang']!=$this_page_info['lang'])
     {
       //-------------------- get existing page languages - begin ---------------
-        $query="SELECT lang FROM {$table_prefix}page WHERE id={$this_page_info['id']}";
+        $query="SELECT lang FROM <<tp>>page WHERE id={$this_page_info['id']}";
         $tmp=\e::db_getrows($query);
         // prn($tmp);
         $existins_langs=Array();
@@ -29,7 +29,7 @@
       //-------------------- get available languages - begin -------------------
         $existins_langs[]='';
         $query="SELECT id
-                FROM {$table_prefix}languages
+                FROM <<tp>>languages
                 WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."')";
         $tmp=\e::db_getrows($query);
         $avail_lang=Array();
@@ -122,7 +122,7 @@
          if(strlen($this_page_info['page_file_name'])>0) {
             // ensure the page file path is unique
             $other_pages="SELECT count(*) as n_pages
-                          FROM {$table_prefix}page
+                          FROM <<tp>>page
                           WHERE path='".\e::db_escape($this_page_info['path'])."'
                             AND page_file_name='".\e::db_escape($this_page_info['page_file_name'])."'
                             AND id<>{$this_page_info['id']}
@@ -158,13 +158,13 @@
 
        if($this_page_info['is_home_page']==1)
        {
-         $query="UPDATE {$table_prefix}page
+         $query="UPDATE <<tp>>page
                  SET    is_home_page=0
                  WHERE  site_id='{$this_page_info['site_id']}'";
          \e::db_execute($query);
        }
 
-       $query="UPDATE {$table_prefix}page
+       $query="UPDATE <<tp>>page
                SET
                   lang='{$lng}'
                  ,site_id='{$this_page_info['site_id']}'
@@ -196,7 +196,7 @@
            }
            $delete_file=trim(join("\t",array_unique(explode("\t",$delete_file))));
 
-           $query="UPDATE {$table_prefix}page
+           $query="UPDATE <<tp>>page
                    SET delete_file = '$delete_file'
                    WHERE id='{$this_page_info['id']}' AND lang='{$this_page_info['lang']}'";
            //prn($query);

@@ -16,7 +16,7 @@ $debug=false;
   // $lang      = DbStr($input_vars['lang']);
   $lang = get_language('lang');
 
-  $query="SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
+  $query="SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='$lang'";
   $this_news_info=\e::db_getonerow($query);
   if($debug) prn($query,$this_news_info);
   if(checkInt($this_news_info['id'])<=0)
@@ -46,7 +46,7 @@ $debug=false;
 $weight=(int)$input_vars['weight'];
 
 
-$query="UPDATE {$table_prefix}news SET weight=weight+{$weight} WHERE site_id={$this_news_info['site_id']} and id=$news_id and lang='".\e::db_escape($lang)."'";
+$query="UPDATE <<tp>>news SET weight=weight+{$weight} WHERE site_id={$this_news_info['site_id']} and id=$news_id and lang='".\e::db_escape($lang)."'";
 \e::db_execute($query);
 
 

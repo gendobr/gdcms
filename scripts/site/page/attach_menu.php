@@ -13,7 +13,7 @@
   // $lang      = DbStr($input_vars['lang']);
   $lang = get_language('lang');
   
-  $query="SELECT * FROM {$table_prefix}page WHERE id={$page_id} AND lang='$lang'";
+  $query="SELECT * FROM <<tp>>page WHERE id={$page_id} AND lang='$lang'";
   $this_page_info=\e::db_getonerow($query);
   //prn($query,$this_page_info);
   if(checkInt($this_page_info['id'])<=0)
@@ -46,7 +46,7 @@
 # ----------------------- list of site managers - begin ------------------------
   $tmp=\e::db_getrows(
        "select u.id, u.full_name, u.user_login, u.email, su.level
-        from {$table_prefix}user AS u, {$table_prefix}site_user AS su
+        from <<tp>>user AS u, <<tp>>site_user AS su
         where u.id = su.user_id AND su.site_id = {$this_site_info['id']}
         order by level desc");
   $this_site_info['managers']=Array();
@@ -69,7 +69,7 @@
       $checked=$_REQUEST['page_menu_group'];
     }
 
-    $query="DELETE FROM {$table_prefix}page_menu_group 
+    $query="DELETE FROM <<tp>>page_menu_group 
             WHERE site_id={$this_site_info['id']}
               AND page_id={$this_page_info['id']}
               AND lang='{$this_page_info['lang']}'
@@ -87,7 +87,7 @@
     }
     if(count($query)>0)
     {
-      $query="INSERT INTO {$table_prefix}page_menu_group (site_id, page_id, menu_group_id, lang)
+      $query="INSERT INTO <<tp>>page_menu_group (site_id, page_id, menu_group_id, lang)
               VALUES ".join(',',$query);
       #prn($query);
       \e::db_execute($query);
@@ -98,9 +98,9 @@
 
 # ----------------------- list page menus - begin ------------------------------
   $query="SELECT mg.* , pmg.id AS pmg_id
-          FROM {$table_prefix}menu_group AS mg
+          FROM <<tp>>menu_group AS mg
                LEFT JOIN
-              {$table_prefix}page_menu_group AS pmg
+              <<tp>>page_menu_group AS pmg
               ON ( mg.id=pmg.menu_group_id
                AND pmg.page_id={$this_page_info['id']}
                AND pmg.lang = '{$this_page_info['lang']}'

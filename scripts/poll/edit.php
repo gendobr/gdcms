@@ -33,10 +33,10 @@ if(get_level($site_id)==0) {
 //------------------- check poll_id - begin ------------------------------------
 if(isset($input_vars['poll_id'])) {
     $poll_id=(int)$input_vars['poll_id'];
-    $this_poll_info=\e::db_getonerow("SELECT * FROM {$table_prefix}golos_pynannja WHERE id=$poll_id AND site_id={$site_id}");
+    $this_poll_info=\e::db_getonerow("SELECT * FROM <<tp>>golos_pynannja WHERE id=$poll_id AND site_id={$site_id}");
     if($this_poll_info) {
         $poll_id=(int)$this_poll_info['id'];
-        $this_poll_info['vidpovidi']=\e::db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id=$poll_id");
+        $this_poll_info['vidpovidi']=\e::db_getrows("SELECT * FROM <<tp>>golos_vidpovidi WHERE pynannja_id=$poll_id");
     }else $poll_id=0;
 }
 else {
@@ -60,14 +60,14 @@ if(isset($input_vars['poll_save'])) {
     if(strlen($messages)==0) {
         # ----------------- save question - begin ------------------------------
         if($poll_id==0) {
-            $query="INSERT INTO {$table_prefix}golos_pynannja(site_id,is_active,title,poll_type)
+            $query="INSERT INTO <<tp>>golos_pynannja(site_id,is_active,title,poll_type)
   			        VALUES($site_id,$is_active,'".mysql_escape_string($poll_title)."','{$poll_type}')";
             \e::db_execute($query);
             $poll_id=\e::db_getonerow("SELECT LAST_INSERT_ID() AS poll_id");
             $poll_id=$poll_id['poll_id'];
         }
         else {
-            $query="UPDATE {$table_prefix}golos_pynannja
+            $query="UPDATE <<tp>>golos_pynannja
   			        SET title='".mysql_escape_string($poll_title)."'
   			           ,is_active=$is_active
   			           ,poll_type='{$poll_type}'
@@ -105,7 +105,7 @@ if(isset($input_vars['poll_save'])) {
         if(count($to_add)>0) {
             $query=Array();
             foreach($to_add as $val) $query[]="($poll_id,$site_id,'".\e::db_escape(trim($val))."')";
-            $query="INSERT INTO {$table_prefix}golos_vidpovidi(pynannja_id, site_id, html) VALUES ".join(',',$query);
+            $query="INSERT INTO <<tp>>golos_vidpovidi(pynannja_id, site_id, html) VALUES ".join(',',$query);
             //prn($query);
             \e::db_execute($query);
         }
@@ -113,7 +113,7 @@ if(isset($input_vars['poll_save'])) {
         if(count($to_delete)>0) {
             $query=Array();
             foreach($to_add as $val) $query[]="($poll_id,$site_id,'".\e::db_escape(trim($val))."')";
-            $query="DELETE FROM {$table_prefix}golos_vidpovidi
+            $query="DELETE FROM <<tp>>golos_vidpovidi
   	                  WHERE site_id={$site_id}
   	                    AND pynannja_id=$poll_id
   	                    AND id IN(".join(',',array_keys($to_delete)).")";
@@ -123,7 +123,7 @@ if(isset($input_vars['poll_save'])) {
 
         if(count($to_update)>0) {
             foreach($to_update as $key=>$val) {
-                $query="UPDATE {$table_prefix}golos_vidpovidi
+                $query="UPDATE <<tp>>golos_vidpovidi
   	                     SET html='".\e::db_escape($val)."'
   	                     WHERE site_id={$site_id}
                            AND pynannja_id=$poll_id

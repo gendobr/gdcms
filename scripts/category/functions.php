@@ -110,8 +110,8 @@ function adjust($_info, $category_id) {
 function category_public_list($site_id, $lang) {
     // ------------------ get list of categories - begin -----------------------
     $query = "select ch.*, bit_and(pa.is_visible) as visible
-              from {$GLOBALS['table_prefix']}category pa,
-                   {$GLOBALS['table_prefix']}category ch
+              from <<tp>>category pa,
+                   <<tp>>category ch
               where pa.start<=ch.start and ch.finish<=pa.finish
                 and pa.site_id=" . ((int) $site_id) . "
                 and ch.site_id=" . ((int) $site_id) . "
@@ -147,7 +147,7 @@ function category_public_list($site_id, $lang) {
     }
     $category_ids = join(',', $category_ids);
     $query = "SELECT category_id, count(news_id) as n_news
-           FROM {$GLOBALS['table_prefix']}news_category
+           FROM <<tp>>news_category
            WHERE category_id in({$category_ids}) GROUP BY category_id";
     $number_of_news = \e::db_getrows($query);
 
@@ -198,7 +198,7 @@ function category_info($options) {
     }
     $where[1] = 'site_id=' . $options['site_id'];
     $where[2] = 'is_visible =1';
-    $query = "SELECT * FROM {$GLOBALS['table_prefix']}category WHERE " . join(' AND ', $where);
+    $query = "SELECT * FROM <<tp>>category WHERE " . join(' AND ', $where);
     // prn($query);
     $this_category_info =\e::db_getonerow($query);
     if (!$this_category_info) {
@@ -326,7 +326,7 @@ class CategoryViewModel {
                       pa.start, pa.finish, pa.is_deleted, pa.deep, pa.is_part_of,
                       pa.see_also, pa.is_visible, pa.path, pa.category_icon,
                       pa.category_title_short, pa.category_description, pa.category_description_short
-               from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
+               from <<tp>>category pa, <<tp>>category ch
                WHERE ch.category_id={$this->category_info['category_id']} 
                  and ch.site_id={$this->site_info['id']} 
                  and pa.site_id={$this->site_info['id']}
@@ -363,7 +363,7 @@ class CategoryViewModel {
         //                      ch.start, ch.finish, ch.is_deleted, ch.deep, ch.is_part_of,
         //                      ch.see_also, ch.is_visible, ch.path, ch.category_description,
         //                      ch.category_icon, ch.category_title_short
-        //               from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
+        //               from <<tp>>category pa, <<tp>>category ch
         //               WHERE pa.category_id={$this->category_info['category_id']} and ch.site_id={$this->site_info['id']} and ch.is_visible
         //                 and pa.site_id={$this->site_info['id']} 
         //                 and ( ch.deep between " . ($this->category_info['deep'] + 1 ) . " AND " . ($this->category_info['deep'] + $this->deep ) . " )
@@ -375,7 +375,7 @@ class CategoryViewModel {
                       ch.see_also, ch.is_visible, ch.path, ch.category_description,
                       ch.category_icon, ch.category_title_short, ch.category_description_short,
                       BIT_AND(pa.is_visible) as parentsVisible, ch.start,ch.finish
-               from {$GLOBALS['table_prefix']}category pa, {$GLOBALS['table_prefix']}category ch
+               from <<tp>>category pa, <<tp>>category ch
                WHERE ch.site_id={$this->site_info['id']}
                  AND ch.is_visible
                  AND pa.site_id={$this->site_info['id']} 

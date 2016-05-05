@@ -5,7 +5,7 @@
  * ������ ����� ����� SQL ��������, ������� ���� ���������, ����� ��������������� ������ ���������
  * ������� ��������� � �� ������ �� ���������
  *
- * ���������� ��������� ���������� �� ������� 'path' �������  {$table_prefix}category
+ * ���������� ��������� ���������� �� ������� 'path' �������  <<tp>>category
  *
  *
  */
@@ -24,12 +24,12 @@ $query = "set @site_id=$site_id";
 \e::db_execute($query);
 
 //���� �� ���������, ������� ����������� ����� � ��������
-$query = "select @category_id:=category_id, @start:=`start`, @finish:=finish from {$GLOBALS['table_prefix']}category where site_id=@site_id and `start`=0";
+$query = "select @category_id:=category_id, @start:=`start`, @finish:=finish from <<tp>>category where site_id=@site_id and `start`=0";
 
 
 $query = "
 /* ���� �� ���������, ������� ����������� ����� � �������� */
-select ch.category_id, pa.category_id from {$GLOBALS['table_prefix']}category ch,  {$GLOBALS['table_prefix']}category pa
+select ch.category_id, pa.category_id from <<tp>>category ch,  <<tp>>category pa
 where ch.start<pa.start and pa.start<ch.finish
 and pa.finish>ch.finish
 and pa.site_id=@site_id
@@ -38,7 +38,7 @@ and ch.site_id=@site_id
 union
 
 /* ���� start � finish ������ ���� ��������� */
-select ch.category_id, pa.category_id from {$GLOBALS['table_prefix']}category ch,  {$GLOBALS['table_prefix']}category pa
+select ch.category_id, pa.category_id from <<tp>>category ch,  <<tp>>category pa
 where ( ch.start=pa.start OR ch.start=pa.finish OR ch.finish=pa.finish )
 and pa.site_id=@site_id
 and ch.site_id=@site_id
@@ -50,20 +50,20 @@ if (count($rows) == 0) {
 }
 
 /*
-  select ch.category_id, pa.category_id from {$GLOBALS['table_prefix']}category ch,  {$GLOBALS['table_prefix']}category pa
+  select ch.category_id, pa.category_id from <<tp>>category ch,  <<tp>>category pa
   where ch.start<pa.start and pa.start<ch.finish
   and pa.finish>ch.finish
   and pa.site_id=@site_id
   and ch.site_id=@site_id;
 
-  select ch.category_id, pa.category_id from {$GLOBALS['table_prefix']}category ch,  {$GLOBALS['table_prefix']}category pa
+  select ch.category_id, pa.category_id from <<tp>>category ch,  <<tp>>category pa
   where ( ch.start=pa.start OR ch.start=pa.finish OR ch.finish=pa.finish )
   and pa.site_id=@site_id
   and ch.site_id=@site_id
   and ch.category_id<>pa.category_id;
  */
 
-$query = "select category_id, site_id,category_title,start,finish,deep,path from {$table_prefix}category where site_id=$site_id order by path asc";
+$query = "select category_id, site_id,category_title,start,finish,deep,path from <<tp>>category where site_id=$site_id order by path asc";
 $categories = \e::db_getrows($query);
 
 // ���������� ��������
@@ -282,21 +282,20 @@ class node {
     }
 
     function print_update_sql($site_id) {
-        global $table_prefix;
         if ($this->info['category_id']) {
             // update if needed
             if ($this->start - $this->info['start'] != 0
                 || $this->finish - $this->info['finish'] != 0
                 || $this->deep - $this->info['deep'] != 0) {
                 // echo "{$cat['start_new']}-{$cat['start']}!=0 || {$cat['finish_new']}-{$cat['finish']}!=0 || {$cat['deep_new']}-{$cat['deep']}!=0";
-                echo htmlspecialchars("UPDATE {$table_prefix}category
+                echo htmlspecialchars("UPDATE <<tp>>category
                                   SET start={$this->start},
                                       finish={$this->finish},
                                       deep={$this->deep}
                                   WHERE site_id=$site_id AND category_id={$this->info['category_id']}") . ';<br/>';
             }
         } else {
-            echo htmlspecialchars("INSERT INTO {$table_prefix}category
+            echo htmlspecialchars("INSERT INTO <<tp>>category
                                   SET site_id=$site_id,
                                       category_code='{$this->info['category_code']}',
                                       category_title='{$this->info['category_code']}',
@@ -375,14 +374,14 @@ exit();
 //        // update if needed
 //        if ($cat['start_new'] - $cat['start'] != 0 || $cat['finish_new'] - $cat['finish'] != 0 || $cat['deep_new'] - $cat['deep'] != 0) {
 //            // echo "{$cat['start_new']}-{$cat['start']}!=0 || {$cat['finish_new']}-{$cat['finish']}!=0 || {$cat['deep_new']}-{$cat['deep']}!=0";
-//            echo checkStr("UPDATE {$table_prefix}category
+//            echo checkStr("UPDATE <<tp>>category
 //                                  SET start={$cat['start_new']},
 //                                      finish={$cat['finish_new']},
 //                                      deep={$cat['deep_new']}
 //                                  WHERE site_id=$site_id AND category_id={$cat['category_id']}") . ';<br/>';
 //        }
 //    } else {
-//        echo checkStr("INSERT INTO {$table_prefix}category
+//        echo checkStr("INSERT INTO <<tp>>category
 //                                  SET site_id=$site_id,
 //                                      category_code='{$cat['category_code']}',
 //                                      category_title='{$cat['category_code']}',

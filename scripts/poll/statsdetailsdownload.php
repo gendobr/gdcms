@@ -22,10 +22,10 @@ $poll_uid=$input_vars['poll_uid'];
 
 
 $query="SELECT ad.*,p.title,v.html
-        FROM   {$table_prefix}golos_vidpovidi_details as ad
-               INNER JOIN {$table_prefix}golos_pynannja AS p
+        FROM   <<tp>>golos_vidpovidi_details as ad
+               INNER JOIN <<tp>>golos_pynannja AS p
                ON p.id=ad.poll_id
-               LEFT JOIN  {$table_prefix}golos_vidpovidi as v
+               LEFT JOIN  <<tp>>golos_vidpovidi as v
                ON ad.answer_id=v.id
         WHERE ad.site_id={$site_id} and poll_uid='".  \e::db_escape($poll_uid)."'
         order by ad.session_id,ad.answer_date,ad.poll_id";

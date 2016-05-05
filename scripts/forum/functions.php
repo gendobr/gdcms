@@ -154,7 +154,7 @@ function enCodeBB($msg, $admin = 0) {
 
 function get_forum_info($_forum_id) {
     $forum_id = (int) $_forum_id;
-    $this_forum_info =\e::db_getonerow("SELECT * FROM {$GLOBALS['table_prefix']}forum_list WHERE id={$forum_id}");
+    $this_forum_info =\e::db_getonerow("SELECT * FROM <<tp>>forum_list WHERE id={$forum_id}");
     $this_forum_info['moderators'] = preg_split("/\\r?\\n/", $this_forum_info['moderators']);
     return $this_forum_info;
 }

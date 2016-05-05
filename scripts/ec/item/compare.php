@@ -58,7 +58,7 @@ run('ec/item/functions');
       if(!is_logged()){
 	     $items_keys=array_keys($items);
 		 $items_keys[]=0;
-         \e::db_execute("UPDATE {$table_prefix}ec_item SET ec_item_views=ifnull(ec_item_views,0)+1 WHERE ec_item_id IN(".join(',',$items_keys).")");
+         \e::db_execute("UPDATE <<tp>>ec_item SET ec_item_views=ifnull(ec_item_views,0)+1 WHERE ec_item_id IN(".join(',',$items_keys).")");
       }
   }
 # -------------------- get items to compare - end ------------------------------

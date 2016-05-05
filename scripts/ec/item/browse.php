@@ -57,9 +57,9 @@ $this_category->name_id     ='ec_category_id';
 $this_category->name_start  ='start';
 $this_category->name_finish ='finish';
 $this_category->name_deep   ='deep';
-$this_category->name_table  =$table_prefix.'ec_category';
+$this_category->name_table  ='<<tp>>ec_category';
 
-$this_category->where[]     =" {$table_prefix}ec_category.site_id={$site_id} ";
+$this_category->where[]     =" <<tp>>ec_category.site_id={$site_id} ";
 
 $this_category->load_node(isset($input_vars['ec_category_id'])?( (int)$input_vars['ec_category_id'] ):0);
 //prn($this_category->info);
@@ -67,11 +67,11 @@ $this_category->load_node(isset($input_vars['ec_category_id'])?( (int)$input_var
 
 
 $tmp=\e::db_getrows(
-            "SELECT i.ec_category_id FROM {$table_prefix}ec_item i WHERE site_id={$site_id}  AND i.ec_item_cense_level & ".ec_item_show."
+            "SELECT i.ec_category_id FROM <<tp>>ec_item i WHERE site_id={$site_id}  AND i.ec_item_cense_level & ".ec_item_show."
              UNION
              SELECT c.ec_category_id 
-			 FROM {$table_prefix}ec_item_category as c
-				   inner join {$table_prefix}ec_item as i
+			 FROM <<tp>>ec_item_category as c
+				   inner join <<tp>>ec_item as i
 				   ON ( i.ec_item_id=c.ec_item_id AND i.site_id={$site_id} AND i.ec_item_cense_level & ".ec_item_show.")
 			 ");
 $cnt=count($tmp);
@@ -82,7 +82,7 @@ $tmp=join(',',$tmp);
 
 $tmp=\e::db_getrows(
      "SELECT pa.ec_category_id
-      FROM {$table_prefix}ec_category as ch,{$table_prefix}ec_category as pa
+      FROM <<tp>>ec_category as ch,<<tp>>ec_category as pa
 	  WHERE pa.start<=ch.start AND ch.finish<=pa.finish
 	   AND ch.ec_category_id IN($tmp)");
 $cnt=count($tmp);
@@ -91,7 +91,7 @@ $tmp[]=0;
 $tmp=join(',',$tmp);
 
 
-$this_category->where[]     =" ( {$table_prefix}ec_category.ec_category_id IN({$tmp}) )";
+$this_category->where[]     =" ( <<tp>>ec_category.ec_category_id IN({$tmp}) )";
 
 
 
@@ -122,7 +122,7 @@ include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
 
 # -------------------- get list of page languages - begin ----------------------
     $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
-                     FROM {$table_prefix}ec_item  AS ec_item
+                     FROM <<tp>>ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
     $existing_languages=Array();

@@ -50,7 +50,7 @@ run('site/page/page_view_functions');
 
 # -------------------- get list of page languages - begin ----------------------
     $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
-                     FROM {$table_prefix}ec_item  AS ec_item
+                     FROM <<tp>>ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
     $existing_languages=Array();

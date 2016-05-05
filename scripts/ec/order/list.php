@@ -50,7 +50,7 @@ if($user_cense_level==0)
          # --------------------- update record - begin -------------------------
          $tmp=Array();
          foreach($val as $fl=>$va) $tmp[]="$fl='".\e::db_escape($va)."'";
-         $query="UPDATE {$table_prefix}ec_order SET ".join(',',$tmp)." WHERE ec_order_id=$ec_order_id LIMIT 1";
+         $query="UPDATE <<tp>>ec_order SET ".join(',',$tmp)." WHERE ec_order_id=$ec_order_id LIMIT 1";
          // prn($query);
          \e::db_execute($query);
          $affected_rows=mysql_affected_rows();
@@ -88,9 +88,9 @@ if($user_cense_level==0)
   $re->db=$db;
   $re->distinct=false;
   $re->exclude='/^ec_order/';
-  $re->from="{$table_prefix}ec_order AS ec_order,
-             {$table_prefix}ec_user AS ec_user,
-             {$table_prefix}site_visitor AS site_visitor ";
+  $re->from="<<tp>>ec_order AS ec_order,
+             <<tp>>ec_user AS ec_user,
+             <<tp>>site_visitor AS site_visitor ";
   $re->add_where(" ec_order.site_id={$site_id} ");
   $re->add_where(" ec_order.ec_user_id=ec_user.ec_user_id ");
   $re->add_where(" ec_user.site_visitor_id=site_visitor.site_visitor_id ");
@@ -183,7 +183,7 @@ if($user_cense_level==0)
     if(count($order_ids)>0)
     {
         $query=join(',',$order_ids);
-        $query="SELECT * FROM {$table_prefix}ec_cart WHERE ec_order_id IN($query) AND site_id=$site_id";
+        $query="SELECT * FROM <<tp>>ec_cart WHERE ec_order_id IN($query) AND site_id=$site_id";
         $tmp=\e::db_getrows($query);
         //prn($tmp);
         $order_items=Array();

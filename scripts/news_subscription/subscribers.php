@@ -37,7 +37,7 @@ if(isset($input_vars['add_email'])
         && strlen(trim($input_vars['add_email']))>0
         && is_valid_email(trim($input_vars['add_email']))){
             // insert new subscriber
-            $query="INSERT INTO {$table_prefix}news_subscriber(
+            $query="INSERT INTO <<tp>>news_subscriber(
                     news_subscriber_name,
                     news_subscriber_email,
                     news_subscriber_code,
@@ -62,7 +62,7 @@ $re->db = $db;
 $re->distinct = false;
 $re->exclude="/^add_/";
 
-$re->from = "{$table_prefix}news_subscriber AS news_subscriber";
+$re->from = "<<tp>>news_subscriber AS news_subscriber";
 
 $re->add_where(" news_subscriber.site_id=$site_id ");
 

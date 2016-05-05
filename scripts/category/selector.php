@@ -20,7 +20,7 @@ if(strlen($category_root_ids)>0)
   $cnt=count($category_root_ids);
   for($i=0;$i<$cnt;$i++) $category_root_ids[$i]=(int)$category_root_ids[$i];
   $category_root_ids=join(',',array_unique($category_root_ids));
-  $query="SELECT category_id, start, finish FROM {$table_prefix}category WHERE category_id IN($category_root_ids)";
+  $query="SELECT category_id, start, finish FROM <<tp>>category WHERE category_id IN($category_root_ids)";
   $category_roots=\e::db_getrows($query);
 }else $category_roots=Array();
 
@@ -32,11 +32,11 @@ $this_category->name_id     ='category_id';
 $this_category->name_start  ='start';
 $this_category->name_finish ='finish';
 $this_category->name_deep   ='deep';
-$this_category->name_table  =$table_prefix.'category';
+$this_category->name_table  ='<<tp>>category';
 
-$this_category->load_node(isset($input_vars['category_id'])?( (int)$input_vars['category_id'] ):0,"{$table_prefix}category.is_visible=1");
-$this_category->get_parents("{$table_prefix}category.is_visible=1");
-$this_category->get_children("{$table_prefix}category.is_visible=1");
+$this_category->load_node(isset($input_vars['category_id'])?( (int)$input_vars['category_id'] ):0,"<<tp>>category.is_visible=1");
+$this_category->get_parents("<<tp>>category.is_visible=1");
+$this_category->get_children("<<tp>>category.is_visible=1");
 # prn($this_category);
 
 #  ---------------------------- adjust nodes - begin ---------------------------

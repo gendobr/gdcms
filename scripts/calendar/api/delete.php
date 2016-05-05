@@ -55,7 +55,7 @@ run('site/menu');
 run('calendar/functions');
 
 $calendar_id=(int)$input_vars['id'];
-$calendar_info =\e::db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id={$calendar_id}");
+$calendar_info =\e::db_getonerow("SELECT * FROM <<tp>>calendar WHERE id={$calendar_id}");
 if (!$calendar_info) {
     $feedback = Array(
         'status' => 'error',
@@ -91,10 +91,10 @@ if ($this_site_info['salt'] != $input_vars['api_key']) {
 }
 
 
-$calendar_info = \e::db_execute("DELETE FROM {$table_prefix}calendar WHERE id=$calendar_id");
+$calendar_info = \e::db_execute("DELETE FROM <<tp>>calendar WHERE id=$calendar_id");
 
 // remove old calendar dates
-$query="DELETE FROM {$GLOBALS['table_prefix']}calendar_days_cache WHERE calendar_id=".( (int) $calendar_id);
+$query="DELETE FROM <<tp>>calendar_days_cache WHERE calendar_id=".( (int) $calendar_id);
 \e::db_execute($query);
 // ----------------- re-create categories - begin ------------------------------
 if(isset($input_vars['categories'])){
@@ -111,7 +111,7 @@ if(isset($input_vars['categories'])){
     }
     $categories=array_values($categories);
     if(count($categories)>0){
-        $query="DELETE FROM {$GLOBALS['table_prefix']}calendar_category WHERE event_id={$calendar_id}";
+        $query="DELETE FROM <<tp>>calendar_category WHERE event_id={$calendar_id}";
         \e::db_execute($query);
 
     }    
@@ -119,7 +119,7 @@ if(isset($input_vars['categories'])){
 // ----------------- re-create categories - end --------------------------------
 
 // clear cache
-   $query="DELETE FROM {$table_prefix}calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990";
+   $query="DELETE FROM <<tp>>calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990";
    \e::db_execute($query);
 
 $feedback = Array(

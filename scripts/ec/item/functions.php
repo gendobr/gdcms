@@ -38,7 +38,7 @@ function get_ec_item_info($ec_item_id, $lang, $site_id = 0, $use_cache = true, $
         );
 
 
-    global $text, $table_prefix;
+    global $text;
 
     // ----- extract data from main table - begin ------------------------------
     $query = "SELECT ec_item.*,
@@ -46,12 +46,12 @@ function get_ec_item_info($ec_item_id, $lang, $site_id = 0, $use_cache = true, $
                 ec_category.ec_category_title,
                 ec_category.ec_item_onnullamount,
                 ec_currency.ec_curency_title
-          FROM {$table_prefix}ec_item AS ec_item
-               LEFT JOIN {$table_prefix}ec_category AS ec_category
+          FROM <<tp>>ec_item AS ec_item
+               LEFT JOIN <<tp>>ec_category AS ec_category
                ON ec_category.ec_category_id=ec_item.ec_category_id
-               LEFT JOIN {$table_prefix}ec_producer AS ec_producer
+               LEFT JOIN <<tp>>ec_producer AS ec_producer
                ON ec_producer.ec_producer_id=ec_item.ec_producer_id
-               LEFT JOIN {$table_prefix}ec_currency AS ec_currency
+               LEFT JOIN <<tp>>ec_currency AS ec_currency
                ON ec_currency.ec_currency_code=ec_item.ec_item_currency
            WHERE ec_item.ec_item_lang='{$lang}'
              AND ( ec_item_id=$ec_item_id OR ec_item_code='" . \e::db_escape($ec_item_code) . "')
@@ -95,15 +95,15 @@ function get_ec_item_info($ec_item_id, $lang, $site_id = 0, $use_cache = true, $
     // ----- parse weight - end ------------------------------------------------
     // ------------------- get additional categories - begin -------------------
     $query = "SELECT ec_category.ec_category_id, ec_category.ec_category_title
-              FROM {$table_prefix}ec_category AS ec_category
-                   inner join {$table_prefix}ec_item_category AS ec_item_category
+              FROM <<tp>>ec_category AS ec_category
+                   inner join <<tp>>ec_item_category AS ec_item_category
                    ON ec_category.ec_category_id=ec_item_category.ec_category_id
               WHERE ec_item_category.ec_item_id=$ec_item_id";
     $tor['additional_categories'] = \e::db_getrows($query);
     // ------------------- get additional categories - end ---------------------
     // ------------------- get variants - begin --------------------------------
     $query = "SELECT *
-              FROM {$table_prefix}ec_item_variant AS ec_item_variant
+              FROM <<tp>>ec_item_variant AS ec_item_variant
               WHERE ec_item_variant.ec_item_id=$ec_item_id AND ec_item_lang='$lang'
               ORDER BY ec_item_variant_ordering, ec_item_variant_id ASC";
     $tor['ec_item_variant'] = \e::db_getrows($query);
@@ -153,7 +153,7 @@ function get_ec_item_info($ec_item_id, $lang, $site_id = 0, $use_cache = true, $
     # ------------------------ list of additional fields - begin ---------------
     # category_id should be set
     $query = "SELECT pa.ec_category_id
-	        FROM {$table_prefix}ec_category AS pa,{$table_prefix}ec_category AS ch
+	        FROM <<tp>>ec_category AS pa,<<tp>>ec_category AS ch
 			WHERE pa.start<=ch.start AND ch.finish<=pa.finish
 			  AND pa.site_id={$tor['site_id']}
 			  AND ch.site_id={$tor['site_id']}
@@ -168,8 +168,8 @@ function get_ec_item_info($ec_item_id, $lang, $site_id = 0, $use_cache = true, $
 
     $query = "select cif.*,
                   cif_value.ec_category_item_field_value
-           from {$table_prefix}ec_category_item_field as cif
-                left join {$table_prefix}ec_category_item_field_value as cif_value
+           from <<tp>>ec_category_item_field as cif
+                left join <<tp>>ec_category_item_field_value as cif_value
                 on (    cif_value.ec_category_item_field_id=cif.ec_category_item_field_id
                     and cif_value.ec_item_id={$tor['ec_item_id']}
                     and cif_value.ec_item_lang='{$tor['ec_item_lang']}'
@@ -188,7 +188,7 @@ function get_ec_item_info($ec_item_id, $lang, $site_id = 0, $use_cache = true, $
     // ----------------------- save cache - begin ------------------------------
     // prn($tor);
     $tor['cached_info'] = Array();
-    $query = "UPDATE {$table_prefix}ec_item
+    $query = "UPDATE <<tp>>ec_item
             SET cached_info='" . \e::db_escape(serialize($tor)) . "',
                 cache_datetime=now()
             WHERE ec_item_lang='{$lang}' AND ec_item_id=$ec_item_id";
@@ -206,7 +206,7 @@ function ec_item_size_check($d1, $d2, $d3, $un) {
 }
 
 function ec_item_parse_price_correction($str) {
-    global $db, $table_prefix;
+
     //$regexp="^([-*+/])([0-9]+[.,][0-9]+|[0-9]+[.,]|[.,][0-9]+)([^0-9]*)$";
     //$regexp="^([-*+/])";
     //$regexp="^([-*+/])([0-9]+[.,][0-9]+|[0-9]+[.,]|[.,][0-9]+|[0-9]+)([^0-9]*)$";
@@ -242,7 +242,7 @@ function ec_item_parse_price_correction($str) {
 
 function menu_ec_item($_info) {
     //prn($_info);
-    global $text, $db, $table_prefix;
+    global $text;
     $tor = Array();
     $sid = session_name() . '=' . $GLOBALS['_COOKIE'][session_name()];
 
@@ -308,7 +308,7 @@ function menu_ec_item($_info) {
 # --------------------------- delete ec_item - begin ---------------------------
 
 function ec_item_delete($ec_item_id, $ec_item_lang) {
-    global $table_prefix, $db;
+
     $this_ec_item_info = get_ec_item_info($ec_item_id, $ec_item_lang);
     if (!$this_ec_item_info)
         return false;
@@ -329,27 +329,27 @@ function ec_item_delete($ec_item_id, $ec_item_lang) {
     }
     # ---------------- delete files - end --------------------------------------
     # ---------------- delete comments - begin ---------------------------------
-    $query = "DELETE FROM {$table_prefix}ec_item_comment WHERE site_id=$site_id AND ec_item_id=$ec_item_id AND ec_item_lang='$ec_item_lang'";
+    $query = "DELETE FROM <<tp>>ec_item_comment WHERE site_id=$site_id AND ec_item_id=$ec_item_id AND ec_item_lang='$ec_item_lang'";
     \e::db_execute($query);
     # ---------------- delete comments - end -----------------------------------
     # ---------------- delete categories - begin -------------------------------
-    $query = "DELETE FROM {$table_prefix}ec_item_category WHERE ec_item_id=$ec_item_id";
+    $query = "DELETE FROM <<tp>>ec_item_category WHERE ec_item_id=$ec_item_id";
     \e::db_execute($query);
     # ---------------- delete categories - end ---------------------------------
     # ---------------- delete ec_category_item_field_value - begin -------------
-    $query = "DELETE FROM {$table_prefix}ec_category_item_field_value WHERE ec_item_id=$ec_item_id";
+    $query = "DELETE FROM <<tp>>ec_category_item_field_value WHERE ec_item_id=$ec_item_id";
     \e::db_execute($query);
     # ---------------- delete ec_category_item_field_value - end ---------------
     # ---------------- delete ec_item_tags - begin -----------------------------
-    $query = "DELETE FROM {$table_prefix}ec_item_tags WHERE ec_item_id=$ec_item_id";
+    $query = "DELETE FROM <<tp>>ec_item_tags WHERE ec_item_id=$ec_item_id";
     \e::db_execute($query);
     # ---------------- delete ec_item_tags - end -------------------------------
     # ---------------- delete ec_item_variant - begin --------------------------
-    $query = "DELETE FROM {$table_prefix}ec_item_variant WHERE ec_item_id=$ec_item_id";
+    $query = "DELETE FROM <<tp>>ec_item_variant WHERE ec_item_id=$ec_item_id";
     \e::db_execute($query);
     # ---------------- delete ec_item_variant - end ----------------------------
     # ---------------- delete item - begin -------------------------------------
-    $query = "DELETE FROM {$table_prefix}ec_item
+    $query = "DELETE FROM <<tp>>ec_item
             WHERE site_id=$site_id
                AND ec_item_id=$ec_item_id
                AND ec_item_lang='$ec_item_lang'";
@@ -365,13 +365,13 @@ function ec_item_delete($ec_item_id, $ec_item_lang) {
 function ec_item_clone($ec_item_id, $ec_item_lang) {
 
     // ------------------------- main item record - begin ----------------------
-    $query = "SELECT * FROM  {$GLOBALS['table_prefix']}ec_item WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
+    $query = "SELECT * FROM  <<tp>>ec_item WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
     $ec_item = \e::db_getonerow($query);
     if (!$ec_item) {
         return;
     }
 
-    $query = "SELECT * FROM  {$GLOBALS['table_prefix']}site WHERE id={$ec_item['site_id']}";
+    $query = "SELECT * FROM  <<tp>>site WHERE id={$ec_item['site_id']}";
     $site_info = \e::db_getonerow($query);
     $site_dir = \e::config('SITES_ROOT') . '/' . $site_info['dir'];
 
@@ -411,58 +411,58 @@ function ec_item_clone($ec_item_id, $ec_item_lang) {
         $fld[] = $k;
         $val[] = "'" . \e::db_escape($v) . "'";
     }
-    $query = "INSERT INTO {$GLOBALS['table_prefix']}ec_item(" . join(',', $fld) . ") VALUES(" . join(',', $val) . ")";
+    $query = "INSERT INTO <<tp>>ec_item(" . join(',', $fld) . ") VALUES(" . join(',', $val) . ")";
     \e::db_execute($query);
 
     $newid = \e::db_getonerow("SELECT LAST_INSERT_ID() as newid");
     $newid = $newid['newid'];
 
     // ensure that ec_item_code is unique
-    $query = "UPDATE {$GLOBALS['table_prefix']}ec_item "
+    $query = "UPDATE <<tp>>ec_item "
             . "SET ec_item_code='" . \e::db_escape($ec_item['ec_item_code'] . '-' . $ec_item['ec_item_lang'] . '-' . $newid) . "' "
             . "WHERE ec_item_lang='" . \e::db_escape($ec_item['ec_item_lang']) . "' AND ec_item_id={$newid}";
     \e::db_execute($query);
     // ------------------------- main item record - end ------------------------
     // ------------------------- item<->category relation - begin --------------
-    $query = "SELECT * FROM  {$GLOBALS['table_prefix']}ec_item_category WHERE ec_item_id={$ec_item_id}";
+    $query = "SELECT * FROM  <<tp>>ec_item_category WHERE ec_item_id={$ec_item_id}";
     $ec_item_category = \e::db_getrows($query);
     $cnt = count($ec_item_category);
     for ($i = 0; $i < $cnt; $i++) {
         $ec_item_category[$i]['ec_item_id'] = $newid;
     }
-    $query = ec_item_clone_query("{$GLOBALS['table_prefix']}ec_item_category", $ec_item_category);
+    $query = ec_item_clone_query("<<tp>>ec_item_category", $ec_item_category);
     if ($query != '') {
         \e::db_execute($query);
     }
     // ------------------------- item<->category relation - end ----------------
     // ------------------------- additional field values - begin ---------------
-    $query = "SELECT * FROM  {$GLOBALS['table_prefix']}ec_category_item_field_value WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
+    $query = "SELECT * FROM  <<tp>>ec_category_item_field_value WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
     $ec_category_item_field_value = \e::db_getrows($query);
     $cnt = count($ec_category_item_field_value);
     for ($i = 0; $i < $cnt; $i++) {
         $ec_category_item_field_value[$i]['ec_item_id'] = $newid;
     }
     //prn($ec_category_item_field_value);
-    $query = ec_item_clone_query("{$GLOBALS['table_prefix']}ec_category_item_field_value", $ec_category_item_field_value);
+    $query = ec_item_clone_query("<<tp>>ec_category_item_field_value", $ec_category_item_field_value);
     if ($query != '') {
         \e::db_execute($query);
     }
     // ------------------------- additional field values - end -----------------
     // ------------------------- tags - begin ----------------------------------
-    $query = "SELECT * FROM  {$GLOBALS['table_prefix']}ec_item_tags WHERE ec_item_id={$ec_item_id}";
+    $query = "SELECT * FROM  <<tp>>ec_item_tags WHERE ec_item_id={$ec_item_id}";
     $ec_item_tags = \e::db_getrows($query);
     $cnt = count($ec_item_tags);
     for ($i = 0; $i < $cnt; $i++) {
         $ec_item_tags[$i]['ec_item_id'] = $newid;
     }
     //prn($ec_item_tags);
-    $query = ec_item_clone_query("{$GLOBALS['table_prefix']}ec_item_tags", $ec_item_tags);
+    $query = ec_item_clone_query("<<tp>>ec_item_tags", $ec_item_tags);
     if ($query != '') {
         \e::db_execute($query);
     }
     // ------------------------- tags - end ------------------------------------
     // ------------------------- variants - begin ------------------------------
-    $query = "SELECT * FROM  {$GLOBALS['table_prefix']}ec_item_variant WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
+    $query = "SELECT * FROM  <<tp>>ec_item_variant WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
     $ec_item_variant = \e::db_getrows($query);
     $cnt = count($ec_item_variant);
     for ($i = 0; $i < $cnt; $i++) {
@@ -470,7 +470,7 @@ function ec_item_clone($ec_item_id, $ec_item_lang) {
         unset($ec_item_variant[$i]['ec_item_variant_id']);
     }
     //prn($ec_item_variant);
-    $query = ec_item_clone_query("{$GLOBALS['table_prefix']}ec_item_variant", $ec_item_variant);
+    $query = ec_item_clone_query("<<tp>>ec_item_variant", $ec_item_variant);
     if ($query != '') {
         \e::db_execute($query);
     }
@@ -504,7 +504,7 @@ function ec_item_clone_query($tbl, $ar) {
 
 function ec_item_add_translation($ec_item_id, $ec_item_lang) {
     // get available languages
-    $query = "SELECT ec_item_lang FROM {$GLOBALS['table_prefix']}ec_item WHERE ec_item_id={$ec_item_id}";
+    $query = "SELECT ec_item_lang FROM <<tp>>ec_item WHERE ec_item_id={$ec_item_id}";
     $langs = \e::db_getrows($query);
     $cnt = count($langs);
     for ($i = 0; $i < $cnt; $i++) {
@@ -513,7 +513,7 @@ function ec_item_add_translation($ec_item_id, $ec_item_lang) {
     }
     //prn($langs);
 
-    $query = "SELECT id FROM {$GLOBALS['table_prefix']}languages WHERE is_visible=1";
+    $query = "SELECT id FROM <<tp>>languages WHERE is_visible=1";
     $all_langs = \e::db_getrows($query);
     //prn($all_langs);
     $cnt_all = count($all_langs);
@@ -528,14 +528,14 @@ function ec_item_add_translation($ec_item_id, $ec_item_lang) {
         return false;
 
     // ------------------------- main item record - begin ----------------------
-    $query = "SELECT * FROM  {$GLOBALS['table_prefix']}ec_item WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
+    $query = "SELECT * FROM  <<tp>>ec_item WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
     $ec_item = \e::db_getonerow($query);
     $ec_item['ec_item_lang'] = $new_language;
     unset($ec_item['ec_item_purchases'], $ec_item['ec_item_keywords'], $ec_item['ec_item_views'], $ec_item['ec_item_in_cart'], $ec_item['cached_info']);
     //$ec_item['ec_item_uid'],
     // prn($ec_item);
-    //$query="INSERT INTO {$GLOBALS['table_prefix']}ec_item(".join(',',$fld).") VALUES(".join(',',$val).")";
-    $query = ec_item_clone_query("{$GLOBALS['table_prefix']}ec_item", Array($ec_item));
+    //$query="INSERT INTO <<tp>>ec_item(".join(',',$fld).") VALUES(".join(',',$val).")";
+    $query = ec_item_clone_query("<<tp>>ec_item", Array($ec_item));
     //prn($query);
     \e::db_execute($query);
 
@@ -543,21 +543,21 @@ function ec_item_add_translation($ec_item_id, $ec_item_lang) {
     //$newid=$newid['newid'];
     // ------------------------- main item record - end ------------------------
     // ------------------------- additional field values - begin ---------------
-    $query = "SELECT * FROM  {$GLOBALS['table_prefix']}ec_category_item_field_value WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
+    $query = "SELECT * FROM  <<tp>>ec_category_item_field_value WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
     $ec_category_item_field_value = \e::db_getrows($query);
     $cnt = count($ec_category_item_field_value);
     for ($i = 0; $i < $cnt; $i++) {
         $ec_category_item_field_value[$i]['ec_item_lang'] = $new_language;
     }
     //prn($ec_category_item_field_value);
-    $query = ec_item_clone_query("{$GLOBALS['table_prefix']}ec_category_item_field_value", $ec_category_item_field_value);
+    $query = ec_item_clone_query("<<tp>>ec_category_item_field_value", $ec_category_item_field_value);
     //prn($query);
     if ($query != '') {
         \e::db_execute($query);
     }
     // ------------------------- additional field values - end -----------------
     // ------------------------- variants - begin ------------------------------
-    $query = "SELECT * FROM  {$GLOBALS['table_prefix']}ec_item_variant WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
+    $query = "SELECT * FROM  <<tp>>ec_item_variant WHERE ec_item_id={$ec_item_id} AND ec_item_lang='{$ec_item_lang}'";
     $ec_item_variant = \e::db_getrows($query);
     $cnt = count($ec_item_variant);
     for ($i = 0; $i < $cnt; $i++) {
@@ -565,7 +565,7 @@ function ec_item_add_translation($ec_item_id, $ec_item_lang) {
         unset($ec_item_variant[$i]['ec_item_variant_id']);
     }
     //prn($ec_item_variant);
-    $query = ec_item_clone_query("{$GLOBALS['table_prefix']}ec_item_variant", $ec_item_variant);
+    $query = ec_item_clone_query("<<tp>>ec_item_variant", $ec_item_variant);
     //prn($query);
     if ($query != '') {
         \e::db_execute($query);
@@ -578,10 +578,10 @@ function ec_item_add_translation($ec_item_id, $ec_item_lang) {
 # --------------------------- add translation - end ----------------------------
 
 function ec_item_adjust($_info, $this_site_info) {
-    global $table_prefix;
+
     static $currency_titles;
     if (!isset($currency_titles)) {
-        $tmp = \e::db_getrows("SELECT * FROM {$table_prefix}ec_currency");
+        $tmp = \e::db_getrows("SELECT * FROM <<tp>>ec_currency");
         $currency_titles = Array();
         foreach ($tmp as $tm)
             $currency_titles[$tm['ec_currency_code']] = $tm['ec_curency_title'];
@@ -680,7 +680,7 @@ function ec_item_adjust($_info, $this_site_info) {
 # --------- handle event if amount of the items becomes zero - begin -----------
 
 function onnullamount_hide($ec_item_id) {
-    global $table_prefix, $db;
+
 
     $tmp = array_flip($GLOBALS['ec_item_publication_states']);
     /*
@@ -689,7 +689,7 @@ function onnullamount_hide($ec_item_id) {
       ec_item_show|ec_item_sell=>'ec_item_show_and_sell',
       ec_item_show|ec_item_reserved =>'ec_item_show_as_reserved'
      */
-    $query = "UPDATE {$table_prefix}ec_item
+    $query = "UPDATE <<tp>>ec_item
               SET ec_item_cense_level={$tmp['ec_item_hide']}
               WHERE ec_item_id=$ec_item_id
               LIMIT 1";
@@ -697,7 +697,7 @@ function onnullamount_hide($ec_item_id) {
 }
 
 function onnullamount_reserved($ec_item_id) {
-    global $table_prefix, $db;
+
     $tmp = array_flip($GLOBALS['ec_item_publication_states']);
     /*
       ec_item_hide=>'ec_item_hide',
@@ -706,7 +706,7 @@ function onnullamount_reserved($ec_item_id) {
       ec_item_show|ec_item_reserved =>'ec_item_show_as_reserved'
      */
 
-    $query = "UPDATE {$table_prefix}ec_item
+    $query = "UPDATE <<tp>>ec_item
               SET ec_item_cense_level={$tmp['ec_item_show_as_reserved']}
               WHERE ec_item_id=$ec_item_id
               LIMIT 1";
@@ -714,7 +714,6 @@ function onnullamount_reserved($ec_item_id) {
 }
 
 function onnullamount_disable_sale($ec_item_id) {
-    global $table_prefix, $db;
 
     $tmp = array_flip($GLOBALS['ec_item_publication_states']);
     /*
@@ -723,7 +722,7 @@ function onnullamount_disable_sale($ec_item_id) {
       ec_item_show|ec_item_sell=>'ec_item_show_and_sell',
       ec_item_show|ec_item_reserved =>'ec_item_show_as_reserved'
      */
-    $query = "UPDATE {$table_prefix}ec_item
+    $query = "UPDATE <<tp>>ec_item
               SET ec_item_cense_level={$tmp['ec_item_show']}
               WHERE ec_item_id=$ec_item_id
               LIMIT 1";

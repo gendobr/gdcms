@@ -24,7 +24,7 @@ if(!is_admin())
 
 //------------------- site info - begin ----------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
   // prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -57,41 +57,41 @@ if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
 
 
       $sqls=Array(
-        "DELETE FROM {$table_prefix}calendar WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}calendar_cache;",
-        "DELETE FROM {$table_prefix}forum_list WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}forum_msg WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}forum_thread WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}fragment WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}gb WHERE site={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}golos_pynannja WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}golos_vidpovidi WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}golos_vidpovidi_details WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}listener WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}news_comment WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}news_subscriber WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}page_menu_group WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}photogalery WHERE site={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}photogalery_rozdil WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}rsssource WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}rsssourceitem WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}site_search WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}news_category WHERE news_id in(select id from {$table_prefix}news where site_id={$this_site_info['id']});",
-        "DELETE FROM {$table_prefix}news_tags WHERE news_id in(select id from {$table_prefix}news where site_id={$this_site_info['id']});",
-        "DELETE FROM {$table_prefix}news WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM {$table_prefix}page WHERE site_id={$this_site_info['id']}",
-        "DELETE FROM {$table_prefix}category WHERE site_id={$this_site_info['id']}",
-        "DELETE FROM {$table_prefix}ec_cart WHERE site_id={$this_site_info['id']}",
-        "DELETE FROM {$table_prefix}ec_category_item_field_value WHERE ec_category_item_field_id in ( select ec_category_item_field_id from {$table_prefix}ec_category_item_field where site_id={$this_site_info['id']} )",
-        "DELETE FROM {$table_prefix}ec_category_item_field WHERE site_id={$this_site_info['id']}",
-        "DELETE FROM {$table_prefix}ec_category WHERE site_id={$this_site_info['id']}",
-        "DELETE FROM {$table_prefix}ec_item_category WHERE ec_item_id in ( select ec_item_id from {$table_prefix}ec_item where site_id={$this_site_info['id']} )",
-        "DELETE FROM {$table_prefix}ec_item_variant WHERE ec_item_id in ( select ec_item_id from {$table_prefix}ec_item where site_id={$this_site_info['id']} )",
-        "DELETE FROM {$table_prefix}ec_item_comment WHERE site_id={$this_site_info['id']}",
-        "DELETE FROM {$table_prefix}ec_item_tags WHERE site_id={$this_site_info['id']}",
-        "DELETE FROM {$table_prefix}ec_item WHERE site_id={$this_site_info['id']}",
-        "DELETE FROM {$table_prefix}site_user WHERE site_id={$this_site_info['id']}",
-        "DELETE FROM {$table_prefix}site WHERE id={$this_site_info['id']}"
+        "DELETE FROM <<tp>>calendar WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>calendar_cache;",
+        "DELETE FROM <<tp>>forum_list WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>forum_msg WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>forum_thread WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>fragment WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>gb WHERE site={$this_site_info['id']};",
+        "DELETE FROM <<tp>>golos_pynannja WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>golos_vidpovidi WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>golos_vidpovidi_details WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>listener WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>news_comment WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>news_subscriber WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>page_menu_group WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>photogalery WHERE site={$this_site_info['id']};",
+        "DELETE FROM <<tp>>photogalery_rozdil WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>rsssource WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>rsssourceitem WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>site_search WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>news_category WHERE news_id in(select id from <<tp>>news where site_id={$this_site_info['id']});",
+        "DELETE FROM <<tp>>news_tags WHERE news_id in(select id from <<tp>>news where site_id={$this_site_info['id']});",
+        "DELETE FROM <<tp>>news WHERE site_id={$this_site_info['id']};",
+        "DELETE FROM <<tp>>page WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM <<tp>>category WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM <<tp>>ec_cart WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM <<tp>>ec_category_item_field_value WHERE ec_category_item_field_id in ( select ec_category_item_field_id from <<tp>>ec_category_item_field where site_id={$this_site_info['id']} )",
+        "DELETE FROM <<tp>>ec_category_item_field WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM <<tp>>ec_category WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM <<tp>>ec_item_category WHERE ec_item_id in ( select ec_item_id from <<tp>>ec_item where site_id={$this_site_info['id']} )",
+        "DELETE FROM <<tp>>ec_item_variant WHERE ec_item_id in ( select ec_item_id from <<tp>>ec_item where site_id={$this_site_info['id']} )",
+        "DELETE FROM <<tp>>ec_item_comment WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM <<tp>>ec_item_tags WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM <<tp>>ec_item WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM <<tp>>site_user WHERE site_id={$this_site_info['id']}",
+        "DELETE FROM <<tp>>site WHERE id={$this_site_info['id']}"
         );
       foreach($sqls as $q){
         \e::db_execute($q);
@@ -99,17 +99,17 @@ if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
 
 
       //------------------ delete menu - begin ---------------------------------
-         $query="SELECT id,id FROM {$table_prefix}menu_group WHERE site_id={$this_site_info['id']}";
+         $query="SELECT id,id FROM <<tp>>menu_group WHERE site_id={$this_site_info['id']}";
          $menu_groups=join(',',\e::db_get_associated_array($query));
          //prn($menu_groups);
          
          if(strlen($menu_groups)>0)
          {
-           $query="DELETE FROM {$table_prefix}menu_item WHERE menu_group_id IN($menu_groups);";
+           $query="DELETE FROM <<tp>>menu_item WHERE menu_group_id IN($menu_groups);";
            //prn($query);
            \e::db_execute($query);
 
-           $query="DELETE FROM {$table_prefix}menu_group WHERE id IN($menu_groups);";
+           $query="DELETE FROM <<tp>>menu_group WHERE id IN($menu_groups);";
            //prn($query);
            \e::db_execute($query);
          }

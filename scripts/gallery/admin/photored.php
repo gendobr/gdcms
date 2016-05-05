@@ -42,7 +42,7 @@ $lang = $_SESSION['lang'];
 $row = false;
 if (isset($input_vars['new'])) {
     $new = abs((int) $input_vars['new']);
-    $row =\e::db_getonerow("SELECT * FROM {$table_prefix}photogalery WHERE id = '$new' AND site=$site_id");
+    $row =\e::db_getonerow("SELECT * FROM <<tp>>photogalery WHERE id = '$new' AND site=$site_id");
 }
 if (!$row) {
     $input_vars['page_title'] = $text['Image_not_found'];
@@ -67,7 +67,7 @@ if (isset($input_vars['rozdil1'])) {
     $vis1 = \e::db_escape($input_vars['vis1']);
     $description1=\e::db_escape($input_vars['description1']);
     //$photos1 = $row['photos'];photos = '$photos1'             ,
-    $query = "UPDATE {$table_prefix}photogalery
+    $query = "UPDATE <<tp>>photogalery
                 SET pidpys = '$pidpys1'
                   , rozdil = '$rozdil1'
                   , rozdil2 = '$rozdil21'
@@ -80,7 +80,7 @@ if (isset($input_vars['rozdil1'])) {
     \e::db_execute($query);
     $vyvid = "<b><font color=green>{$text['Gallery_changes_saved']}</font></b>" . $vyvid;
 
-    $row =\e::db_getonerow( "SELECT * FROM {$table_prefix}photogalery WHERE id = '$new' AND site=$site_id" );
+    $row =\e::db_getonerow( "SELECT * FROM <<tp>>photogalery WHERE id = '$new' AND site=$site_id" );
 }
 
 # ------------------------- update - end ---------------------------------------
@@ -146,7 +146,7 @@ $vyvid .= ">{$text['positive_answer']}</OPTION>
          </script>
 				 <div style=\"font-size: 90%; height: 100pt; overflow:scroll; color:gray;\">
        ";
-$resulty = \e::db_getrows("SELECT DISTINCT rozdil FROM {$table_prefix}photogalery WHERE site = '$site_id'  ORDER BY `rozdil` ASC", $link) or die("Query failed");
+$resulty = \e::db_getrows("SELECT DISTINCT rozdil FROM <<tp>>photogalery WHERE site = '$site_id'  ORDER BY `rozdil` ASC", $link) or die("Query failed");
 if (!count($resulty)) {
     $vyvid .= " <b>{$text['Gallery_no_categories']}</b></p>";
 }

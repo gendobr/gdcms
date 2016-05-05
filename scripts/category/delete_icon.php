@@ -14,9 +14,9 @@ if (isset($input_vars['category_id'])) {
     $this_category->name_start = 'start';
     $this_category->name_finish = 'finish';
     $this_category->name_deep = 'deep';
-    $this_category->name_table = $table_prefix . 'category';
+    $this_category->name_table =  '<<tp>>category';
 
-    //$this_category->where[] = " {$table_prefix}category.site_id={$site_id} ";
+    //$this_category->where[] = " <<tp>>category.site_id={$site_id} ";
 
     $this_category->load_node($category_id);
 
@@ -78,7 +78,7 @@ if ($this_category->info['category_icon'] && is_array($this_category->info['cate
 
 
 
-$sql="UPDATE {$table_prefix}category SET category_icon=NULL WHERE category_id={$category_id}";
+$sql="UPDATE <<tp>>category SET category_icon=NULL WHERE category_id={$category_id}";
 \e::db_execute($sql);
 
 ml('category/delete_icon', ['category_id'=>$category_id]);

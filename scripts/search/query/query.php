@@ -130,7 +130,7 @@ if (strlen($keywords) > 0) {
 
 
     $query = "SELECT  MATCH (words) AGAINST ('" . \e::db_escape($keywords) . "') AS rel, ss.* 
-            FROM {$GLOBALS['table_prefix']}search_index_cache AS ss
+            FROM <<tp>>search_index_cache AS ss
             WHERE MATCH (words) AGAINST ('" . \e::db_escape($keywords) . "')
                 AND site_id IN(" . join(',', $siteIds) . ")
                 AND lang='".  \e::db_escape($input_vars['lang'])."'
@@ -139,7 +139,7 @@ if (strlen($keywords) > 0) {
     // echo '<!-- '; prn($query); echo ' -->';
 
     // extract site info
-    $tmp = \e::db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}site WHERE id IN(" . join(',', $siteIds) . ")");
+    $tmp = \e::db_getrows("SELECT * FROM <<tp>>site WHERE id IN(" . join(',', $siteIds) . ")");
     $sites = Array();
     foreach ($tmp as $tm) {
         $tm['title'] = get_langstring($tm['title'], $lang);

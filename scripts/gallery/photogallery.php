@@ -53,7 +53,7 @@ $rozdil2=(isset($input_vars['rozdil2'])) ? $input_vars['rozdil2'] : '';
 if($rozdil2){
     //prn($rozdil2);
     // header("Debug1: $rozdil2");
-    $query="SELECT * FROM {$table_prefix}photogalery_rozdil WHERE rozdil2='".\e::db_escape($rozdil2)."'";
+    $query="SELECT * FROM <<tp>>photogalery_rozdil WHERE rozdil2='".\e::db_escape($rozdil2)."'";
     // header("Debug2: {$query}");
     $rozdilizformy= \e::db_getonerow($query);
     $rozdilizformy=$rozdilizformy['rozdil'];
@@ -71,7 +71,7 @@ if ($rozdilizformy != '') {
 
     $url_details_prefix = str_replace(Array('{site_id}', '{lang}', '{start}','{keywords}'), Array($this_site_info['id'], $lang, 0,''), \e::config('url_pattern_gallery_category'));
     $url_thumbnail_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']) . '/gallery';
-    $query="SELECT * FROM {$table_prefix}photogalery_rozdil WHERE rozdil='".  \e::db_escape($rozdilizformy)."' OR rozdil='" . \e::db_escape(rawurldecode($rozdilizformy)) . "'";
+    $query="SELECT * FROM <<tp>>photogalery_rozdil WHERE rozdil='".  \e::db_escape($rozdilizformy)."' OR rozdil='" . \e::db_escape(rawurldecode($rozdilizformy)) . "'";
     $this_category_info=\e::db_getonerow($query);
     $this_category_info['url_details'] = str_replace(
             Array('{rozdilizformy}','{rozdil2}'),

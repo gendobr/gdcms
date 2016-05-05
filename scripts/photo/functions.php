@@ -98,11 +98,11 @@ function photo_category_find($photo_category_id, $photo_category_path, $photo_ca
 
 
 function photo_info($photo_id){
-    global $table_prefix;
+
     $info=\e::db_getonerow(
             "SELECT photo_category.*, photo.* 
-             FROM {$table_prefix}photo photo 
-                  LEFT JOIN {$table_prefix}photo_category photo_category
+             FROM <<tp>>photo photo 
+                  LEFT JOIN <<tp>>photo_category photo_category
                    ON (photo.photo_category_id = photo_category.photo_category_id)
              WHERE photo.photo_id=".( (int)$photo_id )."
              ");

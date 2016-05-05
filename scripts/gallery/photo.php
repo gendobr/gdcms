@@ -68,7 +68,7 @@ if (isset($input_vars['item'])) {
     $item=(int)$input_vars['item'];
 
     $link = $db;
-    $row =\e::db_getonerow("SELECT * FROM {$table_prefix}photogalery WHERE id = '$item'");
+    $row =\e::db_getonerow("SELECT * FROM <<tp>>photogalery WHERE id = '$item'");
     if($row) {
         //prn($row);
         $url_prefix=preg_replace("/\\/+$/",'',$this_site_info['url']).'/gallery';
@@ -112,9 +112,9 @@ if (isset($input_vars['item'])) {
         // $psus.="<hr>";
 
         // ----------------- links to next and previous items - begin ----------
-           $query="SELECT min(id) as img_id, 'next' as type FROM {$table_prefix}photogalery WHERE id > '$item' AND rozdil='".\e::db_escape($row['rozdil'])."' and site='$site_id'
+           $query="SELECT min(id) as img_id, 'next' as type FROM <<tp>>photogalery WHERE id > '$item' AND rozdil='".\e::db_escape($row['rozdil'])."' and site='$site_id'
                    UNION
-                   SELECT max(id) as img_id, 'prev' as type FROM {$table_prefix}photogalery WHERE id < '$item' AND rozdil='".\e::db_escape($row['rozdil'])."' and site='$site_id'";
+                   SELECT max(id) as img_id, 'prev' as type FROM <<tp>>photogalery WHERE id < '$item' AND rozdil='".\e::db_escape($row['rozdil'])."' and site='$site_id'";
            $siblings=\e::db_getrows($query);
            //prn($siblings);
         // ----------------- links to next and previous items - end ------------

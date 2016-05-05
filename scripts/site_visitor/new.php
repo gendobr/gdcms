@@ -45,7 +45,7 @@ site_visitor table :
   if(isset($input_vars['site_id'])) $site_id = (int)$input_vars['site_id']; else $site_id=0;
   if($site_id>0)
   {
-    $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+    $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
     if(!$this_site_info) $site_id=0;
   }
   if($site_id<=0) die($txt['Site_not_found']);
@@ -187,7 +187,7 @@ $form_name_prefix='svr_';
 
       # name_nick   uniqueness
         if(strlen($form['name_nick']['value'])>0)
-        if(count(\e::db_getrows("SELECT id FROM {$table_prefix}site_visitor WHERE name_nick='".\e::db_escape($form['name_nick']['value'])."'")))
+        if(count(\e::db_getrows("SELECT id FROM <<tp>>site_visitor WHERE name_nick='".\e::db_escape($form['name_nick']['value'])."'")))
         {
           $form['name_nick']['message'].="<font color=red>{$txt['ERROR_name_nick_already_exists']}</font> <br/>";
           $all_is_ok=false;
@@ -221,7 +221,7 @@ $form_name_prefix='svr_';
     if($all_is_ok)
     {
     # ------------------------ create record - begin ---------------------------
-      $query="insert into {$table_prefix}site_visitor 
+      $query="insert into <<tp>>site_visitor 
               (site_id, login_password, name_nick, name_first, 
               name_middle, name_last, birthdate, email, home_page_url, 
               telephone, address, additional_info)
@@ -263,7 +263,7 @@ $form_name_prefix='svr_';
         }
         if(count($query)>0)
         {
-          $query="INSERT INTO {$table_prefix}site_visitor_education(site_id,site_visitor_id,edu_year,faculty,speciality,place) values ". join(',',$query);
+          $query="INSERT INTO <<tp>>site_visitor_education(site_id,site_visitor_id,edu_year,faculty,speciality,place) values ". join(',',$query);
         # prn($query);
           \e::db_execute($query);
         }

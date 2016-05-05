@@ -40,7 +40,7 @@ include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
 
 # -------------------- get list of page languages - begin ----------------------
 $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
-                     FROM {$table_prefix}ec_item  AS ec_item
+                     FROM <<tp>>ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
 $existing_languages=Array();
@@ -76,23 +76,23 @@ $ec_item_template_search = site_get_template($this_site_info,'template_ec_item_s
 $ec_item_template_list = site_get_template($this_site_info,'template_ec_item_list');
 
 $category=Array();
-$tmp=\e::db_getrows("SELECT ec_category_id, ec_category_title,deep FROM {$table_prefix}ec_category WHERE site_id={$site_id} ORDER BY `start`");
+$tmp=\e::db_getrows("SELECT ec_category_id, ec_category_title,deep FROM <<tp>>ec_category WHERE site_id={$site_id} ORDER BY `start`");
 foreach($tmp as $tm) {
     $category[$tm['ec_category_id']]=str_repeat('...', $tm['deep']).get_langstring($tm['ec_category_title']);
 }
 
 $extrafld='';
 if(isset($input_vars['ec_category_id'])) {
-    $cat=\e::db_getonerow("SELECT * FROM {$table_prefix}ec_category WHERE ec_category_id=".( (int)$input_vars['ec_category_id'] ));
+    $cat=\e::db_getonerow("SELECT * FROM <<tp>>ec_category WHERE ec_category_id=".( (int)$input_vars['ec_category_id'] ));
     //prn($cat);
     if($cat) {
         $pa=\e::db_getrows(
                 "SELECT *
-             FROM {$table_prefix}ec_category_item_field
+             FROM <<tp>>ec_category_item_field
              WHERE site_id={$cat['site_id']}
                AND ec_category_id IN(
                    SELECT pa.ec_category_id
-                   FROM {$table_prefix}ec_category as pa
+                   FROM <<tp>>ec_category as pa
                    WHERE pa.site_id={$cat['site_id']}
                    AND pa.start<={$cat['start']} AND {$cat['finish']}<=pa.finish
             )" );
@@ -146,7 +146,7 @@ $form=Array(
         'ec_item_price_min'=>(isset($input_vars['ec_item_price_min'])?$input_vars['ec_item_price_min']:''),
         'ec_item_price_max'=>(isset($input_vars['ec_item_price_max'])?$input_vars['ec_item_price_max']:''),
 
-        'ec_producer_id'=>draw_options((isset($input_vars['ec_producer_id'])?$input_vars['ec_producer_id']:''), \e::db_getrows("SELECT ec_producer_id, ec_producer_title FROM {$table_prefix}ec_producer WHERE site_id={$site_id} ORDER BY ec_producer_title")),
+        'ec_producer_id'=>draw_options((isset($input_vars['ec_producer_id'])?$input_vars['ec_producer_id']:''), \e::db_getrows("SELECT ec_producer_id, ec_producer_title FROM <<tp>>ec_producer WHERE site_id={$site_id} ORDER BY ec_producer_title")),
         'ec_producer_id_set'=>isset($input_vars['ec_producer_id']) && $input_vars['ec_producer_id']>0,
 
         'ec_category_id'=>draw_options((isset($input_vars['ec_category_id'])?$input_vars['ec_category_id']:''), $category),

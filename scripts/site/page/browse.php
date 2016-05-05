@@ -43,20 +43,20 @@ class page_browse_tree extends browse_tree {
 
     function page_browse_tree($category_id, $site_id) {
         $this->site_id = $site_id;
-        parent::browse_tree($category_id, $GLOBALS['db'], $GLOBALS['table_prefix'], $site_id);
+        parent::browse_tree($category_id, $site_id);
     }
 
     // --------------------- restrict children - begin --------------------------
     function restrict_children() {
-        global $table_prefix, $db, $input_vars;
+        global $db, $input_vars;
         $child_ids = Array();
         foreach ($this->children as $ke => $ch)
             $child_ids[$ke] = (int) $ch['category_id'];
         if (count($child_ids) > 0) {
             $query = "SELECT pa.category_id
-                   FROM {$table_prefix}category as ch
-                       ,{$table_prefix}category as pa
-                       ,{$table_prefix}page as page
+                   FROM <<tp>>category as ch
+                       ,<<tp>>category as pa
+                       ,<<tp>>page as page
                    WHERE pa.category_id in(" . join(',', $child_ids) . ")
                      AND pa.start<=ch.start AND ch.finish<=pa.finish
                      AND page.category_id = ch.category_id
@@ -103,7 +103,7 @@ $menu_groups = get_menu_items($this_site_info['id'], 0, $input_vars['lang']);
 # -------------------- get list of page languages - begin ----------------------
 $tmp = \e::db_getrows(
                 "SELECT DISTINCT lang
-                  FROM {$table_prefix}page  AS pg
+                  FROM <<tp>>page  AS pg
                   WHERE pg.site_id={$site_id}
                     AND pg.cense_level>={$this_site_info['cense_level']}");
 $existing_languages = Array();
@@ -148,7 +148,7 @@ $query = "SELECT SQL_CALC_FOUND_ROWS
                   ,IF(LENGTH(TRIM(pg.abstract))>0,1,0) as abstract_present
                   ,IF(LENGTH(TRIM(pg.content))>0,1,0) as content_present
                   ,LENGTH(pg.content)/1024 as size
-            FROM {$table_prefix}page AS pg
+            FROM <<tp>>page AS pg
             WHERE pg.site_id={$site_id}
               AND pg.cense_level>={$this_site_info['cense_level']}
               AND pg.lang='{$_SESSION['lang']}'

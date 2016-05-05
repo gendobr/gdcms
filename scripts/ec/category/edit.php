@@ -40,9 +40,9 @@ if (isset($input_vars['ec_category_id'])) {
     $this_category->name_start = 'start';
     $this_category->name_finish = 'finish';
     $this_category->name_deep = 'deep';
-    $this_category->name_table = $table_prefix . 'ec_category';
+    $this_category->name_table = '<<tp>>ec_category';
 
-    $this_category->where[] = " {$table_prefix}ec_category.site_id={$site_id} ";
+    $this_category->where[] = " <<tp>>ec_category.site_id={$site_id} ";
 
     $this_category->load_node($ec_category_id);
 
@@ -86,7 +86,7 @@ $rep->use_db($GLOBALS['db']);
 $rep->debug = false;
 #$rep->text=$text;
 $rep->exclude = '^ec_category_id$';
-$rep->set_table("{$table_prefix}ec_category");
+$rep->set_table("<<tp>>ec_category");
 
 # category_id           bigint(20)
 $rep->field['ec_category_id'] = new db_record_editor_field_integer(
@@ -112,7 +112,7 @@ $rep->field['ec_category_title'] = new db_record_editor_field_string(
 
 # is_part_of            bigint(20)
 if ($this_category->info['start'] > 0) {
-    $list_of_categories = "SELECT * FROM {$table_prefix}ec_category WHERE site_id={$site_id} ORDER BY start";
+    $list_of_categories = "SELECT * FROM <<tp>>ec_category WHERE site_id={$site_id} ORDER BY start";
     $list_of_categories = \e::db_getrows($list_of_categories);
     //prn($list_of_categories);
     $tmp = Array();
@@ -197,7 +197,7 @@ if ($success) {
             if (!$this_category->move_to($rep->value_of('is_part_of'))) {
                 // some errors occur
                 // change to previous value
-                $query = "UPDATE {$table_prefix}category
+                $query = "UPDATE <<tp>>category
                     SET is_part_of=" . ((int) $this_category->info['is_part_of']) . "
                     WHERE category_id={$ec_category_id}";
                 \e::db_execute($query);
@@ -210,7 +210,7 @@ if ($success) {
         //prn($val['ordering'],checkStr($val['title']),$val['options']);
         $val['title'] = trim($val['title']);
         if (strlen($val['title']) > 0) {
-            $query = "replace {$table_prefix}ec_category_item_field(
+            $query = "replace <<tp>>ec_category_item_field(
                         ec_category_item_field_id,
                         site_id,
                         ec_category_id,
@@ -230,7 +230,7 @@ if ($success) {
             //prn($query);
             \e::db_execute($query);
         } elseif ($ec_category_item_field_id > 0) {
-            $query = "delete from {$table_prefix}ec_category_item_field
+            $query = "delete from <<tp>>ec_category_item_field
                      where ec_category_item_field_id={$ec_category_item_field_id}
                        and site_id = {$this_site_info['id']}
                        and ec_category_id = {$ec_category_id}
@@ -239,7 +239,7 @@ if ($success) {
             \e::db_execute($query);
 
             // delete field values
-            $query = "delete from {$table_prefix}ec_category_item_field_value
+            $query = "delete from <<tp>>ec_category_item_field_value
                      where ec_category_item_field_id={$ec_category_item_field_id}";
             \e::db_execute($query);
         }
@@ -265,7 +265,7 @@ foreach ($cnt as $i) {
 #prn($this_category);
 # -------------------- get category parents - end ---------------------------
 # -------------------- get name of the neares parent - begin ----------------
-$this_category->info['is_part_of_name'] =\e::db_getonerow("SELECT category_title FROM {$table_prefix}category WHERE category_id=" . ( (int) $this_category->info['is_part_of'] ));
+$this_category->info['is_part_of_name'] =\e::db_getonerow("SELECT category_title FROM <<tp>>category WHERE category_id=" . ( (int) $this_category->info['is_part_of'] ));
 $this_category->info['is_part_of_name'] = $this_category->info['is_part_of_name']['category_title'];
 #prn($this_category->info['is_part_of_name']);
 # -------------------- get name of the neares parent - end ------------------
@@ -278,7 +278,7 @@ $form['hidden_elements'].="<input type=hidden name=category_id value=\"{$rep->id
 $types = Array('string' => text('String'), 'number' => text('Number'), 'enum' => text('Enumerator'));
 
 $query = "select *
-           from {$table_prefix}ec_category_item_field
+           from <<tp>>ec_category_item_field
            where site_id={$this_site_info['id']}
              and ec_category_id={$ec_category_id}
            order by ec_category_item_field_ordering ASC

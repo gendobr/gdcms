@@ -26,7 +26,7 @@ if (!$this_ec_item_info || $this_ec_item_info['ec_item_id'] == 0) {
 # -------------------- get ec item info - end ----------------------------------
 # update item satistics
 if (!is_logged()) {
-    \e::db_execute("UPDATE {$table_prefix}ec_item SET ec_item_views=ifnull(ec_item_views,0)+1 WHERE ec_item_id={$this_ec_item_info['ec_item_id']} LIMIT 1");
+    \e::db_execute("UPDATE <<tp>>ec_item SET ec_item_views=ifnull(ec_item_views,0)+1 WHERE ec_item_id={$this_ec_item_info['ec_item_id']} LIMIT 1");
 }
 
 
@@ -54,7 +54,7 @@ if (is_file($custom_page_template)) {
 # --------------------------- get site template - end --------------------------
 # -------------------- get list of page languages - begin ----------------------
 $tmp = \e::db_getrows("SELECT DISTINCT ec_item_lang as lang
-                     FROM {$table_prefix}ec_item  AS ec_item
+                     FROM <<tp>>ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&" . ec_item_show . "");
 $existing_languages = Array();
@@ -108,7 +108,7 @@ if (isset($input_vars['comment_code'])) {
         $_body = preg_replace("/ +<br\/>/", "<br/>", $_body);
         $_body = preg_replace("/(<br\/>\r?\n){2,}/", "<br/><br/>", $_body);
 
-        $query = "INSERT INTO {$table_prefix}ec_item_comment(
+        $query = "INSERT INTO <<tp>>ec_item_comment(
                     ec_item_comment_sender_name,
                     ec_item_comment_body,
                     site_id,
@@ -159,7 +159,7 @@ class ec_item_comments {
     function get_list() {
         # -------------------- get list of comments - begin ----------------------------
         $query = "SELECT *
-                  FROM {$GLOBALS['table_prefix']}ec_item_comment
+                  FROM <<tp>>ec_item_comment
                   WHERE site_id=$this->site_id
                     AND ec_item_id=$this->ec_item_id
                     AND ec_item_lang='$this->ec_item_lang'

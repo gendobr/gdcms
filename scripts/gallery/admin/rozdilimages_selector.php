@@ -34,18 +34,18 @@ if (get_level($site_id) == 0) {
 if (isset($input_vars['setimage'])) {
     //prn($input_vars);
     $setimage = (int) $input_vars['setimage'];
-    $image_info = \e::db_getonerow("SELECT * FROM {$table_prefix}photogalery where id={$setimage} and site={$this_site_info['id']}");
+    $image_info = \e::db_getonerow("SELECT * FROM <<tp>>photogalery where id={$setimage} and site={$this_site_info['id']}");
 
     if ($image_info) {
         $rozdil_info = \e::db_getonerow(
                         "SELECT *
-                 FROM {$table_prefix}photogalery_rozdil
+                 FROM <<tp>>photogalery_rozdil
                  WHERE site_id={$this_site_info['id']}
                  AND rozdil='" . \e::db_escape($input_vars['rozdil']) . "'");
         // prn($rozdil_info);
         if ($rozdil_info) {
             // update record
-            $query = "UPDATE {$table_prefix}photogalery_rozdil
+            $query = "UPDATE <<tp>>photogalery_rozdil
                    SET photos='" . \e::db_escape($image_info['photos']) . "',
                        photos_m='" . \e::db_escape($image_info['photos_m']) . "',
                        image_id=" . ((int) $image_info['id']) . "
@@ -56,9 +56,9 @@ if (isset($input_vars['setimage'])) {
             \e::db_execute($query);
         } else {
             // create record
-            $query = "insert into {$table_prefix}photogalery_rozdil (photos,photos_m,rozdil,rozdil2,site_id,image_id)
+            $query = "insert into <<tp>>photogalery_rozdil (photos,photos_m,rozdil,rozdil2,site_id,image_id)
                 SELECT photos,photos_m,'" . \e::db_escape($input_vars['rozdil']) . "','" . md5($input_vars['rozdil']) . "',site,id
-                FROM {$table_prefix}photogalery where id={$setimage} and site={$this_site_info['id']}";
+                FROM <<tp>>photogalery where id={$setimage} and site={$this_site_info['id']}";
             // prn($query);
             \e::db_execute($query);
         }
@@ -87,7 +87,7 @@ run('gallery/gallery_images');
 //prn($n);
 $image_list = \e::db_getrows(
                 "SELECT DISTINCT *
-         FROM {$GLOBALS['table_prefix']}photogalery
+         FROM <<tp>>photogalery
          WHERE site = {$this_site_info['id']}
              AND SUBSTRING_INDEX( rozdil, '/', $n )='" . \e::db_escape($input_vars['rozdil']) . "'
          ORDER BY rozdil");

@@ -4,7 +4,6 @@
  *  in "View shopping cart" page
  */
 function delivery_form($total,$site_info,$request) {
-    global $table_prefix;
     //prn($site_info);
     $delivery_config=delivery_config($site_info);
     $cnt=count($delivery_config);
@@ -90,7 +89,7 @@ function delivery_parse_cost($ec_delivery_cost,$ec_delivery_id,$request) {
  * Calculates delivery cost
  */
 function delivery_cost($total,$site_info,$request) {
-    //global $table_prefix;
+
     //prn($site_info);
     $delivery_config=delivery_config($site_info);
     //prn($delivery_config);
@@ -159,7 +158,7 @@ function delivery_cost($total,$site_info,$request) {
 function delivery_config($site_info) {
     static $config;
     if(!isset($config)) {
-        $config=\e::db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}ec_delivery WHERE site_id={$site_info['id']} ORDER BY ec_delivery_ordering ASC");
+        $config=\e::db_getrows("SELECT * FROM <<tp>>ec_delivery WHERE site_id={$site_info['id']} ORDER BY ec_delivery_ordering ASC");
     }
     return $config;
 }
@@ -181,7 +180,7 @@ function delivery_config($site_info) {
  * Show delivery information
  */
 function delivery_info($total,$site_info,$request) {
-    global $table_prefix;
+
     //prn($site_info);
     $delivery_config=delivery_config($site_info);
     $cnt=count($delivery_config);

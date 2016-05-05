@@ -6,7 +6,7 @@ if(!is_admin()) return 0;
 
 
 //------------------- this_user_info - begin -----------------------------------
-  $query = "SELECT * FROM {$table_prefix}user WHERE id=".checkInt($input_vars['user_id']);
+  $query = "SELECT * FROM <<tp>>user WHERE id=".checkInt($input_vars['user_id']);
   $this_user_info=\e::db_getonerow($query);
   //prn($this_user_info);
 //------------------- this_user_info - end -------------------------------------
@@ -19,7 +19,7 @@ if(!is_admin()) return 0;
   {
     function check_form_values()
     {
-      global $text,$db,$table_prefix, $input_vars, $this_user_info;
+      global $text,$db, $input_vars, $this_user_info;
       $all_is_ok = true;
 
       //-------------------- email - begin -------------------------------------
@@ -35,7 +35,7 @@ if(!is_admin()) return 0;
       //-------------------- login name uniqueness - begin ---------------------
         if(strlen($this->field['user_login']['value'])>0)
         {
-           $query="SELECT count(*) AS ns FROM {$table_prefix}user WHERE user_login='".$this->field['user_login']['value']."' AND id<>'".checkInt($this->id)."'";
+           $query="SELECT count(*) AS ns FROM <<tp>>user WHERE user_login='".$this->field['user_login']['value']."' AND id<>'".checkInt($this->id)."'";
            // prn($query);
            $count_site=\e::db_getonerow($query);
            $count_site=$count_site['ns'];
@@ -55,7 +55,7 @@ if(!is_admin()) return 0;
   $rep=new edbre;
   $rep->use_db($db);
   $rep->debug=false;
-  $rep->set_table("{$table_prefix}user");
+  $rep->set_table("<<tp>>user");
 
   $rep->add_field( 'id'
                   ,'id'
@@ -104,7 +104,7 @@ if(!is_admin()) return 0;
       {
          if($input_vars['db_record_editor_user_password_again']==$input_vars['db_record_editor_user_password'])
          {
-             $query="UPDATE {$table_prefix}user SET user_password='".md5($input_vars['db_record_editor_user_password'])."' WHERE user_login='".\e::db_escape($rep->field['user_login']['value'])."'";
+             $query="UPDATE <<tp>>user SET user_password='".md5($input_vars['db_record_editor_user_password'])."' WHERE user_login='".\e::db_escape($rep->field['user_login']['value'])."'";
              #prn($query);
              \e::db_execute($query);
          }
@@ -116,7 +116,7 @@ if(!is_admin()) return 0;
       //-------------------- password - end ------------------------------------
 
 
-      $query = "SELECT * FROM {$table_prefix}user WHERE user_login='".\e::db_escape($rep->field['user_login']['value'])."'";
+      $query = "SELECT * FROM <<tp>>user WHERE user_login='".\e::db_escape($rep->field['user_login']['value'])."'";
       //prn($query);
       $this_user_info=\e::db_getonerow($query);
 

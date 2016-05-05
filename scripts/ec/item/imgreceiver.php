@@ -92,7 +92,7 @@ if ($photos['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/i", $photos['name'],
     }
     $ec_item_img=join("\n",$ec_item_img);
 
-    $query = "UPDATE {$table_prefix}ec_item SET ec_item_img='" . \e::db_escape($ec_item_img) . "'
+    $query = "UPDATE <<tp>>ec_item SET ec_item_img='" . \e::db_escape($ec_item_img) . "'
               WHERE ec_item_id='{$this_ec_item_info['ec_item_id']}' AND ec_item_lang='{$this_ec_item_info['ec_item_lang']}'";
     \e::db_execute($query);
     echo '{"status":"success","message":"OK"}';

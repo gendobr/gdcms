@@ -56,10 +56,10 @@ if(count($_SESSION['items_to_compare'])>0) {
                  ec_item.ec_item_img,
                  ec_item.ec_item_uid,
                  IF(LENGTH(TRIM(ec_item.ec_item_content))>0,1,0) as ec_item_content_present
-           FROM {$table_prefix}ec_item AS ec_item
-                LEFT JOIN {$table_prefix}ec_category AS ec_category
+           FROM <<tp>>ec_item AS ec_item
+                LEFT JOIN <<tp>>ec_category AS ec_category
                 ON ec_category.ec_category_id=ec_item.ec_category_id
-                LEFT JOIN {$table_prefix}ec_producer AS ec_producer
+                LEFT JOIN <<tp>>ec_producer AS ec_producer
                 ON ec_producer.ec_producer_id=ec_item.ec_producer_id
             WHERE ec_item.site_id={$site_id}
               AND ec_item.ec_item_lang='{$lang}'

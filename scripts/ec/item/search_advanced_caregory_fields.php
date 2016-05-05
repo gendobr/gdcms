@@ -5,16 +5,16 @@
 global $main_template_name; $main_template_name='';
 header("Content-Type:text/html; charset=".site_charset);
 //echo "@@@@@ ".$input_vars['category_id'];
-$cat=\e::db_getonerow("SELECT * FROM {$table_prefix}ec_category WHERE ec_category_id=".( (int)$input_vars['category_id'] ));
+$cat=\e::db_getonerow("SELECT * FROM <<tp>>ec_category WHERE ec_category_id=".( (int)$input_vars['category_id'] ));
 //prn($cat);
 if(!$cat) return '';
 $pa=\e::db_getrows(
 "SELECT *
- FROM {$table_prefix}ec_category_item_field
+ FROM <<tp>>ec_category_item_field
  WHERE site_id={$cat['site_id']}
    AND ec_category_id IN(
           SELECT pa.ec_category_id
-          FROM {$table_prefix}ec_category as pa
+          FROM <<tp>>ec_category as pa
           WHERE pa.site_id={$cat['site_id']}
           AND pa.start<={$cat['start']} AND {$cat['finish']}<=pa.finish
  order by ec_category_item_field_ordering

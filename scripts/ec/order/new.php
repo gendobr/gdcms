@@ -76,7 +76,7 @@ if(isset($input_vars['ec_item_id'])) {
 # get list of page languages
 # -------------------- get list of page languages - begin ----------------------
 $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
-                     FROM {$table_prefix}ec_item  AS ec_item
+                     FROM <<tp>>ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
 $existing_languages=Array();
@@ -251,7 +251,7 @@ if(strlen($order_form_msg)==0) {
 
     // ----------- check if site visitor already registered - begin ------------
     $query="SELECT *
-              FROM {$table_prefix}site_visitor
+              FROM <<tp>>site_visitor
               WHERE site_visitor_login='".\e::db_escape($user_data_fields['ec_user_email'])."'
                  OR site_visitor_email='".\e::db_escape($user_data_fields['ec_user_email'])."'";
     $site_visitor_info=\e::db_getonerow($query);
@@ -263,7 +263,7 @@ if(strlen($order_form_msg)==0) {
     if(!$site_visitor_info) {
         $user_data_fields['site_visitor_password']=
                 $site_visitor_password=substr(md5(time().session_id()),0,10);
-        $query="insert into {$table_prefix}site_visitor
+        $query="insert into <<tp>>site_visitor
                     ( site_visitor_password,
                       site_visitor_login,
                       site_visitor_email,
@@ -275,7 +275,7 @@ if(strlen($order_form_msg)==0) {
                      ''
                   )";
         \e::db_execute($query);
-        $query="SELECT * FROM {$table_prefix}site_visitor WHERE site_visitor_id=LAST_INSERT_ID()";
+        $query="SELECT * FROM <<tp>>site_visitor WHERE site_visitor_id=LAST_INSERT_ID()";
         $site_visitor_info=\e::db_getonerow($query);
     }
     // ----------- register site visitor - end ---------------------------------
@@ -297,7 +297,7 @@ if(strlen($order_form_msg)==0) {
         return false;
     }
 
-    $query="SELECT * FROM {$table_prefix}ec_user WHERE site_visitor_id={$site_visitor_info['site_visitor_id']}";
+    $query="SELECT * FROM <<tp>>ec_user WHERE site_visitor_id={$site_visitor_info['site_visitor_id']}";
     $ec_user_records=\e::db_getrows($query);
 
     $ec_user_record_exists=false;
@@ -321,7 +321,7 @@ if(strlen($order_form_msg)==0) {
 
     // ----------------- create new user delivery data - begin -----------------
     if(!$ec_user_record_exists) {
-        $query="insert into {$table_prefix}ec_user(
+        $query="insert into <<tp>>ec_user(
                     ec_user_name,
                     ec_user_telephone,
                     ec_user_icq,
@@ -374,7 +374,7 @@ if(strlen($order_form_msg)==0) {
     //prn($ec_order_total);
     $ec_order_status_default=array_shift(explode(',',ec_order_status));
 
-    $query="insert into {$table_prefix}ec_order(
+    $query="insert into <<tp>>ec_order(
                    ec_date_created, site_id, ec_order_status,
                    ec_order_total, ec_user_id, ec_order_paid,
                    ec_order_details,ec_order_custom_data)
@@ -384,7 +384,7 @@ if(strlen($order_form_msg)==0) {
                  '{$ec_order_total}', {$ec_user_id}, 0,
                  '".\e::db_escape(serialize($_SESSION['ec_cart']))."',
                  '".\e::db_escape(serialize($_SESSION['user_data_fields']))."')";
-    //prn($query);alter table `{$GLOBALS['table_prefix']}ec_order` add column `ec_order_custom_data` text NULL after `ec_order_paid_amount`;
+    //prn($query);alter table `<<tp>>ec_order` add column `ec_order_custom_data` text NULL after `ec_order_paid_amount`;
     \e::db_execute($query);
 
     $query="SELECT LAST_INSERT_ID() AS ec_order_id";
@@ -417,7 +417,7 @@ if(strlen($order_form_msg)==0) {
 	     )";
     }
     if(count($query)>0) {
-        $query="insert into {$table_prefix}ec_cart(
+        $query="insert into <<tp>>ec_cart(
                  ec_item_uid, ec_item_id, ec_item_lang, ec_item_title,
                  ec_item_price, ec_item_currency, ec_item_size,
                  ec_item_weight, ec_cart_amount, ec_cart_item,
@@ -434,7 +434,7 @@ if(strlen($order_form_msg)==0) {
 
     // ----------------------- update ec_item state - begin --------------------
     foreach($_SESSION['ec_cart']['items'] as $it) {
-        $query="UPDATE {$table_prefix}ec_item
+        $query="UPDATE <<tp>>ec_item
                  SET ec_item_amount=ec_item_amount-1,
                      ec_item_purchases=ifnull(ec_item_purchases,0)+1
                  WHERE ec_item_id=".$it['info']['ec_item_id']." LIMIT 1";

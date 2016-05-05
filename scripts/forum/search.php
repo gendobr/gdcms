@@ -12,7 +12,7 @@
 
 //------------------- get site info - begin ------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info =\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id} AND is_forum_enabled=1");
+  $this_site_info =\e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id} AND is_forum_enabled=1");
   //prn('$this_site_info=',$this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -38,18 +38,18 @@ if(get_level($site_id)==0)
   $delete_message_id=isset($input_vars['delete_message_id'])?checkInt($input_vars['delete_message_id']):0;
   if($delete_message_id>0)
   {
-     $del_msg_info=\e::db_getonerow("SELECT  * FROM {$table_prefix}forum_msg WHERE  id={$delete_message_id} AND site_id={$site_id}");
+     $del_msg_info=\e::db_getonerow("SELECT  * FROM <<tp>>forum_msg WHERE  id={$delete_message_id} AND site_id={$site_id}");
      // prn($del_msg_info);
      if($del_msg_info['is_first_msg']==1)
      {
-       $query="DELETE FROM {$table_prefix}forum_thread WHERE id={$del_msg_info['thread_id']}";
+       $query="DELETE FROM <<tp>>forum_thread WHERE id={$del_msg_info['thread_id']}";
        \e::db_execute($query);
-       $query="DELETE FROM {$table_prefix}forum_msg WHERE thread_id={$del_msg_info['thread_id']} AND site_id={$site_id}";
+       $query="DELETE FROM <<tp>>forum_msg WHERE thread_id={$del_msg_info['thread_id']} AND site_id={$site_id}";
        \e::db_execute($query);
      }
      else
      {
-       $query="DELETE FROM {$table_prefix}forum_msg WHERE id={$delete_message_id} AND site_id={$site_id}";
+       $query="DELETE FROM <<tp>>forum_msg WHERE id={$delete_message_id} AND site_id={$site_id}";
        //prn($query);
        \e::db_execute($query);
      }
@@ -283,7 +283,7 @@ if(get_level($site_id)==0)
   $re->db=$db;
   $re->distinct=false;
 
-  $re->from="{$table_prefix}forum_msg";
+  $re->from="<<tp>>forum_msg";
   $re->add_where(" site_id   = $site_id  ");
 //  $re->add_where(" forum_id  = $forum_id ");
 //  $re->add_where(" thread_id = $thread_id");
@@ -312,7 +312,7 @@ if(get_level($site_id)==0)
                  ,$_group_operation=false);
 
   function getenum($it){return $it['id'].'='.rawurlencode($it['name']);}
-  $list_forum_names=join('&',array_map('getenum',\e::db_getrows("SELECT id,name FROM {$table_prefix}forum_list WHERE site_id={$this_site_info['id']}")));
+  $list_forum_names=join('&',array_map('getenum',\e::db_getrows("SELECT id,name FROM <<tp>>forum_list WHERE site_id={$this_site_info['id']}")));
   $re->add_field( $field='forum_id'
                  ,$alias='forum_name'
                  ,$type ="enum:1=".$list_forum_names
@@ -326,7 +326,7 @@ if(get_level($site_id)==0)
                  ,$label='thread_id'
                  ,$_group_operation=false);
 
-  $list_thread_names=join('&',array_map('getenum',\e::db_getrows("SELECT id,subject as name FROM {$table_prefix}forum_thread WHERE site_id={$this_site_info['id']}")));
+  $list_thread_names=join('&',array_map('getenum',\e::db_getrows("SELECT id,subject as name FROM <<tp>>forum_thread WHERE site_id={$this_site_info['id']}")));
   $re->add_field( $field='thread_id'
                  ,$alias='thread_name'
                  ,$type ="enum:1=".$list_thread_names

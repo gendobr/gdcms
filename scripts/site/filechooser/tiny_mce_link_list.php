@@ -5,7 +5,7 @@ $GLOBALS['main_template_name'] = '';
 //------------------- site info - begin ----------------------------------------
 $site_id = (int) $input_vars['site_id'];
 $this_site_info = get_site_info($site_id);
-#$this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+#$this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
 #//prn($this_site_info);
 if (checkInt($this_site_info['id']) <= 0) {
     $input_vars['page_title'] = $text['Site_not_found'];
@@ -73,7 +73,7 @@ $list[] = "[\"" . str_replace("\"", "\\\"", text('Browse_categories')) . "\",\"$
 
 
 // get list of pages
-$pagelist = \e::db_getrows("SELECT id,lang,title,path FROM {$GLOBALS['table_prefix']}page WHERE site_id=$site_id ORDER BY id,lang,title");
+$pagelist = \e::db_getrows("SELECT id,lang,title,path FROM <<tp>>page WHERE site_id=$site_id ORDER BY id,lang,title");
 // prn($pagelist);
 $json = Array('files' => Array(), 'dirs' => Array(), 'parents' => Array());
 $cnt = count($pagelist);

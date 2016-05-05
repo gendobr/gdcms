@@ -14,12 +14,12 @@ if(!is_logged()) return 0;
   $re->db=$db;
   $re->distinct=false;
 
-  $re->from="{$table_prefix}site AS site";
+  $re->from="<<tp>>site AS site";
 
   if(!is_admin())
   {
      //------------------------ get own sites - begin --------------------------
-       $query="SELECT site_id FROM {$table_prefix}site_user WHERE user_id={$_SESSION['user_info']['id']}";
+       $query="SELECT site_id FROM <<tp>>site_user WHERE user_id={$_SESSION['user_info']['id']}";
        $site_list=\e::db_getrows($query);
        $sl=Array();
        $sl[]=0;

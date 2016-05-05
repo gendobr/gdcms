@@ -56,8 +56,8 @@ if(isset($input_vars['help'])){
 }
 $lang = \e::db_escape($input_vars['lang']);
 $query = "SELECT DISTINCT news_tags.tag, count(news.id) as n_news
-           FROM {$table_prefix}news_tags AS news_tags
-              , {$table_prefix}news AS news
+           FROM <<tp>>news_tags AS news_tags
+              , <<tp>>news AS news
            WHERE news_tags.news_id=news.id
              AND news.lang=news_tags.lang
              AND news.cense_level>={$this_site_info['cense_level']}

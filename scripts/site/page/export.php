@@ -43,7 +43,7 @@ run('category/functions');
    {
       if($input_vars['pagelist']=='all')
       {
-         $query="UPDATE {$table_prefix}page
+         $query="UPDATE <<tp>>page
                  SET to_export=1
                  WHERE site_id={$this_site_info['id']} AND cense_level>={$this_site_info['cense_level']}";
 //         prn($query);
@@ -66,7 +66,7 @@ run('category/functions');
          if(count($query)>0)
          {
             $query=join(' OR ',$query);
-            $query="UPDATE {$table_prefix}page
+            $query="UPDATE <<tp>>page
                     SET to_export=1
                     WHERE site_id={$this_site_info['id']}
                       AND cense_level>={$this_site_info['cense_level']}
@@ -79,7 +79,7 @@ run('category/functions');
 
 $this_page_info=\e::db_getonerow(
    "SELECT page.id, page.lang
-    FROM {$table_prefix}page AS page
+    FROM <<tp>>page AS page
     WHERE site_id={$this_site_info['id']}
       AND to_export=1
     LIMIT 0,1");
@@ -90,7 +90,7 @@ if($this_page_info)
   run("site/page/export_functions");
   export_page($this_page_info['id'], $this_page_info['lang']);
 
-  $query="UPDATE {$table_prefix}page
+  $query="UPDATE <<tp>>page
           SET to_export=0,delete_file=''
           WHERE site_id={$this_site_info['id']}
             AND id={$this_page_info['id']}

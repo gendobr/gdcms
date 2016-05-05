@@ -70,12 +70,12 @@ if(get_level($site_id)>0) {
 // ------------------ delete thread - begin ------------------------------------
 if($visitor['is_moderator'] && isset($input_vars['delete_thread_id'])) {
     $delete_thread_id=(int)$input_vars['delete_thread_id'];
-    $query="DELETE FROM {$table_prefix}forum_msg
+    $query="DELETE FROM <<tp>>forum_msg
             WHERE site_id=$site_id
               AND forum_id=$forum_id
               AND thread_id=$delete_thread_id";
     \e::db_execute($query);
-    $query= "DELETE FROM {$table_prefix}forum_thread WHERE id={$delete_thread_id}";
+    $query= "DELETE FROM <<tp>>forum_thread WHERE id={$delete_thread_id}";
     \e::db_execute($query);
 }
 // ------------------ delete thread - end --------------------------------------
@@ -84,7 +84,7 @@ if($visitor['is_moderator'] && isset($input_vars['delete_thread_id'])) {
 //------------------- update message - begin -----------------------------------
 if($visitor['is_moderator'] && isset($input_vars['msg_id'])) {
     $thread_id = checkInt($input_vars['thread_id']);
-    $query="UPDATE {$GLOBALS['table_prefix']}forum_msg
+    $query="UPDATE <<tp>>forum_msg
              SET   msg='".\e::db_escape($input_vars['msg_text'])."'
              WHERE id=".((int)$input_vars['msg_id'])."
                AND site_id=$site_id
@@ -100,7 +100,7 @@ if($visitor['is_moderator'] && isset($input_vars['msg_id'])) {
 // ------------------ delete message - begin -----------------------------------
 if($visitor['is_moderator'] && isset($input_vars['delete_msg_id'])) {
     $thread_id = checkInt($input_vars['thread_id']);
-    $query="DELETE FROM {$GLOBALS['table_prefix']}forum_msg
+    $query="DELETE FROM <<tp>>forum_msg
              WHERE id=".((int)$input_vars['delete_msg_id'])."
                AND site_id=$site_id
                AND forum_id=$forum_id
@@ -115,7 +115,7 @@ if($visitor['is_moderator'] && isset($input_vars['delete_msg_id'])) {
 //------------------- hide message - begin -------------------------------------
 if($visitor['is_moderator'] && isset($input_vars['hide_msg_id'])) {
     $thread_id = checkInt($input_vars['thread_id']);
-    $query="UPDATE {$GLOBALS['table_prefix']}forum_msg
+    $query="UPDATE <<tp>>forum_msg
              SET   is_visible=0
              WHERE id=".((int)$input_vars['hide_msg_id'])."
                AND site_id=$site_id
@@ -136,7 +136,7 @@ if($visitor['is_moderator'] && isset($input_vars['hide_msg_id'])) {
 //------------------- show message - begin -------------------------------------
 if($visitor['is_moderator'] && isset($input_vars['show_msg_id'])) {
     $thread_id = checkInt($input_vars['thread_id']);
-    $query="UPDATE {$GLOBALS['table_prefix']}forum_msg
+    $query="UPDATE <<tp>>forum_msg
              SET   is_visible=1
              WHERE id=".((int)$input_vars['show_msg_id'])."
                AND site_id=$site_id
@@ -164,10 +164,10 @@ $this_thread_info =\e::db_getonerow(
            , ms.is_visible    AS msg_is_visible
            ,MAX(ms_vis.is_visible) AS  some_messages_visible
     FROM (
-          {$table_prefix}forum_thread AS th
-          LEFT JOIN {$table_prefix}forum_msg AS ms
+          <<tp>>forum_thread AS th
+          LEFT JOIN <<tp>>forum_msg AS ms
           ON (ms.thread_id=th.id AND ms.is_first_msg=1) )
-         LEFT JOIN {$table_prefix}forum_msg AS ms_vis
+         LEFT JOIN <<tp>>forum_msg AS ms_vis
          ON ms_vis.thread_id=th.id
     WHERE th.id={$thread_id}
     GROUP BY th.id
@@ -228,7 +228,7 @@ if(isset($input_vars['msg'])) {
 
         $is_visible=($this_forum_info['is_premoderated']==1)?0:1;
 
-        // $query = "INSERT INTO {$table_prefix}forum_msg (name, forum_id, site_id, thread_id, email, www, subject, msg, data, is_visible)
+        // $query = "INSERT INTO <<tp>>forum_msg (name, forum_id, site_id, thread_id, email, www, subject, msg, data, is_visible)
 	//	          Values ('$name', '$forum_id', '$site_id', '$thread_id', '$email', '$www', '$subject', '$msg', '$data',$is_visible)";
         // mysql_query($query, $link);
         
@@ -269,7 +269,7 @@ if(isset($input_vars['msg'])) {
         run('notifier/functions');
 
         //---------------- notify site admin - begin ---------------------------
-        $site_admin_list=  \e::db_getrows("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']}");
+        $site_admin_list=  \e::db_getrows("SELECT u.email FROM <<tp>>site_user AS su INNER JOIN <<tp>>user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']}");
         foreach($site_admin_list as $site_admin){
             if(is_valid_email($site_admin['email'])) {
                 $path=$this_site_info['title']."/".$this_forum_info['name']."/".$this_thread_info['subject'];
@@ -298,7 +298,7 @@ if(isset($input_vars['msg'])) {
                $query[]=  \e::db_escape($moderator_login);
            }
            //prn($query); exit();
-           $query="SELECT * FROM {$table_prefix}site_visitor WHERE site_visitor_login in ('".join("','",$query)."')";
+           $query="SELECT * FROM <<tp>>site_visitor WHERE site_visitor_login in ('".join("','",$query)."')";
            $moderators=  \e::db_getrows($query);
            if($moderators){
                 $path=$this_site_info['title']."/".$this_forum_info['name']."/".$this_thread_info['subject'];
@@ -326,9 +326,9 @@ if(isset($input_vars['msg'])) {
 
         //------------------------ get the page to redirect - begin ------------------
         if($this_forum_info['is_premoderated']==1) {
-            $n_messages =\e::db_getonerow("SELECT count(id) as n_messages FROM {$table_prefix}forum_msg WHERE forum_id='$forum_id' AND site_id='$site_id' AND thread_id='$thread_id'  AND is_first_msg=0 and is_visible=1");
+            $n_messages =\e::db_getonerow("SELECT count(id) as n_messages FROM <<tp>>forum_msg WHERE forum_id='$forum_id' AND site_id='$site_id' AND thread_id='$thread_id'  AND is_first_msg=0 and is_visible=1");
         }else {
-            $n_messages =\e::db_getonerow("SELECT count(id) as n_messages FROM {$table_prefix}forum_msg WHERE forum_id='$forum_id' AND site_id='$site_id' AND thread_id='$thread_id'  AND is_first_msg=0");
+            $n_messages =\e::db_getonerow("SELECT count(id) as n_messages FROM <<tp>>forum_msg WHERE forum_id='$forum_id' AND site_id='$site_id' AND thread_id='$thread_id'  AND is_first_msg=0");
         }
         $n_messages = $n_messages['n_messages'];
         //prn($n_messages);
@@ -395,7 +395,7 @@ if($this_forum_info['is_premoderated']==1) {
     // if visitor is moderator then do not require only visible messages
     $is_visible=$visitor['is_moderator']?'':"and is_visible=1";
     $query="SELECT SQL_CALC_FOUND_ROWS *
-            FROM {$table_prefix}forum_msg
+            FROM <<tp>>forum_msg
             WHERE site_id=$site_id
               AND forum_id=$forum_id
               AND thread_id=$thread_id
@@ -404,7 +404,7 @@ if($this_forum_info['is_premoderated']==1) {
             ORDER BY `data` ASC LIMIT $start, 10 ";
 } else {
     $query="SELECT SQL_CALC_FOUND_ROWS *
-            FROM {$table_prefix}forum_msg
+            FROM <<tp>>forum_msg
             WHERE site_id=$site_id
               AND forum_id=$forum_id
               AND thread_id=$thread_id

@@ -60,12 +60,12 @@ if (isset($input_vars['text']))
         $text = strip_tags(preg_replace("/\\n+/", "\n", $text));
         $text = str_replace("\n", "<br>", $text);
         $text = \e::db_escape($text);
-        $query = "INSERT INTO {$table_prefix}gb (name, email, adress, tema, text, data, site)
+        $query = "INSERT INTO <<tp>>gb (name, email, adress, tema, text, data, site)
             VALUES ('$name', '$email', '$adress', '$tema',  '$text', '$data', '$site')";
         \e::db_execute($query);
 
         //---------------- notify site admin - begin ---------------------------------
-        $site_admin =\e::db_getonerow("SELECT u.email FROM {$table_prefix}site_user AS su INNER JOIN {$table_prefix}user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
+        $site_admin =\e::db_getonerow("SELECT u.email FROM <<tp>>site_user AS su INNER JOIN <<tp>>user AS u ON u.id=su.user_id WHERE su.site_id={$this_site_info['id']} ORDER BY su.level ASC LIMIT 0,1");
         if (is_valid_email($site_admin['email']) && false) {
             run("lib/class.phpmailer");
             run("lib/mailing");
@@ -113,11 +113,11 @@ $start = abs(round(1 * $input_vars['start']));
 
 
 // get paging links
-//$result = mysql_query("SELECT count(*) FROM {$table_prefix}gb WHERE is_visible=1 AND site=$site", $link)    or die("Query failed");
+//$result = mysql_query("SELECT count(*) FROM <<tp>>gb WHERE is_visible=1 AND site=$site", $link)    or die("Query failed");
 //$num = mysql_fetch_array($result);
 //$num=$num[0];
 
-$tmp =\e::db_getonerow("SELECT count(*) as num FROM {$table_prefix}gb WHERE is_visible=1 AND site=$site");
+$tmp =\e::db_getonerow("SELECT count(*) as num FROM <<tp>>gb WHERE is_visible=1 AND site=$site");
 $num = $tmp['num'];
 
 $paging = Array();
@@ -135,7 +135,7 @@ for ($i = 0; $i < $num; $i = $i + 10) {
 // ------------------ load guestbook messages - begin --------------------------
   $guestbook_messages = \e::db_getrows(
                       "SELECT name, email, adress, tema, text, UNIX_TIMESTAMP(data)  AS data, site
-                       FROM {$table_prefix}gb
+                       FROM <<tp>>gb
                        WHERE is_visible=1
                          AND site = '$site'
                        ORDER BY `data` DESC ,id DESC
@@ -152,7 +152,7 @@ for ($i = 0; $i < $num; $i = $i + 10) {
    }
 // ------------------ load guestbook messages - end ----------------------------
 //$result = mysql_query("SELECT name, email, adress, tema, text, UNIX_TIMESTAMP(data)  AS data, site
-//                       FROM {$table_prefix}gb
+//                       FROM <<tp>>gb
 //                       WHERE is_visible=1
 //                         AND site = '$site'
 //                       ORDER BY `data` DESC ,id DESC

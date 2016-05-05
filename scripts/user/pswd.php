@@ -9,7 +9,7 @@ if (!is_logged())
 $user_info = $_SESSION['user_info'];
 
 //------------------- this_user_info - begin -----------------------------------
-$query = "SELECT * FROM {$table_prefix}user WHERE id=" . ((int) $user_info['id']);
+$query = "SELECT * FROM <<tp>>user WHERE id=" . ((int) $user_info['id']);
 $this_user_info = \e::db_getonerow($query);
 //prn($this_user_info);
 //------------------- this_user_info - end -------------------------------------
@@ -20,7 +20,7 @@ run('lib/class_db_record_editor_extended');
 class edbre extends extended_db_record_editor {
 
     function check_form_values() {
-        global $text, $db, $table_prefix, $input_vars, $this_user_info;
+        global $text, $db, $input_vars, $this_user_info;
         $all_is_ok = true;
 
         //-------------------- email - begin -------------------------------------
@@ -41,7 +41,7 @@ class edbre extends extended_db_record_editor {
 $rep = new edbre;
 $rep->use_db($db);
 $rep->debug = false;
-$rep->set_table("{$table_prefix}user");
+$rep->set_table("<<tp>>user");
 
 $rep->add_field('id'
         , 'id'
@@ -80,7 +80,7 @@ if ($success) {
     //-------------------- password - begin ----------------------------------
     if (isset($input_vars['db_record_editor_user_password']) && strlen($input_vars['db_record_editor_user_password']) > 0) {
         if ($input_vars['db_record_editor_user_password_again'] == $input_vars['db_record_editor_user_password']) {
-            $query = "UPDATE {$table_prefix}user SET user_password='" . md5($input_vars['db_record_editor_user_password']) . "' WHERE user_login='" . \e::db_escape($user_info['user_login']) . "'";
+            $query = "UPDATE <<tp>>user SET user_password='" . md5($input_vars['db_record_editor_user_password']) . "' WHERE user_login='" . \e::db_escape($user_info['user_login']) . "'";
             #prn($query);
             \e::db_execute($query);
         } else {
@@ -89,7 +89,7 @@ if ($success) {
     }
     //-------------------- password - end ------------------------------------
 
-    $query = "SELECT * FROM {$table_prefix}user WHERE user_login='" . \e::db_escape($user_info['user_login']) . "'";
+    $query = "SELECT * FROM <<tp>>user WHERE user_login='" . \e::db_escape($user_info['user_login']) . "'";
     //prn($query);
     $this_user_info = \e::db_getonerow($query);
 }

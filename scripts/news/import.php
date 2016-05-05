@@ -7,7 +7,7 @@
 $debug=false;
 //------------------- get site info - begin ------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
   if($debug) prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -82,7 +82,6 @@ run('site/menu');
    {
       function import_one_row($data)
       {
-          global $table_prefix,$db;
           $flds=array_keys($data);
           $vals=array_values($data);
           $cnt=count($vals);
@@ -92,7 +91,7 @@ run('site/menu');
           }
           $flds=join(',',$flds);
           $vals=join(',',$vals);
-          $query="INSERT INTO {$table_prefix}news($flds) VALUES($vals)";
+          $query="INSERT INTO <<tp>>news($flds) VALUES($vals)";
           //prn($query);
           \e::db_execute($query);
       }

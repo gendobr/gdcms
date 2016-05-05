@@ -38,7 +38,7 @@ if(isset($input_vars['neworder'])){
     $neworder=explode(',',$input_vars['neworder']);
     for($i=0,$cnt=count($neworder);$i<$cnt;$i++){
         $id=(int)$neworder[$i];
-        \e::db_execute("UPDATE {$GLOBALS['table_prefix']}photogalery_rozdil SET weight=$i WHERE id=$id AND site_id={$this_site_info['id']}");
+        \e::db_execute("UPDATE <<tp>>photogalery_rozdil SET weight=$i WHERE id=$id AND site_id={$this_site_info['id']}");
     }
     $GLOBALS['main_template_name'] = '';
     return;
@@ -88,7 +88,7 @@ gallery_synchronize_categories($this_site_info['id']);
 
 $photogalery_rozdil_list = \e::db_getrows(
             "SELECT *
-             FROM {$GLOBALS['table_prefix']}photogalery_rozdil
+             FROM <<tp>>photogalery_rozdil
              WHERE site_id = {$this_site_info['id']}
              ORDER BY weight,rozdil");
 // prn($photogalery_rozdil_list);

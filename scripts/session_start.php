@@ -22,7 +22,7 @@ if(isset($input_vars[custom_session_name]) && strlen($input_vars[custom_session_
 //    setcookie(custom_session_name,$GLOBALS['_COOKIE'][custom_session_name],time()+1200);
 //
 //// extract sesison data
-//    $_SESSION=\e::db_getonerow("SELECT * FROM {$table_prefix}session WHERE id='{$GLOBALS['_COOKIE'][custom_session_name]}'");
+//    $_SESSION=\e::db_getonerow("SELECT * FROM <<tp>>session WHERE id='{$GLOBALS['_COOKIE'][custom_session_name]}'");
 //    if(strlen($_SESSION['sess_data'])>0) $_SESSION=unserialize($_SESSION['sess_data']); else $_SESSION=Array();
 //}else {
 //session_name(session_cookie);
@@ -40,13 +40,13 @@ if(!isset($_SESSION['user_info'])) {
 
 
 //if($_SESSION['user_info']['is_logged']) {
-//    db_execute("REPLACE {$table_prefix}session(id,user_login,expires,sess_data)
+//    db_execute("REPLACE <<tp>>session(id,user_login,expires,sess_data)
 //               VALUES('".session_id()."',
 //                      '{$_SESSION['user_info']['user_login']}',
 //            ".( time()+1200).",
 //                      '".DbStr(serialize(Array('user_info'=>$_SESSION['user_info'])))."')");
 //    if(rand(0, 100)<5) {
-//        db_execute("DELETE FROM {$table_prefix}session WHERE expires < ".time());
+//        db_execute("DELETE FROM <<tp>>session WHERE expires < ".time());
 //    }
 //}
 //prn($_SESSION['user_info']);

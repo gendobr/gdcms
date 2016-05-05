@@ -31,7 +31,7 @@ if (get_level($site_id) == 0) {
 //------------------- check permission - end -----------------------------------
 //------------------- this_forum_info - begin ----------------------------------
 $forum_id = checkInt($input_vars['forum_id']);
-$query = "SELECT * FROM {$table_prefix}forum_list WHERE id=" . checkInt($input_vars['forum_id']);
+$query = "SELECT * FROM <<tp>>forum_list WHERE id=" . checkInt($input_vars['forum_id']);
 //prn(checkStr($query));
 $this_forum_info =\e::db_getonerow($query);
 // prn('$this_forum_info=',$this_forum_info);
@@ -44,7 +44,7 @@ if (checkInt($this_forum_info['id']) <= 0) {
 //------------------- this_forum_info - end ------------------------------------
 //------------------- get thread info - begin ----------------------------------
 $thread_id = checkInt($input_vars['thread_id']);
-$this_thread_info =\e::db_getonerow("SELECT * FROM {$table_prefix}forum_thread WHERE id={$thread_id}");
+$this_thread_info =\e::db_getonerow("SELECT * FROM <<tp>>forum_thread WHERE id={$thread_id}");
 //prn('$this_thread_info=',$this_thread_info);
 //if(checkInt($this_thread_info['id'])<=0)
 //{
@@ -76,7 +76,7 @@ class ThreadEditor extends extended_db_record_editor {
 $rep = new ThreadEditor;
 $rep->use_db($db);
 $rep->debug = false;
-$rep->set_table("{$table_prefix}forum_thread");
+$rep->set_table("<<tp>>forum_thread");
 
 $rep->add_field('id'
         , 'id'
@@ -89,7 +89,7 @@ $rep->add_field('site_id'
         , '#');
 
 
-$tmp = \e::db_getrows("SELECT * FROM {$table_prefix}forum_list WHERE site_id=$site_id ORDER BY `name`");
+$tmp = \e::db_getrows("SELECT * FROM <<tp>>forum_list WHERE site_id=$site_id ORDER BY `name`");
 // prn($tmp);
 $cmt = count($tmp);
 for ($i = 0; $i < $cmt; $i++)
@@ -123,7 +123,7 @@ $success = $rep->process();
 // prn($rep->field['forum_id']['value']); //->value
 if ($success && $rep->id) {
     //prn($rep);
-    $query = "UPDATE {$table_prefix}forum_msg
+    $query = "UPDATE <<tp>>forum_msg
             SET forum_id={$rep->field['forum_id']['value']}
             WHERE thread_id={$rep->id} AND site_id={$site_id}";
     // prn($query);
@@ -156,7 +156,7 @@ $input_vars['page_content'] = "
 run('forum/menu');
 
 if ($rep->id > 0) {
-    $query = "SELECT * FROM {$table_prefix}forum_thread WHERE id={$rep->id}";
+    $query = "SELECT * FROM <<tp>>forum_thread WHERE id={$rep->id}";
     $this_thread_info =\e::db_getonerow($query);
     $input_vars['page_menu']['thread'] = Array('title' => $text['Thread'], 'items' => Array());
     $input_vars['page_menu']['thread']['items'] = menu_thread($this_thread_info);

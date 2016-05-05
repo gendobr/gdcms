@@ -43,7 +43,7 @@ if (isset($input_vars['nazva'])) {
          $input_vars['page_content'] = "<p class=error>".text('ERROR_Event_title_is_not_set')."</p>";
     } else {
         $input_vars['page_content'] = "ok!";
-        $query = "INSERT INTO {$table_prefix}calendar (site_id, nazva, kartynka, adresa,description,vis)
+        $query = "INSERT INTO <<tp>>calendar (site_id, nazva, kartynka, adresa,description,vis)
                   VALUES (" . ( (int) $site_id ) . ",
                          '" . \e::db_escape($nazva) . "',
                          '" . \e::db_escape($kartynka) . "',
@@ -51,7 +51,7 @@ if (isset($input_vars['nazva'])) {
                          '" . \e::db_escape($description) . "',
                          " . ( (int) $vis) . ")";
         \e::db_execute($query);
-        $calendar_info =\e::db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id=last_insert_id()");
+        $calendar_info =\e::db_getonerow("SELECT * FROM <<tp>>calendar WHERE id=last_insert_id()");
         header("Location: ".site_root_URL."/index.php?action=calendar/edit&site_id={$site_id}&event_id={$calendar_info['id']}");
         exit();
     }

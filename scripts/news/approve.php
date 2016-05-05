@@ -16,7 +16,7 @@ $GLOBALS['main_template_name']='';
   $lang      = get_language('lang');
 
 
-  $query="SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
+  $query="SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='$lang'";
   $this_news_info=\e::db_getonerow($query);
   if($debug) prn($query,$this_news_info);
   if(checkInt($this_news_info['id'])<=0)
@@ -41,7 +41,7 @@ $GLOBALS['main_template_name']='';
 
 //------------------- site info - begin ----------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info =\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$this_news_info['site_id']}");
+  $this_site_info =\e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$this_news_info['site_id']}");
   if($debug) prn('$this_site_info=',$this_site_info);
 //------------------- site info - end ------------------------------------------
 
@@ -49,7 +49,7 @@ $GLOBALS['main_template_name']='';
 
   //----------------- get possible cense levels - begin ------------------------
     $query  = "SELECT level
-               FROM {$table_prefix}site_user
+               FROM <<tp>>site_user
                WHERE     site_id={$this_site_info['id']}
                      AND level<={$user_cense_level}
                ORDER BY level DESC LIMIT 0,3";
@@ -84,7 +84,7 @@ $GLOBALS['main_template_name']='';
       $new_cense_level=checkInt($this_news_info['cense_level']);
     break;
   }
-  $query="UPDATE {$table_prefix}news
+  $query="UPDATE <<tp>>news
           SET cense_level={$new_cense_level}
           WHERE     id={$this_news_info['id']}
                 AND lang='{$this_news_info['lang']}';";

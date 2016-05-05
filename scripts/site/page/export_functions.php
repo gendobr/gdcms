@@ -15,7 +15,7 @@ if (!function_exists('menu_site'))
 run('site/page/menu');
 
 function export_page($_page_id, $_lang) {
-    global $db, $table_prefix, $input_vars;
+    global $db,  $input_vars;
 
     // ------------------ check page id - begin ----------------------------------
     $page_id = (int) $_page_id;
@@ -61,7 +61,7 @@ function export_page($_page_id, $_lang) {
     }
     // -------------------------- get page template - end ------------------------
     //--------------------------- language selector - begin ----------------------
-    $lang_list = \e::db_getrows("SELECT * FROM {$table_prefix}page WHERE id={$this_page_info['id']} AND cense_level>={$this_site_info['cense_level']}");
+    $lang_list = \e::db_getrows("SELECT * FROM <<tp>>page WHERE id={$this_page_info['id']} AND cense_level>={$this_site_info['cense_level']}");
     $cnt = count($lang_list);
     $url_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']);
     for ($i = 0; $i < $cnt; $i++) {

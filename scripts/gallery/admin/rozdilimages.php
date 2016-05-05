@@ -40,8 +40,8 @@ if (isset($input_vars['op_delete'])) {
     $op_delete_id = (int) $input_vars['op_delete'];
     $photogalery_rozdil_info =\e::db_getonerow(
             "SELECT pr.*, count(p.id) as n_images
-             FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
-                  LEFT JOIN {$GLOBALS['table_prefix']}photogalery p
+             FROM <<tp>>photogalery_rozdil pr
+                  LEFT JOIN <<tp>>photogalery p
                   ON (pr.rozdil=p.rozdil OR LOCATE(concat(pr.rozdil,'/'),p.rozdil))
              WHERE pr.site_id = {$this_site_info['id']}
                  AND pr.id={$op_delete_id}
@@ -51,7 +51,7 @@ if (isset($input_vars['op_delete'])) {
         // deleting empty category ...
         $delete_list = \e::db_getrows(
                 "SELECT pr.*
-                 FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
+                 FROM <<tp>>photogalery_rozdil pr
                  WHERE pr.site_id = {$this_site_info['id']}
                   AND (pr.rozdil='" . \e::db_escape($photogalery_rozdil_info['rozdil']) . "' OR LOCATE('" . \e::db_escape($photogalery_rozdil_info['rozdil']) . "/',pr.rozdil))
                 ");
@@ -61,7 +61,7 @@ if (isset($input_vars['op_delete'])) {
             for ($i = 0; $i < $cnt; $i++) {
                 $delete_list[$i] = (int) $delete_list[$i]['id'];
             }
-            \e::db_execute("DELETE FROM {$GLOBALS['table_prefix']}photogalery_rozdil WHERE site_id = {$this_site_info['id']} AND id IN(".join(',',$delete_list).") ");
+            \e::db_execute("DELETE FROM <<tp>>photogalery_rozdil WHERE site_id = {$this_site_info['id']} AND id IN(".join(',',$delete_list).") ");
         }
     }
     header("Location: $this_page_url");
@@ -70,7 +70,7 @@ if (isset($input_vars['op_delete'])) {
 
 // create category
 if (isset($input_vars['op_create'])) {
-    $query = "INSERT INTO {$GLOBALS['table_prefix']}photogalery_rozdil (rozdil,site_id)
+    $query = "INSERT INTO <<tp>>photogalery_rozdil (rozdil,site_id)
           VALUES ('new category',{$this_site_info['id']})";
     \e::db_execute($query);
     header("Location: $this_page_url");
@@ -105,8 +105,8 @@ if(isset($input_vars['namefilter'])){
 
 $photogalery_rozdil_list = \e::db_getrows(
         "SELECT SQL_CALC_FOUND_ROWS pr.*, count(p.id) as n_images
-         FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
-              LEFT JOIN {$GLOBALS['table_prefix']}photogalery p
+         FROM <<tp>>photogalery_rozdil pr
+              LEFT JOIN <<tp>>photogalery p
               ON (pr.rozdil=p.rozdil OR LOCATE(concat(pr.rozdil,'/'),p.rozdil))
          WHERE pr.site_id = {$this_site_info['id']}
              $filter
@@ -115,8 +115,8 @@ $photogalery_rozdil_list = \e::db_getrows(
          LIMIT $start,".\e::config('rows_per_page'));
 //prn($photogalery_rozdil_list);
 //prn("SELECT SQL_CALC_FOUND_ROWS pr.*, count(p.id) as n_images
-//         FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
-//              LEFT JOIN {$GLOBALS['table_prefix']}photogalery p
+//         FROM <<tp>>photogalery_rozdil pr
+//              LEFT JOIN <<tp>>photogalery p
 //              ON (pr.rozdil=p.rozdil OR LOCATE(concat(pr.rozdil,'/'),p.rozdil))
 //         WHERE pr.site_id = {$this_site_info['id']}
 //             $filter

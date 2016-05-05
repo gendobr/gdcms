@@ -37,7 +37,7 @@ function html_get_title($file_content)
 
    if(!isset($input_vars['current_dir']) && isset($input_vars['site_id']))
    {
-       $this_site_info=\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id=".( (int)$input_vars['site_id'] ));
+       $this_site_info=\e::db_getonerow("SELECT * FROM <<tp>>site WHERE id=".( (int)$input_vars['site_id'] ));
        if($this_site_info)
        {
            $current_dir='/'.$this_site_info['dir'];
@@ -170,7 +170,7 @@ function html_get_title($file_content)
       $this_site_dir=ereg_replace('^/+','',$current_dir);
       $this_site_dir=ereg_replace('/.*','',$this_site_dir);
       //prn($current_dir,$this_site_id);
-      $this_site_id=\e::db_getonerow("SELECT id FROM {$table_prefix}site WHERE dir like '".\e::db_escape($this_site_dir)."%' ORDER BY dir ASC");
+      $this_site_id=\e::db_getonerow("SELECT id FROM <<tp>>site WHERE dir like '".\e::db_escape($this_site_dir)."%' ORDER BY dir ASC");
       $this_site_id=$this_site_id['id'];
       //prn($this_site_id);
       $upload_files_link="";

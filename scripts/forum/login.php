@@ -21,7 +21,7 @@ if (isset($input_vars['name'])) {
                      '' as site_visitor_home_page_url,
                      1 as is_cms_user,
                      user_password as site_visitor_password
-              FROM {$table_prefix}user
+              FROM <<tp>>user
               WHERE user_login='{$user_login}'
               UNION
               SELECT site_visitor_id,
@@ -30,7 +30,7 @@ if (isset($input_vars['name'])) {
                      '' as site_visitor_home_page_url,
                      0 as is_cms_user,
                      site_visitor_password
-              FROM {$table_prefix}site_visitor
+              FROM <<tp>>site_visitor
               WHERE site_visitor_login='{$user_login}'";
     //prn($query);
     $info =\e::db_getonerow($query);

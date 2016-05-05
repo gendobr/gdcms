@@ -47,7 +47,7 @@ if (isset($input_vars['url'])) {
     }
     $url = getAsciiUrl($url);
 
-    $query = "SELECT count(*) as n FROM {$GLOBALS['table_prefix']}news WHERE site_id=$site_id AND LOCATE('" . \e::db_escape($url) . "',abstract)";
+    $query = "SELECT count(*) as n FROM <<tp>>news WHERE site_id=$site_id AND LOCATE('" . \e::db_escape($url) . "',abstract)";
     //prn($query);
     $nnews =\e::db_getonerow($query);
     if ($nnews['n'] > 0) {
@@ -197,12 +197,12 @@ if (isset($input_vars['url'])) {
 
 
     // calculate news id
-    $query = "SELECT max(id) AS newid FROM {$table_prefix}news";
+    $query = "SELECT max(id) AS newid FROM <<tp>>news";
     $newid =\e::db_getonerow($query);
     $news_id = $newid = 1 + (int) $newid['newid'];
 
     $query = "
-        INSERT INTO {$GLOBALS['table_prefix']}news 
+        INSERT INTO <<tp>>news 
 	(id, 
 	lang, 
 	site_id, 
@@ -244,7 +244,7 @@ if (isset($input_vars['url'])) {
     \e::db_execute($query);
 
 
-    $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
+    $query = "insert into <<tp>>news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
     \e::db_execute($query);
     echo '{"status":"success"}';
     return;
@@ -253,7 +253,7 @@ if (isset($input_vars['url'])) {
 
 // ------------------ do download - end ----------------------------------------
 # get list of all site categories
-$query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
+$query = "SELECT category_id, category_title, deep FROM <<tp>>category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
 $tmp = \e::db_getrows($query);
 $list_of_categories = Array();
 foreach ($tmp as $tm) {

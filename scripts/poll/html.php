@@ -61,7 +61,7 @@ run('poll/functions');
 $input_vars['page_title']  = 
 $input_vars['page_header'] = $this_site_info['title'] .' - '. $text['Poll_html_code'];
 
-$polls=\e::db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1");
+$polls=\e::db_getrows("SELECT * FROM <<tp>>golos_pynannja WHERE site_id={$site_id} AND is_active=1");
 $pl=Array();
 foreach($polls as $poll) $pl[$poll['id']]=shorten(strip_tags($poll['title']),40);
 $pl=draw_options(isset($input_vars['poll_id'])?$input_vars['poll_id']:'',$pl);

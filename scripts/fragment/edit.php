@@ -13,7 +13,7 @@ $debug=false;
 $fragment_id = checkInt((isset($input_vars['fragment_id']) ? $input_vars['fragment_id'] : 0));
 $lang = get_language('lang');
 
-$query = "SELECT * FROM {$table_prefix}fragment WHERE fragment_id={$fragment_id} AND fragment_lang='$lang'";
+$query = "SELECT * FROM <<tp>>fragment WHERE fragment_id={$fragment_id} AND fragment_lang='$lang'";
 $this_fragment_info =\e::db_getonerow($query);
 if ($debug) {
     prn(htmlspecialchars($query), $this_fragment_info);
@@ -60,7 +60,7 @@ run('lib/class_db_record_editor_extended');
 $rep = new extended_db_record_editor;
 $rep->use_db($GLOBALS['db']);
 $rep->debug = false;
-$rep->set_table("{$table_prefix}fragment");
+$rep->set_table("<<tp>>fragment");
 
 $rep->add_field('fragment_id'
         , 'fragment_id'
@@ -71,7 +71,7 @@ $rep->add_field('fragment_id'
 
 // fragment_lang
 // enum
-$langs=\e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name;");
+$langs=\e::db_getrows("SELECT id, name FROM <<tp>>languages WHERE is_visible=1 ORDER BY name;");
 // prn($langs);
 for($i=0,$cnt=count($langs);$i<$cnt; ++$i){
     $langs[$i]=$langs[$i]['id'].'='.rawurlencode($langs[$i]['name']);

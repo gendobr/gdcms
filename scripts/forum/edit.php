@@ -34,7 +34,7 @@ if (get_level($site_id) == 0) {
 
 //------------------- this_forum_info - begin ----------------------------------
 $forum_id = isset($input_vars['forum_id'])?checkInt($input_vars['forum_id']):0;
-$query = "SELECT * FROM {$table_prefix}forum_list WHERE id=" . $forum_id;
+$query = "SELECT * FROM <<tp>>forum_list WHERE id=" . $forum_id;
 $this_forum_info =\e::db_getonerow($query);
 // prn('$this_forum_info=',$this_forum_info);
 //------------------- this_forum_info - end -------------------------------------
@@ -46,7 +46,7 @@ run('lib/class_db_record_editor_extended');
 $rep = new extended_db_record_editor;
 $rep->use_db($db);
 $rep->debug = false;
-$rep->set_table("{$table_prefix}forum_list");
+$rep->set_table("<<tp>>forum_list");
 
 $rep->add_field('id'
         , 'id'
@@ -92,7 +92,7 @@ $form['hidden_elements'] = $rep->hidden_fields('^forum_id$') .
 
 
 // get list of possible moderators
-$list_of_moderators=\e::db_getrows("select site_visitor_id, site_visitor_login, site_visitor_email from `{$table_prefix}site_visitor` order by site_visitor_login;");
+$list_of_moderators=\e::db_getrows("select site_visitor_id, site_visitor_login, site_visitor_email from `<<tp>>site_visitor` order by site_visitor_login;");
 $tmp="";
 foreach($list_of_moderators as $moderator){
     $tmp.="<div class=\"site_visitor_login\" id=\"site_visitor_{$moderator['site_visitor_id']}\">{$moderator['site_visitor_login']}({$moderator['site_visitor_email']})</div>";
@@ -124,7 +124,7 @@ $input_vars['page_content'] = $rep->draw($form);
 //----------------------------- draw -- end ------------------------------------
 //----------------------------- site context menu - begin ----------------------
 if ($rep->id > 0) {
-    $this_forum_info =\e::db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$rep->id}");
+    $this_forum_info =\e::db_getonerow("SELECT * FROM <<tp>>forum_list WHERE id={$rep->id}");
     run('forum/menu');
     $input_vars['page_menu']['forum'] = Array('title' => $text['Forum'], 'items' => Array());
     $input_vars['page_menu']['forum']['items'] = menu_forum($this_forum_info);

@@ -17,7 +17,7 @@
      return 0;
   }
   $menu_group_id = $input_vars['menu_group_id'];
-  $menu_group_info=\e::db_getonerow("SELECT * FROM {$table_prefix}menu_group WHERE id={$menu_group_id} AND lang='{$lang}'");
+  $menu_group_info=\e::db_getonerow("SELECT * FROM <<tp>>menu_group WHERE id={$menu_group_id} AND lang='{$lang}'");
   $menu_group_info['id'] = checkInt($menu_group_info['id']);
   if($menu_group_info['id']<=0)
   {
@@ -74,11 +74,11 @@
     {
        //prn('Language changed !');
        // get all languages
-          $lang_list     =\e::db_get_associated_array("SELECT id,id FROM {$table_prefix}languages WHERE is_visible=1");
+          $lang_list     =\e::db_get_associated_array("SELECT id,id FROM <<tp>>languages WHERE is_visible=1");
           //prn($lang_list);
 
        // get existing group languages
-          $existing_langs=\e::db_get_associated_array("SELECT lang,lang FROM {$table_prefix}menu_group WHERE id={$menu_group_info['id']}");
+          $existing_langs=\e::db_get_associated_array("SELECT lang,lang FROM <<tp>>menu_group WHERE id={$menu_group_info['id']}");
           //prn($existing_langs);
 
        // get allowed langs
@@ -122,7 +122,7 @@
        /*
        if($menu_group_info['page_id']==0)
        {
-         $query="UPDATE {$table_prefix}menu_group
+         $query="UPDATE <<tp>>menu_group
                  SET  page_id=-1
                  WHERE     site_id={$this_site_info['id']}
                        AND lang = '{$menu_group_info['lang']}'";
@@ -131,7 +131,7 @@
        }
        */
        $messages.="<font color=green>{$text['Changes_saved_successfully']}</font><br>\n";
-       $query="UPDATE {$table_prefix}menu_group
+       $query="UPDATE <<tp>>menu_group
                SET  lang='{$input_vars['menu_group_lang']}'
                    ,html='".\e::db_escape($input_vars['menu_group_html'])."'
                    ,url='".\e::db_escape($input_vars['menu_group_url'])."'
@@ -145,7 +145,7 @@
        \e::db_execute($query);
 
        // update menu items
-          $query="UPDATE {$table_prefix}menu_item
+          $query="UPDATE <<tp>>menu_item
                   SET lang='{$input_vars['menu_group_lang']}'
                   WHERE     lang='{$menu_group_info['lang']}'
                         AND menu_group_id={$menu_group_info['id']}
@@ -172,7 +172,7 @@
     <input type=hidden name=\"lang\" value=\"{$menu_group_info['lang']}\">
     <tr><td><b>{$text['Site']} : </b></td> <td>{$this_site_info['title']}</td></tr>
     <tr><td><b>{$text['Is_main_menu']} : </b></td> <td><select name=menu_group_is_main>".draw_options($menu_group_info['is_main'],Array('-1'=>$text['negative_answer'],'0'=>$text['positive_answer']))."</select></td></tr>
-    <tr><td><b>{$text['Language']}<font color=red>*</font> : </b></td> <td><select name=menu_group_lang>".draw_options($menu_group_info['lang'],\e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name;"))."</select></td></tr>
+    <tr><td><b>{$text['Language']}<font color=red>*</font> : </b></td> <td><select name=menu_group_lang>".draw_options($menu_group_info['lang'],\e::db_getrows("SELECT id, name FROM <<tp>>languages WHERE is_visible=1 ORDER BY name;"))."</select></td></tr>
     <tr><td><b>{$text['Title']}<font color=red>*</font></b> : </td> <td><input type=text name=menu_group_html value=\"".htmlspecialchars($menu_group_info['html'])."\"></td></tr>
     <tr><td><b>{$text['Icon']} : </b></td>   <td><input type=text name=menu_group_icon value=\"".htmlspecialchars($menu_group_info['icon'])."\"></td></tr>
     <tr><td><b>{$text['URL']} : </b></td>   <td><input type=text name=menu_group_url value=\"".htmlspecialchars($menu_group_info['url'])."\"></td></tr>

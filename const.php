@@ -3,7 +3,7 @@
   Constant definition
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com
 */
-$table_prefix='cms_';
+// $table_prefix='cms_';
 define('default_action','main');
 $main_template_name='design/default';
 

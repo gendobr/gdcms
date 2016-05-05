@@ -14,8 +14,8 @@ if(!function_exists('site_get_template')) {
 
 function notify($event,$site_info,$data) {
     $site_templates=Array();
-    $listeners=\e::db_getrows("SELECT * FROM {$GLOBALS['table_prefix']}listener WHERE site_id={$site_info['id']} AND listener_event='{$event}'");
-    //prn("SELECT * FROM {$GLOBALS['table_prefix']}listener WHERE site_id={$site_info['id']} AND listener_event='{$event}'",$listeners);
+    $listeners=\e::db_getrows("SELECT * FROM <<tp>>listener WHERE site_id={$site_info['id']} AND listener_event='{$event}'");
+    //prn("SELECT * FROM <<tp>>listener WHERE site_id={$site_info['id']} AND listener_event='{$event}'",$listeners);
 
     foreach($listeners as $ls) {
         // get site template path
@@ -33,7 +33,7 @@ function notify($event,$site_info,$data) {
 
         ///$notification_queue_subject=notification_transliterate($notification_queue_subject);
         ///$notification_queue_body=notification_transliterate($notification_queue_body);
-        $query="INSERT INTO {$GLOBALS['table_prefix']}notification_queue(
+        $query="INSERT INTO <<tp>>notification_queue(
                     notification_queue_to,
                     notification_queue_subject,
                     notification_queue_body,
@@ -52,7 +52,7 @@ function notify($event,$site_info,$data) {
 }
 
 function notification_queue($sendto,$subj,$body,$handler,$site_id=0) {
-    $query="INSERT INTO {$GLOBALS['table_prefix']}notification_queue(
+    $query="INSERT INTO <<tp>>notification_queue(
                     notification_queue_to,
                     notification_queue_subject,
                     notification_queue_body,
@@ -88,12 +88,12 @@ function notification_queue_next($n_messages=1) {
     $max_attempts=5;
     
     $query="SELECT *
-            FROM {$GLOBALS['table_prefix']}notification_queue
+            FROM <<tp>>notification_queue
             WHERE notification_queue_attempts<$max_attempts
             ORDER BY notification_queue_id ASC LIMIT 0,$n_messages";
     $rows=\e::db_getrows($query);
     foreach($rows as $row) {
-        $query="UPDATE {$GLOBALS['table_prefix']}notification_queue
+        $query="UPDATE <<tp>>notification_queue
                 SET notification_queue_attempts=notification_queue_attempts+1
                 WHERE notification_queue_id={$row['notification_queue_id']}";
         \e::db_execute($query);
@@ -109,10 +109,10 @@ function notification_queue_next($n_messages=1) {
         else $success=false;
 
         if($success) {
-            $query="DELETE FROM {$GLOBALS['table_prefix']}notification_queue
+            $query="DELETE FROM <<tp>>notification_queue
                     WHERE notification_queue_id={$row['notification_queue_id']}
                        OR notification_queue_attempts>=$max_attempts";
-            $query="DELETE FROM {$GLOBALS['table_prefix']}notification_queue
+            $query="DELETE FROM <<tp>>notification_queue
                     WHERE notification_queue_id={$row['notification_queue_id']}
                     ";
                     \e::db_execute($query);

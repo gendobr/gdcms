@@ -41,7 +41,7 @@ run('site/page/menu');
 
 //------------------- site info - begin ----------------------------------------
   $site_id = $this_page_info['site_id'];
-  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$this_page_info['site_id']}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$this_page_info['site_id']}");
   $this_site_info['url']=ereg_replace('/+$','',$this_site_info['url']);
 # prn('$this_site_info=',$this_site_info);
   
@@ -51,7 +51,7 @@ run('site/page/menu');
 
 //------------------- change page status - begin -------------------------------
   //----------------- get possible cense levels - begin ------------------------
-    $query  = "SELECT level FROM {$table_prefix}site_user  WHERE site_id={$this_site_info['id']} AND level<={$user_cense_level} ORDER BY level DESC LIMIT 0,3";
+    $query  = "SELECT level FROM <<tp>>site_user  WHERE site_id={$this_site_info['id']} AND level<={$user_cense_level} ORDER BY level DESC LIMIT 0,3";
     $tmp    = \e::db_getrows($query);
     $levels = Array();
     $levels[] = $user_cense_level;
@@ -103,7 +103,7 @@ run('site/page/menu');
       $new_cense_level=(int)$this_page_info['cense_level'];
     break;
   }
-  $query="UPDATE {$table_prefix}page 
+  $query="UPDATE <<tp>>page 
           SET cense_level={$new_cense_level} 
           WHERE id={$this_page_info['id']} AND lang='{$this_page_info['lang']}'";
   //prn($query);

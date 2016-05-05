@@ -38,7 +38,7 @@ if(get_level($site_id)==0)
   if($delete_msg_id>0)
   {
      //error_reporting(E_ALL);
-     $query="DELETE FROM {$table_prefix}gb WHERE id={$delete_msg_id} AND site={$site_id}";
+     $query="DELETE FROM <<tp>>gb WHERE id={$delete_msg_id} AND site={$site_id}";
      // prn($query);
      \e::db_execute($query);
      // echo mysql_error();
@@ -50,7 +50,7 @@ if(get_level($site_id)==0)
   $show_msg_id=checkInt($input_vars['show_msg_id']);
   if($show_msg_id>0)
   {
-     $query="UPDATE {$table_prefix}gb SET is_visible=1 WHERE id={$show_msg_id} AND site={$site_id}";
+     $query="UPDATE <<tp>>gb SET is_visible=1 WHERE id={$show_msg_id} AND site={$site_id}";
      // prn($query);
      \e::db_execute($query);
   }
@@ -61,7 +61,7 @@ if(get_level($site_id)==0)
   $hide_msg_id=checkInt($input_vars['hide_msg_id']);
   if($hide_msg_id>0)
   {
-     $query="UPDATE {$table_prefix}gb SET is_visible=0 WHERE id={$hide_msg_id} AND site={$site_id}";
+     $query="UPDATE <<tp>>gb SET is_visible=0 WHERE id={$hide_msg_id} AND site={$site_id}";
      // prn($query);
      \e::db_execute($query);
   }
@@ -75,7 +75,7 @@ if(get_level($site_id)==0)
   $re->db=$db;
   $re->distinct=false;
 
-  $re->from="{$table_prefix}gb AS gb";
+  $re->from="<<tp>>gb AS gb";
   $re->add_where(" gb.site={$site_id} ");
 
   $re->add_field( $field='gb.site'

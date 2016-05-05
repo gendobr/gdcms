@@ -111,7 +111,7 @@ if (isset($input_vars['comment_code'])) {
         $_body = ereg_replace(" +<br/>", "<br/>", $_body);
         $_body = ereg_replace("(<br/>\r?\n){2,}", "<br/><br/>", $_body);
 
-        $query = "INSERT INTO {$table_prefix}ec_producer_comment(
+        $query = "INSERT INTO <<tp>>ec_producer_comment(
                     ec_producer_comment_sender_name,
                     ec_producer_comment_body,
                     site_id,
@@ -139,7 +139,7 @@ if (isset($input_vars['comment_code'])) {
 /*
 # -------------------- get list of comments - begin ----------------------------
 $query = "SELECT *
-          FROM {$table_prefix}ec_producer_comment
+          FROM <<tp>>ec_producer_comment
           WHERE site_id=$site_id
             AND ec_producer_id=$ec_producer_id
           ORDER BY ec_producer_comment_datetime ASC";

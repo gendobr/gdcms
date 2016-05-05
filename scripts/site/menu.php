@@ -6,7 +6,7 @@
 
 function menu_site($site_info) {
 
-    global $text,$table_prefix,$db;
+    global $text,$db;
 
     $nocashe="&t=".time();
 
@@ -45,7 +45,7 @@ function menu_site($site_info) {
     );
 
 
-    //$query="SELECT CONCAT(id,'.',lang), CONCAT(id,'.',lang) FROM {$table_prefix}page WHERE site_id={$site_info['id']} AND cense_level>={$site_info['cense_level']}";
+    //$query="SELECT CONCAT(id,'.',lang), CONCAT(id,'.',lang) FROM <<tp>>page WHERE site_id={$site_info['id']} AND cense_level>={$site_info['cense_level']}";
     // prn($query);
     $tor['site/export']=Array(
             'URL'=>"index.php?action=site/page/export&".session_name()."={$GLOBALS['_COOKIE'][session_name()]}&pagelist=all&site_id={$site_info['id']}"
@@ -549,10 +549,10 @@ function get_site_info($site_id,$lang='') {
         return $this_site_info;
     }
 
-    global $table_prefix;
+
     $_id   = (int)$site_id;
 
-    $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$_id}");
+    $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$_id}");
 
     if (!$this_site_info) {
         return false;
@@ -577,7 +577,7 @@ function get_site_info($site_id,$lang='') {
     #{
     $tmp=\e::db_getrows(
             "select u.id, u.full_name, u.user_login, u.email, su.level
-          from {$table_prefix}user AS u, {$table_prefix}site_user AS su
+          from <<tp>>user AS u, <<tp>>site_user AS su
           where u.id = su.user_id AND su.site_id = {$this_site_info['id']}
           order by level desc");
     $this_site_info['managers']=Array();

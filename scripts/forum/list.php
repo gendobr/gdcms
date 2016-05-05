@@ -37,15 +37,15 @@ if(get_level($site_id)==0)
   $delete_forum_id= isset($input_vars['delete_forum_id'])?checkInt($input_vars['delete_forum_id']):0;
   if($delete_forum_id>0)
   {
-     $query="DELETE FROM {$table_prefix}forum_list   WHERE site_id={$site_id} AND id={$delete_forum_id}";
+     $query="DELETE FROM <<tp>>forum_list   WHERE site_id={$site_id} AND id={$delete_forum_id}";
      // prn($query);
      \e::db_execute($query);
 
-     $query="DELETE FROM {$table_prefix}forum_thread WHERE site_id={$site_id} AND forum_id=$delete_forum_id";
+     $query="DELETE FROM <<tp>>forum_thread WHERE site_id={$site_id} AND forum_id=$delete_forum_id";
      // prn($query);
      \e::db_execute($query);
 
-     $query="DELETE FROM {$table_prefix}forum_msg    WHERE site_id={$site_id} AND forum_id=$delete_forum_id";
+     $query="DELETE FROM <<tp>>forum_msg    WHERE site_id={$site_id} AND forum_id=$delete_forum_id";
      // prn($query);
      \e::db_execute($query);
 
@@ -57,7 +57,7 @@ if(get_level($site_id)==0)
   $show_msg_id=isset($input_vars['show_msg_id'])?checkInt($input_vars['show_msg_id']):0;
   if($show_msg_id>0)
   {
-     $query="UPDATE {$table_prefix}gb SET is_visible=1 WHERE id={$show_msg_id} AND site={$site_id}";
+     $query="UPDATE <<tp>>gb SET is_visible=1 WHERE id={$show_msg_id} AND site={$site_id}";
      // prn($query);
      \e::db_execute($query);
   }
@@ -68,7 +68,7 @@ if(get_level($site_id)==0)
   $hide_msg_id=isset($input_vars['hide_msg_id'])?checkInt($input_vars['hide_msg_id']):0;
   if($hide_msg_id>0)
   {
-     $query="UPDATE {$table_prefix}gb SET is_visible=0 WHERE id={$hide_msg_id} AND site={$site_id}";
+     $query="UPDATE <<tp>>gb SET is_visible=0 WHERE id={$hide_msg_id} AND site={$site_id}";
      // prn($query);
      \e::db_execute($query);
   }
@@ -77,22 +77,22 @@ if(get_level($site_id)==0)
 
 //--------------------------- get list -- begin --------------------------------
 /*
-SELECT {$table_prefix}forum_list.* 
-       , count(DISTINCT {$table_prefix}forum_thread.id) AS n_threads
-       , count(DISTINCT {$table_prefix}forum_msg.id) AS n_messages
-       , MAX({$table_prefix}forum_msg.data) AS  last_message_data
+SELECT <<tp>>forum_list.* 
+       , count(DISTINCT <<tp>>forum_thread.id) AS n_threads
+       , count(DISTINCT <<tp>>forum_msg.id) AS n_messages
+       , MAX(<<tp>>forum_msg.data) AS  last_message_data
   FROM 
   (
-   ({$table_prefix}forum_list LEFT JOIN {$table_prefix}forum_thread
-     ON ( {$table_prefix}forum_list.id={$table_prefix}forum_thread.forum_id 
-          AND {$table_prefix}forum_thread.site_id=$site_id)
+   (<<tp>>forum_list LEFT JOIN <<tp>>forum_thread
+     ON ( <<tp>>forum_list.id=<<tp>>forum_thread.forum_id 
+          AND <<tp>>forum_thread.site_id=$site_id)
    )
-   LEFT JOIN {$table_prefix}forum_msg 
-   ON ({$table_prefix}forum_msg.forum_id={$table_prefix}forum_list.id 
-       AND {$table_prefix}forum_msg.site_id=$site_id)
+   LEFT JOIN <<tp>>forum_msg 
+   ON (<<tp>>forum_msg.forum_id=<<tp>>forum_list.id 
+       AND <<tp>>forum_msg.site_id=$site_id)
   )
-  WHERE {$table_prefix}forum_list.site_id=$site_id
-  GROUP BY {$table_prefix}forum_list.id
+  WHERE <<tp>>forum_list.site_id=$site_id
+  GROUP BY <<tp>>forum_list.id
 */
   run("lib/class_report");
   run("lib/class_report_extended");
@@ -102,10 +102,10 @@ SELECT {$table_prefix}forum_list.*
 
   $re->from="
   (
-   ({$table_prefix}forum_list as fl LEFT JOIN {$table_prefix}forum_thread AS ft
+   (<<tp>>forum_list as fl LEFT JOIN <<tp>>forum_thread AS ft
      ON ( fl.id=ft.forum_id AND ft.site_id=$site_id)
    )
-   LEFT JOIN {$table_prefix}forum_msg  AS fm
+   LEFT JOIN <<tp>>forum_msg  AS fm
    ON (fm.forum_id=fl.id AND fm.site_id=$site_id)
   )
   ";

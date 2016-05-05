@@ -4,15 +4,14 @@
 class browse_tree extends tree
 {
    var $exclude='';
-   function browse_tree($category_id,$db,$table_prefix,$site_id)
+   function browse_tree($category_id,$site_id)
    {
-     $this->db=&$db;
      $this->name_id     ='category_id';
      $this->name_start  ='start';
      $this->name_finish ='finish';
      $this->name_deep   ='deep';
-     $this->name_table  =$table_prefix.'category';
-     $this->where[]     =" {$table_prefix}category.site_id={$site_id} ";
+     $this->name_table  ='<<tp>>category';
+     $this->where[]     =" <<tp>>category.site_id={$site_id} ";
      $this->load_node($category_id);
 
      if($this->info)

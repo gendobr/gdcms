@@ -35,7 +35,7 @@ if(get_level($site_id)==0)
 
 //------------------- get forum info - begin -----------------------------------
   $forum_id = checkInt($input_vars['forum_id']);
-  $this_forum_info =\e::db_getonerow("SELECT * FROM {$table_prefix}forum_list WHERE id={$forum_id}");
+  $this_forum_info =\e::db_getonerow("SELECT * FROM <<tp>>forum_list WHERE id={$forum_id}");
   //prn('$this_site_info=',$this_site_info);
   if(checkInt($this_forum_info['id'])<=0)
   {
@@ -51,10 +51,10 @@ if(get_level($site_id)==0)
   $delete_thread_id=checkInt(isset($input_vars['delete_thread_id'])?$input_vars['delete_thread_id']:0);
   if($delete_thread_id>0)
   {
-     $query="DELETE FROM {$table_prefix}forum_thread WHERE id={$delete_thread_id} AND site_id={$site_id} AND forum_id=$forum_id";
+     $query="DELETE FROM <<tp>>forum_thread WHERE id={$delete_thread_id} AND site_id={$site_id} AND forum_id=$forum_id";
      // prn($query);
      \e::db_execute($query);
-     $query="DELETE FROM {$table_prefix}forum_msg    WHERE thread_id={$delete_thread_id} AND site_id={$site_id} AND forum_id=$forum_id";
+     $query="DELETE FROM <<tp>>forum_msg    WHERE thread_id={$delete_thread_id} AND site_id={$site_id} AND forum_id=$forum_id";
      // prn($query);
      \e::db_execute($query);
   }
@@ -65,10 +65,10 @@ if(get_level($site_id)==0)
 //--------------------------- get list -- begin --------------------------------
 /*
     SELECT id,site_id, forum_id,subject,data,
-          ,count(DISTINCT {$table_prefix}forum_msg.id) AS n_messages
-          ,MAX({$table_prefix}forum_msg.data) AS  last_message_data
+          ,count(DISTINCT <<tp>>forum_msg.id) AS n_messages
+          ,MAX(<<tp>>forum_msg.data) AS  last_message_data
     FROM
-        `{$table_prefix}forum_thread` AS ft LEFT JOIN `{$table_prefix}forum_msg` AS fm
+        `<<tp>>forum_thread` AS ft LEFT JOIN `<<tp>>forum_msg` AS fm
           ON (     ft.id=fm.thread_id AND ft.site_id=$site_id )
      WHERE     ft.site_id=$site_id
            AND ft.forum_id=$forum_id
@@ -81,7 +81,7 @@ if(get_level($site_id)==0)
   $re->distinct=false;
 
   $re->from="
-        `{$table_prefix}forum_thread` AS ft LEFT JOIN `{$table_prefix}forum_msg` AS fm
+        `<<tp>>forum_thread` AS ft LEFT JOIN `<<tp>>forum_msg` AS fm
           ON (     ft.id=fm.thread_id AND ft.site_id=$site_id )
   ";
   $re->add_where(" ft.site_id=$site_id   ");

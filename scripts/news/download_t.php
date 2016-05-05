@@ -48,7 +48,7 @@ if (isset($input_vars['url'])) {
     }
     $url = getAsciiUrl($url);
 
-//    $query = "SELECT count(*) as n FROM {$GLOBALS['table_prefix']}news WHERE site_id=$site_id AND LOCATE('" . DbStr($url) . "',abstract)";
+//    $query = "SELECT count(*) as n FROM <<tp>>news WHERE site_id=$site_id AND LOCATE('" . DbStr($url) . "',abstract)";
 //    //prn($query);
 //    $nnews =\e::db_getonerow($query);
 //    if ($nnews['n'] > 0) {
@@ -230,7 +230,7 @@ if (isset($input_vars['url'])) {
     $abstract.= "<p><a href=\"$url\" target=_blank>$url</a></p>";
 exit();
 
-    $query = "SELECT id as newid FROM {$GLOBALS['table_prefix']}news 
+    $query = "SELECT id as newid FROM <<tp>>news 
               WHERE site_id=$site_id AND lang='{$lang}'
                 AND LOCATE('" . \e::db_escape($url) . "',abstract)";
     if($debug) {prn($query);}
@@ -239,7 +239,7 @@ exit();
     if($newid){
         $news_id=$newid['newid'];
         $query = "
-            UPDATE {$GLOBALS['table_prefix']}news 
+            UPDATE <<tp>>news 
             SET title='" . \e::db_escape($title) . "',
                 content='" . \e::db_escape($content) . "', 
                 last_change_date='{$last_change_date}',
@@ -255,23 +255,23 @@ exit();
         if($debug) {prn($query);}
         \e::db_execute($query);
 
-        $query = "DELETE FROM {$GLOBALS['table_prefix']}news_category WHERE news_id={$news_id}";
+        $query = "DELETE FROM <<tp>>news_category WHERE news_id={$news_id}";
         if($debug) {prn($query);}
         \e::db_execute($query);
         
-        $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
+        $query = "insert into <<tp>>news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
         if($debug) {prn($query);}
         \e::db_execute($query);
         echo '{"status":"success","news_id":"'.$news_id.'"}';
 
     }else{
         // calculate news id
-        $query = "SELECT max(id) AS newid FROM {$table_prefix}news";
+        $query = "SELECT max(id) AS newid FROM <<tp>>news";
         $newid =\e::db_getonerow($query);
         $news_id = 1 + (int) $newid['newid'];
 
         $query = "
-            INSERT INTO {$GLOBALS['table_prefix']}news 
+            INSERT INTO <<tp>>news 
             (id, 
             lang, 
             site_id, 
@@ -312,7 +312,7 @@ exit();
         if($debug) {prn($query);}
         \e::db_execute($query);
 
-        $query = "insert into {$GLOBALS['table_prefix']}news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
+        $query = "insert into <<tp>>news_category(news_id, category_id) VALUES({$news_id},{$category_id})";
         if($debug) {prn($query);}
         \e::db_execute($query);
 
@@ -324,7 +324,7 @@ exit();
 
 // ------------------ do download - end ----------------------------------------
 # get list of all site categories
-$query = "SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
+$query = "SELECT category_id, category_title, deep FROM <<tp>>category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
 $tmp = \e::db_getrows($query);
 $list_of_categories = Array();
 foreach ($tmp as $tm) {

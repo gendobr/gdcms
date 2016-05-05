@@ -42,7 +42,7 @@ if($user_cense_level==0)
       foreach( $input_vars['ec_item_comment'] as $ec_item_comment_id ) $query[]=(int)$ec_item_comment_id;
       if(count($query)>0)
       {
-         $query="DELETE FROM {$table_prefix}ec_item_comment WHERE ec_item_comment_id IN(".join(',',$query).")";
+         $query="DELETE FROM <<tp>>ec_item_comment WHERE ec_item_comment_id IN(".join(',',$query).")";
          // prn($query);
          \e::db_execute($query);
       }
@@ -62,9 +62,9 @@ if($user_cense_level==0)
 
 
   $re->from="
-       {$table_prefix}ec_item_comment AS ec_item_comment
+       <<tp>>ec_item_comment AS ec_item_comment
        INNER JOIN
-       {$table_prefix}ec_item AS ec_item
+       <<tp>>ec_item AS ec_item
        ON (     ec_item.ec_item_id=ec_item_comment.ec_item_id
             AND ec_item.ec_item_lang=ec_item_comment.ec_item_lang)
       ";
@@ -90,7 +90,7 @@ if($user_cense_level==0)
                  ,$_group_operation=false);
 
   //---------------- list of languages - begin ---------------------------------
-    $LL = join('&',\e::db_get_associated_array("SELECT ec_item_lang,CONCAT(ec_item_lang,'=',ec_item_lang) FROM {$table_prefix}ec_item WHERE site_id={$site_id}"));
+    $LL = join('&',\e::db_get_associated_array("SELECT ec_item_lang,CONCAT(ec_item_lang,'=',ec_item_lang) FROM <<tp>>ec_item WHERE site_id={$site_id}"));
     $re->add_field( $field='ec_item.ec_item_lang'
                    ,$alias='ec_item_lang'
                    ,$type ='enum:'.$LL

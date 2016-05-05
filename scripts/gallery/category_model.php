@@ -105,8 +105,8 @@ class GalleryCategory {
     private function get_category_info() {
         $url_details_pattern = str_replace(Array('{site_id}', '{lang}', '{start}', '{keywords}'), Array($this->this_site_info['id'], $this->lang, 0, ''), $this->category_details_url_template);
 
-        //$query = "SELECT * FROM {$GLOBALS['table_prefix']}photogalery_rozdil WHERE rozdil='" . DbStr($this->rozdilizformy) . "'";
-        $query = "SELECT * FROM {$GLOBALS['table_prefix']}photogalery_rozdil 
+        //$query = "SELECT * FROM <<tp>>photogalery_rozdil WHERE rozdil='" . DbStr($this->rozdilizformy) . "'";
+        $query = "SELECT * FROM <<tp>>photogalery_rozdil 
                   WHERE rozdil='" . \e::db_escape($this->rozdilizformy) . "' 
                      OR rozdil2='" . \e::db_escape($this->rozdilizformy) . "'";
         $this_category_info =\e::db_getonerow($query);
@@ -194,8 +194,8 @@ class GalleryCategory {
                 p.pidpys as main_image_title,
                 pr.weight,
                 count(p.photos_m) as n_images
-            FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr,
-                 {$GLOBALS['table_prefix']}photogalery p
+            FROM <<tp>>photogalery_rozdil pr,
+                 <<tp>>photogalery p
             WHERE pr.site_id = {$this_site_info['id']}
               AND p.vis
               AND p.site = {$this_site_info['id']}
@@ -222,8 +222,8 @@ class GalleryCategory {
             //    p.pidpys as main_image_title,
             //    pr.weight,
             //    count(p.photos_m) as n_images
-            //FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr,
-            //     {$GLOBALS['table_prefix']}photogalery p
+            //FROM <<tp>>photogalery_rozdil pr,
+            //     <<tp>>photogalery p
             //WHERE pr.site_id = {$this_site_info['id']}
             //  AND LOCATE('/',pr.rozdil) = 0
             //  AND p.vis
@@ -240,8 +240,8 @@ class GalleryCategory {
                 p.pidpys as main_image_title,
                 pr.weight,
                 count(p.photos_m) as n_images
-            FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr,
-                 {$GLOBALS['table_prefix']}photogalery p
+            FROM <<tp>>photogalery_rozdil pr,
+                 <<tp>>photogalery p
             WHERE pr.site_id = {$this_site_info['id']}
               AND LOCATE('/',pr.rozdil) = 0
               AND p.vis
@@ -261,15 +261,15 @@ class GalleryCategory {
         // -------------------- category icons - begin -------------------------
         $rozdil_images_list = \e::db_getrows(
                 "SELECT pr.id,p.photos,p.photos_m,pr.rozdil, pr.site_id, pr.image_id, pr.rozdil2
-         FROM {$GLOBALS['table_prefix']}photogalery_rozdil as pr
-             ,{$GLOBALS['table_prefix']}photogalery as p
+         FROM <<tp>>photogalery_rozdil as pr
+             ,<<tp>>photogalery as p
          WHERE pr.site_id = {$this_site_info['id']}
            AND p.site = {$this_site_info['id']}
            AND p.id=pr.image_id
          ");
         //prn("SELECT pr.id,p.photos,p.photos_m,pr.rozdil, pr.site_id, pr.image_id, pr.rozdil2
-        // FROM {$GLOBALS['table_prefix']}photogalery_rozdil as pr
-        //     ,{$GLOBALS['table_prefix']}photogalery as p
+        // FROM <<tp>>photogalery_rozdil as pr
+        //     ,<<tp>>photogalery as p
         // WHERE pr.site_id = {$this_site_info['id']}
         //   AND p.site = {$this_site_info['id']}
         //   AND p.id=pr.image_id"
@@ -328,8 +328,8 @@ function gallery_get_children_of($this_site_info, $lang, $rozdilizformy = false)
         //                p.pidpys as main_image_title,
         //                pr.weight,
         //                count(p.photos_m) as n_images
-        //            FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr,
-        //                 {$GLOBALS['table_prefix']}photogalery p
+        //            FROM <<tp>>photogalery_rozdil pr,
+        //                 <<tp>>photogalery p
         //            WHERE pr.site_id = {$this_site_info['id']}
         //              AND p.vis
         //              AND p.site = {$this_site_info['id']}
@@ -344,8 +344,8 @@ function gallery_get_children_of($this_site_info, $lang, $rozdilizformy = false)
                 p.pidpys as main_image_title,
                 pr.weight,
                 count(p.photos_m) as n_images
-            FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr,
-                 {$GLOBALS['table_prefix']}photogalery p
+            FROM <<tp>>photogalery_rozdil pr,
+                 <<tp>>photogalery p
             WHERE pr.site_id = {$this_site_info['id']}
               AND p.vis
               AND p.site = {$this_site_info['id']}
@@ -363,8 +363,8 @@ function gallery_get_children_of($this_site_info, $lang, $rozdilizformy = false)
             p.pidpys as main_image_title,
             pr.weight,
             count(p.photos_m) as n_images
-        FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr,
-             {$GLOBALS['table_prefix']}photogalery p
+        FROM <<tp>>photogalery_rozdil pr,
+             <<tp>>photogalery p
         WHERE pr.site_id = {$this_site_info['id']}
           AND LOCATE('/',pr.rozdil) = 0
           AND p.vis
@@ -378,8 +378,8 @@ function gallery_get_children_of($this_site_info, $lang, $rozdilizformy = false)
     // -------------------- category icons - begin ---------------------------------
     $rozdil_images_list = \e::db_getrows(
             "SELECT pr.id,p.photos,p.photos_m,pr.rozdil, pr.site_id, pr.image_id, pr.rozdil2
-         FROM {$GLOBALS['table_prefix']}photogalery_rozdil as pr
-             ,{$GLOBALS['table_prefix']}photogalery as p
+         FROM <<tp>>photogalery_rozdil as pr
+             ,<<tp>>photogalery as p
          WHERE pr.site_id = {$this_site_info['id']}
            AND p.site = {$this_site_info['id']}
            AND p.id=pr.image_id
@@ -469,7 +469,7 @@ function gallery_breadcrumbs($rozdilizformy, $site_id, $lang, $keywords) {
 function gallery_get_all_categories($site_id, $parent = false) {
     $rozdil_list_tmp = \e::db_getrows(
             "SELECT DISTINCT rozdil, rozdil2
-             FROM {$GLOBALS['table_prefix']}photogalery
+             FROM <<tp>>photogalery
              WHERE site = {$site_id}
              ORDER BY rozdil");
     //prn($rozdil_list_tmp);
@@ -517,7 +517,7 @@ function gallery_synchronize_categories($site_id) {
     // get categories from photogalery_rozdil
     $photogalery_rozdil_list = \e::db_getrows(
             "SELECT *
-             FROM {$GLOBALS['table_prefix']}photogalery_rozdil
+             FROM <<tp>>photogalery_rozdil
              WHERE site_id = {$site_id}
              ORDER BY rozdil");
     // prn($photogalery_rozdil_list);//###
@@ -544,7 +544,7 @@ function gallery_synchronize_categories($site_id) {
         $new[] = "({$site_id},'" . \e::db_escape($existing_categories[$i]) . "','" . \e::db_escape(\core\fileutils::encode_dir_name($existing_categories[$i])) . "')";
     }
     if (count($new) > 0) {
-        $query = "INSERT INTO {$GLOBALS['table_prefix']}photogalery_rozdil(site_id,rozdil,rozdil2) VALUES " . join(',', $new) . "";
+        $query = "INSERT INTO <<tp>>photogalery_rozdil(site_id,rozdil,rozdil2) VALUES " . join(',', $new) . "";
         // prn($query);
         \e::db_execute($query);
     }

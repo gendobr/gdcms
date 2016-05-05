@@ -22,7 +22,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
     $lng = $input_vars['news_lang'];
     if ($input_vars['news_lang'] != $this_news_info['lang']) {
         # -------------------- get existing page languages - begin ---------------
-        $query = "SELECT lang FROM {$table_prefix}news WHERE id={$this_news_info['id']}";
+        $query = "SELECT lang FROM <<tp>>news WHERE id={$this_news_info['id']}";
         $tmp = \e::db_getrows($query);
         // prn($tmp);
         $existins_langs = Array();
@@ -32,7 +32,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
         # -------------------- get available languages - begin -------------------
         $existins_langs[] = '';
         $query = "SELECT id
-                FROM {$table_prefix}languages
+                FROM <<tp>>languages
                 WHERE is_visible=1 AND id NOT IN('" . join("','", $existins_langs) . "')";
         // prn($query);
         $tmp = \e::db_getrows($query);
@@ -167,11 +167,11 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
         $query = Array();
         foreach ($tmp as $cat)
             $query[] = (int) $cat;
-        \e::db_execute("DELETE FROM  {$table_prefix}news_category WHERE news_id={$this_news_info['id']}");
+        \e::db_execute("DELETE FROM  <<tp>>news_category WHERE news_id={$this_news_info['id']}");
         if (count($query) > 0) {
-            $query = "INSERT INTO {$table_prefix}news_category(news_id ,category_id)
+            $query = "INSERT INTO <<tp>>news_category(news_id ,category_id)
                   SELECT {$this_news_info['id']} as news_id, category_id
-                  FROM {$table_prefix}category
+                  FROM <<tp>>category
                   WHERE start>0
                     AND site_id={$site_id}
                     AND category_id in(" . join(',', $query) . ")";
@@ -193,7 +193,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
     // news_code must be unique
     $this_news_info['news_code'] = \core\fileutils::encode_dir_name(trim($input_vars['news_code']));
     if (strlen($this_news_info['news_code']) > 0) {
-        $query = "SELECT count(id) as n_news FROM {$table_prefix}news WHERE id<>{$this_news_info['id']} AND news_code='" . \e::db_escape($this_news_info['news_code']) . "'";
+        $query = "SELECT count(id) as n_news FROM <<tp>>news WHERE id<>{$this_news_info['id']} AND news_code='" . \e::db_escape($this_news_info['news_code']) . "'";
         $n_other_news = \e::db_getonerow($query);
         if ($n_other_news['n_news'] > 0) {
             $message.="{$text['ERROR']} : " . text('News_choose_other_code') . "<br>\n";
@@ -202,7 +202,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
     } else {
         $this_news_info['news_code'] = \core\fileutils::encode_dir_name(trim($this_news_info['title']));
 
-        $query = "SELECT count(id) as n_news FROM {$table_prefix}news WHERE id<>{$this_news_info['id']} AND news_code='" . \e::db_escape($this_news_info['news_code']) . "'";
+        $query = "SELECT count(id) as n_news FROM <<tp>>news WHERE id<>{$this_news_info['id']} AND news_code='" . \e::db_escape($this_news_info['news_code']) . "'";
         $n_other_news = \e::db_getonerow($query);
         if ($n_other_news['n_news'] > 0) {
             $this_news_info['news_code'].=$this_news_info['id'] . '-' . $this_news_info['lang'];
@@ -224,7 +224,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
     if ($all_is_ok) {
         $message.="<font color=green>{$text['Page_saved_successfully']}</font><br>\n";
 
-        $query = "UPDATE {$table_prefix}news
+        $query = "UPDATE <<tp>>news
                SET
                   lang='{$lng}'
                  ,site_id='{$this_news_info['site_id']}'
@@ -247,7 +247,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
         \e::db_execute($query);
 
         # ------------------ rebuild tags - begin -------------------------------
-        \e::db_execute("DELETE FROM {$table_prefix}news_tags WHERE news_id={$this_news_info['id']} AND lang='{$this_news_info['lang']}'");
+        \e::db_execute("DELETE FROM <<tp>>news_tags WHERE news_id={$this_news_info['id']} AND lang='{$this_news_info['lang']}'");
         if (strlen(trim($this_news_info['tags'])) > 0) {
             // $query=explode(',',$this_news_info['tags']);
             $query = preg_split("/,|;|\\./", $this_news_info['tags']);
@@ -258,7 +258,7 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
                     if (strlen($query[$i]) > 0)
                         $query[$i] = "({$this_news_info['id']},'{$lng}','" . \e::db_escape($query[$i]) . "')";
                 }
-                $query = "INSERT INTO {$table_prefix}news_tags(news_id,lang,tag) VALUES" . join(',', $query);
+                $query = "INSERT INTO <<tp>>news_tags(news_id,lang,tag) VALUES" . join(',', $query);
                 \e::db_execute($query);
             }
         }

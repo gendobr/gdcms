@@ -43,7 +43,7 @@ if(!$_template){
 $query="SELECT YEAR(last_change_date) as news_year,
                MONTH(last_change_date) as news_month,
                count(id) as n_news
-        FROM {$table_prefix}news
+        FROM <<tp>>news
         WHERE site_id={$this_site_info['id']}
           AND lang='".\e::db_escape($lang)."'
           AND cense_level>={$this_site_info['cense_level']}

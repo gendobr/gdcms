@@ -34,7 +34,7 @@ if(get_level($site_id)==0) {
 // ------------------ update poll ordering - begin -----------------------------
    if(isset($input_vars['ordering']) && is_array($input_vars['ordering'])){
       foreach($input_vars['ordering'] as $key=>$val){
-          $query="UPDATE {$table_prefix}golos_pynannja
+          $query="UPDATE <<tp>>golos_pynannja
                   SET ordering=".( (int)$val )."
                   WHERE site_id=$site_id AND id=".( (int)$key );
           \e::db_execute($query);
@@ -98,7 +98,7 @@ $page_content.="<tr><td></td><td></td><td><b><a href=index.php?action=poll/edit&
 
 $start=(isset($input_vars['start']))?abs(round(1*$input_vars['start'])):0;
 
-$result =\e::db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} ORDER BY `ordering` ASC LIMIT $start, 100");
+$result =\e::db_getrows("SELECT * FROM <<tp>>golos_pynannja WHERE site_id={$site_id} ORDER BY `ordering` ASC LIMIT $start, 100");
 $row_id=0;
 foreach ($result as $row) {
     $row_id++;
@@ -134,7 +134,7 @@ $page_content.="
     </form>";
 
 
-$result1 = \e::db_getonerow("SELECT count(*) as n FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id}");
+$result1 = \e::db_getonerow("SELECT count(*) as n FROM <<tp>>golos_pynannja WHERE site_id={$site_id}");
 $num = $result1['n'];
 $pages='';
 $url_prefix=site_root_URL.'/index.php?'.query_string("ordering|start").'&start=';

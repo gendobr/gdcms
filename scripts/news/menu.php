@@ -6,15 +6,15 @@
  */
 
 function news_info($news_id, $lang){
-    global $table_prefix;
-    $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='$lang'";
+
+    $query = "SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='$lang'";
     $this_news_info = \e::db_getonerow($query);
     $this_news_info['news_icon']=  json_decode($this_news_info['news_icon'], true);
     return $this_news_info;
 }
 
 function menu_news($news_info) {
-    global $text, $db, $table_prefix;
+    global $text, $db;
     $tor = Array();
     $sid = session_name() . '=' . $GLOBALS['_COOKIE'][session_name()];
 
@@ -120,7 +120,7 @@ function news_get_view($news_list, $lang) {
         $ids[] = (int) $news_list[$i]['id'];
     }
 
-    $query = "select * from {$GLOBALS['table_prefix']}news_category where news_id in (" . join(',', $ids) . ")";
+    $query = "select * from <<tp>>news_category where news_id in (" . join(',', $ids) . ")";
     $categories = \e::db_getrows($query);
     // prn($categories);
     $category_ids = Array(0 => 1);
@@ -134,7 +134,7 @@ function news_get_view($news_list, $lang) {
     }
     // prn('$category_ids', $category_ids, '$_category', $_category);
 
-    $query = "SELECT * FROM {$GLOBALS['table_prefix']}category WHERE category_id in(" . join(',', array_keys($category_ids)) . ")";
+    $query = "SELECT * FROM <<tp>>category WHERE category_id in(" . join(',', array_keys($category_ids)) . ")";
     $tmp = \e::db_getrows($query);
     // prn($query,$tmp);
     $ncat = count($tmp);
@@ -204,7 +204,7 @@ function news_tag_links($tag_string,$site_id,$lang) {
 
 
 function menu_news_comment($info){
-    global $text, $db, $table_prefix;
+    global $text, $db;
     $tor = Array();
     $sid = session_name() . '=' . $GLOBALS['_COOKIE'][session_name()];
     $tor['news/view'] = Array(
@@ -283,8 +283,8 @@ class CategoryNews {
             $this->tagSelector = $tmp;
         } else {
             //$query = "SELECT DISTINCT news_tags.tag, news_tags.lang, count(news.id) as N
-            //           FROM {$GLOBALS['table_prefix']}news_tags AS news_tags
-            //              , {$GLOBALS['table_prefix']}news AS news
+            //           FROM <<tp>>news_tags AS news_tags
+            //              , <<tp>>news AS news
             //           WHERE news_tags.news_id=news.id
             //             AND news.lang=news_tags.lang
             //             AND news.cense_level>={$this->this_site_info['cense_level']}
@@ -293,12 +293,12 @@ class CategoryNews {
             //           GROUP BY news_tags.tag
             //           ORDER BY news_tags.lang, news_tags.tag";
             $query = "SELECT DISTINCT news_tags.tag, news_tags.lang, count(news.id) as N
-                       FROM {$GLOBALS['table_prefix']}news_tags AS news_tags
-                          , {$GLOBALS['table_prefix']}news AS news
+                       FROM <<tp>>news_tags AS news_tags
+                          , <<tp>>news AS news
                           , (
                           select news_category.news_id
-                        from  {$GLOBALS['table_prefix']}category AS category
-                              inner join {$GLOBALS['table_prefix']}news_category as news_category ON news_category.category_id=category.category_id
+                        from  <<tp>>category AS category
+                              inner join <<tp>>news_category as news_category ON news_category.category_id=category.category_id
                         where {$this->category_info['start']}<=category.start AND category.finish <={$this->category_info['finish']}
                       ) AS nc
                        WHERE news_tags.news_id=news.id
@@ -428,7 +428,7 @@ class CategoryNews {
             );
             // get min and max years
             $query="SELECT max(news.last_change_date) as maxdate ,min(news.last_change_date) as mindate
-                    FROM {$GLOBALS['table_prefix']}news news
+                    FROM <<tp>>news news
                     WHERE site_id={$this->this_site_info['id']}
                       AND lang='" . \e::db_escape($this->lang) . "'";
             $minmax=  \e::db_getonerow($query);
@@ -549,7 +549,7 @@ class CategoryNews {
         if($this->includeChildren){
             // get all the visible children
             $query = "SELECT ch.category_id, BIT_AND(pa.is_visible) as visible
-                FROM {$GLOBALS['table_prefix']}category ch, {$GLOBALS['table_prefix']}category pa
+                FROM <<tp>>category ch, <<tp>>category pa
                 WHERE pa.start<=ch.start AND ch.finish<=pa.finish
                   AND {$this->category_info['start']}<=ch.start AND ch.finish<={$this->category_info['finish']}
                   AND pa.site_id=$site_id and ch.site_id=$site_id
@@ -598,13 +598,13 @@ class CategoryNews {
             $query=  array_unique($query);
             //$tag_restriction = "AND news.id IN( 
             //        SELECT news_tags.news_id
-            //        FROM {$GLOBALS['table_prefix']}news_tags AS news_tags
+            //        FROM <<tp>>news_tags AS news_tags
             //        WHERE news_tags.tag in(".join(',',$query).")
             // )";
                     
             $tag_restriction = "AND news.id IN(
                 select news_id from ( SELECT news_tags.news_id, count(distinct news_tags.tag) nt 
-                FROM {$GLOBALS['table_prefix']}news_tags AS news_tags 
+                FROM <<tp>>news_tags AS news_tags 
                 WHERE news_tags.tag in(".join(',',$query).")  group by news_tags.news_id having nt=".count($query)." ) fre
             )";
             
@@ -632,13 +632,13 @@ class CategoryNews {
                   ,news.news_extra_1
                   ,news.news_extra_2
                   ,IF(LENGTH(TRIM(news.content))>0,1,0) as content_present
-            FROM {$GLOBALS['table_prefix']}news news
+            FROM <<tp>>news news
             WHERE site_id=$site_id
               AND lang='" . \e::db_escape($this->lang) . "'
               AND cense_level>={$this->this_site_info['cense_level']}
               AND last_change_date<=now()
               AND ( expiration_date is null OR now()<=expiration_date )
-              AND news.id in(SELECT news_id FROM {$GLOBALS['table_prefix']}news_category WHERE category_id in(" . join(',', $children) . ") )
+              AND news.id in(SELECT news_id FROM <<tp>>news_category WHERE category_id in(" . join(',', $children) . ") )
               {$date_restriction}
               {$tag_restriction}
             ".( $this->ordering ? "ORDER BY {$this->ordering}" : '')."

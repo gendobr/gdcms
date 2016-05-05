@@ -13,7 +13,7 @@
 $debug=false;
 //------------------- get site info - begin ------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
   if($debug) prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -39,7 +39,7 @@ if($user_level==0)
   $news_id   = (int)$input_vars['news_id'];
   $news_lang = isset($input_vars['news_lang'])?get_language('news_lang'):'';
 
-  $query = "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND site_id={$site_id}";
+  $query = "SELECT * FROM <<tp>>news WHERE id={$news_id} AND site_id={$site_id}";
   if(strlen($news_lang)>0) $query .= " AND lang='".\e::db_escape($news_lang)."'";
 
   $this_news_info=\e::db_getonerow($query);
@@ -53,7 +53,7 @@ if($user_level==0)
     // add the same news in another language
 
     //-------------------- get existing page languages - begin -----------------
-      $query="SELECT lang FROM {$table_prefix}news WHERE id={$news_id}";
+      $query="SELECT lang FROM <<tp>>news WHERE id={$news_id}";
       $tmp=\e::db_getrows($query);
       // prn($tmp);
       $existins_langs=Array(0=>'');
@@ -61,14 +61,14 @@ if($user_level==0)
     //-------------------- get existing page languages - end -------------------
 
     //-------------------- get available languages - begin ---------------------
-      $query="SELECT id FROM {$table_prefix}languages WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."') LIMIT 0,1";
+      $query="SELECT id FROM <<tp>>languages WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."') LIMIT 0,1";
       // prn($query);
       $tmp=\e::db_getonerow($query);
       // prn($tmp);
     //-------------------- get available languages - end -----------------------
     if(strlen($tmp['id'])>0)
     {
-      $query = "INSERT INTO {$table_prefix}news(
+      $query = "INSERT INTO <<tp>>news(
                     id
                    ,lang
                    ,site_id
@@ -104,12 +104,12 @@ if($user_level==0)
 
 
     // calculate news id
-    $query = "SELECT max(id) AS newid FROM {$table_prefix}news";
+    $query = "SELECT max(id) AS newid FROM <<tp>>news";
     $newid=\e::db_getonerow($query);
     $news_id=$newid=1+(int)$newid['newid'];
 
     // insert new record
-    $query = "INSERT INTO {$table_prefix}news(id, lang, site_id, title, cense_level, last_change_date,creation_date, weight)
+    $query = "INSERT INTO <<tp>>news(id, lang, site_id, title, cense_level, last_change_date,creation_date, weight)
               values($newid, '".\e::config('default_language')."', $site_id, '{$text['New_page']}',0, NOW(),NOW(),0)";
     \e::db_execute($query);
 

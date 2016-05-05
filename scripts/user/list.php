@@ -11,10 +11,10 @@ if(!is_admin()) return 0;
 $input_vars['delete_user_id']=isset($input_vars['delete_user_id'])?((int)$input_vars['delete_user_id']):0;
 if($input_vars['delete_user_id']>1 && $input_vars['delete_user_id']!=$_SESSION['user_info']['id'])
 {
-  $query="DELETE FROM {$table_prefix}site_user WHERE user_id={$input_vars['delete_user_id']}";
+  $query="DELETE FROM <<tp>>site_user WHERE user_id={$input_vars['delete_user_id']}";
   \e::db_execute($query);
 
-  $query="DELETE FROM {$table_prefix}user WHERE id={$input_vars['delete_user_id']}";
+  $query="DELETE FROM <<tp>>user WHERE id={$input_vars['delete_user_id']}";
   \e::db_execute($query);
   
   $input_vars['delete_user_id']=0;
@@ -29,7 +29,7 @@ if($input_vars['delete_user_id']>1 && $input_vars['delete_user_id']!=$_SESSION['
   $re->exclude='/^delete_/';
   $re->distinct=false;
 
-  $re->from="{$table_prefix}user AS user";
+  $re->from="<<tp>>user AS user";
 
 
   $re->add_field( $field='user.id'

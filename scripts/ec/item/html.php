@@ -6,7 +6,7 @@
 $debug=false;
 //------------------- site info - begin ----------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info =\e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info =\e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
   if($debug) prn('$this_site_info=',$this_site_info);
 //------------------- site info - end ------------------------------------------
 $GLOBALS['main_template_name']='design/popup';
@@ -18,7 +18,7 @@ $GLOBALS['main_template_name']='design/popup';
 
 
 # ------------------------ list of categories - begin --------------------------
-  $query="SELECT ec_category_id, ec_category_title, deep FROM {$table_prefix}ec_category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
+  $query="SELECT ec_category_id, ec_category_title, deep FROM <<tp>>ec_category WHERE start>0 AND site_id={$site_id} ORDER BY start ASC";
   $tmp=\e::db_getrows($query);
   $list_of_categories=Array();
   foreach($tmp as $tm) $list_of_categories[$tm['ec_category_id']]=str_repeat(' + ',$tm['deep']-1).get_langstring($tm['ec_category_title']);
@@ -45,7 +45,7 @@ foreach($tmp as $tm)
 
 # ------------------------ list of producers - begin --------------------------
   $query="SELECT ec_producer_id, ec_producer_title
-          FROM {$table_prefix}ec_producer
+          FROM <<tp>>ec_producer
           WHERE site_id={$site_id}
           ORDER BY ec_producer_title ASC";
   $tmp=\e::db_getrows($query);

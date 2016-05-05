@@ -43,7 +43,7 @@ if($user_cense_level==0)
       {
          $query=Array();
          foreach($val as $fl=>$va) $query[]="$fl='".DbStr($va)."'";
-         $query="UPDATE {$table_prefix}ec_item SET ".join(',',$query)." WHERE ec_item_id=$ec_item_id LIMIT 1";
+         $query="UPDATE <<tp>>ec_item SET ".join(',',$query)." WHERE ec_item_id=$ec_item_id LIMIT 1";
          //prn($query);
          \e::db_execute($query);
       }
@@ -59,7 +59,7 @@ if($user_cense_level==0)
   $re->exclude='/^ec_item/';
 
 
-  $re->from="{$table_prefix}ec_producer AS ec_producer";
+  $re->from="<<tp>>ec_producer AS ec_producer";
   $re->add_where(" ec_producer.site_id={$site_id} ");
 
   $re->add_field( $field='ec_producer.ec_producer_id'

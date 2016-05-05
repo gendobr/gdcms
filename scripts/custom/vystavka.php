@@ -49,7 +49,7 @@
   else
   {
       $ec_item_tags='';
-      $query="select distinct ec_item_tag from {$table_prefix}ec_item_tags where  site_id=$site_id order by ec_item_tag asc";
+      $query="select distinct ec_item_tag from <<tp>>ec_item_tags where  site_id=$site_id order by ec_item_tag asc";
       $list_of_tags=\e::db_getrows($query);
       $cnt=count($list_of_tags);
       for($i=0;$i<$cnt;$i++) $list_of_tags[$i]=$list_of_tags[$i]['ec_item_tag'];
@@ -71,7 +71,7 @@
 
 # -------------------- get list of page languages - begin ----------------------
     $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
-                     FROM {$table_prefix}ec_item  AS ec_item
+                     FROM <<tp>>ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
     $existing_languages=Array();

@@ -6,7 +6,7 @@
 
 
 function run($fname,$arguments=Array()) {
-    global $input_vars,$db,$table_prefix,$text,$main_template_name;
+    global $input_vars,$text,$main_template_name;
     $actions = explode(',',$fname);
 
     extract($arguments);
@@ -782,7 +782,7 @@ function is_logged() {
 
 //----------------------------- get_level() - begin ----------------------------
 function get_level($site_id, $user_id=0) {
-    global $table_prefix, $db;
+
     $debug=false;
 
     if(!is_logged()) {
@@ -795,13 +795,13 @@ function get_level($site_id, $user_id=0) {
 
     if(is_admin()) {
         if($debug) prn('is admin');
-        $query = "SELECT cense_level FROM {$table_prefix}site WHERE id={$sid}";
+        $query = "SELECT cense_level FROM <<tp>>site WHERE id={$sid}";
         $tor = \e::db_getonerow($query);
         return $tor['cense_level'];
     }
 
     if($uid<=0) $uid=checkInt($_SESSION['user_info']['id']);
-    $query = "SELECT level FROM {$table_prefix}site_user WHERE site_id={$sid} AND user_id={$uid}";
+    $query = "SELECT level FROM <<tp>>site_user WHERE site_id={$sid} AND user_id={$uid}";
     if($debug) prn($query);
     $tor = \e::db_getonerow($query);
     return checkInt($tor['level']);
@@ -817,7 +817,7 @@ function do_login($lg,$ps,$_prev_info=Array()){
 		}
 		else{
             //------------------- get user info -- begin ------------------------------
-            $tmp_user_info=\e::db_getonerow( "SELECT * FROM {$GLOBALS['table_prefix']}user WHERE user_login='".\e::db_escape($lg)."'");
+            $tmp_user_info=\e::db_getonerow( "SELECT * FROM <<tp>>user WHERE user_login='".\e::db_escape($lg)."'");
             //------------------- get user info -- end --------------------------------
 		}
         $tmp_user_info['error_msg']='';
@@ -828,21 +828,21 @@ function do_login($lg,$ps,$_prev_info=Array()){
             //------------------- get user sites - begin ---------------------------
             if($tmp_user_info['id']==1) {
                 $tmp_user_info['sites']=\e::db_get_associated_array(
-                        " SELECT id AS `key`, 1000 AS `value` FROM {$GLOBALS['table_prefix']}site
+                        " SELECT id AS `key`, 1000 AS `value` FROM <<tp>>site
                            UNION
-                           SELECT dir AS `key`, 1000 AS `value` FROM {$GLOBALS['table_prefix']}site" );
+                           SELECT dir AS `key`, 1000 AS `value` FROM <<tp>>site" );
             }
             else {
                 $tmp_user_info['sites']=\e::db_get_associated_array(
                         "SELECT site_id AS `key`, level AS `value`
-                    FROM {$GLOBALS['table_prefix']}site_user
+                    FROM <<tp>>site_user
                     WHERE user_id='{$tmp_user_info['id']}'
 
                     UNION
 
                     SELECT DISTINCT site.dir AS `key`, site_user.level AS `value`
-                    FROM {$GLOBALS['table_prefix']}site_user AS site_user
-                      ,{$GLOBALS['table_prefix']}site AS site
+                    FROM <<tp>>site_user AS site_user
+                      ,<<tp>>site AS site
                     WHERE site.id=site_user.site_id
                       AND user_id='{$tmp_user_info['id']}'");
             }
@@ -954,7 +954,7 @@ function ml($a,$s) {
     $_d=date('Y-m-d H:i:s');
     $_u=\e::db_escape($_SESSION['user_info']['user_login']);
     $_s=\e::db_escape(serialize($s));
-    \e::db_execute("insert into {$GLOBALS['table_prefix']}ml(a,d,u,s) VALUES('$_a','$_d','$_u','$_s')");
+    \e::db_execute("insert into <<tp>>ml(a,d,u,s) VALUES('$_a','$_d','$_u','$_s')");
 }
 
 

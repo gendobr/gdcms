@@ -130,7 +130,7 @@ if(isset($input_vars['imh']) && is_array($input_vars['imh'])) {
         }
     }
     if(strlen($report)>0) {
-        $query="UPDATE {$table_prefix}ec_item SET cache_datetime=null,cached_info=null,ec_item_img='".\e::db_escape(trim(join("\n",$this_ec_item_info['ec_item_img']).$report))."' WHERE ec_item_id=$ec_item_id AND ec_item_lang='$ec_item_lang' AND site_id=$site_id";
+        $query="UPDATE <<tp>>ec_item SET cache_datetime=null,cached_info=null,ec_item_img='".\e::db_escape(trim(join("\n",$this_ec_item_info['ec_item_img']).$report))."' WHERE ec_item_id=$ec_item_id AND ec_item_lang='$ec_item_lang' AND site_id=$site_id";
         // prn($query);
         \e::db_execute($query);
         $this_ec_item_info=get_ec_item_info($ec_item_id,$ec_item_lang);

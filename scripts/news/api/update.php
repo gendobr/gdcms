@@ -76,7 +76,7 @@ if (!$found) {
 }
 
 $news_id=(int)$input_vars['id'];
-$news_info =\e::db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'");
+$news_info =\e::db_getonerow("SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='{$lang}'");
 
 if (!$news_info) {
     $feedback = Array(
@@ -169,7 +169,7 @@ $news_extra_2 = \e::db_escape($input_vars['news_extra_2']);
 
 
 $query = "
-UPDATE {$GLOBALS['table_prefix']}news 
+UPDATE <<tp>>news 
 SET 
     title='{$title}', 
     content='{$content}', 
@@ -193,7 +193,7 @@ WHERE id={$news_id} AND lang='{$lang}'
 
 
 # ------------------ rebuild tags - begin -------------------------------
-\e::db_execute("DELETE FROM {$table_prefix}news_tags WHERE news_id={$news_id} AND lang='{$lang}'");
+\e::db_execute("DELETE FROM <<tp>>news_tags WHERE news_id={$news_id} AND lang='{$lang}'");
 if (strlen(trim($tags)) > 0) {
     // $query=explode(',',$this_news_info['tags']);
     $query = preg_split("/,|;|\\./", $tags);
@@ -205,13 +205,13 @@ if (strlen(trim($tags)) > 0) {
                 $query[$i] = "({$news_id},'{$lang}','" . \e::db_escape($query[$i]) . "')";
             }
         }
-        $query = "INSERT INTO {$table_prefix}news_tags(news_id,lang,tag) VALUES" . join(',', $query);
+        $query = "INSERT INTO <<tp>>news_tags(news_id,lang,tag) VALUES" . join(',', $query);
         \e::db_execute($query);
     }
 }
 # ------------------ rebuild tags - end ---------------------------------
-//echo "SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'";exit('115');
-$news_info =\e::db_getonerow("SELECT * FROM {$table_prefix}news WHERE id={$news_id} AND lang='{$lang}'");
+//echo "SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='{$lang}'";exit('115');
+$news_info =\e::db_getonerow("SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='{$lang}'");
 $news_info['news_url'] = str_replace(
                 Array('{news_id}','{lang}','{news_code}'),
                 Array($news_info['id'],$lang,$news_info['news_code']),

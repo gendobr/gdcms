@@ -68,8 +68,8 @@ $input_vars['page_content'] = "
 
 // ------------------ get list of categories - begin -----------------------
 $query = "select ch.*, bit_and(pa.is_visible) as visible
-              from {$GLOBALS['table_prefix']}ec_category pa,
-                   {$GLOBALS['table_prefix']}ec_category ch
+              from <<tp>>ec_category pa,
+                   <<tp>>ec_category ch
               where pa.start<=ch.start and ch.finish<=pa.finish
                 and pa.site_id=" . ((int) $site_id) . "
                 and ch.site_id=" . ((int) $site_id) . "

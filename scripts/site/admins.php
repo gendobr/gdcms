@@ -36,11 +36,11 @@ foreach($ivk as $key)
       $changed=true;
       $usrid=checkInt(str_replace('filter_user_level_','',$key));
       $level=checkInt($input_vars[$key]);
-      $query="DELETE FROM {$table_prefix}site_user WHERE site_id={$site_id} AND user_id={$usrid}";
+      $query="DELETE FROM <<tp>>site_user WHERE site_id={$site_id} AND user_id={$usrid}";
       \e::db_execute($query);
       if($level>0)
       {
-        $query="INSERT INTO {$table_prefix}site_user(user_id,site_id,level) 
+        $query="INSERT INTO <<tp>>site_user(user_id,site_id,level) 
                 VALUES ({$usrid}, {$site_id}, {$level})";
         \e::db_execute($query);
       }
@@ -57,7 +57,7 @@ if($changed) ml('site/admins',$input_vars);
   $re=new report_generator;
   $re->db=$db;
   $re->distinct = true;
-  $re->from="{$table_prefix}user AS us LEFT JOIN  {$table_prefix}site_user AS su ON(us.id=su.user_id AND site_id={$site_id})";
+  $re->from="<<tp>>user AS us LEFT JOIN  <<tp>>site_user AS su ON(us.id=su.user_id AND site_id={$site_id})";
   
   $re->add_field( $field='su.level'
                  ,$alias='level'

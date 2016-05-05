@@ -3,7 +3,7 @@
  * fragment related functions
  */
 function menu_fragment($_info) {
-    global $text, $db, $table_prefix;
+    global $text;
     $tor = Array();
     // $sid = session_name() . '=' . $GLOBALS['_COOKIE'][session_name()];
 

@@ -8,10 +8,10 @@
  * extract order details from database
  */
 function get_order_info($order_id) {
-    global $table_prefix;
+
     $query="SELECT ec_order.*, ec_user.site_visitor_id
-            FROM {$table_prefix}ec_order ec_order
-                 INNER JOIN {$table_prefix}ec_user ec_user
+            FROM <<tp>>ec_order ec_order
+                 INNER JOIN <<tp>>ec_user ec_user
                  ON ec_user.ec_user_id=ec_order.ec_user_id
             WHERE ec_order_id=$order_id";
     $tor=\e::db_getonerow($query);
@@ -20,7 +20,7 @@ function get_order_info($order_id) {
     $tor['custom']=unserialize($tor['ec_order_custom_data']);
     // prn($tor);
     /*
-    $ec_cart=\e::db_getrows("SELECT * FROM {$table_prefix}ec_cart WHERE ec_order_id=$order_id");
+    $ec_cart=\e::db_getrows("SELECT * FROM <<tp>>ec_cart WHERE ec_order_id=$order_id");
     foreach($ec_cart as $ec)
     {
         $tmp=unserialize($ec['ec_cart_item']);
@@ -31,8 +31,8 @@ function get_order_info($order_id) {
 
 
     $tor['shipping']=\e::db_getonerow("SELECT ec_user.* ,site_visitor.site_visitor_email
-                                   FROM {$table_prefix}ec_user ec_user
-                                       INNER JOIN {$table_prefix}site_visitor site_visitor
+                                   FROM <<tp>>ec_user ec_user
+                                       INNER JOIN <<tp>>site_visitor site_visitor
                                        ON ec_user.site_visitor_id = site_visitor.site_visitor_id
                                    WHERE ec_user_id='{$tor['ec_user_id']}'");
     // prn($tor);
@@ -40,15 +40,15 @@ function get_order_info($order_id) {
 }
 
 function ec_order_delete($id) {
-    global $text, $db,$table_prefix;
+    global $text;
 
-    $query="DELETE FROM {$table_prefix}ec_cart  WHERE ec_order_id={$id}";
+    $query="DELETE FROM <<tp>>ec_cart  WHERE ec_order_id={$id}";
     \e::db_execute($query);
 
-    $query="DELETE FROM {$table_prefix}ec_order WHERE ec_order_id={$id}";
+    $query="DELETE FROM <<tp>>ec_order WHERE ec_order_id={$id}";
     \e::db_execute($query);
 
-    $query="DELETE FROM {$table_prefix}ec_order_history WHERE ec_order_id={$id}";
+    $query="DELETE FROM <<tp>>ec_order_history WHERE ec_order_id={$id}";
     \e::db_execute($query);
 }
 
@@ -60,7 +60,7 @@ function ec_order_validate($order_info) {
 }
 
 function menu_ec_order($_info) {
-    global $text, $db,$table_prefix;
+    global $text;
     $tor=Array();
     $sid=session_name().'='.$GLOBALS['_COOKIE'][session_name()];
 
@@ -85,7 +85,7 @@ function update_ec_order_history(
         $site_visitor_id,
         $site_id,
         $user_id) {
-    $query="INSERT INTO {$GLOBALS['table_prefix']}ec_order_history(
+    $query="INSERT INTO <<tp>>ec_order_history(
                    ec_order_history_title,
                    ec_order_history_details,
                    ec_order_history_date,
@@ -118,10 +118,10 @@ class order_history {
     public function __get($name) {
         if($name=='list') {
             $query="SELECT ec_order_history.*,site_visitor.site_visitor_email,user.email
-                   FROM {$GLOBALS['table_prefix']}ec_order_history as ec_order_history
-                        LEFT JOIN {$GLOBALS['table_prefix']}site_visitor as site_visitor
+                   FROM <<tp>>ec_order_history as ec_order_history
+                        LEFT JOIN <<tp>>site_visitor as site_visitor
                         ON ec_order_history.site_visitor_id=site_visitor.site_visitor_id
-                        LEFT JOIN {$GLOBALS['table_prefix']}user as user
+                        LEFT JOIN <<tp>>user as user
                         ON ec_order_history.user_id=user.id
                    WHERE ec_order_id={$this->ec_order_id}
                    ORDER BY ec_order_history_date ASC
@@ -146,7 +146,7 @@ class order_history {
 }
 
 function ec_order_sha($ec_order_id) {
-    $query="UPDATE {$GLOBALS['table_prefix']}ec_order
+    $query="UPDATE <<tp>>ec_order
            SET ec_order_hash=SHA1(CONCAT_WS(' ',ec_order_id,ec_date_created,site_id,ec_order_status,ec_order_total,ec_user_id,ec_order_paid,ec_order_details,ec_order_paid_amount))
            WHERE ec_order_id=$ec_order_id";
     //prn($query);

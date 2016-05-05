@@ -44,8 +44,8 @@ run('site/menu');
                  ec_producer.ec_producer_logo,
                  ec_producer.ec_producer_abstract,
                  count(ec_item.ec_item_id) as n_items
-          FROM {$table_prefix}ec_producer as ec_producer
-               left join {$table_prefix}ec_item as ec_item
+          FROM <<tp>>ec_producer as ec_producer
+               left join <<tp>>ec_item as ec_item
                on (
                    ec_producer.ec_producer_id=ec_item.ec_producer_id
                    and ec_item.ec_item_lang='{$lang}'
@@ -73,7 +73,7 @@ include(\e::config('SCRIPT_ROOT').'/ec/item/adjust_public_list.php');
 
 //# -------------------- get list of page languages - begin ----------------------
 //    $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
-//                     FROM {$table_prefix}ec_item  AS ec_item
+//                     FROM <<tp>>ec_item  AS ec_item
 //                     WHERE ec_item.site_id={$site_id}
 //                       AND ec_item.ec_item_cense_level&".ec_item_show."");
 //    $existing_languages=Array();

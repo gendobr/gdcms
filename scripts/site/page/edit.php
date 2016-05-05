@@ -85,7 +85,7 @@ if(strlen($input_vars['save_changes'])>0)
     if($input_vars['page_lang']!=$this_page_info['lang'])
     {
       //-------------------- get existing page languages - begin ---------------
-        $query="SELECT lang FROM {$table_prefix}page WHERE id={$this_page_info['id']}";
+        $query="SELECT lang FROM <<tp>>page WHERE id={$this_page_info['id']}";
         $tmp=\e::db_getrows($query);
         // prn($tmp);
         $existins_langs=Array();
@@ -95,7 +95,7 @@ if(strlen($input_vars['save_changes'])>0)
       //-------------------- get available languages - begin -------------------
         $existins_langs[]='';
         $query="SELECT id
-                FROM {$table_prefix}languages
+                FROM <<tp>>languages
                 WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."')";
         // prn($query);
         $tmp=\e::db_getrows($query);
@@ -232,7 +232,7 @@ if(strlen($input_vars['save_changes'])>0)
          if(strlen($this_page_info['page_file_name'])>0) {
             // ensure the page file path is unique
             $other_pages="SELECT count(*) as n_pages
-                          FROM {$table_prefix}page
+                          FROM <<tp>>page
                           WHERE path='".\e::db_escape($this_page_info['path'])."'
                             AND page_file_name='".\e::db_escape($this_page_info['page_file_name'])."'
                             AND id<>{$this_page_info['id']}
@@ -276,13 +276,13 @@ if(strlen($input_vars['save_changes'])>0)
 
        if($this_page_info['is_home_page']==1)
        {
-         $query="UPDATE {$table_prefix}page
+         $query="UPDATE <<tp>>page
                  SET    is_home_page=0
                  WHERE  site_id='{$this_page_info['site_id']}'";
          \e::db_execute($query);
        }
        //if(is_admin()) prn(checkStr($this_page_info['content']));
-       $query="UPDATE {$table_prefix}page
+       $query="UPDATE <<tp>>page
                SET
                   lang='{$lng}'
                  ,site_id='{$this_page_info['site_id']}'
@@ -314,7 +314,7 @@ if(strlen($input_vars['save_changes'])>0)
            }
            $delete_file=trim(join("\t",array_unique(explode("\t",$delete_file))));
 
-           $query="UPDATE {$table_prefix}page
+           $query="UPDATE <<tp>>page
                    SET delete_file = '$delete_file'
                    WHERE id='{$this_page_info['id']}' AND lang='{$this_page_info['lang']}'";
            //prn($query);
@@ -443,7 +443,7 @@ if(strlen($input_vars['save_changes'])>0)
 
 
  # ------------------------ list of categories - begin -------------------------
-    $query="SELECT category_id, category_title, deep FROM {$table_prefix}category WHERE start>0 AND site_id={$this_page_info['site_id']} ORDER BY start ASC";
+    $query="SELECT category_id, category_title, deep FROM <<tp>>category WHERE start>0 AND site_id={$this_page_info['site_id']} ORDER BY start ASC";
     $tmp=\e::db_getrows($query);
     $list_of_categories=Array();
     foreach($tmp as $tm) $list_of_categories[$tm['category_id']]=str_repeat(' + ',$tm['deep']).get_langstring($tm['category_title']);
@@ -493,7 +493,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
   <div class=label>{$text['Page_Language']}:</div>
   <div class=big>
     <select name=page_lang>".
-    draw_options($this_page_info['lang'],\e::db_getrows("SELECT id, name FROM {$table_prefix}languages WHERE is_visible=1 ORDER BY name ASC;"))
+    draw_options($this_page_info['lang'],\e::db_getrows("SELECT id, name FROM <<tp>>languages WHERE is_visible=1 ORDER BY name ASC;"))
     ."</select>
   </div>
   </span>

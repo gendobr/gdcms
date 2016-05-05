@@ -53,8 +53,8 @@ run('site/page/page_view_functions');
   {
       $ec_item_tags='';
       $query="select distinct ec_item_tag 
-             from {$table_prefix}ec_item_tags as ec_item_tags
-                  inner join {$table_prefix}ec_item as ec_item
+             from <<tp>>ec_item_tags as ec_item_tags
+                  inner join <<tp>>ec_item as ec_item
                   on(ec_item_tags.ec_item_id=ec_item.ec_item_id)
              where  ec_item.site_id=$site_id
                 and (ec_item.ec_item_cense_level&".ec_item_show.")
@@ -80,7 +80,7 @@ run('site/page/page_view_functions');
 
 # -------------------- get list of page languages - begin ----------------------
     $tmp=\e::db_getrows("SELECT DISTINCT ec_item_lang as lang
-                     FROM {$table_prefix}ec_item  AS ec_item
+                     FROM <<tp>>ec_item  AS ec_item
                      WHERE ec_item.site_id={$site_id}
                        AND ec_item.ec_item_cense_level&".ec_item_show."");
     $existing_languages=Array();

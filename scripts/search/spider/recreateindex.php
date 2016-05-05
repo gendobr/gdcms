@@ -8,9 +8,9 @@ if(!isset($input_vars['key']) || $input_vars['key']!=\e::config('search_spider_k
 }
 $timestart = microtime(true);
 $GLOBALS['main_template_name'] = '';
-\e::db_execute("ALTER TABLE `{$GLOBALS['table_prefix']}search_index_cache` DROP INDEX `wrds`");
-\e::db_execute("DELETE FROM {$GLOBALS['table_prefix']}search_index_cache");
-\e::db_execute("INSERT INTO {$GLOBALS['table_prefix']}search_index_cache 
+\e::db_execute("ALTER TABLE `<<tp>>search_index_cache` DROP INDEX `wrds`");
+\e::db_execute("DELETE FROM <<tp>>search_index_cache");
+\e::db_execute("INSERT INTO <<tp>>search_index_cache 
 	(id, 
 	site_id, 
 	url, 
@@ -29,7 +29,7 @@ $GLOBALS['main_template_name'] = '';
 	words, 
 	date_indexed,
         lang
-	FROM {$GLOBALS['table_prefix']}search_index
+	FROM <<tp>>search_index
 	WHERE is_valid<>0");
-\e::db_execute("ALTER TABLE `{$GLOBALS['table_prefix']}search_index_cache` ADD FULLTEXT INDEX `wrds` (`words`)"); 
+\e::db_execute("ALTER TABLE `<<tp>>search_index_cache` ADD FULLTEXT INDEX `wrds` (`words`)"); 
 echo (microtime(true)-$timestart)."s OK";

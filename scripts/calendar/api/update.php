@@ -79,7 +79,7 @@ run('site/menu');
 run('calendar/functions');
 
 $calendar_id=(int)$input_vars['id'];
-$calendar_info =\e::db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id={$calendar_id}");
+$calendar_info =\e::db_getonerow("SELECT * FROM <<tp>>calendar WHERE id={$calendar_id}");
 if (!$calendar_info) {
     $feedback = Array(
         'status' => 'error',
@@ -166,7 +166,7 @@ if(isset($input_vars['tags'])){
 //`kartynka`='{$kartynka}',
         
 $query = "
-UPDATE {$GLOBALS['table_prefix']}calendar 
+UPDATE <<tp>>calendar 
 SET
     `nazva`='{$nazva}',  
     `vis`={$vis},
@@ -175,7 +175,7 @@ SET
 WHERE  `id`=$calendar_id
 ";
 \e::db_execute($query);
-$calendar_info =\e::db_getonerow("SELECT * FROM {$table_prefix}calendar WHERE id=$calendar_id");
+$calendar_info =\e::db_getonerow("SELECT * FROM <<tp>>calendar WHERE id=$calendar_id");
 
 
 
@@ -195,10 +195,10 @@ if(isset($input_vars['categories'])){
     }
     $categories=array_values($categories);
     if(count($categories)>0){
-        $query="DELETE FROM {$GLOBALS['table_prefix']}calendar_category WHERE event_id={$calendar_id}";
+        $query="DELETE FROM <<tp>>calendar_category WHERE event_id={$calendar_id}";
         \e::db_execute($query);
 
-        $query="INSERT INTO {$GLOBALS['table_prefix']}calendar_category(category_id,event_id) SELECT category_id, {$calendar_id} FROM {$GLOBALS['table_prefix']}category WHERE category_code IN('".join("','", $categories)."')";
+        $query="INSERT INTO <<tp>>calendar_category(category_id,event_id) SELECT category_id, {$calendar_id} FROM <<tp>>category WHERE category_code IN('".join("','", $categories)."')";
         \e::db_execute($query);
     }    
 }
@@ -206,7 +206,7 @@ if(isset($input_vars['categories'])){
 
 
 // ------------------ re-create dates - begin ----------------------------------
-$query="DELETE FROM {$table_prefix}calendar_date WHERE site_id=$site_id AND calendar_id={$calendar_info['id']}";
+$query="DELETE FROM <<tp>>calendar_date WHERE site_id=$site_id AND calendar_id={$calendar_info['id']}";
 \e::db_execute($query);
 foreach($input_vars['dates'] as $dt){
         $new_pochrik = $dt['pochrik'];
@@ -243,7 +243,7 @@ foreach($input_vars['dates'] as $dt){
             $new_kinhv = (int)   (is_numeric($dt['kinhv'])?$dt['kinhv']:-1);
             
             $query="
-                INSERT INTO {$table_prefix}calendar_date 
+                INSERT INTO <<tp>>calendar_date 
                         ( site_id,   calendar_id          ,      pochrik,      pochmis,      pochtyzh,      pochday,      pochgod,      pochhv,      kinrik,      kinmis,      kintyzh,      kinday,      kingod,     kinhv  )
                 VALUES  ( $site_id, {$calendar_info['id']}, $new_pochrik, $new_pochmis, $new_pochtyzh, $new_pochday, $new_pochgod, $new_pochhv, $new_kinrik, $new_kinmis, $new_kintyzh, $new_kinday, $new_kingod, $new_kinhv );
                 ";
@@ -261,7 +261,7 @@ foreach($input_vars['dates'] as $dt){
         if(!isset($year)) {$year=$new_pochrik;}
         if(!isset($day)) {$day=$new_pochday;}
 }
-$tmp = \e::db_getrows("SELECT * FROM {$table_prefix}calendar_date WHERE calendar_id={$calendar_info['id']}");
+$tmp = \e::db_getrows("SELECT * FROM <<tp>>calendar_date WHERE calendar_id={$calendar_info['id']}");
 $calendar_info['dates'] = Array();
 foreach ($tmp as $tm) {
     $calendar_info['dates'][$tm['id']] = $tm;
@@ -273,7 +273,7 @@ $calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_i
 event_recache_days($calendar_info['id']);
 
 // clear cache 
-$query="DELETE FROM {$table_prefix}calendar_cache WHERE uid BETWEEN {$site_id}000000 AND {$site_id}999999";
+$query="DELETE FROM <<tp>>calendar_cache WHERE uid BETWEEN {$site_id}000000 AND {$site_id}999999";
 \e::db_execute($query);
 
 $feedback = Array(

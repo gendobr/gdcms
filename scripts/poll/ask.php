@@ -21,7 +21,7 @@ $this_site_info['template'] = site_get_template($this_site_info,'template_index'
 // ------------------ get poll - begin -----------------------------------------
 $poll_id=isset($input_vars['poll_id'])?(int)$input_vars['poll_id']:0;
 if($poll_id>0) $get_poll=" AND id=$poll_id"; else $get_poll='';
-$polls=\e::db_getrows("SELECT * FROM {$table_prefix}golos_pynannja WHERE site_id={$site_id} AND is_active=1 $get_poll ORDER BY ordering ASC");
+$polls=\e::db_getrows("SELECT * FROM <<tp>>golos_pynannja WHERE site_id={$site_id} AND is_active=1 $get_poll ORDER BY ordering ASC");
 if(!$polls) return '';
 //prn('$polls',$polls);
 
@@ -33,7 +33,7 @@ foreach($polls as $key=>$val) $poll_ids[$key]=(int)$val['id'];
    $poll_uid=join(',',$poll_ids);
 
 
-$vidpovidi=\e::db_getrows("SELECT * FROM {$table_prefix}golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
+$vidpovidi=\e::db_getrows("SELECT * FROM <<tp>>golos_vidpovidi WHERE pynannja_id IN (".join(',',$poll_ids).") ORDER BY pynannja_id, id ");
 
 $poll_ids=array_flip($poll_ids);
 foreach($vidpovidi as $val) {
@@ -76,7 +76,7 @@ if(isset($input_vars['poll']) && is_array($input_vars['poll']) ) {
                      ( IF(client_ip   ='$ip',1,0)
                      + IF(client_sign ='".\e::db_escape($input_vars[$md5_headers])."',1,0)
                      + IF(client_sign2='{$md5_headers}',1,0) ) as level
-                FROM {$table_prefix}golos_vidpovidi_details
+                FROM <<tp>>golos_vidpovidi_details
                 WHERE site_id={$site_id} AND poll_uid='{$poll_uid}'
                 GROUP BY level
                 HAVING level>0
@@ -97,21 +97,21 @@ if(isset($input_vars['poll']) && is_array($input_vars['poll']) ) {
         }
 
         if(count($pids)>0) {
-            $query="UPDATE {$table_prefix}golos_pynannja
+            $query="UPDATE <<tp>>golos_pynannja
                     SET n_respondents=n_respondents+1
                     WHERE id IN(".join(',',$pids).")";
             \e::db_execute($query);
         }
         if(count($answer_ids)>0) {
-            \e::db_execute("UPDATE {$table_prefix}golos_vidpovidi
+            \e::db_execute("UPDATE <<tp>>golos_vidpovidi
                         SET golosiv=golosiv+1
                         WHERE id IN(".join(',',$answer_ids).")");
 
             // ----------------- save details - begin --------------------------
             // existing answers
-            \e::db_execute("insert into {$table_prefix}golos_vidpovidi_details(poll_id, answer_id, session_id, answer_date,site_id,client_ip,client_sign,client_sign2,client_is_valid,poll_uid)
+            \e::db_execute("insert into <<tp>>golos_vidpovidi_details(poll_id, answer_id, session_id, answer_date,site_id,client_ip,client_sign,client_sign2,client_is_valid,poll_uid)
                         SELECT v.pynannja_id, v.id, '{$session_id}', now(), $site_id,'$ip','".\e::db_escape($input_vars[$md5_headers])."','{$md5_headers}',$client_is_valid,'{$poll_uid}'
-                        FROM {$table_prefix}golos_vidpovidi as v
+                        FROM <<tp>>golos_vidpovidi as v
                         WHERE v.id in(".join(',',$answer_ids).")");
             $tmp=Array();
             foreach($polls as $k=>$v) {
@@ -119,12 +119,12 @@ if(isset($input_vars['poll']) && is_array($input_vars['poll']) ) {
             }
             $missing_answers=array_diff($tmp,$pids);
             if(count($missing_answers)>0) {
-                \e::db_execute("insert into {$table_prefix}golos_vidpovidi_details(
+                \e::db_execute("insert into <<tp>>golos_vidpovidi_details(
                               poll_id, answer_id, session_id,
                               answer_date,site_id,client_ip,
                               client_sign,client_sign2,client_is_valid,poll_uid)
 	                   SELECT p.id, 0,'{$session_id}', now(), $site_id,'$ip','".\e::db_escape($input_vars[$md5_headers])."','{$md5_headers}',$client_is_valid,'{$poll_uid}'
-                           FROM {$table_prefix}golos_pynannja as p
+                           FROM <<tp>>golos_pynannja as p
 		           WHERE p.id in(".join(',',$missing_answers).")");
             }
             // ----------------- save details - end ----------------------------

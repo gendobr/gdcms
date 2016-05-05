@@ -117,7 +117,7 @@ if (is_logged()) {
     foreach ($keys as &$val) {
         $val*=1;
     }
-    $query = "select count(*) as n from {$GLOBALS['table_prefix']}notification_queue WHERE notification_queue_attempts<5 AND site_id in(" . join(',', $keys) . ")";
+    $query = "select count(*) as n from <<tp>>notification_queue WHERE notification_queue_attempts<5 AND site_id in(" . join(',', $keys) . ")";
     // prn($query);
     $n_notification_queue = \e::db_getonerow($query);
     $input_vars['page_menu']['admin']['items']['notifier/cron'] = Array(

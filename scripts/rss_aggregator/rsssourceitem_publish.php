@@ -24,7 +24,7 @@ $rsssourceitem_is_visiblle=isset($input_vars['rsssourceitem_is_visiblle'])?( (in
 $rsssourceitem_is_visiblle=($rsssourceitem_is_visiblle==1)?1:0;
 
 // update visibility status
-$query = "UPDATE {$GLOBALS['table_prefix']}rsssourceitem SET rsssourceitem_is_visiblle=$rsssourceitem_is_visiblle WHERE site_id=$site_id AND rsssourceitem_id=" . ( (int)$rsssourceitem_id);
+$query = "UPDATE <<tp>>rsssourceitem SET rsssourceitem_is_visiblle=$rsssourceitem_is_visiblle WHERE site_id=$site_id AND rsssourceitem_id=" . ( (int)$rsssourceitem_id);
 \e::db_execute($query);
 echo 'OK';
 ?>

@@ -28,7 +28,7 @@ if (get_level($site_id) == 0) {
 $pagelist = \e::db_getrows("select pa.category_id, pa.site_id, pa.category_code, pa.category_title,
                           pa.start, pa.finish, pa.is_deleted, pa.deep, pa.is_part_of,
                           pa.see_also, pa.is_visible, pa.path
-                        from {$GLOBALS['table_prefix']}category pa
+                        from <<tp>>category pa
                         WHERE site_id=$site_id ORDER BY pa.start");
 // prn($pagelist);
 $json = Array('files' => Array(), 'dirs' => Array(), 'parents' => Array());

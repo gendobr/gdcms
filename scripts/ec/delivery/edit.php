@@ -24,7 +24,7 @@ run('ec/delivery/functions');
 
 # ------------------- delete condition - begin ---------------------------------
   if(isset($input_vars['delete_ec_delivery_id'])){
-      $query="DELETE FROM {$table_prefix}ec_delivery WHERE ec_delivery_id=".((int)$input_vars['delete_ec_delivery_id'])." AND site_id=$site_id";
+      $query="DELETE FROM <<tp>>ec_delivery WHERE ec_delivery_id=".((int)$input_vars['delete_ec_delivery_id'])." AND site_id=$site_id";
       \e::db_execute($query);
   }
 # ------------------- delete condition - end -----------------------------------
@@ -41,7 +41,7 @@ run('ec/delivery/functions');
              $ec_delivery_indent=abs((int)$input_vars['delivery'][0]['ec_delivery_indent']);
              $ec_delivery_cost=trim($input_vars['delivery'][0]['ec_delivery_cost']);
              $ec_delivery_condition=trim($input_vars['delivery'][0]['ec_delivery_condition']);
-             $query="INSERT INTO {$table_prefix}ec_delivery(
+             $query="INSERT INTO <<tp>>ec_delivery(
                         site_id,ec_delivery_title,ec_delivery_ordering,
                         ec_delivery_indent,ec_delivery_cost,ec_delivery_condition)
                      VALUES(
@@ -61,7 +61,7 @@ run('ec/delivery/functions');
              $ec_delivery_indent=abs((int)$de['ec_delivery_indent']);
              $ec_delivery_cost=trim($de['ec_delivery_cost']);
              $ec_delivery_condition=trim($de['ec_delivery_condition']);
-             $query="UPDATE {$table_prefix}ec_delivery
+             $query="UPDATE <<tp>>ec_delivery
                      SET ec_delivery_title= '".\e::db_escape($ec_delivery_title)."',
                          ec_delivery_ordering=$ec_delivery_ordering,
                          ec_delivery_indent=$ec_delivery_indent,
@@ -116,7 +116,7 @@ run('ec/delivery/functions');
 
 
 # ------------------- get delivery config - begin ------------------------------
-  $delivery_config=\e::db_getrows("SELECT * FROM {$table_prefix}ec_delivery WHERE site_id={$site_id} ORDER BY ec_delivery_ordering ASC");
+  $delivery_config=\e::db_getrows("SELECT * FROM <<tp>>ec_delivery WHERE site_id={$site_id} ORDER BY ec_delivery_ordering ASC");
 # ------------------- get delivery config - end --------------------------------
 
 

@@ -42,7 +42,7 @@ run('site/menu');
 
 # get list of page languages
 # -------------------- get list of page languages - begin ----------------------
-$tmp=\e::db_getrows("SELECT DISTINCT lang FROM {$table_prefix}page WHERE site_id={$site_id} AND cense_level>0");
+$tmp=\e::db_getrows("SELECT DISTINCT lang FROM <<tp>>page WHERE site_id={$site_id} AND cense_level>0");
 $existing_languages=Array();
 foreach($tmp as $tm) $existing_languages[$tm['lang']]=$tm['lang'];
 // prn($existing_languages);
@@ -114,7 +114,7 @@ if(isset($_SESSION['site_visitor_info']['is_logged']) && $_SESSION['site_visitor
      $rows_per_page=\e::config('rows_per_page');
 
      $query="SELECT SQL_CALC_FOUND_ROWS *
-             FROM {$table_prefix}ec_order_history
+             FROM <<tp>>ec_order_history
              WHERE site_visitor_id={$_SESSION['site_visitor_info']['site_visitor_id']}
              ORDER BY ec_order_history_date DESC
              LIMIT $start,".$rows_per_page;

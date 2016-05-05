@@ -17,7 +17,7 @@ run('site/menu');
 # -------------------- get ec item info - end ----------------------------------
 
 # update item satistics
-  \e::db_execute("UPDATE {$table_prefix}ec_item SET ec_item_in_cart=ifnull(ec_item_in_cart,0)+1 WHERE ec_item_id={$this_ec_item_info['ec_item_id']} LIMIT 1");
+  \e::db_execute("UPDATE <<tp>>ec_item SET ec_item_in_cart=ifnull(ec_item_in_cart,0)+1 WHERE ec_item_id={$this_ec_item_info['ec_item_id']} LIMIT 1");
 
 
 # -------------------------- load messages - begin -----------------------------

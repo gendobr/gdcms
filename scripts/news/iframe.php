@@ -32,7 +32,7 @@ $input_vars['lang']      = get_language('lang');
 
 //------------------- get site info - begin ------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = \e::db_getonerow("SELECT * FROM {$table_prefix}site WHERE id={$site_id}");
+  $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
   //prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -61,8 +61,8 @@ $input_vars['lang']      = get_language('lang');
                 ,ne.title
                 ,ne.abstract AS content
                 ,ne.last_change_date
-          FROM {$table_prefix}news AS ns,
-               {$table_prefix}news AS ne
+          FROM <<tp>>news AS ns,
+               <<tp>>news AS ne
           WHERE ns.site_id={$site_id}
             AND ne.site_id={$site_id}
             AND ns.cense_level>={$this_site_info['cense_level']}
@@ -83,7 +83,7 @@ $input_vars['lang']      = get_language('lang');
                 ,ne.title
                 ,ne.abstract
                 ,ne.last_change_date
-          FROM {$table_prefix}news AS ne
+          FROM <<tp>>news AS ne
           WHERE ne.site_id={$site_id}
             AND ne.cense_level>={$this_site_info['cense_level']}
             AND ne.lang='{$lang}'

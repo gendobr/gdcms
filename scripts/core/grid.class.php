@@ -14,7 +14,7 @@ namespace core;
   $rpt->add_field(new report3_field_id('id', 'id', 'ID' ));
   $rpt->add_field(new report3_field_string('last_name', 'last_name', 'Last Name' ));
   $rpt->add_field(new report3_field_string('first_name', 'first_name', 'First Name' ));
-  $rpt->add_field(new report3_field_enum('conference_id', 'conference_id', 'Conference',Array('options'=>\e::db_getrows("SELECT id, title_ukr FROM {$table_prefix}conference")) ));
+  $rpt->add_field(new report3_field_enum('conference_id', 'conference_id', 'Conference',Array('options'=>\e::db_getrows("SELECT id, title_ukr FROM <<tp>>conference")) ));
   $rpt->add_field(new report3_field_datetime('date_submission', 'date_submission', 'Submission Date' ));
   $rpt->field['date_submission']->dateformat='d.m.Y';
   // echo $rpt->create_sql();

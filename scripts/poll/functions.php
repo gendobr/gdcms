@@ -6,7 +6,7 @@
 
 function menu_poll($_info)
 {
-   global $text, $db,$table_prefix;
+   global $text, $db;
    $tor=Array();
    $sid=session_name().'='.$GLOBALS['_COOKIE'][session_name()];
    

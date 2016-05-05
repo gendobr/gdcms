@@ -56,7 +56,7 @@ $cachePath=\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_lang
 $tmp = \core\fileutils::get_cached_info($cachePath, cachetime);
 if (!$tmp) {
     $tmp = \e::db_getrows("SELECT DISTINCT lang
-                     FROM {$table_prefix}news  AS ne
+                     FROM <<tp>>news  AS ne
                      WHERE ne.site_id={$site_id}
                        AND ne.cense_level>={$this_site_info['cense_level']}");
     \core\fileutils::set_cached_info($cachePath, $tmp);

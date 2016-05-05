@@ -39,7 +39,7 @@ if (isset($input_vars["ec_producer_img_delete"])) {
         unlink($path);
     }
     $this_producer_info["ec_producer_img"] = '';
-    $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_img='" . \e::db_escape($this_producer_info["ec_producer_img"]) . "' WHERE ec_producer_id={$ec_producer_id} LIMIT 1";
+    $query = "UPDATE <<tp>>ec_producer SET ec_producer_img='" . \e::db_escape($this_producer_info["ec_producer_img"]) . "' WHERE ec_producer_id={$ec_producer_id} LIMIT 1";
     //prn($query);
     \e::db_execute($query);
     //prn('Deleting...');
@@ -52,7 +52,7 @@ if (isset($input_vars["ec_producer_logo_delete"])) {
         unlink($path);
     }
     $this_producer_info["ec_producer_logo"] = '';
-    $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_logo='" . \e::db_escape($this_producer_info["ec_producer_logo"]) . "' WHERE ec_producer_id={$ec_producer_id} LIMIT 1";
+    $query = "UPDATE <<tp>>ec_producer SET ec_producer_logo='" . \e::db_escape($this_producer_info["ec_producer_logo"]) . "' WHERE ec_producer_id={$ec_producer_id} LIMIT 1";
     //prn($query);
     \e::db_execute($query);
     //prn('Deleting...');
@@ -75,7 +75,7 @@ class edbre extends extended_db_record_editor {
 $rep = new edbre;
 $rep->use_db($db);
 $rep->debug = false;
-$rep->set_table("{$table_prefix}ec_producer");
+$rep->set_table("<<tp>>ec_producer");
 $rep->exclude = '^ec_producer';
 $rep->add_field('ec_producer_id'
         , 'ec_producer_id'
@@ -138,7 +138,7 @@ if ($success) {
             //    $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . encode_file_name($photos['name']);
             //    $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
             $ec_producer_img = "gallery/$relative_dir/$big_image_file_name";
-            $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_img='" . \e::db_escape($ec_producer_img) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
+            $query = "UPDATE <<tp>>ec_producer SET ec_producer_img='" . \e::db_escape($ec_producer_img) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
             \e::db_execute($query);
             //phpinfo();
         }
@@ -173,7 +173,7 @@ if ($success) {
             
             $ec_producer_logo = "gallery/$relative_dir/$big_image_file_name";
             //prn($this_producer_info["ec_producer_logo"]);
-            $query = "UPDATE {$table_prefix}ec_producer SET ec_producer_logo='" . \e::db_escape($ec_producer_logo) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
+            $query = "UPDATE <<tp>>ec_producer SET ec_producer_logo='" . \e::db_escape($ec_producer_logo) . "' WHERE ec_producer_id={$rep->id} LIMIT 1";
             //prn($query);
             \e::db_execute($query);
             //phpinfo();

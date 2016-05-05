@@ -8,7 +8,7 @@ if(!is_admin()) return 0;
 
 //--------------------------- check user id - begin ----------------------------
   $user_id = checkInt($input_vars['user_id']);
-  $this_user_info=\e::db_getonerow("SELECT * FROM {$table_prefix}user WHERE id={$user_id} ");
+  $this_user_info=\e::db_getonerow("SELECT * FROM <<tp>>user WHERE id={$user_id} ");
   if(checkInt($this_user_info['id'])<=0)
   {
      $input_vars['page_header']=$text['User_not_found'];
@@ -27,11 +27,11 @@ foreach($ivk as $key)
       //prn($key);
       $site_id = checkInt(str_replace('filter_user_level_','',$key));
       $level   = checkInt($input_vars[$key]);
-      $query   = "DELETE FROM {$table_prefix}site_user WHERE site_id={$site_id} AND user_id={$user_id}";
+      $query   = "DELETE FROM <<tp>>site_user WHERE site_id={$site_id} AND user_id={$user_id}";
       \e::db_execute($query);
       if($level>0)
       {
-        $query="INSERT INTO {$table_prefix}site_user(user_id,site_id,level) 
+        $query="INSERT INTO <<tp>>site_user(user_id,site_id,level) 
                 VALUES ({$user_id}, {$site_id}, {$level})";
         \e::db_execute($query);
       }
@@ -47,7 +47,7 @@ foreach($ivk as $key)
   $re=new report_generator;
   $re->db=$db;
   $re->distinct = true;
-  $re->from="{$table_prefix}site AS si LEFT JOIN  {$table_prefix}site_user AS su ON(si.id=su.site_id AND su.user_id={$this_user_info['id']})";
+  $re->from="<<tp>>site AS si LEFT JOIN  <<tp>>site_user AS su ON(si.id=su.site_id AND su.user_id={$this_user_info['id']})";
   
   $re->add_field( $field='su.level'
                  ,$alias='level'

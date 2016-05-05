@@ -195,7 +195,7 @@ foreach ($_FILES as $uploadedfile) {
         # -------------- create small image - end ------------------------------
         # save to database
         $icon_insert = \e::db_execute(
-                "INSERT INTO {$table_prefix}photogalery(id,photos,photos_m,rozdil,rozdil2,pidpys,autor,rik,site,vis)
+                "INSERT INTO <<tp>>photogalery(id,photos,photos_m,rozdil,rozdil2,pidpys,autor,rik,site,vis)
                  VALUES
                  ( NULL
                   ,'" . \e::db_escape("$relative_dir/$big_image_file_name") . "'
@@ -211,7 +211,7 @@ foreach ($_FILES as $uploadedfile) {
 
         # show report
         $url_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']) . '/gallery';
-        $row =\e::db_getonerow("SELECT * FROM {$table_prefix}photogalery WHERE photos = '" . \e::db_escape("$relative_dir/$big_image_file_name") . "'");
+        $row =\e::db_getonerow("SELECT * FROM <<tp>>photogalery WHERE photos = '" . \e::db_escape("$relative_dir/$big_image_file_name") . "'");
         if ($row) {
             echo "
             <span style='display:inline-block; width:95%;'>

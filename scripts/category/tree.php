@@ -41,7 +41,7 @@ $lang = get_language('lang');
 //// ------------------ get list of categories - begin ---------------------------
 //$query = "
 //select ch.*, bit_and(pa.is_visible) as visible
-//from {$table_prefix}category pa, {$table_prefix}category ch
+//from <<tp>>category pa, <<tp>>category ch
 //where pa.start<=ch.start and ch.finish<=pa.finish
 //  and pa.site_id={$this_site_info['id']} and ch.site_id={$this_site_info['id']}
 //group by ch.category_id

@@ -54,7 +54,7 @@ $error_msg='';
      if($tmp_site_visitor_info)
      {
         $tmp_site_visitor_info['site_visitor_code']=sha1(session_id());
-        \e::db_execute("UPDATE {$table_prefix}site_visitor SET site_visitor_code='".\e::db_escape($tmp_site_visitor_info['site_visitor_code'])."' WHERE site_visitor_login='".\e::db_escape($input_vars['nick'])."'");
+        \e::db_execute("UPDATE <<tp>>site_visitor SET site_visitor_code='".\e::db_escape($tmp_site_visitor_info['site_visitor_code'])."' WHERE site_visitor_login='".\e::db_escape($input_vars['nick'])."'");
         $recovery_url=site_root_URL."/index.php?action=site_visitor/changepassword&site_id={$site_id}&lang={$lang}&code=".rawurlencode($tmp_site_visitor_info['site_visitor_code']);
 
         run('lib/mailing');

@@ -54,9 +54,8 @@ function site_visitor_check_login($email,$password)
 
 function site_visitor_load($condition)
 {
-   global $table_prefix;
-   $user_data=\e::db_getonerow("SELECT DISTINCT *,'' as site_visitor_password FROM {$table_prefix}site_visitor WHERE $condition");
-   //prn("SELECT DISTINCT *,'' as site_visitor_password FROM {$table_prefix}site_visitor WHERE $condition");
+   $user_data=\e::db_getonerow("SELECT DISTINCT *,'' as site_visitor_password FROM <<tp>>site_visitor WHERE $condition");
+   //prn("SELECT DISTINCT *,'' as site_visitor_password FROM <<tp>>site_visitor WHERE $condition");
    if(!$user_data) return false;
 
    $user_data['email']=$user_data['site_visitor_email'];
@@ -64,8 +63,8 @@ function site_visitor_load($condition)
    $user_data['data']=Array();
    $tmp=\e::db_getrows(
         "SELECT DISTINCT site_visitor.*, ec_user.*,'' as site_visitor_password
-         FROM {$table_prefix}site_visitor as site_visitor,
-              {$table_prefix}ec_user as ec_user
+         FROM <<tp>>site_visitor as site_visitor,
+              <<tp>>ec_user as ec_user
          WHERE  site_visitor.site_visitor_id={$user_data['site_visitor_id']}
             AND ec_user.site_visitor_id={$user_data['site_visitor_id']}
         ");

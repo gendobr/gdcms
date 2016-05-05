@@ -75,7 +75,7 @@ if(isset($input_vars['ec_category_id'])) {
         foreach($categories as $category){
             // get children
             $children="SELECT ch.ec_category_id
-                          FROM {$table_prefix}ec_category as ch,{$table_prefix}ec_category as pa
+                          FROM <<tp>>ec_category as ch,<<tp>>ec_category as pa
                                       WHERE pa.start<=ch.start and ch.finish<=pa.finish
                                         AND pa.ec_category_id=$category";
             $category=\e::db_getrows($children);
@@ -89,7 +89,7 @@ if(isset($input_vars['ec_category_id'])) {
             $restriction.="
             AND (
                   ec_item.ec_category_id IN({$category})
-               OR ec_item.ec_item_id IN(SELECT ec_item_id FROM {$table_prefix}ec_item_category WHERE ec_category_id  IN({$category}) )
+               OR ec_item.ec_item_id IN(SELECT ec_item_id FROM <<tp>>ec_item_category WHERE ec_category_id  IN({$category}) )
             )";
         }
         
@@ -170,8 +170,8 @@ if(isset($input_vars['extrafld'])) {
             if(strlen($val['min'])>0) {
                 $restriction.=" AND ec_item.ec_item_id in(
                      SELECT it.ec_item_id
-                     FROM {$table_prefix}ec_category_item_field_value AS ifv
-                          INNER JOIN {$table_prefix}ec_item AS it
+                     FROM <<tp>>ec_category_item_field_value AS ifv
+                          INNER JOIN <<tp>>ec_item AS it
                           ON it.ec_item_id=ifv.ec_item_id
                      WHERE ifv.ec_category_item_field_id={$key}
                        AND ifv.ec_category_item_field_value>='".\e::db_escape(trim($val['min']))."'
@@ -181,8 +181,8 @@ if(isset($input_vars['extrafld'])) {
             if(strlen($val['max'])>0) {
                 $restriction.=" AND ec_item.ec_item_id in(
                      SELECT it.ec_item_id
-                     FROM {$table_prefix}ec_category_item_field_value AS ifv
-                          INNER JOIN {$table_prefix}ec_item AS it
+                     FROM <<tp>>ec_category_item_field_value AS ifv
+                          INNER JOIN <<tp>>ec_item AS it
                           ON it.ec_item_id=ifv.ec_item_id
                      WHERE ifv.ec_category_item_field_id={$key}
                        AND ifv.ec_category_item_field_value<='".\e::db_escape(trim($val['max']))."'
@@ -193,8 +193,8 @@ if(isset($input_vars['extrafld'])) {
             if(strlen($val)>0) {
                 $restriction.=" AND ec_item.ec_item_id in(
                      SELECT it.ec_item_id
-                     FROM {$table_prefix}ec_category_item_field_value AS ifv
-                          INNER JOIN {$table_prefix}ec_item AS it
+                     FROM <<tp>>ec_category_item_field_value AS ifv
+                          INNER JOIN <<tp>>ec_item AS it
                           ON it.ec_item_id=ifv.ec_item_id
                      WHERE ifv.ec_category_item_field_id={$key}
                        AND locate('".\e::db_escape(trim($val))."',ifv.ec_category_item_field_value)>0
@@ -300,10 +300,10 @@ else {
 //                 ec_item.ec_item_img,
 //                 ec_item.ec_item_uid,
 //                 IF(LENGTH(TRIM(ec_item.ec_item_content))>0,1,0) as ec_item_content_present
-//           FROM {$table_prefix}ec_item AS ec_item
-//                LEFT JOIN {$table_prefix}ec_category AS ec_category
+//           FROM <<tp>>ec_item AS ec_item
+//                LEFT JOIN <<tp>>ec_category AS ec_category
 //                ON ec_category.ec_category_id=ec_item.ec_category_id
-//                LEFT JOIN {$table_prefix}ec_producer AS ec_producer
+//                LEFT JOIN <<tp>>ec_producer AS ec_producer
 //                ON ec_producer.ec_producer_id=ec_item.ec_producer_id
 //            WHERE ec_item.site_id={$site_id}
 //              AND ec_item.ec_item_lang='{$lang}'
@@ -316,10 +316,10 @@ $query="SELECT SQL_CALC_FOUND_ROWS
                  IF(LENGTH(TRIM(ec_item.ec_item_content))>0,1,0) as ec_item_content_present,
                  cached_info,
                  cache_datetime
-           FROM {$table_prefix}ec_item AS ec_item
-                LEFT JOIN {$table_prefix}ec_category AS ec_category
+           FROM <<tp>>ec_item AS ec_item
+                LEFT JOIN <<tp>>ec_category AS ec_category
                 ON ec_category.ec_category_id=ec_item.ec_category_id
-                LEFT JOIN {$table_prefix}ec_producer AS ec_producer
+                LEFT JOIN <<tp>>ec_producer AS ec_producer
                 ON ec_producer.ec_producer_id=ec_item.ec_producer_id
             WHERE ec_item.site_id={$site_id}
               AND ec_item.ec_item_lang='{$lang}'

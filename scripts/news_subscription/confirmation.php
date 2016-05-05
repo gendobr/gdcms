@@ -41,10 +41,10 @@ if(isset($input_vars['code'])){
 
     // get subscriber by code
     $code=\e::db_escape(trim($input_vars['code']));
-    $subscriber_info=  \e::db_getonerow("select * from {$table_prefix}news_subscriber WHERE news_subscriber_code='$code'");
+    $subscriber_info=  \e::db_getonerow("select * from <<tp>>news_subscriber WHERE news_subscriber_code='$code'");
     if($subscriber_info){
         // if subscriber is found change the is_valid value and clear code
-        $query="UPDATE {$table_prefix}news_subscriber SET news_subscriber_code=null, news_subscriber_is_valid=1 WHERE news_subscriber_code='$code'";
+        $query="UPDATE <<tp>>news_subscriber SET news_subscriber_code=null, news_subscriber_is_valid=1 WHERE news_subscriber_code='$code'";
         \e::db_execute($query);
         // show message
         $message=str_replace(Array('{name}'), Array($subscriber_info['news_subscriber_name']),text('Your_subscription_is_successfully_confirmed'));

@@ -14,7 +14,7 @@ function login_info()
     if(strlen($GLOBALS['input_vars']['un'])>0)
     if(strlen($GLOBALS['input_vars']['pw'])>0)
     {
-      $_SESSION['forum_user_info']=\e::db_getonerow("SELECT * FROM {$GLOBALS['table_prefix']}forum_user WHERE user_login='".\e::db_escape($GLOBALS['input_vars']['un'])."' AND user_password='".md5($GLOBALS['input_vars']['pw'])."'");
+      $_SESSION['forum_user_info']=\e::db_getonerow("SELECT * FROM <<tp>>forum_user WHERE user_login='".\e::db_escape($GLOBALS['input_vars']['un'])."' AND user_password='".md5($GLOBALS['input_vars']['pw'])."'");
       if(!$_SESSION['forum_user_info']) unset($_SESSION['forum_user_info']);
     }
   # ------------------ do login - end ------------------------------------------

@@ -201,7 +201,7 @@ function smarty_fragment($params) {
     $site_id=(int)$site_id;
     $lang=\e::db_escape($lang);
     $place=\e::db_escape($place);
-    $query="SELECT fragment_html FROM {$GLOBALS['table_prefix']}fragment
+    $query="SELECT fragment_html FROM <<tp>>fragment
             WHERE site_id=$site_id AND fragment_place='{$place}' AND fragment_lang='{$lang}' AND fragment_is_visible";
     $tmp=  \e::db_getrows($query);
     for($i=0, $cnt=count($tmp); $i<$cnt;$i++){
@@ -236,7 +236,7 @@ function smarty_save($params, &$smarty) {
 // sample call is
 // {run name="protect" data="page.title"}
 function smarty_run_function($params, &$smarty) {
-    global $input_vars, $db, $table_prefix, $text, $main_template_name;
+    global $input_vars, $db, $text, $main_template_name;
     extract($params);
     $p = preg_replace('/[^a-z0-9_]/i', '_', $name);
     include(\e::config('SCRIPT_ROOT') . "/lib/smarty_addons/{$p}.php");
@@ -246,7 +246,7 @@ function smarty_run_function($params, &$smarty) {
 // ------------------------- template processor -- end -------------------------
 //-------------------------- get menu items - begin ----------------------------
 function get_menu_items($site_id, $page_id, $lang) {
-    global $table_prefix, $db, $txt, $input_vars;
+    global  $db, $txt, $input_vars;
 
     $site_id=(int)$site_id;
     $page_id=(int)$page_id;
@@ -255,8 +255,8 @@ function get_menu_items($site_id, $page_id, $lang) {
                      ,page.id  as page_id
                      ,page.lang  as page_lang
                      ,page.path  as page_path
-               FROM {$table_prefix}page as page
-                   ,{$table_prefix}site as site
+               FROM <<tp>>page as page
+                   ,<<tp>>site as site
                WHERE page.site_id=site.id
                  and page.site_id=$site_id
                  and site.id=$site_id
@@ -269,7 +269,7 @@ function get_menu_items($site_id, $page_id, $lang) {
     //----------------- site menu - begin --------------------------------------
     //                       AND (page_id=".checkInt($page_id)." OR page_id=0)
     $query = "SELECT *
-                 FROM {$table_prefix}menu_group
+                 FROM <<tp>>menu_group
                  WHERE     site_id=" . checkInt($site_id) . "
                        AND page_id=0
                        AND lang='" . \e::db_escape($lang) . "'
@@ -285,9 +285,9 @@ function get_menu_items($site_id, $page_id, $lang) {
     //----------------- page menu - begin --------------------------------------
     //                       AND (page_id=".checkInt($page_id)." OR page_id=0)
     $query = "SELECT mg.* , pmg.id AS pmg_id
-                FROM {$table_prefix}menu_group AS mg
+                FROM <<tp>>menu_group AS mg
                      INNER JOIN
-                    {$table_prefix}page_menu_group AS pmg
+                    <<tp>>page_menu_group AS pmg
                     ON ( mg.id=pmg.menu_group_id
                      AND pmg.page_id={$page_id}
                      AND pmg.lang = '" . \e::db_escape($lang) . "'
@@ -312,7 +312,7 @@ function get_menu_items($site_id, $page_id, $lang) {
         $mmm[] = $tm['id'];
     }
     $mmm = join(',', $mmm);
-    $query = "SELECT * FROM {$table_prefix}menu_item  WHERE     menu_group_id IN($mmm) AND lang='" . \e::db_escape($lang) . "' ORDER BY menu_group_id, ordering";
+    $query = "SELECT * FROM <<tp>>menu_item  WHERE     menu_group_id IN($mmm) AND lang='" . \e::db_escape($lang) . "' ORDER BY menu_group_id, ordering";
     $tmp = \e::db_getrows($query);
     foreach ($tmp as $tm) {
         // prn($this_page_url,get_absolute_url($tm['url'],$this_page_url));

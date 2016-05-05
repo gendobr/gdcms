@@ -11,14 +11,14 @@ if (isset($input_vars['user_login']) && strlen($input_vars['user_login']) > 0) {
 //-------------------------- check info -- begin -------------------------------
     //------------------- get user info -- begin -------------------------------
     $tmp_user_info =\e::db_getonerow(
-            "SELECT * FROM {$table_prefix}user WHERE user_login='" . \e::db_escape($input_vars['user_login']) . "'"
+            "SELECT * FROM <<tp>>user WHERE user_login='" . \e::db_escape($input_vars['user_login']) . "'"
     );
     //------------------- get user info -- end ---------------------------------
     if ($tmp_user_info['id'] > 0) {
 
         // set new password
         $tmp_user_info['user_password'] = substr(md5(session_id() . time()), 0, 8);
-        $query = "UPDATE {$table_prefix}user
+        $query = "UPDATE <<tp>>user
                 SET user_password='" . md5($tmp_user_info['user_password']) . "'
                 WHERE user_login='" . \e::db_escape($tmp_user_info['user_login']) . "'";
         //prn($query);

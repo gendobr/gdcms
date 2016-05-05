@@ -19,7 +19,7 @@ if(isset($input_vars['user_login'])){
     if(strlen($input_vars['user_login'])>0) {
         if(strlen($input_vars['user_password'])>0 /*&&  8<date('H') && date('H')<23*/) {
             //------------------- get user info -- begin ------------------------------
-            $query="SELECT * FROM {$table_prefix}user WHERE user_login='".\e::db_escape($input_vars['user_login'])."'";
+            $query="SELECT * FROM <<tp>>user WHERE user_login='".\e::db_escape($input_vars['user_login'])."'";
             //prn($query);
             $tmp_user_info=\e::db_getonerow($query);
             //------------------- get user info -- end --------------------------------
@@ -32,21 +32,21 @@ if(isset($input_vars['user_login'])){
                 //------------------- get user sites - begin ---------------------------
                 if(is_admin()) {
                     $_SESSION['user_info']['sites']=\e::db_get_associated_array(
-                            " SELECT id AS `key`, 1000 AS `value` FROM {$table_prefix}site
+                            " SELECT id AS `key`, 1000 AS `value` FROM <<tp>>site
                                UNION
-                               SELECT dir AS `key`, 1000 AS `value` FROM {$table_prefix}site" );
+                               SELECT dir AS `key`, 1000 AS `value` FROM <<tp>>site" );
                 }
                 else {
                     $_SESSION['user_info']['sites']=\e::db_get_associated_array(
                             "SELECT site_id AS `key`, level AS `value`
-                        FROM {$table_prefix}site_user
+                        FROM <<tp>>site_user
                         WHERE user_id='{$tmp_user_info['id']}'
 
                         UNION
 
                         SELECT DISTINCT site.dir AS `key`, site_user.level AS `value`
-                        FROM {$table_prefix}site_user AS site_user
-                          ,{$table_prefix}site AS site
+                        FROM <<tp>>site_user AS site_user
+                          ,<<tp>>site AS site
                         WHERE site.id=site_user.site_id
                           AND user_id='{$tmp_user_info['id']}'");
                 }

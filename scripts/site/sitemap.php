@@ -43,7 +43,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 
 // get site pages
 $query="SELECT id, page_file_name, last_change_date, path
-        FROM {$table_prefix}page 
+        FROM <<tp>>page 
         WHERE site_id={$site_id}
         AND cense_level>={$this_site_info['cense_level']}
         AND is_under_construction=0";
@@ -62,7 +62,7 @@ foreach ($rows as $pg){
 // get site news
 $now=date('Y-m-d');
 $query="SELECT id, lang, news_code, last_change_date
-        FROM {$table_prefix}news 
+        FROM <<tp>>news 
         WHERE site_id={$site_id}
         AND cense_level>={$this_site_info['cense_level']}
         AND last_change_date<='$now'
@@ -83,7 +83,7 @@ foreach ($rows as $row){
 
 // get categories
 $query="SELECT site_id,  category_code, date_lang_update,category_id,path,category_description
-        FROM {$table_prefix}category 
+        FROM <<tp>>category 
         WHERE site_id={$site_id}
         ORDER BY start
         ";

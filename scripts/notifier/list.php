@@ -17,7 +17,7 @@ if(!is_logged())
 // ------------------ delete row - begin ---------------------------------------
    if(isset($input_vars['delete']))
    {
-       $query="DELETE FROM {$table_prefix}listener WHERE listener_id=".( (int)$input_vars['delete'] );
+       $query="DELETE FROM <<tp>>listener WHERE listener_id=".( (int)$input_vars['delete'] );
        \e::db_execute($query);
    }
 // ------------------ delete row - end -----------------------------------------
@@ -40,7 +40,7 @@ $message='';
 
      if(strlen($message)==0)
      {
-         $query="INSERT INTO {$table_prefix}listener(
+         $query="INSERT INTO <<tp>>listener(
                    listener_event,
                    site_id,
                    user_id,
@@ -76,7 +76,7 @@ $message='';
 
      if(strlen($message)==0)
      {
-         $query="INSERT INTO {$table_prefix}listener(
+         $query="INSERT INTO <<tp>>listener(
                    listener_event,
                    site_id,
                    user_id,
@@ -108,10 +108,10 @@ $message='';
 
   /*
     select l.*, s.dir, s.url, s.title, u.user_login
-    from {$GLOBALS['table_prefix']}listener as l, {$GLOBALS['table_prefix']}site as s, {$GLOBALS['table_prefix']}user as u
+    from <<tp>>listener as l, <<tp>>site as s, <<tp>>user as u
     where l.site_id=s.id and u.id=l.user_id
   */
-  $re->from="{$table_prefix}listener as l, {$table_prefix}site as s, {$table_prefix}user as u";
+  $re->from="<<tp>>listener as l, <<tp>>site as s, <<tp>>user as u";
   $re->add_where(" l.site_id=s.id ");
   $re->add_where(" u.id=l.user_id ");
   $re->exclude='^delete|^new_notifier';

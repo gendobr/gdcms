@@ -82,8 +82,8 @@ if (get_level($site_id) == 0) {
   $re->db=$db;
   $re->distinct=false;
   $re->from="
-   {$table_prefix}rsssource as rsssource
-   INNER JOIN {$table_prefix}rsssourceitem AS rsssourceitem
+   <<tp>>rsssource as rsssource
+   INNER JOIN <<tp>>rsssourceitem AS rsssourceitem
    ON ( rsssource.rsssource_id=rsssourceitem.rsssource_id AND rsssourceitem.site_id=$site_id )
   ";
   $re->add_where(" rsssource.site_id=$site_id ");
@@ -110,7 +110,7 @@ if (get_level($site_id) == 0) {
                  ,$_group_operation=false);
 
 //rsssourceitem_lang         varchar(3)
-  $LL = join('&',\e::db_get_associated_array("SELECT rsssourceitem_lang,CONCAT(rsssourceitem_lang,'=',rsssourceitem_lang) FROM {$table_prefix}rsssourceitem WHERE site_id={$site_id}"));
+  $LL = join('&',\e::db_get_associated_array("SELECT rsssourceitem_lang,CONCAT(rsssourceitem_lang,'=',rsssourceitem_lang) FROM <<tp>>rsssourceitem WHERE site_id={$site_id}"));
   $re->add_field( $field='rsssourceitem.rsssourceitem_lang'
                  ,$alias='rsssourceitem_lang'
                  ,$type ='enum:'.$LL

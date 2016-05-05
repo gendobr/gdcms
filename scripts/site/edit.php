@@ -26,7 +26,7 @@
 
 //------------------- check permission - begin ---------------------------------
 $this_site_info['admin_level']=get_level($site_id);
-$max_site_level=\e::db_getonerow("SELECT max(level) as maxlevel FROM {$table_prefix}site_user WHERE site_id={$site_id} ");
+$max_site_level=\e::db_getonerow("SELECT max(level) as maxlevel FROM <<tp>>site_user WHERE site_id={$site_id} ");
 $max_site_level=$max_site_level['maxlevel'];
 // prn('$max_site_level='.$max_site_level,"this_site_info[admin_level]=".$this_site_info['admin_level']);
 if($this_site_info['admin_level']<$max_site_level && !is_admin())
@@ -48,7 +48,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
     function check_form_values()
     {
       //prn($this->field['']);
-      global $text,$db,$table_prefix,$this_site_info;
+      global $text,$db,$this_site_info;
       $all_is_ok = true;
 
         if(is_admin())
@@ -56,7 +56,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
         //-------------------- site directory uniqueness - begin ---------------
           if(strlen($this->field['site_dir']['value'])>0)
           {
-             $query="SELECT count(*) AS ns FROM {$table_prefix}site WHERE dir='".$this->field['site_dir']['value']."' AND id<>'".checkInt($this->id)."'";
+             $query="SELECT count(*) AS ns FROM <<tp>>site WHERE dir='".$this->field['site_dir']['value']."' AND id<>'".checkInt($this->id)."'";
              // prn($query);
              $count_site=\e::db_getonerow($query);
              $count_site=$count_site['ns'];
@@ -129,7 +129,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
   $rep=new edbre;
   $rep->use_db($db);
   $rep->debug=false;
-  $rep->set_table("{$table_prefix}site");
+  $rep->set_table("<<tp>>site");
   $rep->exclude='site_id|extra_setting';
   $rep->add_field( 'id'
                   ,'site_id'
@@ -210,7 +210,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
                   );
 
 
-  $tmp=\e::db_getrows("SELECT ec_currency_code, ec_curency_title FROM {$table_prefix}ec_currency ORDER BY ec_curency_title");
+  $tmp=\e::db_getrows("SELECT ec_currency_code, ec_curency_title FROM <<tp>>ec_currency ORDER BY ec_curency_title");
   $list_of_currency=Array();
   foreach($tmp as $tm) $list_of_currency[]=$tm['ec_currency_code'].'='.rawurlencode($tm['ec_curency_title']);
   unset($tmp,$tm);
