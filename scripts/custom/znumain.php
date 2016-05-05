@@ -47,8 +47,8 @@
 # -------------------- get list of page languages - end ------------------------
 
 # -------------------- search for template - begin -----------------------------
-  $ec_item_template_list = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_ec_item_list.html";
-  if(!is_file($ec_item_template_list)) $ec_item_template_list = 'cms/template_ec_item_list';
+  //$ec_item_template_list = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_ec_item_list.html";
+  //if(!is_file($ec_item_template_list)) $ec_item_template_list = 'cms/template_ec_item_list';
 # -------------------- search for template - end -------------------------------
 
 
