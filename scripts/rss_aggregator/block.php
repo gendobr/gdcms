@@ -30,7 +30,7 @@ $txt = load_msg($input_vars['lang']);
 run('rss_aggregator/get_public_list');
 
 $_start = isset($input_vars['start']) ? ( (int) $input_vars['start'] ) : 0;
-$_rows_per_page = isset($input_vars['rows_per_page']) ? ( (int) $input_vars['rows_per_page'] ) : rows_per_page;
+$_rows_per_page = isset($input_vars['rows_per_page']) ? ( (int) $input_vars['rows_per_page'] ) : \e::config('rows_per_page');
 
 $result = rss_aggregator_get_list($site_id, $input_vars['lang'], $_start, $_rows_per_page, $filter = Array());
 //prn($result);

@@ -154,7 +154,7 @@ $query = "SELECT SQL_CALC_FOUND_ROWS
               AND pg.lang='{$_SESSION['lang']}'
               $category_restriction
             ORDER BY pg.last_change_date DESC
-            LIMIT $start," . rows_per_page;
+            LIMIT $start," . \e::config('rows_per_page');
 $list_of_pages = \e::db_getrows($query);
 //if($debug)
 # prn($query,$list_of_pages);
@@ -181,18 +181,18 @@ $num_rows = $num_rows['n_records'];
 # --------------------------- paging links - end ---------------------------
 // --------------------- number of pages - begin ---------------------
 $pages = Array();
-$i_min = max(0, $start - rows_per_page * rows_per_page);
-$i_max = min($num_rows, $start + rows_per_page * rows_per_page);
-for ($i = $i_min; $i < $i_max; $i = $i + rows_per_page) {
+$i_min = max(0, $start - \e::config('rows_per_page') * \e::config('rows_per_page'));
+$i_max = min($num_rows, $start + \e::config('rows_per_page') * \e::config('rows_per_page'));
+for ($i = $i_min; $i < $i_max; $i = $i + \e::config('rows_per_page')) {
     if ($i == $start) {
         $pages[] = Array(
             'URL' => ''
-            , 'innerHTML' => '<b style="font-size:120%">[' . (1 + $i / rows_per_page) . ']</b>'
+            , 'innerHTML' => '<b style="font-size:120%">[' . (1 + $i / \e::config('rows_per_page')) . ']</b>'
         );
     } else {
         $pages[] = Array(
             'URL' => site_root_URL . "/index.php?start={$i}&" . query_string('^start$|^' . session_name() . '$')
-            , 'innerHTML' => '[ ' . (1 + $i / rows_per_page) . ' ]'
+            , 'innerHTML' => '[ ' . (1 + $i / \e::config('rows_per_page')) . ' ]'
         );
     }
 }

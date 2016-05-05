@@ -111,7 +111,7 @@ if(isset($_SESSION['site_visitor_info']['is_logged']) && $_SESSION['site_visitor
    # ---------------------------- order history - begin ------------------------
      if(!isset($input_vars['start'])) $input_vars['start']=0;
      $start=abs(round(1*$input_vars['start']));
-     $rows_per_page=rows_per_page;
+     $rows_per_page=\e::config('rows_per_page');
 
      $query="SELECT SQL_CALC_FOUND_ROWS *
              FROM {$table_prefix}ec_order_history

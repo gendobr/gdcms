@@ -112,7 +112,7 @@ $photogalery_rozdil_list = \e::db_getrows(
              $filter
          GROUP BY pr.id
          ORDER BY pr.rozdil ASC
-         LIMIT $start,".rows_per_page);
+         LIMIT $start,".\e::config('rows_per_page'));
 //prn($photogalery_rozdil_list);
 //prn("SELECT SQL_CALC_FOUND_ROWS pr.*, count(p.id) as n_images
 //         FROM {$GLOBALS['table_prefix']}photogalery_rozdil pr
@@ -122,7 +122,7 @@ $photogalery_rozdil_list = \e::db_getrows(
 //             $filter
 //         GROUP BY pr.id
 //         ORDER BY pr.rozdil ASC
-//         LIMIT $start,".rows_per_page);
+//         LIMIT $start,".\e::config('rows_per_page'));
 
 // get total number of categories
 $query = "SELECT FOUND_ROWS() AS n_records;";
@@ -132,7 +132,7 @@ $n_records=$n_records['n_records'];
 // paging url template
 $url_template='index.php?'.preg_query_string('/^start$/').'&start={start}';
 
-$paging_links=get_paging_links($start, $n_records, rows_per_page, $url_template);
+$paging_links=get_paging_links($start, $n_records, \e::config('rows_per_page'), $url_template);
 // prn($paging_links);
 
 // draw paging links

@@ -9,7 +9,7 @@ function rss_aggregator_get_list($site_id, $lang, $_start, $_rows_per_page, $fil
 
     $rows_per_page = (int) $_rows_per_page;
     if ($rows_per_page < 1){
-        $rows_per_page = rows_per_page;
+        $rows_per_page = \e::config('rows_per_page');
     }
 
     $query = "SELECT SQL_CALC_FOUND_ROWS * FROM {$GLOBALS['table_prefix']}rsssourceitem

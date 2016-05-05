@@ -39,10 +39,10 @@ if (!$this_site_info) {
 if (isset($input_vars['rows'])) {
     $rows = (int) $input_vars['rows'];
 } else {
-    $rows = rows_per_page;
+    $rows = \e::config('rows_per_page');
 }
 if ($rows <= 0) {
-    $rows = rows_per_page;
+    $rows = \e::config('rows_per_page');
 }
 // ------------------- number of news in the block - end -----------------------
 // ------------------- check if template name is posted - begin ----------------

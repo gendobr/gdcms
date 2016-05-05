@@ -301,12 +301,12 @@ run('site_visitor/functions');
     }
     if($imax<$n_records)
     {
-      $last_page=floor($n_records/rows_per_page);
+      $last_page=floor($n_records/\e::config('rows_per_page'));
       if($last_page>0)
       {
           $pages[]=Array( 'URL'=>'#','innerHTML' => '...' );
           $pages[]=Array(
-            'URL'=>$url_page_refix.($last_page*rows_per_page)
+            'URL'=>$url_page_refix.($last_page*\e::config('rows_per_page'))
            ,'innerHTML' => "[".($last_page+1)."]"
           );
       }

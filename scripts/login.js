@@ -59,7 +59,7 @@ $(document).ready(function(){
         contentType:'text/html; charset=UTF-8',
         dataType:'json',
         success: function(data) {
-            console.log(data.message);
+            // console.log(data.message);
             $('#logininput').append(data.message);
             // alert('Load was performed.');
             ajaxloginform();

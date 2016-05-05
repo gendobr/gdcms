@@ -9,7 +9,6 @@ define('debug', false);
 define('site_title', 'CMS');
 
 define('site_charset', 'UTF-8');
-//define('site_charset', 'windows-1251');
 
 //------------------------ URLs - begin ----------------------------------------
 define('site_root_URL', "http" . (isset($_SERVER['HTTPS']) ? 's' : '') . "://{$_SERVER['HTTP_HOST']}/cms"); // ZSU
@@ -86,13 +85,13 @@ define('mail_FromName', 'Site Admin');
 
 date_default_timezone_set('Europe/Kiev');
 
-define('default_language', 'ukr');
 $config->default_language='ukr';
-// \e::config('default_language')
 
-define('rows_per_page', 10);
 
-// define('use_custom_sessions', false);
+// define('rows_per_page', 10);
+$config->rows_per_page=10;
+// \e::config('rows_per_page')
+
 $config->PHPSESSID='PHPSESSID';
 
 // where SMARTY scripts are located
@@ -116,8 +115,7 @@ define('ec_cart_check_product_amount', false);
 
 
 // number of emails which can be sent at once
-define('emails_at_once',1);
-
+$config->emails_at_once=10;
 
 
 $config->site_extra_setting=[

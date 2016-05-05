@@ -18,7 +18,7 @@ class Report {
     var $cond;
     var $from;             // FROM part of SQL query       -- string -- input
     var $query;            // query to run -- output
-    var $rows_per_page = rows_per_page; // rows per page -- parameter
+    var $rows_per_page = 10; // rows per page -- parameter
     var $where = Array();            // all WHERE conditions -- Array() -- input
     // additional conditions can be entered here
     var $db;
@@ -27,6 +27,11 @@ class Report {
     var $distinct;         // true|false
     var $exclude = '/^$/';     // regexp to exclude from URLs
 
+    function __construct() {
+        $this->rows_per_page = \e::config('rows_per_page');
+    }
+    
+    
     function add_where($str) {
         $this->where[] = $str;
     }

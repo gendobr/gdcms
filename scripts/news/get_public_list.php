@@ -1,12 +1,12 @@
 <?php
 
 # -------------------- number of news in the block - begin ---------------------
-$rows = rows_per_page;
+$rows = \e::config('rows_per_page');
 if (isset($input_vars['rows'])) {
     $rows = (int) $input_vars['rows'];
 }
 if ($rows <= 0 or $rows > 10000) {
-    $rows = rows_per_page;
+    $rows = \e::config('rows_per_page');
 }
 # -------------------- number of news in the block - end -----------------------
 # -------------------- if abstracts should be shown - begin --------------------
@@ -508,8 +508,8 @@ $num = \e::db_getonerow($query);
 // prn($query,$num);
 $news_found = $num = (int) $num['n_records'];
 $pages = Array();
-$imin = max(0, $start - 10 * rows_per_page);
-$imax = min($num, $start + 10 * rows_per_page);
+$imin = max(0, $start - 10 * \e::config('rows_per_page'));
+$imax = min($num, $start + 10 * \e::config('rows_per_page'));
 if ($imin > 0) {
     $pages[] = Array(
         'URL' => sites_root_URL . "/news.php?start=0&" . query_string('^start$|^' . session_name() . '$|^action$'),
@@ -518,11 +518,11 @@ if ($imin > 0) {
     $pages[] = Array('URL' => '', 'innerHTML' => '...');
 }
 
-for ($i = $imin; $i < $imax; $i = $i + rows_per_page) {
+for ($i = $imin; $i < $imax; $i = $i + \e::config('rows_per_page')) {
     if ($i == $start)
-        $to = '<b>[' . (1 + $i / rows_per_page) . ']</b>';
+        $to = '<b>[' . (1 + $i / \e::config('rows_per_page')) . ']</b>';
     else
-        $to = ( 1 + $i / rows_per_page);
+        $to = ( 1 + $i / \e::config('rows_per_page'));
     $pages[] = Array(
         'URL' => \e::config('url_prefix_news_list') . "start={$i}&" . query_string('^start$|^' . session_name() . '$|^action$')
         , 'innerHTML' => $to
@@ -530,11 +530,11 @@ for ($i = $imin; $i < $imax; $i = $i + rows_per_page) {
 }
 
 if ($imax < $num) {
-    $last_page = floor(($num - 1) / rows_per_page);
+    $last_page = floor(($num - 1) / \e::config('rows_per_page'));
     if ($last_page > 0) {
         $pages[] = Array('URL' => '', 'innerHTML' => "...");
         $pages[] = Array(
-            'URL' => sites_root_URL . "/news.php?start=" . ($last_page * rows_per_page) . "&" . query_string('^start$|^' . session_name() . '$|^action$')
+            'URL' => sites_root_URL . "/news.php?start=" . ($last_page * \e::config('rows_per_page')) . "&" . query_string('^start$|^' . session_name() . '$|^action$')
             , 'innerHTML' => "[" . ($last_page + 1) . "]"
         );
     }

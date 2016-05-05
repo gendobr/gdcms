@@ -115,9 +115,9 @@ $input_vars['lang']      = get_language('lang');
     // prn($query,$num);
     $news_found = $num = (int)$num['n_records'];
     $pages = Array();
-    for($i=0;$i<$num; $i=$i+rows_per_page)
+    for($i=0;$i<$num; $i=$i+\e::config('rows_per_page'))
     {
-        if( $i==$start ) $to='<b>['.(1+$i/rows_per_page).']</b>'; else $to=(1+$i/rows_per_page);
+        if( $i==$start ) $to='<b>['.(1+$i/\e::config('rows_per_page')).']</b>'; else $to=(1+$i/\e::config('rows_per_page'));
         $pages[]=Array(
                     'URL'=>$_SERVER['PHP_SELF']."?start={$i}&".query_string('^start$|^'.session_name().'$|^action$')
                    ,'innerHTML' => $to

@@ -15,8 +15,8 @@ run('notifier/functions');
 
 $fname=\e::config('CACHE_ROOT').'/notifier_cron_log.txt';
 
-if(emails_at_once>0 && time()-filemtime($fname)>=58){
-	$log=notification_queue_next(emails_at_once);
+if(\e::config('emails_at_once')>0 && time()-filemtime($fname)>=58){
+	$log=notification_queue_next(\e::config('emails_at_once'));
 	file_put_contents($fname, $log);
 	echo $log;
 }else{

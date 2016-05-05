@@ -4,7 +4,7 @@
  * $input_vars['cat']  - category
  * $input_vars['keywords'] - keywords to search images and categories
  * $input_vars['start'] - the first paramater of SQL LIMIT expression, default value is 0
- * $input_vars['rows']  - the second paramater of SQL LIMIT expression, default value is rows_per_page constant (see configuration)
+ * $input_vars['rows']  - the second paramater of SQL LIMIT expression, default value is \e::config('rows_per_page') constant (see configuration)
  */
 $GLOBALS['main_template_name'] = '';
 if (!function_exists('db_get_template')) {
@@ -63,7 +63,7 @@ $rows = isset($input_vars['rows']) ? (int) $input_vars['rows'] : 0;
 $orderBy = isset($input_vars['orderBy']) ? $input_vars['orderBy'] : '';
 
 if ($rows <= 0) {
-    $rows = rows_per_page;
+    $rows = \e::config('rows_per_page');
 }
 $images = new GalleryImages($lang, $this_site_info, $start, $rozdilizformy, $keywords);
 $images->rowsPerPage = $rows;

@@ -62,7 +62,7 @@ if (strlen($keywords) > 0) {
                 AND ( LOCATE('".\e::db_escape($keywords)."', msg) OR LOCATE('".\e::db_escape($keywords)."', name) )
               ".($forum_id>0?" AND forum_id=$forum_id":'')."
             order by data desc
-            limit $start, ".rows_per_page;
+            limit $start, ".\e::config('rows_per_page');
     // AND MATCH (`name`,`email`,`www`,`subject`,`msg`) AGAINST ('".DbStr($keywords)."')
     // prn($query);
     $rows=  \e::db_getrows($query);
@@ -109,15 +109,15 @@ if (strlen($keywords) > 0) {
 
     $pages = Array();
     $url_prefix=site_root_URL.'/index.php?'.preg_query_string('/start/').'&start=';
-    if ($num > rows_per_page) {
+    if ($num > \e::config('rows_per_page')) {
         //$pages = " {$txt['Pages']} :";
-        for ($i = 0; $i < $num; $i = $i + rows_per_page) {
+        for ($i = 0; $i < $num; $i = $i + \e::config('rows_per_page')) {
             if ($i == $start) {
                 $url='';// sites_root_URL . "/thread.php?site_id={$site_id}&start={$i}&forum_id=$forum_id&lang={$input_vars['lang']}";
-                $to = (1 + $i / rows_per_page);
+                $to = (1 + $i / \e::config('rows_per_page'));
             } else {
                 $url=$url_prefix.$i;
-                $to = (1 + $i / rows_per_page);
+                $to = (1 + $i / \e::config('rows_per_page'));
             }
             //$pages[]="<a href=\"" . sites_root_URL . "/thread.php?site_id={$site_id}&start={$i}&forum_id=$forum_id&lang={$input_vars['lang']}\">" . $to . "</a>\n";
             $pages[]=Array(

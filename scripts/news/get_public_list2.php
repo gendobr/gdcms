@@ -54,16 +54,16 @@ class CmsNewsViewer {
         $this->options = $options;
 
         # -------------------- number of news in the block - begin -------------
-        $this->rows_per_page = rows_per_page;
+        $this->rows_per_page = \e::config('rows_per_page');
         if (isset($this->options['rows'])) {
             $this->rows_per_page = (int) $this->options['rows'];
         }
         if ($this->rows_per_page <= 0 or $this->rows_per_page > 10000) {
-            $this->rows_per_page = rows_per_page;
+            $this->rows_per_page = \e::config('rows_per_page');
         }
 
         // update url parameters
-        if ($this->rows_per_page != rows_per_page) {
+        if ($this->rows_per_page != \e::config('rows_per_page')) {
             $this->currentInputData['rows'] = $this->rows_per_page;
         }
         # -------------------- number of news in the block - end ---------------
@@ -868,7 +868,7 @@ class CmsNewsViewer {
             $pages[] = Array('URL' => '', 'innerHTML' => '...');
         }
 
-        for ($i = $imin; $i < $imax; $i = $i + rows_per_page) {
+        for ($i = $imin; $i < $imax; $i = $i + \e::config('rows_per_page')) {
             $to = (1 + $i / $this->rows_per_page);
             $pages[] = Array(
                 'URL' => $this->url(Array('start'=>$i)),
@@ -878,7 +878,7 @@ class CmsNewsViewer {
         }
 
         if ($imax < $num) {
-            $last_page = floor(($num - 1) / rows_per_page);
+            $last_page = floor(($num - 1) / \e::config('rows_per_page'));
             if ($last_page > 0) {
                 $pages[] = Array('URL' => '', 'innerHTML' => "...");
                 $pages[] = Array(
