@@ -79,7 +79,7 @@ if (get_level($site_id) == 0) {
 
 
   $re=new rss_report_generator;
-  $re->db=$db;
+
   $re->distinct=false;
   $re->from="
    <<tp>>rsssource as rsssource

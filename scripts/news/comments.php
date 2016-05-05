@@ -46,7 +46,7 @@ if(isset($input_vars['show_comment'])){
 run("lib/class_report");
 run("lib/class_report_extended");
 $re = new report_generator;
-$re->db = $db;
+
 $re->distinct = false;
 
 $re->from = "<<tp>>news_comment as news_comments

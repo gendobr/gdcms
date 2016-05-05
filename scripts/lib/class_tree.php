@@ -236,7 +236,7 @@ class tree
 
  /*
  $tr= new tree;
- $tr->db=$db;
+
  ///$tr->debug=true;
  $tr->table='grp';
  $tr->id ='id'

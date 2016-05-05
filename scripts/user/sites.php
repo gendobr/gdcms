@@ -45,7 +45,7 @@ foreach($ivk as $key)
   run("lib/class_report");
   run("lib/class_report_extended");
   $re=new report_generator;
-  $re->db=$db;
+
   $re->distinct = true;
   $re->from="<<tp>>site AS si LEFT JOIN  <<tp>>site_user AS su ON(si.id=su.site_id AND su.user_id={$this_user_info['id']})";
   

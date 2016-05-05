@@ -58,7 +58,7 @@ if(isset($input_vars['add_email'])
 run("lib/class_report");
 run("lib/class_report_extended");
 $re = new report_generator;
-$re->db = $db;
+
 $re->distinct = false;
 $re->exclude="/^add_/";
 

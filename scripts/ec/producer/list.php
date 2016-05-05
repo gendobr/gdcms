@@ -54,7 +54,6 @@ if($user_cense_level==0)
   run("lib/class_report");
   run("lib/class_report_extended");
   $re=new report_generator;
-  $re->db=$db;
   $re->distinct=false;
   $re->exclude='/^ec_item/';
 

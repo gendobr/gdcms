@@ -43,7 +43,6 @@ if(isset($input_vars['delete_fragment'])){
 run("lib/class_report");
 run("lib/class_report_extended");
 $re = new report_generator;
-$re->db = $db;
 $re->distinct = false;
 $re->rows_per_page=100;
 

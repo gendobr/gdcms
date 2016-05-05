@@ -39,7 +39,6 @@ if($delete_photo_id && is_array($delete_photo_id)){
 run("lib/class_report");
 run("lib/class_report_extended");
 $re = new report_generator;
-// $re->db = $db;
 $re->distinct = false;
 $re->exclude='/^delete_photo/';
 $re->from = "<<tp>>photo AS photo";

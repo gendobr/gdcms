@@ -103,7 +103,7 @@ $message='';
   run("lib/class_report");
   run("lib/class_report_extended");
   $re=new report_generator;
-  $re->db=$db;
+
   $re->distinct=false;
 
   /*

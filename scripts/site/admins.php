@@ -55,7 +55,6 @@ if($changed) ml('site/admins',$input_vars);
   run("lib/class_report");
   run("lib/class_report_extended");
   $re=new report_generator;
-  $re->db=$db;
   $re->distinct = true;
   $re->from="<<tp>>user AS us LEFT JOIN  <<tp>>site_user AS su ON(us.id=su.user_id AND site_id={$site_id})";
   

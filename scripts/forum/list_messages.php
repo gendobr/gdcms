@@ -92,7 +92,6 @@ if ($message_set_invisible > 0) {
 run("lib/class_report");
 run("lib/class_report_extended_1");
 $re = new report_generator;
-$re->db = $db;
 $re->distinct = false;
 
 $re->from = "<<tp>>forum_msg";

@@ -18,7 +18,7 @@ run('category/functions');
 
 
 $this_category=new tree();
-$this_category->db=&$db;
+
 $this_category->name_id     ='category_id';
 $this_category->name_start  ='start';
 $this_category->name_finish ='finish';

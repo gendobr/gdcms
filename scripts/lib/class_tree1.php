@@ -66,14 +66,12 @@ class tree {
                 . "WHERE {$this->name_start}>{$destination_info[$this->name_start]}";
         #prn('prepare new place',htmlencode($query));
         \e::db_execute($query);
-        #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
 
         $query = "UPDATE {$this->name_table} "
                 . "SET {$this->name_finish}={$this->name_finish}+({$shift}) "
                 . "WHERE {$this->name_finish}>{$destination_info[$this->name_start]}";
         #prn('prepare new place',htmlencode($query));
         \e::db_execute($query);
-        #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
 
 
 
@@ -93,7 +91,6 @@ class tree {
                      AND {$this->name_finish}<={$this->info[$this->name_finish]}";
         #prn('move',htmlencode($query));
         \e::db_execute($query);
-        #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
         // ---------------------- move - end ----------------------------------------
         // ---------------------- clear previous place - begin ----------------------
         $query = "UPDATE {$this->name_table}
@@ -101,14 +98,12 @@ class tree {
                   WHERE {$this->name_finish}>{$this->info[$this->name_finish]}";
         #prn(htmlencode($query));
         \e::db_execute($query);
-        #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
 
         $query = "UPDATE {$this->name_table}
                   SET {$this->name_start}={$this->name_start}-({$shift})
                   WHERE {$this->name_start}>{$this->info[$this->name_finish]}";
         #prn(htmlencode($query));
         \e::db_execute($query);
-        #prn(GetRows(Execute($this->db,"select category_id, start, finish from dl_category order by start;")));
         // ---------------------- clear previous place - end ------------------------
         \e::db_execute('COMMIT;');
         $this->info[$this->name_start]+=$diff;

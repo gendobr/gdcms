@@ -443,7 +443,7 @@ class Report {
         // -------------- show rows -- begin -----------------------------------
         if ($start > $to_show['total_rows'])
             $start = 0;
-        $result = $this->SelectLimit($this->db, $this->create_query(), $start, $this->rows_per_page);
+        $result = $this->SelectLimit($this->create_query(), $start, $this->rows_per_page);
         ///prn($this->query);
         ///prn($result);
         ///if($result===false) echo "<hr><font color=red><b>ERROR:</b></font><br><b>Query</b>:\n<br>".$this->checkStr($this->query)."\n\n<br><br>\n\n<b>Message : </b>".$this->db->ErrorMsg()."\n\n<hr>\n\n";
@@ -526,7 +526,7 @@ class Report {
     //    }
 
     function use_db($DbLink) {
-        $this->db = $DbLink;
+        //$this->db = $DbLink;
     }
 
     function set_table($table_name) {
@@ -562,7 +562,7 @@ class Report {
 
     // function GetNumRows($result_id){ return mysql_num_rows ($result_id); }
 // new versions
-    function SelectLimit($dblink, $query, $start, $rows) {
+    function SelectLimit($query, $start, $rows) {
         $limit_query = preg_replace('/;?( |' . "\n" . '|' . "\r" . ')*$/', '', $query . '  LIMIT ' . ((int) $start) . ',' . ((int) $rows) . ';');
         return \e::db_getrows($limit_query);
     }
@@ -941,7 +941,6 @@ class Report {
 // ---------------------------- class Report -- end ----------------------------
 /*
   $re=new Report;
-  $re->db=$db;
   $re->distinct=true;
   $re->from=" course AS c LEFT OUTER JOIN g_c ON g_c.course_id=c.id AND g_c.group_id={$group_id} ";
   //$re->add_where(" ( p.start={$group_start} ) ");

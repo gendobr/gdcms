@@ -59,7 +59,7 @@ class db_record_editor {
     }
 
     function create_primary_key() {
-        return $this->db->GenID("{$this->table}_seq");
+        //return $this->db->GenID("{$this->table}_seq");
     }
 
 // ---------------------- user-defined functions -- end ------------------------
@@ -440,7 +440,7 @@ class db_record_editor {
     }
 
     function use_db($_tname) {
-        $this->db = $_tname;
+        //$this->db = $_tname;
     }
 
     function del_field($_field) {

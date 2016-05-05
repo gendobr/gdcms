@@ -299,7 +299,7 @@ class db_record_editor_2 extends db_record_editor_common {
   //----------------------- database interface -- end --------------------------
 
     function use_db($_tname) {
-        $this->db = $_tname;
+        //$this->db = $_tname;
     }
 
     function set_table($table_name) {
