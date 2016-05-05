@@ -79,7 +79,7 @@ function get_cached_page($url, $timeout=300) {
 }
 
 $page=Array();
-$page['title']=txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Запорізький національний університет::rus=Запорожский национальний университет::eng=Zaporizhzhya National University'));
+$page['title']=smarty_txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Запорізький національний університет::rus=Запорожский национальний университет::eng=Zaporizhzhya National University'));
 $page['header']="<a style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/news.php?start=0&site_id=27&interface_lang={$lang}>"
               .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Новини прес-центру ЗНУ::rus=Новости пресс-центра ЗНУ::eng=ZNU Press Centre News'))
               ."</a>";
