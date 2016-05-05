@@ -45,7 +45,7 @@ $main_template_name = '';
 
 
 
-$banner_dir = ereg_replace('/$', '', \e::config('SITES_ROOT') . '/' . $this_site_info['dir']) . '/banners';
+$banner_dir = preg_replace("/\\/\\\$/", '', \e::config('SITES_ROOT') . '/' . $this_site_info['dir']) . '/banners';
 $files = \core\fileutils::ls($banner_dir);
 $files = $files['files'];
 
