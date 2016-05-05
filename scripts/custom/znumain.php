@@ -58,7 +58,7 @@
 
 # ------------------------ here is main page content - begin -------------------
 function get_cached_page($url, $timeout=300) {
-    $cache_dir = \e::config('APP_ROOT') . '/template_cache';
+    $cache_dir = \e::config('CACHE_ROOT');
     $filepath = $cache_dir . '/' . md5($url) . '.txt';
     //prn($filepath);
     if (!is_file($filepath) || time() > (filemtime($filepath) + $timeout)) {
@@ -81,17 +81,17 @@ function get_cached_page($url, $timeout=300) {
 $page=Array();
 $page['title']=smarty_txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Запорізький національний університет::rus=Запорожский национальний университет::eng=Zaporizhzhya National University'));
 $page['header']="<a style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/news.php?start=0&site_id=27&interface_lang={$lang}>"
-              .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Новини прес-центру ЗНУ::rus=Новости пресс-центра ЗНУ::eng=ZNU Press Centre News'))
+              .smarty_txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Новини прес-центру ЗНУ::rus=Новости пресс-центра ЗНУ::eng=ZNU Press Centre News'))
               ."</a>";
 $page['abstract']='';
 $page['lang']=$lang;
 $page['site_id']=$site_id;
 $page['content']= get_cached_page("http://sites.znu.edu.ua:8000/cms/index.php?action=news/block&site_id=27&lang={$lang}&rows=5&abstracts=yes&template=block_news")
 ."<div align=right>
-      <a href='http://sites.znu.edu.ua/cms/index.php?action=news_subscription/subscribe&site_id=27' class=more_news_button>".txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Підписатися на розсилку::rus=Подписаться на рассылку::eng=Subscribe to mailing list'))."</a>
+      <a href='http://sites.znu.edu.ua/cms/index.php?action=news_subscription/subscribe&site_id=27' class=more_news_button>".smarty_txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Підписатися на розсилку::rus=Подписаться на рассылку::eng=Subscribe to mailing list'))."</a>
       <a href='http://sites.znu.edu.ua/cms/index.php?action=news/rss&site_id=27&lang={$lang}&rows=10&template=&date=desc&category_id=0'><img src=http://sites.znu.edu.ua/cms/img/rss.gif style='margin:0px;border:none;'></a>
       <a href='http://sites.znu.edu.ua/news.php?start=0&site_id=27&interface_lang={$lang}' class=more_news_button>"
-      .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі новини::rus=Все новости::eng=All News'))
+      .smarty_txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі новини::rus=Все новости::eng=All News'))
       ."</a>
    </div>";
 
@@ -106,13 +106,13 @@ $page['next']=Array();
   if(strlen($anonsy)>0){
        $page['next'][]=Array(
         'title'=>"<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/news.php?action=news%2Fview&site_id=28&lang=$lang>"
-              .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Анонси::rus=Анонсы::eng=Announces'))
+              .smarty_txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Анонси::rus=Анонсы::eng=Announces'))
               ."</a>"
        ,'content'=>$anonsy
        ."
 	<div align=right>
 	<a href='http://sites.znu.edu.ua/news.php?action=news%2Fview&site_id=28&lang=$lang' class=more_news_button>"
-  .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі анонси::rus=Все анонсы::eng=All Announces'))
+  .smarty_txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі анонси::rus=Все анонсы::eng=All Announces'))
   ."</a></div>"
   );
   }
@@ -141,14 +141,14 @@ $page['next']=Array();
   if(strlen($reply)>0)
      $page['next'][]=Array(
         'title'=>"<a  style=\"color:#192666; font-family:georgia,serif;\" href=http://sites.znu.edu.ua/news.php?site_id=19&lang={$lang}>"
-        .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Запрошення на конференції, конкурси::rus=Приглашения на конференции, конкурсы::eng=Invitations to conferences and seminars'))
+        .smarty_txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Запрошення на конференції, конкурси::rus=Приглашения на конференции, конкурсы::eng=Invitations to conferences and seminars'))
         ."</a>"
        ,'content'=>$reply
           ."<br>
             <div align=right>
                 <a href=\"http://sites.znu.edu.ua/cms/index.php?action=news/rss&site_id=19&lang=ukr&rows=10&template=&date=desc&category_id=0\"><img src=http://sites.znu.edu.ua/cms/img/rss.gif style='margin:0px;border:none;'></a>
                 <a href=http://sites.znu.edu.ua/news.php?site_id=19&lang=ukr class=more_news_button>"
-               .txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі запрошення::rus=Все приглашения::eng=All Invitations'))
+               .smarty_txt(Array('lang'=>$txt['language_name'],'variants'=>'ukr=Всі запрошення::rus=Все приглашения::eng=All Invitations'))
                ."</a>
             </div>
           "
@@ -167,7 +167,7 @@ if($banners){
 	'url'=>'',
 	'items'=>Array()
 	);
-	$menu_groups['banners']['items'][$nd['path']]=Array(
+	$menu_groups['banners']['items'][]=Array(
 		'url'=>'',
 		'description'=>'',
 		'html'=>$banners,
@@ -189,8 +189,8 @@ if($banners){
 
 
 # --------------------------- get site template - begin ------------------------
-  $custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_index.html";
-  if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
+  //$custom_page_template = \e::config('SITES_ROOT').'/'.$this_site_info['dir']."/$frontpage_templates_dir/template_index.html";
+  //if(is_file($custom_page_template)) $this_site_info['template']=$custom_page_template;
   //prn($custom_page_template);
   //prn($this_site_info['template']);
 # --------------------------- get site template - end --------------------------
@@ -202,9 +202,9 @@ if($banners){
                                  ,'menu'=>$menu_groups
                                  ,'site_root_url'=>site_root_URL
                                  ,'text'=>$txt
-                                 ,'stan_rechej'=>$stan_rechej
-                                 ,'vystavka'=>$vystavka
-                                 ,'last_added'=>$last_added
+                                 // ,'stan_rechej'=>$stan_rechej
+                                 // ,'vystavka'=>$vystavka
+                                 // ,'last_added'=>$last_added
                                 ));
 # ------------------------ draw using SMARTY template - end --------------------
 echo $file_content;
