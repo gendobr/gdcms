@@ -39,7 +39,7 @@ class edbre extends extended_db_record_editor {
 }
 
 $rep = new edbre;
-$rep->use_db($db);
+
 $rep->debug = false;
 $rep->set_table("<<tp>>user");
 

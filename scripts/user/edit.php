@@ -53,7 +53,7 @@ if(!is_admin()) return 0;
     }
   }
   $rep=new edbre;
-  $rep->use_db($db);
+
   $rep->debug=false;
   $rep->set_table("<<tp>>user");
 

@@ -127,7 +127,6 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
 
 
   $rep=new edbre;
-  $rep->use_db($db);
   $rep->debug=false;
   $rep->set_table("<<tp>>site");
   $rep->exclude='site_id|extra_setting';

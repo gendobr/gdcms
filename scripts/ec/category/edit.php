@@ -81,7 +81,7 @@ db_record_editor_field::$text=$GLOBALS['text'];
 
 
 $rep = new db_record_editor_2;
-$rep->use_db($GLOBALS['db']);
+
 $rep->debug = false;
 #$rep->text=$text;
 $rep->exclude = '^ec_category_id$';

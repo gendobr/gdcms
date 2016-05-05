@@ -121,7 +121,7 @@ if (isset($input_vars['db_record_editor_is_submitted']) && $input_vars['db_recor
 //prn($input_vars);
 
 $rep = new db_record_editor_2;
-$rep->use_db($GLOBALS['db']);
+
 $rep->debug = false;
 #$rep->text=$text;
 $rep->exclude = '^category_id$';

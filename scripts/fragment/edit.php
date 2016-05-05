@@ -58,7 +58,7 @@ if ($user_cense_level <= 0) {
 run('lib/class_db_record_editor');
 run('lib/class_db_record_editor_extended');
 $rep = new extended_db_record_editor;
-$rep->use_db($GLOBALS['db']);
+
 $rep->debug = false;
 $rep->set_table("<<tp>>fragment");
 

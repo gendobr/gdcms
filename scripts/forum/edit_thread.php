@@ -74,7 +74,7 @@ class ThreadEditor extends extended_db_record_editor {
 }
 
 $rep = new ThreadEditor;
-$rep->use_db($db);
+
 $rep->debug = false;
 $rep->set_table("<<tp>>forum_thread");
 
