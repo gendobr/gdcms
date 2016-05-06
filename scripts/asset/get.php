@@ -4,7 +4,7 @@ $GLOBALS['main_template_name'] = '';
 
 
 $dirname=preg_replace("/^\//",'',dirname($_SERVER['PHP_SELF']));
-$rel_file_path = substr($_SERVER['REQUEST_URI'], strlen($dirname) + 1);
+$rel_file_path = preg_replace("/\\?.*\\\$/","",substr($_SERVER['REQUEST_URI'], strlen($dirname) + 1));
 // $rel_file_path = substr($_SERVER['REQUEST_URI'], strlen(dirname($_SERVER['PHP_SELF'])));
 
 $filepath = realpath(\e::config('APP_ROOT') . '/' . $rel_file_path);

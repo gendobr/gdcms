@@ -545,7 +545,7 @@ function menu_site($site_info) {
 function get_site_info($site_id,$lang='') {
     static $this_site_info;
 
-    if (isset($this_site_info)) {
+    if (isset($this_site_info) && $this_site_info['id']==$site_id) {
         return $this_site_info;
     }
 

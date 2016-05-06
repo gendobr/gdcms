@@ -113,12 +113,13 @@ $input_vars['page_header'] = '"'.$this_user_info['user_login'].'" - '.$text['lis
       $response['rows'][$i]['level']="<nobr><input name=filter_user_level_{$response['rows'][$i]['id']} value=\"{$response['rows'][$i]['level']}\" size=3><font size=+1>/{$response['rows'][$i]['cense_level']}</font></nobr>";
       $response['rows'][$i]['url']="<nobr><a href=\"{$response['rows'][$i]['url']}\">".shorten($response['rows'][$i]['url'],30)."</a></nobr>";
       //--------------------------- context menu -- begin ------------------------
+      // prn($response['rows'][$i]['id'],get_site_info($response['rows'][$i]['id']) );
         $response['rows'][$i]['context_menu']=menu_site(get_site_info($response['rows'][$i]['id']));
       //--------------------------- context menu -- end --------------------------
       $response['rows'][$i]['title']=get_langstring($response['rows'][$i]['title']);
     }
   //--------------------------- context menu -- end ------------------------------
-
+// prn($response['rows']);
 $input_vars['page_content']= $re->draw_default_list($response);
 
 //----------------------------- site context menu - begin ----------------------
@@ -126,4 +127,3 @@ $input_vars['page_content']= $re->draw_default_list($response);
   run('user/menu');
   $input_vars['page_menu']['user']['items'] = menu_user($this_user_info);
 //----------------------------- site context menu - end ------------------------
-?>
