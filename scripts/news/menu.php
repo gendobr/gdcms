@@ -36,8 +36,9 @@ function menu_news($news_info) {
         'URL' => \e::url_public([
             'action'=>'news/view_details',
             'news_id'=>$news_info['id'],
-            'lang'=>$news_info['lang'], 'until'=> $until, 'code' => $until])
-        , 'innerHTML' => $text['View_page']
+            'lang'=>$news_info['lang'], 'until'=> $until, 
+            'code' => mg5("{$until}-{$news_info['id']}-{$news_info['lang']}")])
+        , 'innerHTML' => text('View_page')
         , 'attributes' => ' target=_blank '
     );
 

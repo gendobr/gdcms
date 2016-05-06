@@ -17,16 +17,10 @@ $debug = false;
 
 
 //-------------------------- load messages - begin -----------------------------
-if (isset($input_vars['interface_lang']))
-    if ($input_vars['interface_lang'])
-        $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
-    $input_vars['lang'] = \e::config('default_language');
-if (strlen($input_vars['lang']) == 0)
-    $input_vars['lang'] = \e::config('default_language');
-$input_vars['lang'] = get_language('lang');
+$input_vars['lang'] = get_language('interface_lang,lang');
 $txt = load_msg($input_vars['lang']);
 //-------------------------- load messages - end -------------------------------
+//
 # ------------------- get full news info - begin -------------------------------
 $news_id = isset($input_vars['news_id']) ? ((int) $input_vars['news_id']) : 0;
 $news_code=isset($input_vars['news_code']) ? $input_vars['news_code'] : '';
@@ -124,8 +118,16 @@ if (get_level($site_id) > 0) {
 // prn($visitor);
 //------------------- visitor info - end ---------------------------------------
 
-if (get_level($site_id) <= 0 && $this_news_info['cense_level'] < $this_site_info['cense_level']) {
-    die('News not found');
+
+
+
+if( $this_news_info['cense_level'] < $this_site_info['cense_level'] ) {
+    $until=\e::cast('integer',\e::request('until',0));
+    $code_posted=\e::cast('plaintext',trim(\e::request('code',0)));
+    $code_calculated=mg5("{$until}-{$this_news_info['id']}-{$this_news_info['lang']}");
+    if(strlen($code_posted)==0 || $until<time() || $code_posted!=$code_calculated){
+        die('News not found');
+    }
 }
 # --------------------- check level of censor - end ----------------------------
 // ------------------ show related news using tags - begin ---------------------

@@ -20,7 +20,12 @@
 {/if}
 
 
-<p style='font-size:130%;'>{$news.abstract}</p>
+<p style='font-size:130%;'>
+    
+    {if $news.news_icon}
+       <a href="{$site.site_root_url}/{$news.news_icon.full}" target="_blank"><img src="{$site.site_root_url}/{$news.news_icon.small}" align="left"></a>
+    {/if}
+    {$news.abstract}</p>
 <p>{$news.content}</p>
 
 <div style='font-size:90%;'>
