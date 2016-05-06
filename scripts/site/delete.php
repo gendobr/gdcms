@@ -75,7 +75,7 @@ if(isset($input_vars['confirmed']) && $input_vars['confirmed']=='yes') {
         "DELETE FROM <<tp>>photogalery_rozdil WHERE site_id={$this_site_info['id']};",
         "DELETE FROM <<tp>>rsssource WHERE site_id={$this_site_info['id']};",
         "DELETE FROM <<tp>>rsssourceitem WHERE site_id={$this_site_info['id']};",
-        "DELETE FROM <<tp>>site_search WHERE site_id={$this_site_info['id']};",
+        // "DELETE FROM <<tp>>site_search WHERE site_id={$this_site_info['id']};",
         "DELETE FROM <<tp>>news_category WHERE news_id in(select id from <<tp>>news where site_id={$this_site_info['id']});",
         "DELETE FROM <<tp>>news_tags WHERE news_id in(select id from <<tp>>news where site_id={$this_site_info['id']});",
         "DELETE FROM <<tp>>news WHERE site_id={$this_site_info['id']};",

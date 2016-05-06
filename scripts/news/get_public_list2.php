@@ -693,6 +693,7 @@ class CmsNewsViewer {
         # 
         # 
         # ------------------------- category restriction - begin ---------------
+        $category_restriction='';
         if ($this->category_id !== false) {
             if ($this->filtermode) {
                 $current_category = \e::db_getonerow("SELECT category_id, start, finish FROM <<tp>>category WHERE site_id={$this->site_id} AND category_id={$this->category_id}");
@@ -740,6 +741,7 @@ class CmsNewsViewer {
         # 
         # 
         # ------------------------- tag restriction - begin --------------------
+        $news_tags_restriction='';
         if (count($this->selectedTags) > 0) {
 
             $query = "CREATE TEMPORARY TABLE IF NOT EXISTS `tags_query` (

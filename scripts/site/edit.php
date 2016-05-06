@@ -295,6 +295,8 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
     
     //--------------------- update site dir - end ------------------------------
     ml('site/edit',$input_vars);
+    
+    \e::redirect(\e::url_admin(['action'=>'site/edit','site_id'=>$this_site_info['id']]));
   }
 //------------------- edit properties -- end -----------------------------------
 //prn($rep);

@@ -61,10 +61,25 @@ $block_id='form'.time();
   </div>
   ".text('form_html_code').":
   <div style='border:1px solid gray;background-color:#e0e0e0;padding:10px;'>
-  &lt;a href=\"".site_public_URL."/index.php?action=form/view&site_id={$this_site_info['id']}"
-        ."&lang=<b id=lang>ukr</b>&form[ukr]=<b id=fileukr>filename</b>"
-        ."&form[rus]=<b id=filerus>filename</b>"
-        ."&form[eng]=<b id=fileeng>filename</b>\"&gt;".text('form_send_email')."&lt;/a&gt;
+  &lt;a href=\"".
+          str_replace(
+                  [
+                      '{lang}',  rawurlencode('{lang}'),
+                      '{fileukr}',  rawurlencode('{fileukr}'),
+                      '{filerus}',  rawurlencode('{filerus}'),
+                      '{fileeng}',  rawurlencode('{fileeng}'),
+                  ],[
+                      '<b id=lang>'.$_SESSION['lang'].'</b>','<b id=lang>'.$_SESSION['lang'].'</b>',
+                      '<b id=fileukr>filename</b>','<b id=fileukr>filename</b>',
+                      '<b id=filerus>filename</b>','<b id=filerus>filename</b>',
+                      '<b id=fileeng>filename</b>','<b id=fileeng>filename</b>',
+                  ],
+                  \e::url_public([
+                      'action'=>'form/view', 'site_id'=>$this_site_info['id'],
+                      'lang'=>'{lang}', 'form[ukr]'=>'{fileukr}',
+                      'form[rus]'=>'{filerus}','form[eng]'=>'{fileeng}'
+                  ])
+          )."\"&gt;".text('form_send_email')."&lt;/a&gt;
   </div>
 ".text('form_widget_code')."
 <div style='border:1px solid gray;background-color:#e0e0e0;padding:10px;'>
@@ -72,7 +87,10 @@ $block_id='form'.time();
   &lt;script type=\"text/javascript\" src=\"" . \e::url_public('scripts/lib/ajax_loadblock.js') . "\">&lt;/script>
   &lt;script type=\"text/javascript\">
       ajax_loadblock(\"{$block_id}\",\""
-        .site_public_URL
+        .
+              
+              
+              site_public_URL
         ."/index.php?action=form/view&site_id={$this_site_info['id']}"
         ."&lang=<b id=lang1>ukr</b>&form[ukr]=<b id=fileukr1>filename</b>"
         ."&form[rus]=<b id=filerus1>filename</b>&form[eng]=<b id=fileeng1>filename</b>&widget=1"
