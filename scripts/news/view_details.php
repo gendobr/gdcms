@@ -124,7 +124,7 @@ if (get_level($site_id) > 0) {
 if( $this_news_info['cense_level'] < $this_site_info['cense_level'] ) {
     $until=\e::cast('integer',\e::request('until',0));
     $code_posted=\e::cast('plaintext',trim(\e::request('code',0)));
-    $code_calculated=mg5("{$until}-{$this_news_info['id']}-{$this_news_info['lang']}");
+    $code_calculated=md5("{$until}-{$this_news_info['id']}-{$this_news_info['lang']}");
     if(strlen($code_posted)==0 || $until<time() || $code_posted!=$code_calculated){
         die('News not found');
     }
