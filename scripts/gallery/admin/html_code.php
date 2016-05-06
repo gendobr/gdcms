@@ -76,7 +76,7 @@ if ($rozdilizformy != '') {
     //            ) . '</div></p>';
     $vyvid.="<p>{$text['Gallery_html_code']} : <div style='border:1px solid blue;padding:20px;'>" .
             htmlspecialchars("
-             <script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\"></script>
+             <script type=\"text/javascript\" src=\"" . \e::url_public('scripts/lib/ajax_loadblock.js') . "\"></script>
              <div id={$element_id}> </div>
              <script type=\"text/javascript\">
              ajax_loadblock('{$element_id}','" . site_public_URL 
@@ -112,7 +112,7 @@ if ($rozdilizformy != '') {
     $element_id = "d" . time();
     $vyvid.="<p>{$text['Gallery_html_code']} : <div style='border:1px solid blue;padding:20px;'>" .
             htmlspecialchars("
-             <script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\"></script>
+             <script type=\"text/javascript\" src=\"" . \e::url_public('scripts/lib/ajax_loadblock.js') . "\"></script>
              <div id={$element_id}> </div>
              <script type=\"text/javascript\">
              ajax_loadblock('{$element_id}','" . site_public_URL 

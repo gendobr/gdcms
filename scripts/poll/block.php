@@ -11,6 +11,11 @@ header('Access-Control-Allow-Origin: *');
 global $main_template_name;
 $main_template_name='';
 
+
+// load language messages
+$lang=$input_vars['lang']      = get_language('interface_lang,lang');
+$txt = load_msg($lang);
+
 //------------------- get site info - begin ------------------------------------
 run('site/menu');
 $site_id = (int)($input_vars['site_id']);
@@ -96,6 +101,7 @@ $vyvid=process_template( $poll_template
         ,'form_action'=>site_URL
         ,'enhances_security_scripts'=>$enhances_security_scripts
         ,'poll_ask_form_id'=>'poll_ask_form_id'
+        ,'text'=>$txt
 ));
 
 if(strlen($vyvid)==0) {

@@ -43,11 +43,15 @@ if (get_level($site_id) == 0) {
 $block_id='block'.md5(time().  session_id());
 $vyvid = '
     <div id="'.$block_id.'"></div>
-    <script type="text/javascript" src="' . site_public_URL . '/scripts/lib/ajax_loadblock.js"></script>
+    <script type="text/javascript" src="' . \e::url_public('scripts/lib/ajax_loadblock.js') . '"></script>
     <script type="text/javascript">
-      ajax_loadblock("'.$block_id.'","'.site_public_URL
-        .'/index.php?action=category/tree_block&site_id='
-        .$site_id.'&lang='.$_SESSION['lang'].'&template=someTemplateFile.html",null);
+      ajax_loadblock("'.$block_id.'","'.
+        \e::url_public([
+            'action'=>'category/tree_block',
+            'site_id'=>$site_id,
+            'lang'=>$_SESSION['lang'],
+            'template'=>'someTemplateFile.html'
+        ]).'",null);
     </script>
 ';
 //--------------------------- draw - begin -------------------------------------
@@ -66,4 +70,3 @@ $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------
 //--------------------------- draw - begin -------------------------------------
-?>

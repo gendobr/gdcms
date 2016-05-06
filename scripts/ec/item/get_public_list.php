@@ -357,9 +357,8 @@ for($i=0;$i<$cnt;$i++) {
 
 
 # --------------------------- list of pages - begin ----------------------------
-$page_url_prefix=site_public_URL.'/index.php?'.query_string('^start$').'&start=';
-
-
+//$page_url_prefix=site_public_URL.'/index.php?'.query_string('^start$').'&start=';
+$page_url_prefix=\e::url_public(\e::query_array("/start/")).'&start=';
 
 $pages = Array();
 $imin=max(0,$start-10*$rows);

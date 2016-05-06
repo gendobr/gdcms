@@ -107,7 +107,7 @@ function export_page($_page_id, $_lang) {
                 , 'site' => $this_site_info
                 , 'lang' => $lang_list
                 , 'menu' => $menu_groups
-                , 'site_root_url' => site_public_URL
+                , 'site_root_url' =>  \e::url_public([])
                 , 'text' => load_msg($this_page_info['lang'])
             ));
         $this_page_info['content']=$page_content;
@@ -118,7 +118,7 @@ function export_page($_page_id, $_lang) {
         , 'lang' => $lang_list
         , 'site' => $this_site_info
         , 'menu' => $menu_groups
-        , 'site_root_url' => site_public_URL
+        , 'site_root_url' => \e::url_public([])
         , 'text' => load_msg($this_page_info['lang'])
             ));
     //------------------------ draw using SMARTY template - end ------------------

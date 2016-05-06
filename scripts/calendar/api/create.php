@@ -254,7 +254,8 @@ if(isset($input_vars['categories'])){
    $query="DELETE FROM <<tp>>calendar_cache WHERE uid between {$site_id}000000 AND {$site_id}999990";
    \e::db_execute($query);
 
-$calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_id={$site_id}&month={$month}&year={$year}&day={$day}";
+// $calendar_info['url'] = site_public_URL."/index.php?action=calendar/month&site_id={$site_id}&month={$month}&year={$year}&day={$day}";
+$calendar_info['url'] = \e::url_public(['action'=>'calendar/month','site_id'=>$site_id, 'month'=>$month, 'year'=>$year,'day'=>$day]);
 
 event_recache_days($calendar_info['id']);
 

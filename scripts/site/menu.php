@@ -299,7 +299,7 @@ function menu_site($site_info) {
         );
 
         $tor['news/view']=Array(
-                'URL'=>site_public_URL."/index.php?action=news/view&site_id=".$site_info['id'].'&'.$sid
+                'URL'=> \e::url_public(['action'=>'news/view','site_id'=>$site_info['id'], session_name() => $GLOBALS['_COOKIE'][session_name()]]) // site_public_URL."/index.php?action=news/view&site_id=".$site_info['id'].'&'.$sid
                 ,'innerHTML'=>$text['View_news']
                 ,'attributes'=>' target=_blank '
         );

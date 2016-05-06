@@ -32,7 +32,7 @@ run('site/menu');
 
 
 $vyvid="
-<form method=\"post\" action=\"".site_public_URL."/index.php\">
+<form method=\"post\" action=\"".\e::url_public([])."\">
 <input type=\"hidden\" value=\"search/query/query\" name=\"action\">
 <input type=\"hidden\" value=\"{$this_site_info['id']}\" name=\"site_id\">
 <input type=\"hidden\" value=\"{$input_vars['lang']}\" name=\"lang\">

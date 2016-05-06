@@ -57,7 +57,7 @@ foreach($tmp as $tm)
 $uid=time();
 $element_id='block'.$uid;
 $tor="
-<script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\"></script>
+<script type=\"text/javascript\" src=\"" . \e::url_public('scripts/lib/ajax_loadblock.js') . "\"></script>
 <script type=\"text/javascript\">
 <!--
 var spans=['1'];
@@ -171,7 +171,7 @@ function preview()
  <font color=blue><div style='padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid blue;padding:10px;'><pre>
 ".
         htmlspecialchars("
-<script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\"></script>
+<script type=\"text/javascript\" src=\"" . \e::url_public('scripts/lib/ajax_loadblock.js') . "\"></script>
 <div id={$element_id}> </div>
 <script type=\"text/javascript\">
 ").

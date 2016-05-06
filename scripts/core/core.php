@@ -859,6 +859,33 @@ class urlfactory {
     }
 
     /**
+     * Составление ссылок
+     */
+    function url_public($data = Array()) {
+        if(is_array($data)){
+            return \e::config('APPLICATION_PUBLIC_URL'). '/index.php?' . http_build_query($data);
+        }elseif(is_object($data)){
+            return \e::config('APPLICATION_PUBLIC_URL'). '/index.php?' . http_build_query((array)$data);
+        }elseif(is_string($data)){
+            return \e::config('APPLICATION_PUBLIC_URL'). '/' . preg_replace("/^\\//",'',$data);
+        }
+    }
+
+    /**
+     * Составление ссылок
+     */
+    function url_admin($data = Array()) {
+        if(is_array($data)){
+            return \e::config('APPLICATION_ADMIN_URL'). '/index.php?' . http_build_query($data);
+        }elseif(is_object($data)){
+            return \e::config('APPLICATION_ADMIN_URL'). '/index.php?' . http_build_query((array)$data);
+        }elseif(is_string($data)){
+            return \e::config('APPLICATION_ADMIN_URL'). '/' . preg_replace("/^\\//",'',$data);
+        }
+    }
+    
+
+    /**
      * Редирект на заданный адрес
      */
     function redirect($URL) {

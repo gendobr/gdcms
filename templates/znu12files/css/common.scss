@@ -100,8 +100,8 @@ $font-family-sans-serif: 'Roboto', sans-serif;
     &:hover, &:active, &:focus{
         text-decoration:none;
         color:$color-active;
-        border-bottom:1px solid transparent;
-        border-bottom-color:rgba(red($color-default), green($color-active), blue($color-active), 0.5)
+        //border-bottom:1px solid transparent;
+        //border-bottom-color:rgba(red($color-default), green($color-active), blue($color-active), 0.5)
     }
 }
 
@@ -494,6 +494,7 @@ body{
 
         a {
             text-align: center;
+	    text-decoration:none;
             display: block;
             margin: 0.5rem 1.5rem 0.5rem 1.5rem;
             height: 9rem;
@@ -617,6 +618,7 @@ body{
             margin:0 0 0 0;
 
             h1{
+		a{text-decoration:none;}
                 @media (min-width: $screen-xs-min) {
                     font-size:140%;
                 }
@@ -888,6 +890,7 @@ body{
     
     a{
         display:inline-block;
+	text-decoration:none;
         //@include link-style($znu-color-white,$znu-color-white-light, $znu-color-white);
 	line-height:2rem;
 	color:$znu-color-white;

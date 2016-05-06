@@ -69,7 +69,7 @@ $block_id='form'.time();
 ".text('form_widget_code')."
 <div style='border:1px solid gray;background-color:#e0e0e0;padding:10px;'>
   &lt;div id=\"{$block_id}\">&lt;/div>
-  &lt;script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\">&lt;/script>
+  &lt;script type=\"text/javascript\" src=\"" . \e::url_public('scripts/lib/ajax_loadblock.js') . "\">&lt;/script>
   &lt;script type=\"text/javascript\">
       ajax_loadblock(\"{$block_id}\",\""
         .site_public_URL

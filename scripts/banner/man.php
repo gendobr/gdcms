@@ -25,9 +25,9 @@ if($user_cense_level<=0) {
     $input_vars['page_header'] ='Banner rotator';
 
 
-    $banner_rotator_url=site_public_URL."/index.php?action=banner%2Frotator&site_id={$input_vars['site_id']}&amp;lang=ukr";
+    // $banner_rotator_url=site_public_URL."/index.php?action=banner%2Frotator&site_id={$input_vars['site_id']}&amp;lang=ukr";
+    $banner_rotator_url=\e::url_public(['action'=>'banner/rotator','site_id'=>$input_vars['site_id'], 'lang'=>$_SESSION['lang'], session_name() => $GLOBALS['_COOKIE'][session_name()]]);
     $input_vars['page_content']=str_replace('{url}',$banner_rotator_url,text('banner_rotator_manual'));
 
 $input_vars['page_menu']['site']=Array('title'=>$text['Site_menu'],'items'=>Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
-?>

@@ -126,7 +126,7 @@ function preview()
 <h4>JavaScript:</h4>
 {$text['Get_html_link_man']}
  <font color=blue><div style='padding:10px; width:100%; overflow:scroll;height:80pt;border:1px solid blue;padding:10px;'>
- <pre> &lt;script type=\"text/javascript\" src=\"" . site_public_URL . "/scripts/lib/ajax_loadblock.js\">&lt;/script>
+ <pre> &lt;script type=\"text/javascript\" src=\"" . \e::url_public('scripts/lib/ajax_loadblock.js') . "\">&lt;/script>
  &lt;div id=ecblock{$uid}> &lt;/div>
 &lt;script type=\"text/javascript\">
  ajax_loadblock('ecblock{$uid}','<span id=s_url1></span>',null);

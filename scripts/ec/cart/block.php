@@ -49,7 +49,8 @@ foreach($_SESSION['ec_cart']['items'] as $it){
 }
 //$n_cart_items=count($_SESSION['ec_cart']['items']);
 
-$url_cart_details=site_public_URL."/index.php?action=ec/cart/view&lang={$lang}&site_id={$site_id}";
+// site_public_URL."/index.php?action=ec/cart/view&lang={$lang}&site_id={$site_id}";
+$url_cart_details=\e::url_public(['action'=>'ec/cart/view','lang'=>$lang, 'site_id'=>$site_id]);
 
 if($n_cart_items==0) {
     if(isset($input_vars['rows'])) {$input_vars['rows']=abs(1*$input_vars['rows']);} else{$input_vars['rows']=3;}
@@ -68,7 +69,7 @@ $vyvid = process_template( $_template
         'n_cart_items' => $n_cart_items,
         'text'    => $txt,
         'site'    => $this_site_info,
-        'form_action'=>site_public_URL.'/index.php',
+        'form_action'=>\e::url_public(), //site_public_URL.'/index.php',
         'ec_items'=>$list_of_ec_items,
         'hidden_order_form_elements'=>"<input type='hidden' name='action' value='ec/order/new'><input type='hidden' name='site_id' value='{$site_id}'><input type='hidden' name='lang' value='{$lang}'>",
         'url_cart_details' => $url_cart_details )

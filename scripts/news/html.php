@@ -122,7 +122,7 @@ function set_span_value(span_id,val)
 
 <h4>JavaScript:</h4>
  <font color=blue><div style='padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid blue;padding:10px;'>
- <pre>&lt;script type=\"text/javascript\" src=\"".site_public_URL."/scripts/lib/ajax_loadblock.js\"&gt;&lt;/script&gt;
+ <pre>&lt;script type=\"text/javascript\" src=\"".\e::url_public('scripts/lib/ajax_loadblock.js')."\"&gt;&lt;/script&gt;
 &lt;div id=news$uid> &lt;/div&gt;
 &lt;script type=\"text/javascript\"&gt;
 ajax_loadblock('news$uid','".site_public_URL."/index.php?"
@@ -221,7 +221,7 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
     <h4>'.text('news_html_tag_list').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>'.
     htmlspecialchars("
-        <script type=\"text/javascript\" src=\"".site_public_URL."/scripts/lib/ajax.js\"></script>
+        <script type=\"text/javascript\" src=\"".\e::url_public('scripts/lib/ajax.js')."\"></script>
         <script type=\"text/javascript\">
           var request=new ajax(
             \"".site_public_URL."/index.php?action=news/tag_list&site_id=$site_id&lang={$_SESSION['lang']}\",
@@ -272,7 +272,7 @@ ajax_loadblock('news$uid','".site_public_URL."/index.php?"
     <h4>'.text('news_html_rss_aggregator').'</h4>
     <div style="color:blue;padding:10px; width:90%; overflow:scroll;height:80pt;border:1px solid red;"><pre>'.
     htmlspecialchars("
-        <script type=\"text/javascript\" src=\"".site_public_URL."/scripts/lib/ajax.js\"></script>
+        <script type=\"text/javascript\" src=\"".\e::url_public('scripts/lib/ajax.js')."\"></script>
         <script type=\"text/javascript\">
           var request=new ajax(
             \"".site_public_URL."/index.php?action=news/rssaggregator&site_id={$site_id}&template=&lang={$_SESSION['lang']}&rows=2&timeout=30&feed[]=http://habrahabr.ru/rss/best/&feed[]=http://habrahabr.ru/rss/best/\",
