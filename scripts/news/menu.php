@@ -30,8 +30,13 @@ function menu_news($news_info) {
         , 'attributes' => ''
     );
 
+        
+    $until=( time() + 3600 * 24 );
     $tor['news/view'] = Array(
-        'URL' => \e::url_public(['action'=>'news/view_details','news_id'=>$news_info['id'], 'lang'=>$news_info['lang'], session_name() => $GLOBALS['_COOKIE'][session_name()]])// site_public_URL."/index.php?action=news/view_details&news_id={$news_info['id']}&lang={$news_info['lang']}" . '&' . $sid
+        'URL' => \e::url_public([
+            'action'=>'news/view_details',
+            'news_id'=>$news_info['id'],
+            'lang'=>$news_info['lang'], 'until'=> $until, 'code' => $until])
         , 'innerHTML' => $text['View_page']
         , 'attributes' => ' target=_blank '
     );

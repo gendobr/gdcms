@@ -99,6 +99,10 @@ img.img_tag_selected, img.img_tag{margin:0px;}
       {/if}
     </h4>
     <div style='font-size:90%;'>{$news_item.last_change_date|date_format:"%Y-%m-%d %H:%M:%S"} {if $news_item.expiration_date}... {$news_item.expiration_date|date_format:"%Y-%m-%d %H:%M:%S"}{/if}</div>
+    
+    {if $news_item.news_icon}
+       <a href="{$news_item.URL_view_details}"><img src="{$site.site_root_url}/{$news_item.news_icon.small}" align="left"></a>
+    {/if}
     {$news_item.abstract}
     </div>
     <div>
