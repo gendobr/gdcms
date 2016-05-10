@@ -1,6 +1,6 @@
 {if $category->parents}
     {foreach from=$category->parents item=parent}
-    <a title="{$parent.category_title|escape}" href="{$site.url}{$text.language_name}/{$parent.path|regex_replace:"/^[^\/]+(\/|$)/":""}{*$parent.URL*}">{if $parent.category_title_short}{$parent.category_title_short}{else}{$parent.category_title}{/if}</a> /
+    <a title="{$parent.category_title|escape}" href="{$parent.URL}">{if $parent.category_title_short}{$parent.category_title_short}{else}{$parent.category_title}{/if}</a> /
     {/foreach}
     <span class="current">{if $category->info.category_title_short}{$category->info.category_title_short}{else}{$category->info.category_title}{/if}</span>
 {/if}
@@ -14,7 +14,7 @@
           {if $child.redirectURL}
           <a target=_blank title="{$child.category_title|escape}" href="{$child.redirectURL}">{$child.category_title}</a>
           {else}
-          <a title="{$child.category_title|escape}" href="{$site.url}{$text.language_name}/{$child.path|regex_replace:"/^[^\/]+(\/|$)/":""}{*$child.URL*}">{$child.category_title}</a>
+          <a title="{$child.category_title|escape}" href="{$child.URL}">{$child.category_title}</a>
           {/if}
         </li>
         {/foreach}

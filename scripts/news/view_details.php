@@ -106,8 +106,9 @@ if (get_level($site_id) > 0) {
     );
 } else {
     // site visitor session
-    if (!isset($_SESSION['site_visitor_info']))
+    if (!isset($_SESSION['site_visitor_info'])) {
         $_SESSION['site_visitor_info'] = $GLOBALS['default_site_visitor_info'];
+    }
 
     $visitor = $_SESSION['site_visitor_info'];
     $visitor['URL_login'] = site_root_URL . "/index.php?action=forum/login&lang={$input_vars['lang']}";
