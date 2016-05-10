@@ -168,13 +168,13 @@ class fileutils {
     }
 
     public static function path_delete($root, $dir) {
-        $rt = ereg_replace('/+$', '', $root);
+        $rt = preg_replace("/\\/+\\\$/", '', $root);
         $len = strlen($rt);
         if (substr($dir, 0, $len + 1) == $rt . '/')
             $path = substr($dir, $len);
         else
             $path = $dir;
-        $path = $rt . '/' . ereg_replace('^/+', '', $path);
+        $path = $rt . '/' . preg_replace("/^\\/+/", '', $path);
 
 
         if (is_file($path)) {
