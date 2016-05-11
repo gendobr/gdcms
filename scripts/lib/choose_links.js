@@ -133,6 +133,9 @@ function show_page_links(datasource){
 function draw_page_links(json){
     var html='';
     // console.log(json);
+    var l_esc=function(str){
+        return str.replace(/['"]/g,'`');
+    }
     if(json.files){
         for(var i in json.files){
             var f=json.files[i];
@@ -140,7 +143,7 @@ function draw_page_links(json){
             if(!f.prefix){
                 f.prefix='';
             }
-            html+="<div><nobr><img src='img/icon_file.png'>"+f.prefix+"<a href='javascript:void(0)' onclick='insert_link(\""+s(f.name)+"\",\""+f.url+"\")'>"+f.name+"</a></nobr></div>"
+            html+="<div><nobr><img src='img/icon_file.png'>"+f.prefix+"<a href='javascript:void(0)' onclick='insert_link(\""+l_esc(f.name)+"\",\""+f.url+"\")'>"+f.name+"</a></nobr></div>"
         }
     }
     $('#file_links').append(html);
