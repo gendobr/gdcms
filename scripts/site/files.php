@@ -221,12 +221,26 @@ $input_vars['page_content'].="
     </script>
 
     <style type=\"text/css\">
-        .mnu, .fnm{
+        .mnu, .fnm, .fmeta{
            display:inline-block;
            vertical-align:top;
         }
+        .fmeta{
+           width:16em;
+           overflow:hidden;
+           white-space:nowrap;
+           color:gray;
+        }
+        .fmeta:hover{
+           color:black;
+        }
         .mnu{
            width:90px;
+        }
+        .fnm{
+           width:32em;
+           overflow:hidden;
+           white-space:nowrap;
         }
         .row:hover{
            background-color:yellow;
@@ -292,7 +306,7 @@ foreach ($dir_list as $ke => $fname) {
     } else {
         $rename_button = "<a href=\"javascript:void(rename('$fname'))\" title=\"Rename\" class=\"btn\">R</a>";
     }
-
+    $filemtime= date("Y-m-d H:i:s",filemtime("{$current_dir}/{$fname}"));
     $input_vars['page_content'].="
       <div class=row>
       <span class='mnu'>
@@ -301,6 +315,7 @@ foreach ($dir_list as $ke => $fname) {
             <a href=\"{$file_view_prefix}/{$fname}\" target=_blank><img src=img/icon_view.gif border=0  width=20px height=15px></a>
             {$rename_button}
       </span>
+      <span class='fmeta'>{$filemtime}</span>
       <span class='fnm'>
         <a href=\"index.php?action=site/files&site_id={$this_site_info['id']}&current_dir={$dir_view_prefix}{$fname}&popup=$popup&text_field_id={$text_field_id}\"><img src=img/icon_dir.png width=18px height=18px border=0> $fname </a>
       </span>
@@ -315,7 +330,7 @@ foreach ($dir_list as $ke => $fname) {
 
 
 foreach ($file_list as $ke => $fname) {
-    // prn($file_view_prefix,$fname);
+    //prn($file_view_prefix,$fname);
     if (preg_match("/^\\/gallery|^\\/cache/", $fname)) {
         $rename_button = '';
     } else {
@@ -330,6 +345,18 @@ foreach ($file_list as $ke => $fname) {
         $link_unzip = '';
     }
 
+    
+    // prn("{$current_dir}/{$fname}");
+    $filemtime= date("Y-m-d H:i:s",filemtime("{$current_dir}/{$fname}"));
+    $filesize = filesize("{$current_dir}/{$fname}");
+    if($filesize>1048576){
+        $filesizeview=round($filesize/1048576.0 , 3)."MB";
+    }elseif($filesize>1024){
+        $filesizeview=round($filesize/1024.0 , 3)."KB";
+    }else{
+        $filesizeview=$filesize."B";
+    }
+    
     $input_vars['page_content'].="
         <div class=row>
         <span class='mnu'>
@@ -339,8 +366,10 @@ foreach ($file_list as $ke => $fname) {
             " .
             ( (strlen($text_field_id) > 0) ? ins($fname, $site_root_url, $text_field_id) : '' )
             . "
+            
         </span>
-        <span class='fnm'>
+        <span class='fmeta'>{$filemtime} &nbsp;&nbsp;{$filesizeview}</span>
+        <span class='fnm' title='{$fname}'>
           <img src=img/icon_file.png width=18px height=18px border=0> " . basename($fname) . " $link_unzip
         </span>
         </div>
