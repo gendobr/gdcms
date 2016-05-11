@@ -121,7 +121,7 @@ if(isset($input_vars['msg'])) {
                 "INSERT INTO <<tp>>forum_thread (subject, forum_id, site_id, data)
                   VALUES ( <<string subject>>, <<integer forum_id>>, <<integer site_id>>, <<string data>>)",
                 ['subject'=>$subject, 'forum_id'=>$forum_id, 'site_id'=>$site_id, 'data'=>date ("Y-m-d H:i:s")],
-                true
+                false
         );
         
 
@@ -299,7 +299,7 @@ $start=isset($input_vars['start'])?( (int)$input_vars['start'] ):0;
      LIMIT $start, 10";
 
 //prn($query);
-$result = \e::db_getrows($query,[],true);
+$result = \e::db_getrows($query,[],false);
 // \e::info($result);
 $cnt=count($result);
 for($i=0;$i<$cnt;$i++) {
