@@ -397,7 +397,7 @@ class PhotoCategoryViewer {
                 $result=\e::db_getrows(
                         "SELECT * FROM <<tp>>photo 
                          WHERE site_id=<<integer site_id>> AND photo_visible 
-                         ORDER BY photo_id desc')
+                         ORDER BY photo_id desc
                          LIMIT 0,{$this->rowsPerPage}",
                         ['site_id'=>$this->site_info['id'],'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
             }else{
