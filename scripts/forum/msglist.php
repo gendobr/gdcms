@@ -1,6 +1,6 @@
 <?php
 
-$link = $db;
+// $link = $db;
 $data=date ("Y.m.d H:i");
 
 $input_vars['lang'] = $lang = get_language('lang,interface_lang');
