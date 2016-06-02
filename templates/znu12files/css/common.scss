@@ -1618,7 +1618,7 @@ body{
         @media (min-width: $screen-xs-min){
             padding: 0 0 0 0;
             margin: 0 0 1rem 0;
-            //margin-bottom: 2rem;
+            /*margin-bottom: 2rem;*/
         }
 
         @media (min-width: $screen-sm-min) {
@@ -1636,7 +1636,7 @@ body{
 
         margin-bottom: 2rem;
         .text{
-            padding: 0.5rem 2rem 0.5rem 2rem;
+            //padding: 0.5rem 2rem 0.5rem 2rem;
             @media (min-width: $screen-xs-min){
                 font-size:130%;
             }
@@ -1701,10 +1701,11 @@ body{
                 width: 400px;
                 left: 30px;
                 li {
+		    a{
                     font-size: 90%;
                     margin-bottom: 0.5rem;
-                    text-decoration: none;
-                    padding: 0.5rem 2rem 0.5rem 2rem;
+                    text-decoration: none
+		    }
                 }
                 /*li:hover {
                     background-color: #ddd;

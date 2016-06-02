@@ -454,7 +454,7 @@ $input_vars['page_content'].="
     <script type=\"text/javascript\" src=\"" . site_root_URL . "/scripts/lib/plupload/jquery.plupload.queue/jquery.plupload.queue.js\"></script>
 
     <link rel=\"stylesheet\" href=\"" . site_root_URL . "/scripts/lib/plupload/jquery.ui.plupload/css/jquery.ui.plupload.css\" type=\"text/css\" media=\"screen\" />
-    <script src=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js\"></script>
+    <script src=\"//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js\"></script>
     <style>
     .plupload_scroll{
        max-height: 400px;

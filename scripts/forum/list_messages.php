@@ -143,12 +143,12 @@ $re->add_field($field = 'name'
         , $_group_operation = false);
 
 
-//  $re->add_field( $field='email'
-//                 ,$alias='email'
-//                 ,$type ='string'
-//                 ,$label=$text['Creator_email']
-//                 ,$_group_operation=false);
-//
+$re->add_field( $field='email'
+               ,$alias='email'
+               ,$type ='string'
+               ,$label=$text['Creator_email']
+               ,$_group_operation=false);
+
 //  $re->add_field( $field='www'
 //                 ,$alias='www'
 //                 ,$type ='string'
@@ -212,7 +212,7 @@ $input_vars['page_content'] = "
    </table>
  </p>
 "
-        . $re->draw_default_list($response);
+. $re->draw_default_list($response);
 
 //--------------------------- context menu -- begin ----------------------------
 
@@ -229,4 +229,3 @@ $Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 3
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //--------------------------- context menu -- end ------------------------------
-?>
