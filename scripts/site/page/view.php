@@ -64,6 +64,7 @@ for($i=count($this_page_info['templates'])-1; $i>=0; $i--){
 // 
 //--------------------------- language selector - begin ------------------------
 $lang_list = \e::db_getrows("SELECT lang FROM <<tp>>page WHERE id={$this_page_info['id']}");
+// prn($lang_list);
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
     if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['lang']])){
@@ -80,7 +81,15 @@ for ($i = 0; $i < $cnt; $i++) {
     $lang_list[$lang_list[$i]['lang']] = $lang_list[$i];
     unset($lang_list[$i]);
 }
-//prn($lang_list);
+// prn($lang_list);
+uksort ( $lang_list , function($k1, $k2){
+    $defaultLang=\e::config('default_language');
+    $s1 = ($k1 == $defaultLang?'0':'1').$k1;
+    $s2 = ($k2 == $defaultLang?'0':'1').$k2;
+    return -strcmp($s2, $s1);
+} );
+// prn($lang_list);
+        
 //--------------------------- language selector - end --------------------------
 
 $menu_groups = get_menu_items($this_page_info['site_id'], $this_page_info['id'], $this_page_info['lang']);

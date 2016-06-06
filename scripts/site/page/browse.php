@@ -18,21 +18,18 @@ run('site/menu');
 
 # ---------------------- get site info - begin ---------------------------------
 $this_site_info = get_site_info(isset($input_vars['site_id']) ? ((int) $input_vars['site_id']) : 0);
-if (!$this_site_info)
+if (!$this_site_info) {
     die('Site not found');
+}
 $site_id = $this_site_info['id'];
 # ---------------------- get site info - end -----------------------------------
-# -------------------------- load messages - begin -----------------------------
-if (isset($input_vars['interface_lang']))
-    if ($input_vars['interface_lang'])
-        $input_vars['lang'] = $input_vars['interface_lang'];
-if (!isset($input_vars['lang']))
-    $input_vars['lang'] = \e::config('default_language');
-if (strlen($input_vars['lang']) == 0)
-    $input_vars['lang'] = \e::config('default_language');
-$input_vars['lang'] = get_language('lang');
+# 
+# load messages
+$input_vars['lang'] = $lang = get_language('lang,interface_lang');
 $txt = load_msg($input_vars['lang']);
-# -------------------------- load messages - end -------------------------------
+
+
+
 // ====================== get category selector = begin ========================
 run('lib/class_tree1');
 run('lib/class_tree2');
@@ -126,7 +123,13 @@ foreach ($existing_languages as $lng) {
     );
 }
 $lang_list = array_values($lang_list);
-# prn($lang_list);
+usort ( $lang_list , function($k1, $k2){
+    $defaultLang=\e::config('default_language');
+    $s1 = ($k1['name'] == $defaultLang?'0':'1').$k1['name'];
+    $s2 = ($k2['name'] == $defaultLang?'0':'1').$k2['name'];
+    return -strcmp($s2, $s1);
+} );
+// prn($lang_list);
 # -------------------- get list of page languages - end ------------------------
 # --------------------------- get list of pages - begin ------------------------
 if ($page_browse_tree->info && $page_browse_tree->info['start'] > 0) {
@@ -166,7 +169,7 @@ for ($i = 0; $i < $cnt; $i++) {
     if ($list_of_pages[$i]['abstract_present'] == 0)
         $list_of_pages[$i]['abstract'] = shorten(strip_tags($list_of_pages[$i]['abstract']), 255);
 
-    $list_of_pages[$i]['url'] = ereg_replace('^/+', '', "{$list_of_pages[$i]['path']}/{$list_of_pages[$i]['id']}.{$list_of_pages[$i]['lang']}.html");
+    $list_of_pages[$i]['url'] = preg_replace("/^\\/+/", '', "{$list_of_pages[$i]['path']}/{$list_of_pages[$i]['id']}.{$list_of_pages[$i]['lang']}.html");
     $list_of_pages[$i]['url'] = $this_site_info['site_root_url'] . '/' . $list_of_pages[$i]['url'];
 
     $list_of_pages[$i]['size'] = htmlspecialchars(round($list_of_pages[$i]['size'], 2));

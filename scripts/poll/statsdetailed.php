@@ -83,4 +83,3 @@ $Site_menu = "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 2
 $input_vars['page_menu']['site'] = Array('title' => $Site_menu, 'items' => Array());
 $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 //----------------------------- context menu - end -----------------------------
-?>

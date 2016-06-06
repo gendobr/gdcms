@@ -197,6 +197,13 @@ for ($i = 0; $i < $cnt; $i++) {
     $lang_list[$i]['url'] = \e::config('url_prefix_search') . "interface_lang={$lang_list[$i]['name']}&lang={$lang_list[$i]['name']}&site_id=" . join(',', $siteIds) . "&keywords=" . rawurlencode(isset($input_vars['keywords']) ? $input_vars['keywords'] : '');
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }
+usort ( $lang_list , function($k1, $k2){
+    $defaultLang=\e::config('default_language');
+    $s1 = ($k1['name'] == $defaultLang?'0':'1').$k1['name'];
+    $s2 = ($k2['name'] == $defaultLang?'0':'1').$k2['name'];
+    return -strcmp($s2, $s1);
+} );
+// prn($lang_list);
 //------------------------ get list of languages - end -------------------------
 // get site menu
 $menu_groups = get_menu_items($this_site_info['id'], 0, $lang);

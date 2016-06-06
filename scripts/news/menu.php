@@ -106,8 +106,8 @@ function menu_news($news_info) {
             "&site_id=" . $news_info['site_id'] .
             "&delete_news_id=" . $news_info['id'] .
             "&delete_news_lang=" . $news_info['lang']
-            , 'innerHTML' => $text['Delete_news'] . '<iframe src="about:blank" width=10px height=1px style="border:none;" name="frm_delete"></iframe>'
-            , 'attributes' => " onclick='return confirm(\"{$text['Are_You_sure']}?\")' target=frm_delete "
+            , 'innerHTML' => $text['Delete_news'] . '<iframe src="about:blank" width=10px height=1px style="border:none;" name="frm_delete'.$news_info['id'].$news_info['lang'].'"></iframe>'
+            , 'attributes' => " onclick='return confirm(\"{$text['Are_You_sure']}?\")' target='frm_delete{$news_info['id']}{$news_info['lang']}' "
         );
     }
     return $tor;

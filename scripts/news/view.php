@@ -87,7 +87,13 @@ for ($i = 0; $i < $cnt; $i++) {
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }
 $lang_list = array_values($lang_list);
-//prn($lang_list);
+usort ( $lang_list , function($k1, $k2){
+    $defaultLang=\e::config('default_language');
+    $s1 = ($k1['name'] == $defaultLang?'0':'1').$k1['name'];
+    $s2 = ($k2['name'] == $defaultLang?'0':'1').$k2['name'];
+    return -strcmp($s2, $s1);
+} );
+// prn($lang_list); exit();
 //------------------------ get list of languages - end -------------------------
 
 $menu_groups = get_menu_items($this_site_info['id'], 0, $news->getLang());

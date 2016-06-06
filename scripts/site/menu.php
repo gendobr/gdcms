@@ -465,7 +465,7 @@ function menu_site($site_info) {
     if($site_info['is_search_enabled']) {
 
         $tor['site/search']=Array(
-                'URL'=>"index.php?action=site/search&site_id={$site_info['id']}"
+                'URL'=>"index.php?action=search/query/query&site_id={$site_info['id']}"
                 ,'innerHTML'=>$text['Site_search']
                 ,'attributes'=>' style="color:blue;" target=_blank  '
         );

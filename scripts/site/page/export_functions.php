@@ -24,7 +24,7 @@ function export_page($_page_id, $_lang) {
     if (!$this_page_info) {
         $input_vars['page_title'] =
                 $input_vars['page_header'] =
-                $input_vars['page_content'] = $text['Page_not_found'];
+                $input_vars['page_content'] = text('Page_not_found');
         return 0;
     }
     // prn('$this_page_info',$this_page_info);
@@ -61,7 +61,8 @@ function export_page($_page_id, $_lang) {
     }
     // -------------------------- get page template - end ------------------------
     //--------------------------- language selector - begin ----------------------
-    $lang_list = \e::db_getrows("SELECT * FROM <<tp>>page WHERE id={$this_page_info['id']} AND cense_level>={$this_site_info['cense_level']}");
+    $lang_list = \e::db_getrows("SELECT id,lang,path FROM <<tp>>page WHERE id={$this_page_info['id']} AND cense_level>={$this_site_info['cense_level']}",[],false);
+    // prn($lang_list); exit();
     $cnt = count($lang_list);
     $url_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']);
     for ($i = 0; $i < $cnt; $i++) {
@@ -71,7 +72,6 @@ function export_page($_page_id, $_lang) {
         }
         $lang_list[$i]['url'] = "{$this_page_info['id']}.{$lang_list[$i]['lang']}.html";
         if (strlen($lang_list[$i]['path']) > 0){
-            //$lang_list[$i]['url'] = ereg_replace('^/+|/+$', '', $lang_list[$i]['path']) . '/' . $lang_list[$i]['url'];
             $lang_list[$i]['url'] = preg_replace("/^\\/+|\\/+\$/", '', $lang_list[$i]['path']) . '/' . $lang_list[$i]['url'];
         }
         $lang_list[$i]['url'] = $url_prefix . '/' . $lang_list[$i]['url'];
@@ -79,7 +79,13 @@ function export_page($_page_id, $_lang) {
         $lang_list[$lang_list[$i]['lang']] = $lang_list[$i];
         unset($lang_list[$i]);
     }
-    //prn($lang_list);
+    uksort ( $lang_list , function($k1, $k2){
+        $defaultLang=\e::config('default_language');
+        $s1 = ($k1 == $defaultLang?'0':'1').$k1;
+        $s2 = ($k2 == $defaultLang?'0':'1').$k2;
+        return -strcmp($s2, $s1);
+    } );
+    // prn($lang_list); exit();
     //--------------------------- language selector - end ------------------------
 
     $menu_groups = get_menu_items($this_page_info['site_id'], $this_page_info['id'], $this_page_info['lang']);

@@ -7,9 +7,9 @@ $site_id = isset($input_vars['site_id']) ? ((int) $input_vars['site_id']) : 0;
 $this_site_info = get_site_info($site_id);
 //prn($this_site_info);
 if (!$this_site_info['id']) {
-    $input_vars['page_title'] = $text['Site_not_found'];
-    $input_vars['page_header'] = $text['Site_not_found'];
-    $input_vars['page_content'] = $text['Site_not_found'];
+    $input_vars['page_title'] = 
+    $input_vars['page_header'] = 
+    $input_vars['page_content'] = text('Site_not_found');
     return 0;
 }
 $input_vars['site_id'] = $this_site_info['id'];
@@ -264,6 +264,12 @@ for ($i = 0; $i < $cnt; $i++) {
             \e::config('url_pattern_category'));
 }
 $lang_list=array_values($lang_list);
+usort ( $lang_list , function($k1, $k2){
+    $defaultLang=\e::config('default_language');
+    $s1 = ($k1['name'] == $defaultLang?'0':'1').$k1['name'];
+    $s2 = ($k2['name'] == $defaultLang?'0':'1').$k2['name'];
+    return -strcmp($s2, $s1);
+} );
 //prn($lang_list);
 //clearstatcache();
 // if(isset($_REQUEST['v'])) phpinfo();,isset($_REQUEST['v'])

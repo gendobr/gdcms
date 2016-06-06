@@ -490,7 +490,13 @@ for ($i = 0; $i < $cnt; $i++) {
 
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }
-// prn($lang_list);
+usort ( $lang_list , function($k1, $k2){
+    $defaultLang=\e::config('default_language');
+    $s1 = ($k1['name'] == $defaultLang?'0':'1').$k1['name'];
+    $s2 = ($k2['name'] == $defaultLang?'0':'1').$k2['name'];
+    return -strcmp($s2, $s1);
+} );
+// prn($lang_list); exit();
 //------------------------ get list of languages - end -------------------------
 //------------------------ draw using SMARTY template - begin ----------------
 //prn("{$input_vars['debug']}=={$input_vars['action']}");
