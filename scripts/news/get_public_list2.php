@@ -832,6 +832,7 @@ class CmsNewsViewer {
                   ,news.news_meta_info
                   ,news.news_extra_1
                   ,news.news_extra_2
+                  ,news.news_views
                   ,IF(LENGTH(TRIM(news.content))>0,1,0) as content_present
             FROM <<tp>>news AS news
                  {$category_restriction}
