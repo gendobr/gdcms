@@ -179,6 +179,13 @@ $html="
     <div><a href=\"javascript:void(upload_again())\">".text('Upload_more_photos')."</a></div>
     <br/><br/>
     <div id=\"ajax-results\" style=\"height:300px; border:#ccc solid 3px; overflow:auto; padding:5px;\"></div>
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/select2/css/select2.min.css\" />
+    <script type=\"text/javascript\" charset=\"UTF-8\" src=\"./scripts/lib/select2/js/select2.full.min.js\"></script>
+    <script type=\"text/javascript\">
+      $(function(){
+          $('select').select2();
+      });
+    </script>
     ";
 
 
