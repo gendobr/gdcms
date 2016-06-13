@@ -128,7 +128,7 @@ function photo_category_menu($photo_category_info){
         $menu[] = Array(
               'url' => \e::url(['action'=>'photo/photo_category_view','photo_category_id'=>$photo_category_info['photo_category_id']])
             , 'html' => text('photo_category_view')
-            , 'attributes' => ''
+            , 'attributes' => ' target=_blank '
         );
         $menu[] = Array(
               'url' => \e::url(['action'=>'photo/photo_category_delete','photo_category_id'=>$photo_category_info['photo_category_id'],'delete_children'=>1])
