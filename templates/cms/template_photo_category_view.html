@@ -67,9 +67,9 @@
 <div><!-- 
     {foreach from=$category->children item="cat"}
         --><span class="oneitem"><!-- 
-               --><a class="imgicon" href="{$cat.url}">{if $cat.photo_category_icon}<img src="{$site.site_root_url}/{$cat.photo_category_icon.small}" alt="" border="0px" />{/if}</a><!--
+               --><a class="imgicon" href="{$cat.url}">{if $cat.photo_category_icon}<img src="{$site.site_root_url}/{$cat.photo_category_icon.small}" alt="" border="0px" />{else}<img src="{$site_root_url}/img/noimage.jpg" alt="" border="0px" />{/if}</a><!--
             --><br />
-               <a href="{$cat.url}">{$cat.photo_category_title} ({$cat.n_images})</a>
+               <a href="{$cat.url}">{$cat.photo_category_title} {if $cat.n_images}({$cat.n_images}){/if}</a>
            </span><!--
     {/foreach}
 --></div>
