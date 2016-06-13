@@ -498,8 +498,13 @@ $input_vars['page_content'] = "
 
   </form>
 
-  ";
-
+ <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/select2/css/select2.min.css\" />
+ <script type=\"text/javascript\" charset=\"UTF-8\" src=\"./scripts/lib/select2/js/select2.full.min.js\"></script>
+ <script type=\"text/javascript\">
+      $(function(){
+          $('select').select2();
+      });
+  </script>";
 //------------------- draw form - end ------------------------------------------
 //----------------------------- context menu - begin ---------------------------
 // current news menu
