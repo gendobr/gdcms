@@ -246,6 +246,8 @@ $html = "
               //$('textarea.wysiswyg').autogrow({vertical: true, horizontal: false});
           });
        </script>
+       <div><a href=\"index.php?action=photo%2Fphoto_category_list&site_id={$site_id}\">&lt;&lt;&lt;&nbsp;".text('photo_category_list')."</a></div>
+
 ";
 
 
