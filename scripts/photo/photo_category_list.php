@@ -21,7 +21,13 @@ if (get_level($site_id) == 0) {
 // get list ordering by path
 run('photo/functions');
 
-$list=\e::db_getrows("SELECT * FROM <<tp>>photo_category photo_category WHERE site_id=<<integer site_id>> ORDER BY photo_category_path ASC",['site_id'=>$site_id]);
+$list=\e::db_getrows(
+        "SELECT photo_category.*, count(photo.photo_id) as nPhotos
+         FROM <<tp>>photo_category photo_category 
+              LEFT JOIN <<tp>>photo photo ON (photo_category.photo_category_id=photo.photo_category_id)
+         WHERE photo_category.site_id=<<integer site_id>> 
+         GROUP BY photo_category.photo_category_id
+         ORDER BY photo_category.photo_category_path ASC",['site_id'=>$site_id]);
 
 // draw list
 $html="<a href='".\e::url(['action'=>'photo/photo_category_add', 'site_id'=>$site_id])."'>".text('photo_category_add')."</a>";
@@ -30,7 +36,7 @@ foreach($list as $row){
     $deep=substr_count ( $row['photo_category_path'] , "/");
     $html.="<div style=\"padding-left:".(10*$deep)."pt; margin-top:10px;\">
                <a href=\"javascript:void({$row['photo_category_id']})\" class=context_menu_link onclick=\"change_state('cm{$row['photo_category_id']}'); return false;\"><img src=img/context_menu.gif border=0 width-25 height=15></a>
-               ".  get_langstring($row['photo_category_title'])."
+               ".  get_langstring($row['photo_category_title'])." ({$row['nPhotos']} photo(s) )
                <div id=\"cm{$row['photo_category_id']}\" class=menu_block style='display:none;'>
                ";
     $menu = photo_category_menu($row);

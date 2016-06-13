@@ -73,9 +73,9 @@ function photo_category_find($photo_category_id, $photo_category_path, $photo_ca
              FROM <<tp>>photo_category photo_category
                  LEFT JOIN <<tp>>photo photo ON (photo.photo_category_id = photo_category.photo_category_id)
              WHERE 
-                   photo_category.photo_category_id=<<integer photo_category_id>>
-                OR photo_category.photo_category_code=<<string photo_category_code>>
-                OR photo_category.photo_category_path=<<string photo_category_path>>
+                   ( photo_category.photo_category_id=<<integer photo_category_id>> AND <<integer photo_category_id>> > 0 )
+                OR ( photo_category.photo_category_code=<<string photo_category_code>> AND length(<<string photo_category_code>>)>0)
+                OR ( photo_category.photo_category_path=<<string photo_category_path>> AND length(<<string photo_category_path>>)>0 )
              GROUP BY photo_category.photo_category_id
              LIMIT 0,1
              ",[
