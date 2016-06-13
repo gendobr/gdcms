@@ -1,5 +1,7 @@
 <?php
 
+define('simulate',false);
+
 run('site/menu');
 
 # ------------------- site info - begin ----------------------------------------
@@ -9,8 +11,10 @@ if (!$this_site_info) {
     $input_vars['page_title'] = $input_vars['page_header'] = $input_vars['page_content'] = text('Site_not_found');
     return 0;
 }
-$site_id = $this_site_info['id'];
 # ------------------- site info - end ------------------------------------------
+# 
+# 
+# 
 # ------------------- check permission - begin ---------------------------------
 if (get_level($site_id) == 0) {
     $input_vars['page_title'] = $input_vars['page_header'] = $input_vars['page_content'] = $text['Access_denied'];
@@ -35,15 +39,16 @@ foreach ($tmp as $tm) {
 }
 // \e::info($new_categories);
 // get old categories
-$tmp = \e::db_getrows("SELECT * FROM <<tp>>photogalery_rozdil WHERE site_id=<<integer site_id>>", ['site_id' => $site_id]);
+$tmp = \e::db_getrows("SELECT * FROM <<tp>>photogalery_rozdil WHERE site_id=<<integer site_id>>", ['site_id' => $site_id], false);
 $old_categories = [];
 foreach ($tmp as $tm) {
     if (!$tm['rozdil2']) {
         $tm['rozdil2'] = \core\fileutils::encode_dir_name($tm['rozdil']);
     }
+    // $old_categories[$tm['rozdil']] = $tm;
     $old_categories[$tm['rozdil2']] = $tm;
 }
-
+// \e::info($old_categories);
 
 
 
@@ -56,6 +61,7 @@ $copyImageFile = function($old_image) use($this_site_info) {
 };
 
 $html = "";
+
 // copy old categories to new
 foreach ($old_categories as $path => $cat) {
     if (!isset($new_categories[$path])) {
@@ -102,8 +108,19 @@ foreach ($old_categories as $path => $cat) {
             'photo_category_icon' => json_encode($photo_category_icon),
             'photo_category_code' => preg_replace("/.*\\//", "", $cat['rozdil2']),
         ]);
+        $new_id = \e::db_getonerow("SELECT LAST_INSERT_ID() AS new_id");
+        $new_categories[$path]=\e::db_getonerow(
+                "SELECT * FROM <<tp>>photo_category WHERE photo_category_id=<<integer photo_category_id>>",
+                ['photo_category_id'=>$new_id['newid']]);
     }
 }
+
+//\e::info("!!!!!!!!!!!!!!!!!!!");
+//\e::info($new_categories);
+//\e::info("+++++++++++++++++++");
+//exit();
+
+
 
 $html .= "<hr>";
 
@@ -116,56 +133,79 @@ foreach ($tmp as $tm) {
 }
 // \e::info($newimages);
 // get images from old gallery
-$oldimages = \e::db_getrows("SELECT * FROM <<tp>>photogalery WHERE site=<<integer site_id>>", ['site_id' => $site_id]);
-// \e::info($tmp);;
+$oldimages = \e::db_getrows("SELECT * FROM <<tp>>photogalery WHERE site=<<integer site_id>> order by id ASC", ['site_id' => $site_id]);
+
 foreach ($oldimages as $tm) {
     $imgfile = 'gallery/' . dirname($tm['photos']) . '/prf-' . basename($tm['photos']);
     $oldimages[$imgfile] = $tm;
-    if (!isset($newimages[$imgfile])) {
-
-        $html .= "<div>Creating image $imgfile</div>";
-
-        $path = $tm['rozdil2'];
-        if (!$path) {
-            $path = \core\fileutils::encode_dir_name($tm['rozdil']);
-        }
-
-        // image in new gallery does not exists
-        $photo_imgfile = [
-            'small' => $copyImageFile($tm['photos_m']),
-            'full' => $copyImageFile($tm['photos'])
-        ];
-        // copy DB record
-        $sql = "INSERT INTO <<tp>>photo(
-                 photo_category_id,
-                 site_id,
-                 photo_visible,
-                 photo_title,
-                 photo_author,
-                 photo_description,
-                 photo_year,
-                 photo_imgfile
-              ) VALUES(
-                <<integer photo_category_id>>,
-                <<integer site_id>>,
-                <<integer photo_visible>>,
-                <<string photo_title>>,
-                <<string photo_author>>,
-                <<string photo_description>>,
-                <<integer photo_year>>,
-                <<string photo_imgfile>>
-              )";
-        \e::db_execute($sql, [
-            'photo_category_id' => ( isset( $new_categories[$path] ) ? $new_categories[$path]['photo_category_id'] : 0),
-            'site_id' => $site_id,
-            'photo_visible' => ( $tm['vis'] ? 1 : 0),
-            'photo_title' => $tm['pidpys'],
-            'photo_author' => $tm['autor'],
-            'photo_description' => $tm['description'],
-            'photo_year' => $tm['rik'],
-            'photo_imgfile' => json_encode($photo_imgfile)
-        ]);
+    
+    $path = $tm['rozdil2'];
+    if (!$path) {
+        $path = \core\fileutils::encode_dir_name($tm['rozdil']);
     }
+    $photo_category_id=( isset( $new_categories[$path] ) ? $new_categories[$path]['photo_category_id'] : 0);
+    if($photo_category_id<=0){
+        $path1=$tm['rozdil'];
+        $path2=$tm['rozdil2'];
+        foreach ($old_categories as $cat){
+            if(    $cat['rozdil']==$path || $cat['rozdil']==$path1 || $cat['rozdil']==$path2
+                || $cat['rozdil2']==$path || $cat['rozdil2']==$path1 || $cat['rozdil2']==$path2){
+                $photo_category_id=( isset( $new_categories[$cat['rozdil2']] ) ? $new_categories[$cat['rozdil2']]['photo_category_id'] : 0);
+                break;
+            }
+        }
+    }
+    
+    
+    $html .= "<div>Creating image $imgfile</div>";
+    $html .= "<div>id={$tm['id']}</div>";
+    $html .= "<div>path={$path}</div>";
+    $html .= "<div>photo_category_id={$photo_category_id}</div>";
+
+    if(!simulate){
+        if (!isset($newimages[$imgfile])) {
+
+            $html .= "<div>Creating image $imgfile</div>";
+
+
+            // image in new gallery does not exists
+            $photo_imgfile = [
+                'small' => $copyImageFile($tm['photos_m']),
+                'full' => $copyImageFile($tm['photos'])
+            ];
+            // copy DB record
+            $sql = "INSERT INTO <<tp>>photo(
+                     photo_category_id,
+                     site_id,
+                     photo_visible,
+                     photo_title,
+                     photo_author,
+                     photo_description,
+                     photo_year,
+                     photo_imgfile
+                  ) VALUES(
+                    <<integer photo_category_id>>,
+                    <<integer site_id>>,
+                    <<integer photo_visible>>,
+                    <<string photo_title>>,
+                    <<string photo_author>>,
+                    <<string photo_description>>,
+                    <<integer photo_year>>,
+                    <<string photo_imgfile>>
+                  )";
+            \e::db_execute($sql, [
+                'photo_category_id' => $photo_category_id,
+                'site_id' => $site_id,
+                'photo_visible' => ( $tm['vis'] ? 1 : 0),
+                'photo_title' => $tm['pidpys'],
+                'photo_author' => $tm['autor'],
+                'photo_description' => $tm['description'],
+                'photo_year' => $tm['rik'],
+                'photo_imgfile' => json_encode($photo_imgfile)
+            ]);
+        } 
+    }
+
 }
 
 
