@@ -63,6 +63,7 @@ $copyImageFile = function($old_image) use($this_site_info) {
 $html = "";
 
 // copy old categories to new
+$categoryAdded=false;
 foreach ($old_categories as $path => $cat) {
     if (!isset($new_categories[$path])) {
 
@@ -112,7 +113,12 @@ foreach ($old_categories as $path => $cat) {
         $new_categories[$path]=\e::db_getonerow(
                 "SELECT * FROM <<tp>>photo_category WHERE photo_category_id=<<integer photo_category_id>>",
                 ['photo_category_id'=>$new_id['newid']]);
+        $categoryAdded=true;
     }
+}
+if($categoryAdded){
+    header("Location: index.php?action=photo/import&site_id={$site_id}");
+    exit();
 }
 
 //\e::info("!!!!!!!!!!!!!!!!!!!");
