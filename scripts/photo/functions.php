@@ -381,15 +381,17 @@ class PhotoCategoryViewer {
                                 AND ( photo_category_path LIKE '".\e::db_escape($this->photo_category_info['photo_category_path'])."/%' 
                                       OR photo_category_path = '".\e::db_escape($this->photo_category_info['photo_category_path'])."'   ) ) 
                          ORDER BY photo_id desc 
-                         LIMIT 0,{$this->rowsPerPage}",
+                         ",
                         ['site_id'=>$this->site_info['id']]);                
+                //LIMIT 0,{$this->rowsPerPage}
             }else{
                 $result=\e::db_getrows(
                         "SELECT * FROM <<tp>>photo 
                          WHERE site_id=<<integer site_id>> AND photo_visible 
                            AND photo_category_id=<<integer photo_category_id>> 
                          ORDER BY photo_id desc
-                         LIMIT 0,{$this->rowsPerPage}",['site_id'=>$this->site_info['id'], 'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
+                         ",['site_id'=>$this->site_info['id'], 'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
+                // LIMIT 0,{$this->rowsPerPage}
             }
             
         }else{
@@ -398,16 +400,18 @@ class PhotoCategoryViewer {
                         "SELECT * FROM <<tp>>photo 
                          WHERE site_id=<<integer site_id>> AND photo_visible 
                          ORDER BY photo_id desc
-                         LIMIT 0,{$this->rowsPerPage}",
+                         ",
                         ['site_id'=>$this->site_info['id'],'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
+                // LIMIT 0,{$this->rowsPerPage}
             }else{
                 $result=\e::db_getrows(
                         "SELECT * FROM <<tp>>photo 
                          WHERE site_id=<<integer site_id>> AND photo_visible 
                            AND photo_category_id=0 
                          ORDER BY photo_id desc
-                         LIMIT 0,{$this->rowsPerPage}",
+                         ",
                     ['site_id'=>$this->site_info['id'],'photo_category_id'=>$this->photo_category_info['photo_category_id']]);
+                // LIMIT 0,{$this->rowsPerPage}
             }
         }
         
