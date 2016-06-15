@@ -191,8 +191,8 @@ foreach($this_category->parents as $row)
 
   foreach($row['context_menu'] as $cm)
   {
-     if($cm['url']!='') $tor.="<nobr><a href=\"{$cm['url']}\" {$cm['attributes']}>{$cm['html']}</a></nobr>";
-     else $tor.="<nobr><b>{$cm['html']}</b></nobr>";
+     if($cm['url']!='') $tor.="<div><nobr><a href=\"{$cm['url']}\" {$cm['attributes']}>{$cm['html']}</a></nobr></div>";
+     else $tor.="<div><nobr><b>{$cm['html']}</b></nobr></div>";
   }
   $tor.="
       </div>

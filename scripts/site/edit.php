@@ -162,6 +162,7 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
   //-------------------- list of templates - begin -----------------------------
     $template_files = \core\fileutils::ls(\e::config('TEMPLATE_ROOT'));
     $template_files = $template_files['files'];
+    usort($template_files,function($a,$b){return strcmp(strtolower($a), strtolower($b));});
     $template_list  = Array();
     foreach($template_files as $fname)
     {
