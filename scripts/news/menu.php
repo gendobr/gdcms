@@ -705,7 +705,7 @@ class CategoryNews {
             if ($i == $start) {
                 $pages[] = Array('URL' => '', 'innerHTML' => '<b>[' . (1 + $i / $rows_per_page) . ']</b>');
             } else {
-                $pages[] = Array('URL' => $url_prefix . $i, 'innerHTML' => ( 1 + $i / $rows_per_page));
+                $pages[] = Array('URL' => $url_prefix . "&{$this->startname}=$i", 'innerHTML' => ( 1 + $i / $rows_per_page));
             }
         }
 
