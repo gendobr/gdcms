@@ -416,9 +416,9 @@ class PhotoCategoryViewer {
         }
         
         for($i=0, $cnt=count($result); $i<$cnt; $i++){
-            $res['photo_title']=  get_langstring($res['photo_title'], $this->lang);
-            $res['photo_author']=  get_langstring($res['photo_author'], $this->lang);
-            $res['photo_description']=  get_langstring($res['photo_description'], $this->lang);
+            $result[$i]['photo_title']=  get_langstring($result[$i]['photo_title'], $this->lang);
+            $result[$i]['photo_author']=  get_langstring($result[$i]['photo_author'], $this->lang);
+            $result[$i]['photo_description']=  get_langstring($result[$i]['photo_description'], $this->lang);
             
             $result[$i]['photo_imgfile'] = json_decode($result[$i]['photo_imgfile'], true);
 
