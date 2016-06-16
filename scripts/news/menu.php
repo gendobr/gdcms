@@ -171,7 +171,7 @@ function news_get_view($news_list, $lang) {
         
         $news_list[$i]['tag_links'] = news_tag_links($news_list[$i]['tags'],$news_list[$i]['site_id'],$lang);
         
-        $news_list[$i]['news_icon']=  json_decode($news_list[$i]['news_icon'], true);
+        $news_list[$i]['icon']=  $news_list[$i]['news_icon']=  json_decode($news_list[$i]['news_icon'], true);
         $news_list[$i]['categories'] = Array();
         if (isset($_category[$news_list[$i]['id']])) {
             foreach ($_category[$news_list[$i]['id']] as $cat_id) {
