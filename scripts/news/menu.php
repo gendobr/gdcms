@@ -696,7 +696,7 @@ class CategoryNews {
         $imax = min($records_found, $start + 10 * $rows_per_page);
         if ($imin > 0) {
             $pages[] = Array(
-                'URL' => $url_prefix . '0',
+                'URL' => $url_prefix . "&{$this->startname}=".'0',
                 'innerHTML' => '[1]'
             );
             $pages[] = Array('URL' => '', 'innerHTML' => '...');
@@ -715,7 +715,7 @@ class CategoryNews {
             if ($last_page > 0) {
                 $pages[] = Array('URL' => '', 'innerHTML' => "...");
                 $pages[] = Array(
-                    'URL' => $url_prefix . ($last_page * $rows_per_page)
+                    'URL' => $url_prefix . "&{$this->startname}=".($last_page * $rows_per_page)
                     , 'innerHTML' => "[" . ($last_page + 1) . "]"
                 );
             }
