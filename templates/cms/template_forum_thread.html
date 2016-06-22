@@ -36,6 +36,7 @@ List of thread in selected forum
         {else}
         {$row.subject}
         {/if}
+        <div>{$row.first_msg}</div>
     </td>
     <td>{$row.n_messages}</td>
     <td><i><small>{$row.data|date_format:"%d.%m.%Y %H:%M:%S"}</small></i></td>

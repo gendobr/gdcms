@@ -328,21 +328,23 @@ $pages='';
 if($n_records>10) {
     $pages=" {$txt['Pages']} :";
     for($i=0;$i<$n_records; $i=$i+10) {
-        if( $i==$start ) 
-            $to='<b>['.(1+$i/10).']</b>'; 
-        else 
-            $to=(1+$i/10);
-        
-        $url=\e::url_from_template(
-            \e::config('url_template_message_list'),
-            [
-                'site_id'=>$site_id,
-                'lang'=>$lang,
-                'forum_id'=>$forum_id,
-                'thread_id'=>$result[$i]['id'],
-                'start'=>$i
-        ]);
-        $pages.="<a href=\"{$url}\">".$to."</a>\n";
+        if(isset($result[$i])){
+            if( $i==$start ) 
+                $to='<b>['.(1+$i/10).']</b>'; 
+            else 
+                $to=(1+$i/10);
+
+            $url=\e::url_from_template(
+                \e::config('url_template_message_list'),
+                [
+                    'site_id'=>$site_id,
+                    'lang'=>$lang,
+                    'forum_id'=>$forum_id,
+                    'thread_id'=>$result[$i]['id'],
+                    'start'=>$i
+            ]);
+            $pages.="<a href=\"{$url}\">".$to."</a>\n";
+        }
     }
 }
 # --------------------- paging - end --------------------------
