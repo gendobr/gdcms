@@ -241,7 +241,7 @@ if(isset($input_vars['msg'])) {
 //------------------------ create new thread - end -----------------------------
 // -------------------------- create confirmation code - begin -----------------
 if(!isset($_SESSION['code'])) $_SESSION['code']='';
-if(strlen($_SESSION['code'])==0) {
+if(!is_string($_SESSION['code']) || strlen($_SESSION['code'])==0) {
     srand((float)microtime() * 1000000);
     $chars = explode(',','1,2,3,4,5,6,7,8,9,0');
     shuffle($chars);
