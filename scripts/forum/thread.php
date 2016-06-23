@@ -284,6 +284,8 @@ $start=isset($input_vars['start'])?( (int)$input_vars['start'] ):0;
           ,$last_message_date AS  last_message_data
           ,MAX(<<tp>>forum_msg.is_visible) AS  some_messages_visible
           ,m1.msg as first_msg
+          ,m1.name as starter_name
+          ,m1.name as starter_email
     FROM
     (
         `<<tp>>forum_thread`
