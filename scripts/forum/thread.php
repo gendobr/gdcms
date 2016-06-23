@@ -335,12 +335,11 @@ if($n_records>10) {
                 $to=(1+$i/10);
 
             $url=\e::url_from_template(
-                \e::config('url_template_message_list'),
+                \e::config('url_template_thread_list'),
                 [
                     'site_id'=>$site_id,
                     'lang'=>$lang,
                     'forum_id'=>$forum_id,
-                    'thread_id'=>$result[$i]['id'],
                     'start'=>$i
             ]);
             $pages.="<a href=\"{$url}\">".$to."</a>\n";
