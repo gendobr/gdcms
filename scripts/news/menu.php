@@ -697,26 +697,28 @@ class CategoryNews {
         if ($imin > 0) {
             $pages[] = Array(
                 'URL' => $url_prefix . "&{$this->startname}=".'0',
-                'innerHTML' => '[1]'
+                'innerHTML' => '1',
+                'active'=>'0'
             );
-            $pages[] = Array('URL' => '', 'innerHTML' => '...');
+            $pages[] = Array('URL' => '', 'innerHTML' => '...', 'active'=>'0');
         }
 
         for ($i = $imin; $i < $imax; $i = $i + $rows_per_page) {
             if ($i == $start) {
-                $pages[] = Array('URL' => '', 'innerHTML' => '<b>[' . (1 + $i / $rows_per_page) . ']</b>');
+                $pages[] = Array('URL' => '', 'innerHTML' => (1 + $i / $rows_per_page),'active'=>'1');
             } else {
-                $pages[] = Array('URL' => $url_prefix . "&{$this->startname}=$i", 'innerHTML' => ( 1 + $i / $rows_per_page));
+                $pages[] = Array('URL' => $url_prefix . "&{$this->startname}=$i", 'innerHTML' => ( 1 + $i / $rows_per_page), 'active'=>'0');
             }
         }
 
         if ($imax < $records_found) {
             $last_page = floor(($records_found - 1) / $rows_per_page);
             if ($last_page > 0) {
-                $pages[] = Array('URL' => '', 'innerHTML' => "...");
+                $pages[] = Array('URL' => '', 'innerHTML' => "...", 'active'=>'0');
                 $pages[] = Array(
                     'URL' => $url_prefix . "&{$this->startname}=".($last_page * $rows_per_page)
-                    , 'innerHTML' => "[" . ($last_page + 1) . "]"
+                    , 'innerHTML' => ($last_page + 1)
+                    , 'active'=>'0'
                 );
             }
         }

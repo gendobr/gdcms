@@ -329,12 +329,12 @@ $n_records=$n_records['n_records'];
 $pages='';
 if($n_records>10) {
     $pages=" {$txt['Pages']} :";
-    for($i=0;$i<$n_records; $i=$i+10) {
+    for($i=0;$i<=$n_records; $i=$i+10) {
         if(isset($result[$i])){
             if( $i==$start ) 
-                $to='<b>['.(1+$i/10).']</b>'; 
+                $to='<span class="active">'.(1+$i/10).'</span>'; 
             else 
-                $to=(1+$i/10);
+                $to='<span class="">'.(1+$i/10).'</span>';
 
             $url=\e::url_from_template(
                 \e::config('url_template_thread_list'),
