@@ -330,7 +330,7 @@ $pages='';
 if($n_records>10) {
     $pages=" {$txt['Pages']} :";
     for($i=0;$i<=$n_records; $i=$i+10) {
-        if(isset($result[$i])){
+        // if(isset($result[$i])){
             if( $i==$start ) 
                 $to='<span class="active">'.(1+$i/10).'</span>'; 
             else 
@@ -345,7 +345,7 @@ if($n_records>10) {
                     'start'=>$i
             ]);
             $pages.="<a href=\"{$url}\">".$to."</a>\n";
-        }
+        // }
     }
 }
 # --------------------- paging - end --------------------------
