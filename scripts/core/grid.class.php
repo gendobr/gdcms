@@ -331,7 +331,7 @@ class grid {
         // "first page" link
         if ($imin > 0) {
             //$pages[] = Array('URL' => $pattern . 0, 'innerHTML' => '[1]');
-            $pages[] = Array('URL' => str_replace($startVariablePattern,'0',$pattern), 'innerHTML' => '[1]');
+            $pages[] = Array('URL' => str_replace($startVariablePattern,'0',$pattern), 'innerHTML' => '1');
             $pages[] = Array('URL' => '', 'innerHTML' => '...');
         }
 
