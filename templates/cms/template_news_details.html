@@ -11,6 +11,18 @@
 </div>
 <br>
 
+{if $news.categories}
+    {foreach from=$news.categories item=category}
+    {*
+      $category.category_id
+      $category.category_code
+      $category.category_title
+      $category.category_url
+      $category.deep
+    *}
+    <a href="{$categories.category_url}">{$categories.category_title}</a>
+    {/foreach}
+{/if}
 {if $news.tags}
 <div style='font-size:80%;font-weight:bold;'>
     {foreach from=$news.tag_links item=tag}
