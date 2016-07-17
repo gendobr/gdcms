@@ -366,13 +366,19 @@ window.onReady.push(function(){
     html+='    <div class=\"modal-content\">'
     html+='      <div class=\"modal-header\">'
     html+='        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>'
-    html+='        <h4 class=\"modal-title\">Товар добавлен в корзину</h4>'
+    html+='        <h4 class=\"modal-title\">".smarty_txt([
+                'lang'=>$lang,
+                'variants'=>"eng=Product added to your cart::rus=Товар добавлен в корзину::ukr=Товар додано до кошика"
+            ])."</h4>'
     html+='      </div>'
     html+='      <div class=\"modal-body\" id=\"myModalMessage\">'
     html+='        <p>Some text in the modal.</p>'
     html+='      </div>'
     html+='      <div class=\"modal-footer\">'
-    html+='        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>'
+    html+='        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".smarty_txt([
+                'lang'=>$lang,
+                'variants'=>"eng=Close::rus=Закрыть::ukr=Закрити"
+            ])."</button>'
     html+='      </div>'
     html+='    </div>'
     html+='  </div>'
