@@ -90,8 +90,10 @@ function is_searchable($url, $site_info) {
             break;
         }
     }
-    if (!$tor)
+    if (!$tor){
+        echo "<code><b><font color=green>invalid:   </font></b></code>$url no inclusive rules found<br>";
         return false;
+    }
     # ------------------- apply validation rules - end ------------------------- 
     # ------------------- apply exclusion rules - begin ------------------------
     foreach ($site_info['regexp_exclusion'] as $rule) {
