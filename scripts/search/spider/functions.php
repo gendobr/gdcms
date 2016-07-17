@@ -8,7 +8,7 @@
 function is_searchable($url, $site_info) {
     $tor = false;
     if (!is_valid_url($url)) {
-        echo "Invalid URL $url <br/>";
+        echo "Invalid URL syntax $url <br/>";
         return false;
     }
     # ------------------ create/load validation rules - begin ------------------
