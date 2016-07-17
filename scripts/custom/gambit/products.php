@@ -254,7 +254,10 @@ foreach($gambit_seller_options as $key=>$val){
     }
 }
 if(!$headerFound){
-   $navbar.="Все продавцы";
+   $navbar.=smarty_txt([
+       'lang'=>$lang,
+       'variants'=>"eng=All sellers::rus=Все продавцы::ukr=Всі продавці"
+   ]);
 }
 
 $navbar.="
@@ -276,7 +279,10 @@ $navbar.="
             "lang"=>$lang,
             'idSeller'=>0
         ])
-    ."\">Все продавцы<a>
+    ."\">".smarty_txt([
+                'lang'=>$lang,
+                'variants'=>"eng=All sellers::rus=Все продавцы::ukr=Всі продавці"
+            ])."<a>
     </li>
     ";
 foreach($gambit_seller_options as $key=>$val){
@@ -324,7 +330,7 @@ foreach($gambit_category_options as $key=>$val){
     }
 }
 if(!$headerFound){
-   $navbar.="Все категории";
+   $navbar.=text('All_categories');//"Все категории";
 }
 
 $navbar.="
@@ -344,7 +350,7 @@ $navbar.="
             "lang"=>$lang,
             'idCategory'=>0
         ])
-        ."\">Все категории</a>
+        ."\">".text('All_categories')."</a>
         </li>
         ";
 
@@ -404,7 +410,7 @@ $html="
     <div class=\"row\">
         <div class=\"col-xs-4\">
         <div class=\"gridNRows\">
-                <h4>Товаров : {$gambit_product_list['nRows']}</h4>
+                <h4>".text('Number_of_items')." : {$gambit_product_list['nRows']}</h4>
             </div>
        </div>
        <div class=\"col-xs-8\" style=\"text-align:right;\">
