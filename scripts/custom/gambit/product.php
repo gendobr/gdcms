@@ -403,7 +403,14 @@ for ($i = 0; $i < $cnt; $i++) {
         unset($lang_list[$i]);
         continue;
     }
-    $lang_list[$i]['url'] = \e::config('url_prefix_search') . "interface_lang={$lang_list[$i]['name']}&lang={$lang_list[$i]['name']}&site_id=" . join(',', $siteIds) . "&keywords=" . rawurlencode(isset($input_vars['keywords']) ? $input_vars['keywords'] : '');
+    //$lang_list[$i]['url'] = \e::config('url_prefix_search') . "interface_lang={$lang_list[$i]['name']}&lang={$lang_list[$i]['name']}&site_id=" . join(',', $siteIds) . "&keywords=" . rawurlencode(isset($input_vars['keywords']) ? $input_vars['keywords'] : '');
+    $lang_list[$i]['url'] = \e::url_public([
+            'action'=>'custom/gambit/product',
+            'site_id'=>$this_site_info['id'],
+            'lang'=>$lang_list[$i]['name'],
+            'productId'=>\e::request('productId', '')
+        ]);
+
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
 }
 
