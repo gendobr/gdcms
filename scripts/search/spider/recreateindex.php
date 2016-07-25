@@ -3,7 +3,7 @@
 
 
 
-if(!isset($input_vars['key']) || $input_vars['key']!=\e::config('search_spider_key')){
+if(\e::request('key','')!=\e::config('search_spider_key')){
     exit('Invalid key');
 }
 $timestart = microtime(true);

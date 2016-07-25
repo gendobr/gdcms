@@ -8,11 +8,11 @@
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com
  */
 // include core library
-include 'scripts/core/core.php';
+include '../../gdcms/scripts/core/core.php';
 
 
 $config = new config();
-include('./const.php');
+include('../../gdcms/const.php');
 include('./config.php');
 \e::set('config', $config);
 
