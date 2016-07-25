@@ -28,7 +28,25 @@ $input_vars['site_id'] = $this_site_info['id'];
 //------------------- site info - end ------------------------------------------
 //$filename = preg_replace("/\\W/",'-',$_REQUEST['f']);
 
-$file = \e::request('f');
+function scss_nameparse($str){
+    
+    $result = preg_replace_callback (
+            "/\\{([^}]+)\\}/", 
+            function($matches){
+                $tmp=explode('||',$matches[1]);
+                $param=\e::request(trim($tmp[0]),isset($tmp[1])?trim($tmp[1]):'');
+                return preg_replace("/[^a-z0-9_-]/i",'-',$param);
+            }, 
+            $str);
+    // echo $result;
+    return $result;
+}
+
+
+
+
+$file = scss_nameparse(\e::request('f'));
+
 $basename = \core\fileutils::encode_file_name(basename($file));
 
 //prn(explode('/', dirname($file)));
