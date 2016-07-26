@@ -11,18 +11,11 @@
         {* <link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic' rel='stylesheet' type='text/css'> *}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         {* <link href='https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic' rel='stylesheet' type='text/css'> *}
-        
-        {if $smarty.cookies.css eq "accessible-100"}
+
+
            <link rel='stylesheet' id='znu-css-screen' 
-		data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/accessible-100.scss"  
-		href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/accessible-100.scss' 
+		href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/{literal}{css || common}{/literal}.scss' 
 		type='text/css' media='screen' />
-        {else}
-           <link rel='stylesheet' id='znu-css-screen' 
-		data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/common.scss"  
-		href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/common.scss' 
-		type='text/css' media='screen' />
-        {/if}
         <link rel='stylesheet' id='znu-css-print'  data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/print.scss" href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/print.scss' type='text/css' media='print' />
 
         {literal}
@@ -41,15 +34,15 @@
                                 <div class="znu-2016-overheader-col1">
                                         <a href="#pagetop" class="glyph glyphicon glyphicon-arrow-down" title="{txt lang=$text.language_name variants="eng=Skip to page content::rus=Перейти к тексту страницы::ukr=Перейти до тексту сторінки"}"></a>
                                         <div class="skin-selector-container">
-                                        <button type="button" class="skin-selector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class='glyphicon glyphicon-eye-open'></span><span class="caret"></span>
-                                          </button>
-                                          <ul class="dropdown-menu">
-                                            <li><a href="javascript:void(setSkin('default'))">{txt lang=$text.language_name variants="eng=Default skin::rus=Обычное оформление::ukr=Звичайне оформлення"}</a></li>
-                                            <li><a href="javascript:void(setSkin('accessible-100'))">{txt lang=$text.language_name variants="eng=Accessible, scale 100%::rus=Повышенная доступность, масштаб 100%::ukr=Збільшена доступність, масштаб 100%"}</a></li>
-                                            <!-- <li><a href="javascript:void(setSkin('accessible-150'))">Something else here</a></li>
-                                            <li><a href="javascript:void(setSkin('accessible-200'))">Something else here</a></li> -->
-                                          </ul>
+                                    	    <button type="button" class="skin-selector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        	<span class='glyphicon glyphicon-eye-open'></span><span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                        	<li><a href="javascript:void(setSkin('common'))">{txt lang=$text.language_name variants="eng=Default skin::rus=Обычное оформление::ukr=Звичайне оформлення"}</a></li>
+                                        	<li><a href="javascript:void(setSkin('accessible-100'))">{txt lang=$text.language_name variants="eng=Accessible, scale 100%::rus=Повышенная доступность, масштаб 100%::ukr=Збільшена доступність, масштаб 100%"}</a></li>
+                                        	<li><a href="javascript:void(setSkin('accessible-150'))">{txt lang=$text.language_name variants="eng=Accessible, scale 150%::rus=Повышенная доступность, масштаб 150%::ukr=Збільшена доступність, масштаб 150%"}</a></li>
+                                        	<li><a href="javascript:void(setSkin('accessible-200'))">{txt lang=$text.language_name variants="eng=Accessible, scale 200%::rus=Повышенная доступность, масштаб 200%::ukr=Збільшена доступність, масштаб 200%"}</a></li>
+                                            </ul>
                                         </div>
                                         {foreach from=$lang key=ke item=ln}
                                             {if $ln.lang eq $text.language_name}
