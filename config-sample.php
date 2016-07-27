@@ -130,6 +130,10 @@ $config->site_extra_setting=[
             return $toe;
         },
         'value'=>[$config->default_language=>$config->default_language]
+    ],
+    'publicCmsUrl'=>[
+        'type'=>'text',
+        'value' =>  $config->APPLICATION_PUBLIC_URL 
     ]
 ];
 

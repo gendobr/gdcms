@@ -337,6 +337,12 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
               }
               $extra_settings_html.="</div>";
               break;
+          case 'text':
+              $extra_settings_html.="<div class='site_extra_setting site_extra_setting_text'>";
+              $extra_settings_html.="<div><b>".text('site_extra_setting_'.$key)."</b></div>";
+              $extra_settings_html.="<input type=text name=\"extra_setting[$key]\" value=\"".htmlspecialchars($this_site_info['extra_setting'][$key])."\">";
+              $extra_settings_html.="</div>";
+              break;
       }
       
   }

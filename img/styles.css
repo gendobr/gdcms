@@ -220,3 +220,8 @@ input[type="submit"],input[type="reset"]{font-size:150%;width:auto;}
 .select2-results__option{
     font-size:1rem;
 }
+
+
+.site_extra_setting{
+    margin-bottom:20pt;
+}

@@ -9,7 +9,7 @@ function menu_site($site_info) {
     global $text,$db;
 
     $nocashe="&t=".time();
-
+    // prn($site_info);  $site_info['extra_setting']['publicCmsUrl']
 
     $tor=Array();
 
@@ -87,22 +87,22 @@ function menu_site($site_info) {
         );
 
         $tor['ec/item/search']=Array(
-                'URL'=>"index.php?action=ec/item/search&site_id={$site_info['id']}"
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=ec/item/search&site_id={$site_info['id']}"
                 ,'innerHTML'=>text('EC_item_search')
                 ,'attributes'=>'  style="color:green;" target=_blank  '
         );
         $tor['ec/item/search_advanced']=Array(
-                'URL'=>"index.php?action=ec/item/search_advanced&site_id={$site_info['id']}"
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=ec/item/search_advanced&site_id={$site_info['id']}"
                 ,'innerHTML'=>text('EC_item_search_advanced')
                 ,'attributes'=>'  style="color:green;" target=_blank  '
         );
         $tor['ec/item/listview']=Array(
-                'URL'=>"index.php?action=ec/item/listview&site_id={$site_info['id']}"
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=ec/item/listview&site_id={$site_info['id']}"
                 ,'innerHTML'=>'Arbitrary list'
                 ,'attributes'=>'  style="color:green;" target=_blank  '
         );
         $tor['ec/item/list_by_tag']=Array(
-                'URL'=>"index.php?action=ec/item/list_by_tag&site_id={$site_info['id']}"
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=ec/item/list_by_tag&site_id={$site_info['id']}"
                 ,'innerHTML'=>text('EC_item_list_by_tag').'<br><br>'
                 ,'attributes'=>'  style="color:green;" target=_blank  '
         );
@@ -118,9 +118,9 @@ function menu_site($site_info) {
                 ,'attributes'=>''
         );
         $tor['ec/item/browse']=Array(
-                'URL'=>"index.php?action=ec/item/browse&site_id={$site_info['id']}"
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=ec/item/browse&site_id={$site_info['id']}"
                 ,'innerHTML'=>text('EC_item_browse').'<br/><br/>'
-                ,'attributes'=>'  style="color:green;"  '
+                ,'attributes'=>'  style="color:green;" target=_blank '
         );
 
 
@@ -160,7 +160,7 @@ function menu_site($site_info) {
                 ,'attributes'=>' target=_blank '
         );
         $tor['ec/producer/names']=Array(
-                'URL'=>"index.php?action=ec/producer/names&site_id={$site_info['id']}"
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=ec/producer/names&site_id={$site_info['id']}"
                 ,'innerHTML'=>text('EC_item_producers').'<br><br>'
                 ,'attributes'=>'  class=gr target=_blank '
         );
@@ -258,9 +258,9 @@ function menu_site($site_info) {
         }        
         
         $tor['photo/photo_category_view']=Array(
-                'URL'=>"index.php?action=photo/photo_category_view&site_id={$site_info['id']}&lang={$_SESSION['lang']}"
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=photo/photo_category_view&site_id={$site_info['id']}&lang={$_SESSION['lang']}"
                 ,'innerHTML'=>text('photo_category_view')
-                ,'attributes'=>' style="color:green;margin-bottom:20px;" '
+                ,'attributes'=>' style="color:green;margin-bottom:20px;" target=_blank '
         );
         
     }
@@ -273,9 +273,9 @@ function menu_site($site_info) {
                 ,'attributes'=>' style="color:blue;" '
         );
         $tor['gb/guestbook']=Array(
-                'URL'=>"index.php?action=gb/guestbook&site=".$site_info['id'].'&'.$sid
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=gb/guestbook&site=".$site_info['id'].'&'.$sid
                 ,'innerHTML'=>$text['View_Guestbook'].'<br><br>'
-                ,'attributes'=>''
+                ,'attributes'=>'  style="color:green;" target=_blank '
         );
     }
 
@@ -299,9 +299,12 @@ function menu_site($site_info) {
         );
 
         $tor['news/view']=Array(
-                'URL'=> \e::url_public(['action'=>'news/view','site_id'=>$site_info['id'], session_name() => $GLOBALS['_COOKIE'][session_name()]]) // site_public_URL."/index.php?action=news/view&site_id=".$site_info['id'].'&'.$sid
+                'URL'=> \e::url_public([
+                        'action'=>'news/view','site_id'=>$site_info['id'], 
+                        session_name() => $GLOBALS['_COOKIE'][session_name()]
+                        ],$site_info['extra_setting']['publicCmsUrl'])
                 ,'innerHTML'=>$text['View_news']
-                ,'attributes'=>' target=_blank '
+                ,'attributes'=>' target=_blank style="color:green;" '
         );
         $tor['news/comments']=Array(
                 'URL'=>"index.php?action=news/comments&orderby=news_comment_datetime+desc&site_id=".$site_info['id']
@@ -351,9 +354,9 @@ function menu_site($site_info) {
                 ,'attributes'=>' target=_blank '
         );
         $tor['rss_aggregator/view']=Array(
-                'URL'=>"index.php?action=rss_aggregator/view&site_id=".$site_info['id']
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=rss_aggregator/view&site_id=".$site_info['id']
                 ,'innerHTML'=>text('rsssourceitem_view').'<br><br>'
-                ,'attributes'=>''
+                ,'attributes'=>' style="color:green;" '
         );
     }
 
@@ -366,15 +369,15 @@ function menu_site($site_info) {
                 ,'attributes'=>' style="color:blue;" '
         );
         $tor['forum/forum']=Array(
-                'URL'=>"index.php?action=forum/forum&site_id={$site_info['id']}&lang={$_SESSION['lang']}".'&'.$sid
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=forum/forum&site_id={$site_info['id']}&lang={$_SESSION['lang']}".'&'.$sid
                 ,'innerHTML'=>$text['View_forums']
                 ,'attributes'=>' target=_blank '
         );
                 
         $tor['forum/publicsearch']=Array(
-                'URL'=>"index.php?action=forum/publicsearch&site_id={$site_info['id']}&lang={$_SESSION['lang']}".'&'.$sid
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=forum/publicsearch&site_id={$site_info['id']}&lang={$_SESSION['lang']}".'&'.$sid
                 ,'innerHTML'=>$text['forum_search']
-                ,'attributes'=>' target=_blank '
+                ,'attributes'=>' target=_blank style="color:green;" '
         );
         $tor['forum/search']=Array(
                 'URL'=>"index.php?action=forum/search&site_id={$site_info['id']}&orderby=data+desc"
@@ -402,7 +405,7 @@ function menu_site($site_info) {
                 ,'attributes'=>'  '
         );
         $tor['calendar/view']=Array(
-                'URL'=>"index.php?action=calendar%2Fmonth&site_id={$site_info['id']}&interface_lang={$_SESSION['lang']}"
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=calendar%2Fmonth&site_id={$site_info['id']}&interface_lang={$_SESSION['lang']}"
                 ,'innerHTML'=>text('Calendar_view_page')
                 ,'attributes'=>' target=_blank  style="color: green;"  '
         );
@@ -420,9 +423,9 @@ function menu_site($site_info) {
                 ,'attributes'=>' style="color:blue;" '
         );
         $tor['poll/view']=Array(
-                'URL'=>"index.php?action=poll/ask&site_id={$site_info['id']}".'&'.$sid
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=poll/ask&site_id={$site_info['id']}".'&'.$sid
                 ,'innerHTML'=>$text['Poll_view']
-                ,'attributes'=>' target=_blank '
+                ,'attributes'=>' target=_blank style="color:green;"'
         );
 
         $tor['poll/html']=Array(
@@ -457,19 +460,27 @@ function menu_site($site_info) {
     );
 
     $tor['category/browse']=Array(
-            'URL'=>site_root_URL."/index.php?action=category/browse&site_id={$site_info['id']}&lang={$_SESSION['lang']}"
+            'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=category/browse&site_id={$site_info['id']}&lang={$_SESSION['lang']}"
             ,'innerHTML'=>text('Browse_categories') //$text['Add_page']
-            ,'attributes'=>' target=_blank style="margin-bottom:10px;"'
+            ,'attributes'=>' target=_blank style="margin-bottom:10px;color:green;"'
     );
 
     if($site_info['is_search_enabled']) {
 
         $tor['site/search']=Array(
-                'URL'=>"index.php?action=search/query/query&site_id={$site_info['id']}"
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=search/query/query&site_id={$site_info['id']}"
                 ,'innerHTML'=>$text['Site_search']
                 ,'attributes'=>' style="color:blue;" target=_blank  '
         );
 
+        $tor['site/naivesearch']=Array(
+                'URL'=>"{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=search/query/naivequery&site_id={$site_info['id']}"
+                ,'innerHTML'=>$text['Site_search'].'(naive)'
+                ,'attributes'=>' style="color:blue;" target=_blank  '
+        );
+                
+                
+                        
         $tor['site/search_html']=Array(
                 'URL'=>"index.php?action=site/search_html&site_id={$site_info['id']}".'&'.$sid
                 ,'innerHTML'=>$text['Site_search_html'].'<br><br>'
@@ -560,16 +571,7 @@ function get_site_info($site_id,$lang='') {
 
     $this_site_info['title']=get_langstring($this_site_info['title'],$lang);
     
-    $this_site_info['extra_setting']=json_decode($this_site_info['extra_setting'],true);
-    if(!$this_site_info['extra_setting']){
-        $this_site_info['extra_setting']=[];
-    }
-    $pattern=\e::config('site_extra_setting');
-    foreach($pattern as $key=>$val){
-        if(!isset($this_site_info['extra_setting'][$key])){
-            $this_site_info['extra_setting'][$key]=$val['value'];
-        }
-    }
+    $this_site_info['extra_setting']=site_decode_extra_setting($this_site_info['extra_setting']);
 
     # ----------------------- list of site managers - begin ----------------------
     # if user is logged in
@@ -602,6 +604,20 @@ function get_site_info($site_id,$lang='') {
     # --------------------------- get site template - end ------------------------
 
     return $this_site_info;
+}
+
+function site_decode_extra_setting($extra_setting_in){
+    $extra_setting=json_decode($extra_setting_in,true);
+    if(!$extra_setting){
+        $extra_setting=[];
+    }
+    $pattern=\e::config('site_extra_setting');
+    foreach($pattern as $key=>$val){
+        if(!isset($extra_setting[$key])){
+            $extra_setting[$key]=$val['value'];
+        }
+    }
+    return $extra_setting;
 }
 # ------------------- site info - end ------------------------------------------
 

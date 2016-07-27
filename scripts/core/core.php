@@ -861,13 +861,17 @@ class urlfactory {
     /**
      * Составление ссылок
      */
-    function url_public($data = Array()) {
+    function url_public($data = Array(), $publicCmsUrl='') {
+        
+        if(!$publicCmsUrl){
+            $publicCmsUrl=\e::config('APPLICATION_PUBLIC_URL');
+        }
         if(is_array($data)){
-            return \e::config('APPLICATION_PUBLIC_URL'). '/index.php?' . http_build_query($data);
+            return $publicCmsUrl. '/index.php?' . http_build_query($data);
         }elseif(is_object($data)){
-            return \e::config('APPLICATION_PUBLIC_URL'). '/index.php?' . http_build_query((array)$data);
+            return $publicCmsUrl. '/index.php?' . http_build_query((array)$data);
         }elseif(is_string($data)){
-            return \e::config('APPLICATION_PUBLIC_URL'). '/' . preg_replace("/^\\//",'',$data);
+            return $publicCmsUrl. '/' . preg_replace("/^\\//",'',$data);
         }
     }
 

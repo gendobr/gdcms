@@ -161,6 +161,19 @@ class CmsNewsViewer {
             $this->keywords = strip_tags($this->options['keywords']);
             $this->currentInputData['keywords'] = $this->keywords;
         }
+        
+        if(isset($this->options['ordering'])){
+           $this->setOrdering($this->options['ordering']);
+        }
+        if(isset($this->options['orderBy'])){
+           $this->setOrdering($this->options['orderBy']);
+        }
+        if(isset($this->options['orderby'])){
+           $this->setOrdering($this->options['orderby']);
+        }
+        if(isset($this->options['order'])){
+           $this->setOrdering($this->options['order']);
+        }
     }
 
     public function __get($attr) {
@@ -807,7 +820,7 @@ class CmsNewsViewer {
         if ($this->ordering) {
             $orderby = " ORDER BY {$this->ordering}";
         } else {
-            $orderby = '';
+            $orderby = ' ORDER BY news.last_change_date DESC ';
         }
 
         $now = date('Y-m-d H:i:s', time());
