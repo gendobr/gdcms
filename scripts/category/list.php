@@ -234,7 +234,7 @@ foreach ($children as $row) {
     if ($row['is_visible'] == '0')
         $tor.="style='color:silver;'";
 
-    $tor.=">{$row['category_code']} {$row['title_short']} {$row['has_subcategories']}</a><br>
+    $tor.=">{$row['title_short']} <span style='opacity:0.7;'> ( {$row['category_code']} ) {$row['has_subcategories']}</a><br>
     <div id=\"cm{$row['category_id']}\" class=menu_block style='display:none;'>
 ";
 
