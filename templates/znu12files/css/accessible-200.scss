@@ -1,12 +1,12 @@
 // parameters
 
 $resourse-root-url:"/cms/templates/znu12files";
-$root-font-size-xs:8pt;
-$root-font-size-sm:8pt;
-$root-font-size-md:8pt;
-$root-font-size-lg:10pt;
+$root-font-size-xs:16pt;
+$root-font-size-sm:16pt;
+$root-font-size-md:16pt;
+$root-font-size-lg:20pt;
 
-$grid-gutter-width:4rem;
+$grid-gutter-width:1rem;
 
 $icon-font-path: $resourse-root-url + "/css/bootstrap-sass/fonts/bootstrap/";
 $icon-font-name:'glyphicons-halflings-regular';
@@ -14,8 +14,8 @@ $icon-font-name:'glyphicons-halflings-regular';
 $screen-xs-min:320px;
 $container-xs:$screen-xs-min - 20px;
 
-// $screen-xs-s-min:416px;
-// $container-xs-s:$screen-xs-s-min - 20px;
+$screen-sm--min:490px;
+$container-sm-:$screen-xs-s-min - 20px;
 
 $screen-sm-min:760px;
 $container-sm:$screen-sm-min - 46px;
@@ -186,8 +186,33 @@ $font-family-sans-serif: 'Noto Serif', serif;
     font-family: $font-family-sans-serif;
 }
 
+
+
+@mixin make-custom-column($columns, $min-width, $gutter: $grid-gutter-width) {
+  position: relative;
+  min-height: 1px;
+  padding-left:  ($gutter / 2);
+  padding-right: ($gutter / 2);
+
+  @media (min-width: $min-width) {
+    float: left;
+    width: percentage(($columns / $grid-columns));
+  }
+}
+
+
+
+
+
+
+
+
+
+
 .znu-2016-main{
     @extend .container;
+
+    padding-left:1rem;
 
     .pagetop{
         font-size:0;
@@ -245,6 +270,20 @@ body{
 .znu-2016-overheader-row{
     @extend .row;
 
+    margin-left:-1.5rem;
+    margin-right:-1.5rem;
+
+    @media (min-width: $screen-sm--min){
+        margin-left:-1rem;
+        margin-right:-1rem;
+    }
+
+
+    @media (min-width: $screen-lg-min){
+        margin-left:-1rem;
+        margin-right:-1rem;
+    }
+
     .icon{
         border-bottom-width:0;
         &:hover, &:active, &:focus{
@@ -270,8 +309,14 @@ body{
 
     .skin-selector-container{
         @extend .btn-group;
-        margin-left: 1rem;
-        margin-right: 1rem;
+
+        margin-left: 0rem;
+        margin-right: 0rem;
+	@media (min-width: $screen-sm--min){
+    	    margin-left:1rem;
+    	    margin-right:1rem;
+	}
+
         .skin-selector{
             @extend .btn;
             @extend .btn-default;
@@ -303,21 +348,24 @@ body{
     .lang{
         display:inline-block;
         @include link-style($znu-color-white,$znu-color-sand-light1, $znu-color-white);
-        font-size:1rem;
         display:inline-block;
         line-height:1.5rem;
         color:$znu-color-white;
         font-size:1.2rem;
+
+
+
         vertical-align: middle;
         cursor:pointer;
-        //&:hover{
-        //    color:$znu-color-white-light;
-        //}
-        //&:visited{
-        //    color:$znu-color-white;
-        //}
+
+	margin-right:0rem;
+        font-size:1rem;
+	@media (min-width: $screen-sm--min){
+	    margin-right:0.5rem;
+	    font-size:1rem;
+	}
+
         &.active{
-            //color:$znu-color-white;
             font-size:2rem;
             line-height: 2rem;
             margin-top: -6px;
@@ -338,6 +386,52 @@ body{
             margin-top: 0.4rem;
             color: $znu-color-white;
         }
+
+        @media (min-width: $screen-xs-min){
+	    width:10rem;
+        }
+
+        @media (min-width: $screen-sm--min){
+	    width:15rem;
+        }
+
+        @media (min-width: $screen-sm-min){
+	    width:12rem;
+        }
+
+        @media (min-width: $screen-md-min){
+	    width:15rem;
+        }
+
+	input#search{
+    	    height: 1.8rem;
+    	    background: $znu-color-blue-light;
+    	    border: none;
+    	    float: left;
+    	    color: $znu-color-white;
+    	    padding-left: 1.5rem;
+    	    margin-left: 1rem;
+    	    margin-right: -2rem;
+
+
+    	    @media (min-width: $screen-xs-min){
+		width:9rem;
+    	    }
+
+    	    @media (min-width: $screen-sm--min){
+		width:14rem;
+    	    }
+
+    	    @media (min-width: $screen-sm-min){
+		width:11rem;
+    	    }
+
+    	    @media (min-width: $screen-md-min){
+		width:14rem;
+    	    }
+	}
+
+
     }
     .button{
         background-color:$znu-color-blue-light;
@@ -345,16 +439,6 @@ body{
         &.hover{
             color:$znu-color-white-light;
         }
-    }
-    .search input#search{
-        height: 1.8rem;
-        background: $znu-color-blue-light;
-        border: none;
-        float: left;
-        color: $znu-color-white;
-        padding-left: 1.5rem;
-        margin-left: 1rem;
-        margin-right: -2rem;
     }
     input[type="search"]::-webkit-input-placeholder {color:$znu-color-white; opacity: 0.5}
     input[type="search"]::-moz-placeholder          {color:$znu-color-white; opacity: 0.5}/* Firefox 19+ */
@@ -372,6 +456,14 @@ body{
 
     padding-top:0.5rem;
     padding-bottom:0.5rem;
+
+
+    padding-left:0.5rem;
+    padding-right:0.5rem;
+    @media (min-width: $screen-sm--min){
+        padding-left:inherit;
+        padding-right:inherit;
+    }
     @media (max-width: $screen-sm-min - 1px) {
         display:inline-block;
         width:auto;
@@ -389,6 +481,16 @@ body{
 
     padding-bottom:0.5rem;
     padding-top:0.5rem;
+
+    padding-left:0.5rem;
+    padding-right:0.5rem;
+    @media (min-width: $screen-sm--min){
+        padding-left:inherit;
+        padding-right:inherit;
+    }
+
+
+
     text-align:right;
     @media (max-width: $screen-sm-min - 1px) {
         text-align:left;
@@ -408,7 +510,23 @@ body{
     border-radius: 0rem 0rem 0.1rem 0.1rem;
     position:relative;
 
+    margin-left: -2rem;
+    margin-right: -2rem;
 
+    @media (min-width: $screen-sm--min){
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+    }
+
+    @media (min-width: $screen-sm-min){
+        margin-left: -2.0rem;
+        margin-right: -2.0rem;
+    }
+
+    @media (min-width: $screen-lg-min){
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
     .znu-2016-header-logo {
         @include make-xs-column(12);
         @include make-sm-column(12);
@@ -416,6 +534,11 @@ body{
         @include make-lg-column(12);
 
         @media (min-width: $screen-xs-min){
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+	@media (min-width: $screen-sm-min){
             padding-left: 1rem;
             padding-right: 1rem;
         }
@@ -425,14 +548,31 @@ body{
             padding-right: 2rem;
         }
 
-        .w1{
-            float:right;
-            margin-right: 1rem;
-            a{
-              font-size: 1.3rem;
-              @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
-            }
-        }
+
+	.w1{
+		a{
+		    font-size: 1.0rem;
+		    @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+		}
+	}
+
+
+	@media (min-width: $screen-sm--min){
+	    .w1{
+		float:right;
+		margin-right: 1rem;
+	    }
+	}
+
+
+	@media (min-width: $screen-sm-min){
+	    .w1{
+		a{
+		    font-size: 1.3rem;
+		}
+	    }
+	}
+
 
 
         .znu-2016-logo {
@@ -444,64 +584,65 @@ body{
             background-position: center top;            
 
             @media (min-width: $screen-xs-min) {
-                margin-top: 2rem;
-                margin-bottom: 1rem;
-                width: 7rem;
-                height: 7rem;
-                background-size: 7rem;
+		display:none;
             }
 
             @media (min-width: $screen-sm-min) {
-                margin-top: 2rem;
-                margin-bottom: 1rem;
-	        width: 7rem;
-                height: 7rem;
+		display:block;
+		background-size: 7.2rem auto;
+		height: 7.2rem;
+		margin-bottom: 1rem;
+		margin-top: 2.9rem;
+		width: 7rem;
             }
 
             @media (min-width: $screen-md-min) {
-                margin-top: 2rem;
-                margin-bottom: 1rem;
-                width: 7rem;
-                height: 7rem;
+		background-size: 8rem auto;
+		height: 8rem;
+		margin-bottom: 1rem;
+		margin-top: 2.6rem;
+		width: 7rem;
             }
 
             @media (min-width: $screen-lg-min) {
-                margin-top: 1rem;
+                margin-top: 3.4rem;
                 margin-bottom: 1rem;
                 width: 8rem;
-                height: 8rem;
-                background-size: 8rem;
+                height: 9rem;
+                background-size: 9rem;
 
             }
         }
 
         .znu-2016-title-block {
 
-
-            @media (min-width: $screen-xs-min) {
-                margin-left:7rem;
-		        margin-top:1.3rem;
-                .w {
-                    display: inline-block;
-                }
+            .w {
+                display: block;
             }
 
+            @media (min-width: $screen-xs-min) {
+                margin-left:0rem;
+            }
+
+	    //@media (min-width: $screen-sm--min) {
+            //    margin-left:7rem;
+	    //    margin-top:2.2rem;
+	    //}
             @media (min-width: $screen-sm-min) {
                 margin-left: 8rem;
-                margin-top: 4rem;
-                .w {
-                    display: inline;
-                }
+                margin-top: 2rem;
             }
             @media (min-width: $screen-md-min) {
 		margin-left: 8rem;
-		margin-top: 3.3rem;
+		margin-top: 1.8rem;
             }
 
             @media (min-width: $screen-lg-min) {
-                margin-left: 10rem;
-                margin-top: 2.5rem;
+                margin-left: 9rem;
+                margin-top: 2rem;
             }
+
+
             .znu-2016-title {
 
                 color: $znu-color-blue;
@@ -513,20 +654,22 @@ body{
                 }
 
                 @media (min-width: $screen-xs-min) {
-                    font-size: 2.3rem;
-                    line-height: 3rem;
+                    //font-size: 2.3rem;
+                    //line-height: 2.8rem;
+		    font-size: 1.7rem;
+		    line-height: 2.1rem;
                 }
                 @media (min-width: $screen-sm-min) {
                     font-size: 2.3rem;
-                    line-height: 3rem;
+                    line-height: 2.8rem;
                 }
                 @media (min-width: $screen-md-min) {
-                    font-size: 3.2rem;
-                    line-height: 4rem;
+                    font-size: 2.9rem;
+                    line-height: 3rem;
                 }
                 @media (min-width: $screen-lg-min) {
-                    font-size: 3.1rem;
-                    line-height: 5rem;
+                    font-size: 2.9rem;
+                    line-height: 3.7rem;
                 }
 
             }
@@ -561,38 +704,86 @@ body{
 
     padding-top: 1rem;
     padding-bottom: 1rem;
-    margin-left:-4rem;
-    margin-right:-4rem;
+
+    margin-left:-3rem;
+    margin-right:-3rem;
+    @media (min-width: $screen-sm--min){
+	margin-left:-2.0rem;
+	margin-right:-2.0rem;
+    }
+    @media (min-width: $screen-sm-min){
+	margin-left:-2.5rem;
+	margin-right:-2.5rem;
+    }
+    @media (min-width: $screen-lg-min){
+	margin-left:-1.5rem;
+	margin-right:-1.5rem;
+    }
 
     .link {
-        @include make-xs-column(6);
+        @include make-xs-column(12);
+	@include make-custom-column(6,$screen-sm--min);
         @include make-sm-column(4);
-        @include make-md-column(2);
-        @include make-lg-column(2);
+        @include make-md-column(4);
+        @include make-lg-column(4);
         padding-left:0px;
         padding-right:0px;
 
         a {
-            overflow: hidden;
-            text-align: center;
-            text-decoration:none;
+            // common properties
             display: block;
-            margin: 1rem 2rem 1rem 2rem;
-            height: 10rem;
-            padding-top:1.2rem;
-            line-height:1.8rem;
+            text-decoration:none;
+
+
+	    // tiny screens
+            text-align: left;
+	    margin: 0.2rem 1rem 0.2rem 1rem;
             i {
-                font-size: 4.5rem;
+                font-size: 1.3rem;
             }
-            .text {
-                font-size: 1.4rem;
-                display: block;
-                margin-top: 1.0rem;
-            }
-	    .text.two-rows{
-	        font-size: 1.2rem;
-	        line-height: 1.8rem;
-	        margin-top: 0rem;
+
+
+
+	    padding-top:0.2rem;
+	    padding-left:1rem;
+	    padding-right:1rem;
+	    padding-bottom:0.2rem;
+	    br{display:none;}
+	    .text{
+		//margin-left:1rem;
+	    }
+            .fa{
+		display:inline-block;
+		width:2rem;
+	    }
+
+            @media (min-width: $screen-sm--min) {
+                overflow: hidden;
+                text-align: center;
+                margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+		padding-left:inherit;
+		padding-right:inherit;
+
+                line-height:1.8rem;
+                .fa{
+		    display:none;
+                }
+                .text {
+                    font-size: 1.4rem;
+                    display: block;
+                    margin-top: 0.85rem;
+                    margin-bottom: 0.80rem;
+		    margin-left:0px;
+                }
+		.text.two-rows{
+		    font-size: 1.0rem;
+		    line-height: 1.2rem;
+                    margin-top: 0.5rem;
+                    margin-bottom: 0.5rem;
+		}
+
+		br{display:inherit;}
+
             }
         }
         .color1 {
@@ -610,8 +801,8 @@ body{
             &:hover {
 		opacity:1;
 		.lnk-text{
-		    color:$znu-color-chocolate;// $znu-color-blue-light-link;
-		    border-bottom-color: $znu-color-chocolate;// $znu-color-blue-light-link;
+		    color:$znu-color-chocolate;//$znu-color-blue-light-link;
+		    border-bottom-color:$znu-color-chocolate;// $znu-color-blue-light-link;
 		}
             }
         }
@@ -630,7 +821,7 @@ body{
 		opacity:1;
 		.lnk-text{
 		    color:$znu-color-chocolate;//$znu-color-blue-light-link;
-		    border-bottom-color:$znu-color-chocolate;// $znu-color-blue-light-link;
+		    border-bottom-color:$znu-color-chocolate;//$znu-color-blue-light-link;
 		}
             }
         }
@@ -638,7 +829,7 @@ body{
         .color3 {
 
 	    border-radius: $znu-border-radius;
-            @include link-style($znu-color-blue, $znu-color-chocolate , $znu-color-blue);
+            @include link-style($znu-color-blue, $znu-color-chocolate, $znu-color-blue);
             background-color: $znu-color-blue-links-light-4;//$znu-background-color;//$znu-color-sand-light1;// $znu-color-blue-bak;
             box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
 	    opacity:0.9;
@@ -870,18 +1061,19 @@ body{
             background-position:center center;
             background-size:cover;
             border-radius: $znu-border-radius;
+	    position:relative;
 
             margin:1rem 0;
             padding:1rem;
 
             height: 13rem;
             font-size:1.3rem;
-            @media (min-width: $screen-sm-min) {
-            }
-            @media (min-width: $screen-md-min) {
-            }
-            @media (min-width: $screen-lg-min) {
-            }
+            //@media (min-width: $screen-sm-min) {
+            //}
+            //@media (min-width: $screen-md-min) {
+            //}
+            //@media (min-width: $screen-lg-min) {
+            //}
 
             &:after{
                 content:"";
@@ -890,38 +1082,52 @@ body{
                 clear:left;
             }
             .znu-2016-block-new-icon{
-                float:left;
-                width:9rem;
-                height:9rem;
+                float:right;
+                width:4rem;
+                height:4rem;
                 display:block;
+		margin-left:1rem;
+		margin-top:0.3rem;
                 border: 4px solid $znu-color-white ;
+		position:absolute;
+		top:1rem;
+		right:1rem;
 
                 background-size:cover;
                 background-position:center center;
 
-                &:hover{
+                //&:hover{
                    // border:none;
-                }    
-                &:visited{
+                //}    
+                //&:visited{
                    // border:none;
-                }    
+                //}    
             }
             .znu-2016-block-new-title{
                 display:block;
-                margin-left:10rem;
+                // margin-left:10rem;
                 overflow:hidden;
                 height:9.7rem;
 
-                @media (min-width: $screen-sm-min) {
-                }
-                @media (min-width: $screen-md-min) {
-                }
-                @media (min-width: $screen-lg-min) {
-                }
+                //@media (min-width: $screen-sm-min) {
+                //}
+                //@media (min-width: $screen-md-min) {
+                //}
+                //@media (min-width: $screen-lg-min) {
+                //}
 
                 a{
                     @include link-style($znu-color-black,$znu-color-chocolate, $znu-color-black);
                 }
+
+		&:before{
+		    display:block;
+		    content:" ";
+		    float:right;
+		    width:4rem;
+		    height:4rem;
+		    margin-left:1rem;
+		}
 
             }
             .znu-2016-block-new-title-odd{
@@ -933,7 +1139,7 @@ body{
 			border:none;
 			padding-left:1rem;
 			padding-bottom:1rem;
-			// background-color:$znu-color-white-light1;
+			//background-color:$znu-color-white-light1;
 			.link-text{
 			    @include link-style($znu-color-black, $znu-color-chocolate, $znu-color-black);
 			}
@@ -942,13 +1148,12 @@ body{
 			}
 		}
 
-                //max-height:8.1rem;
-                @media (min-width: $screen-sm-min) {
-                }
-                @media (min-width: $screen-md-min) {
-                }
-                @media (min-width: $screen-lg-min) {
-                }
+                //@media (min-width: $screen-sm-min) {
+                //}
+                //@media (min-width: $screen-md-min) {
+                //}
+                //@media (min-width: $screen-lg-min) {
+                //}
             }
             .date-container{
                 text-align: right;
@@ -963,7 +1168,7 @@ body{
 		    display:inline-block;
 		    padding-left:1rem;
 		    padding-right:1rem;
-		    background-color:$znu-color-white-light1;
+		    //background-color:$znu-color-white-light1;
 		    color:$znu-color-black;
 		}
 	    }
@@ -1045,12 +1250,6 @@ body{
         @include link-style($znu-color-white,$znu-color-blue-light-link, $znu-color-white);
         line-height:2rem;
         font-size:1.2rem;
-	//&:hover{
-	//    color:$znu-color-white-light;
-	//}
-	//&:visited{
-	//    color:$znu-color-white;
-	//}
     }
 
     .social{
@@ -1108,8 +1307,8 @@ body{
 .znu-2016-block-links-col{
     @include make-xs-column(12);
     @include make-sm-column(6);
-    @include make-md-column(3);
-    @include make-lg-column(3);
+    @include make-md-column(6);
+    @include make-lg-column(6);
     //margin-bottom:2rem;
     padding: 0rem 0rem 0rem 0rem;
     margin: 0rem 0rem 1rem 0rem;
@@ -1123,83 +1322,82 @@ body{
         min-height: 40rem;
 	line-height:2rem;
     }
-        h3.color1 {
-            color: $znu-color-blue-links-1;
-            padding-bottom: 1.5rem;
-            //border-bottom: 1px solid $znu-color-blue-links-light-1;
-            font-size: 1.7rem;
-        }
+    h3.color1 {
+        color: $znu-color-blue-links-1;
+        padding-bottom: 1.5rem;
+        //border-bottom: 1px solid $znu-color-blue-links-light-1;
+        font-size: 1.7rem;
+    }
 
-        h3.color2 {
-            color: $znu-color-blue-links-2;
-            padding-bottom: 1.5rem;
-            //border-bottom: 1px solid $znu-color-blue-links-light-2;
-            font-size: 1.7rem;
+    h3.color2 {
+        color: $znu-color-blue-links-2;
+        padding-bottom: 1.5rem;
+        //border-bottom: 1px solid $znu-color-blue-links-light-2;
+        font-size: 1.7rem;
+    }
+    h3.color3 {
+        color: $znu-color-blue-nav-2;
+        padding-bottom: 1.5rem;
+        //border-bottom: 1px solid $znu-color-blue-links-light-3;
+        font-size: 1.7rem;
+    }
+    h3.color4 {
+        color: $znu-color-blue-links-4;
+        padding-bottom: 1.5rem;
+        //border-bottom: 1px solid $znu-color-blue-links-light-4;
+        font-size: 1.7rem;
+    }
+    h3 {
+        color: $znu-color-blue;
+        padding-bottom: 1.5rem;
+        //border-bottom: 1px solid rgba(56, 82, 166, 0.5);
+        font-size: 1.7rem;
+    }
+    ul {
+        padding-left: 0;
+        list-style: none; //outside none circle !important;
+        color: rgb(255 255 225, 0.2);
+    }
+    .znu-2016-block-links-one {
+        margin-bottom: 1rem;
+        a {
+            @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+            text-decoration: none;
+            font-size: 1.2rem;
         }
-        h3.color3 {
-            color: $znu-color-blue-nav-2;
-            padding-bottom: 1.5rem;
-            //border-bottom: 1px solid $znu-color-blue-links-light-3;
-            font-size: 1.7rem;
+    }
+    .znu-2016-block-links-one-color1 {
+        margin-bottom: 1.0rem;
+        a {
+            @include link-style($znu-color-blue-links-1, $znu-color-blue-light-link, $znu-color-blue-links-1);
+            text-decoration: none;
+            font-size: 1.2rem;
         }
-        h3.color4 {
-            color: $znu-color-blue-links-4;
-            padding-bottom: 1.5rem;
-            //border-bottom: 1px solid $znu-color-blue-links-light-4;
-            font-size: 1.7rem;
+    }
+    .znu-2016-block-links-one-color2 {
+        margin-bottom: 1.0rem;
+        a {
+            @include link-style($znu-color-blue-links-2, $znu-color-blue-light-link, $znu-color-blue-links-2);
+            text-decoration: none;
+            font-size: 1.2rem;
         }
-        h3 {
-            color: $znu-color-blue;
-            padding-bottom: 1.5rem;
-            //border-bottom: 1px solid rgba(56, 82, 166, 0.5);
-            font-size: 1.7rem;
-        }
-        ul {
-            padding-left: 0;
-            list-style: none; //outside none circle !important;
-            color: rgb(255 255 225, 0.2);
-        }
-        .znu-2016-block-links-one {
-            margin-bottom: 1rem;
-            a {
-                @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
-                text-decoration: none;
+    }
+    .znu-2016-block-links-one-color3 {
+        margin-bottom: 1.0rem;
+        a {
+            @include link-style($znu-color-blue-nav-2, $znu-color-blue-light-link, $znu-color-blue-nav-2);
+            text-decoration: none;
                 font-size: 1.2rem;
-            }
         }
-        .znu-2016-block-links-one-color1 {
-            margin-bottom: 1.0rem;
-            a {
-                @include link-style($znu-color-blue-links-1, $znu-color-blue-light-link, $znu-color-blue-links-1);
-                text-decoration: none;
-                font-size: 1.2rem;
-            }
+    }
+    .znu-2016-block-links-one-color4 {
+        margin-bottom: 1.0rem;
+        a {
+            @include link-style($znu-color-blue-links-4, $znu-color-blue-light-link, $znu-color-blue-links-4);
+            text-decoration: none;
+            font-size: 1.2rem;
         }
-        .znu-2016-block-links-one-color2 {
-            margin-bottom: 1.0rem;
-            a {
-                @include link-style($znu-color-blue-links-2, $znu-color-blue-light-link, $znu-color-blue-links-2);
-                text-decoration: none;
-                font-size: 1.2rem;
-            }
-        }
-        .znu-2016-block-links-one-color3 {
-            margin-bottom: 1.0rem;
-            a {
-                @include link-style($znu-color-blue-nav-2, $znu-color-blue-light-link, $znu-color-blue-nav-2);
-                text-decoration: none;
-                font-size: 1.2rem;
-            }
-        }
-        .znu-2016-block-links-one-color4 {
-            margin-bottom: 1.0rem;
-            a {
-                @include link-style($znu-color-blue-links-4, $znu-color-blue-light-link, $znu-color-blue-links-4);
-                text-decoration: none;
-                font-size: 1.2rem;
-            }
-        }
-
+    }
 }
 // ====================== bottom links = end =================
 
@@ -1223,13 +1421,30 @@ body{
     @extend .row;
     //margin-bottom: 1rem;
 
+    margin-left: -2rem;
+    margin-right: -2rem;
+    @media (min-width: $screen-sm--min) {
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+    }
+    @media (min-width: $screen-sm-min) {
+        margin-left: -2rem;
+        margin-right: -2rem;
+    }
+    @media (min-width: $screen-lg-min) {
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
+
+
+
 
     // есть позразделы и содержание
     .znu-2016-breadcrumbs-ch-content{
         @include make-xs-column(12);
-        @include make-sm-column(9);
-        @include make-md-column(9);
-        @include make-lg-column(9);
+        @include make-sm-column(12);
+        @include make-md-column(7);
+        @include make-lg-column(8);
         float:right!important;
     }
 
@@ -1256,7 +1471,11 @@ body{
         position: relative;
         .znu-2016-breadcrumbs-col {
             background-color: rgba(255, 255, 255, 0.5);
-            padding: 1rem 3rem 1rem 3rem;
+
+    	    padding: 1rem 1rem 1rem 1rem;
+    	    @media (min-width: $screen-sm--min) {
+        	padding: 1rem 1rem 1rem 1rem;
+            }
             box-shadow: 0px 1px 5px -1px rgba(0, 0, 0, 0.14);
             border-radius: $znu-border-radius;
 	    line-height:2rem;
@@ -1275,17 +1494,17 @@ body{
     // есть позразделы и содержание
     .znu-2016-block-page-content-ch-content{
         @include make-xs-column(12);
-        @include make-sm-column(9);
-        @include make-md-column(9);
-        @include make-lg-column(9);
+        @include make-sm-column(12);
+        @include make-md-column(7);
+        @include make-lg-column(8);
 
         border-radius: $znu-border-radius;
 
         &.offset{
             // @include make-xs-column-offset(12);
-            @include make-sm-column-offset(3);
-            @include make-md-column-offset(3);
-            @include make-lg-column-offset(3);
+            // @include make-sm-column-offset(3);
+            @include make-md-column-offset(5);
+            @include make-lg-column-offset(4);
         }
     }
 
@@ -1309,37 +1528,50 @@ body{
         border-radius: $znu-border-radius;
         font-size: 1.2rem;
         line-height: 2.3rem;
-        
+
+
+
         @media (min-width: $screen-xs-min) {
-            padding-right: 2rem;
-            padding-left: 2rem;
-	        padding-bottom: 1rem;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            padding-bottom: 1rem;
+            h2{
+                font-size: 1.5rem;
+		margin-top:1rem;
+		margin-bottom:0.5rem;
+            }
+        }
+
+        @media (min-width: $screen-sm--min) {
+            padding-right: 1rem;
+            padding-left: 1rem;
             h2{
                 font-size: 2.3rem;
             }
         }
+
         @media (min-width: $screen-sm-min) {
-            padding-right: 2rem;
-            padding-left: 2rem;
+            padding-right: 1rem;
+            padding-left: 1rem;
         }
 
         @media (min-width: $screen-md-min) {
-            padding-right: 2rem;
-            padding-left: 2rem;
+            padding-right: 1rem;
+            padding-left: 1rem;
         }
 
         @media (min-width: $screen-lg-min) {
-            padding-right: 3rem;
-            padding-left: 3rem;
+            padding-right: 1rem;
+            padding-left: 1rem;
 
             h2{
                 font-size: 2.5rem;
             }
         }
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-            line-height: 1.3;
-	    margin-bottom: 2rem;
-	    margin-top: 2rem;
+            line-height: 130%;
+	    //margin-bottom: 2rem;
+	    //margin-top: 2rem;
         }
 
         a {
@@ -1350,11 +1582,18 @@ body{
 
             .znu-2016-block-page-header {
                 h1 {
-                    font-size: 3rem;
-		    margin-top:2.5rem;
-		    margin-bottom:2.0rem;
+                    font-size: 2rem;
+		    margin-top:1.5rem;
+		    margin-bottom:1.0rem;
+                    @media (min-width: $screen-sm--min) {
+                        font-size: 2.5rem;
+			margin-top:1.5rem;
+			margin-bottom:1.0rem;
+                    }
                     @media (min-width: $screen-sm-min) {
                         font-size: 3rem;
+			margin-top:2.5rem;
+			margin-bottom:2.0rem;
                     }
                     @media (min-width: $screen-md-min) {
                         font-size: 3rem;
@@ -1369,9 +1608,26 @@ body{
             vertical-align: middle;
             white-space: nowrap;
             position: relative;
-            float: right;
-            padding: 1.3rem 0.5rem 0.5rem 0.5rem;
 
+    	    padding: 1.3rem 2.5rem 0.5rem 0.5rem;
+            @media (min-width: $screen-sm--min) {
+                float: right;
+	        padding: 1.3rem 0.5rem 0.5rem 0.5rem;
+            }
+
+	    input#search{
+		height: 2.2rem;
+		background: $znu-color-white-light;
+		border: 1px solid $znu-color-blue-nav-1;
+		float: left;
+		color: $znu-color-blue;
+		padding: 0 0 0 1rem;
+        	
+		width: 10rem;
+        	@media (min-width: $screen-sm--min) {
+		    width: 15[5~rem;
+        	}
+	    }
             .button{
                 background-color:$znu-color-blue-a;
                 padding-bottom: 3px;
@@ -1387,16 +1643,7 @@ body{
                 }
             }
         }
-        .search input#search{
-            height: 2.2rem;
-            background: $znu-color-white-light;
-            //border: none;
-	    border: 1px solid $znu-color-blue-nav-1;
-            float: left;
-            color: $znu-color-blue;
-            padding: 0 0 0 1rem;
-            width: 100%;
-        }
+
         input[type="search"]::-webkit-input-placeholder {color:$znu-color-blue-light; opacity: 0.5}
         input[type="search"]::-moz-placeholder          {color:$znu-color-blue-light; opacity: 0.5}/* Firefox 19+ */
         input[type="search"]:-moz-placeholder           {color:$znu-color-blue-light; opacity: 0.5}/* Firefox 18- */
@@ -1751,9 +1998,9 @@ body{
     // есть позразделы и содержание
     .subcategories {
         @include make-xs-column(12);
-        @include make-sm-column(3);
-        @include make-md-column(3);
-        @include make-lg-column(3);
+        @include make-sm-column(12);
+        @include make-md-column(5);
+        @include make-lg-column(4);
 
         @media (min-width: $screen-xs-min){
             padding: 0 0 0 0;
@@ -1763,7 +2010,7 @@ body{
 
         @media (min-width: $screen-sm-min) {
             margin-bottom: 2rem;
-            padding-right: 2rem;
+            //padding-right: 2rem;
         }
         @media (min-width: $screen-md-min) {
             margin-bottom: 2rem;
@@ -1822,14 +2069,18 @@ body{
             list-style: none;
         }
         li{
-            padding: 0.5rem 2rem 0.5rem 2rem;
+    	    padding: 0.5rem 1rem 0.5rem 1rem;
+    	    @media (min-width: $screen-sm--min) {
+        	padding: 0.5rem 1rem 0.5rem 1rem;
+            }
+
             display: block;
             &:hover {
-                background-color: #f3f3f3;
+                background-color: #eeeeee;
                 text-decoration: none;
 		a{
 		    color:$znu-color-blue-light-link;
-		    border-bottom-color:$znu-color-blue-light-link;
+		    border-color:$znu-color-blue-light-link;
 		}
             }
         }

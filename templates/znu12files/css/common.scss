@@ -14,9 +14,6 @@ $icon-font-name:'glyphicons-halflings-regular';
 $screen-xs-min:320px;
 $container-xs:$screen-xs-min - 20px;
 
-// $screen-xs-s-min:416px;
-// $container-xs-s:$screen-xs-s-min - 20px;
-
 $screen-sm-min:760px;
 $container-sm:$screen-sm-min - 46px;
 
@@ -26,13 +23,16 @@ $container-md:$screen-md-min - 50px;
 $screen-lg-min:1170px;
 $container-lg:$screen-lg-min - 56px;
 
+$screen-xl-min:1440px;
+$container-lg:$screen-xl-min - 56px;
+
 $font-size-base:1rem;
 
 $znu-color-blue-bak: rgba(150, 175, 245, 0.16);
 $znu-color-black:#000000;
 $znu-color-blue:#3852A6;
 $znu-color-blue-light:#3361B7;
-$znu-color-blue-light-link:rgba(52, 82, 166, 0.5);
+$znu-color-blue-light-link:#D98634;//rgba(52, 82, 166, 0.5);
 $znu-color-blue-a:rgba(56, 82, 166, 0.88);
 $znu-color-white-light:rgba(255, 255, 255, 0.5);
 $znu-color-white-light1:rgba(255, 255, 255, 0.7);
@@ -45,10 +45,10 @@ $znu-color-blue-links-2:#7383B5;
 $znu-color-blue-links-3:#9BAFF2;
 $znu-color-blue-links-4:#5278F2;
 
-$znu-color-blue-links-light-1:#273973;
-$znu-color-blue-links-light-2:#7383B5;
-$znu-color-blue-links-light-3:#9BAFF2;
-$znu-color-blue-links-light-4:#5278F2;
+$znu-color-blue-links-light-1:rgba(39, 57, 115, 0.5);
+$znu-color-blue-links-light-2:rgba(115,131,181,0.5);
+$znu-color-blue-links-light-3:rgba(155,175,242,0.5);
+$znu-color-blue-links-light-4:rgba(82,120,242,0.5);
 
 $znu-color-blue-news-1:#4C69C3;
 $znu-color-blue-news-2:#7383B5;
@@ -78,28 +78,65 @@ $znu-background-color: #f2f2f2;
 //$znu-color-rose-dark:#640944;
 //$znu-color-rose-light1:#FCBDE5;
 
+$znu-border-radius: 0.1rem 0.1rem 0.1rem 0.1rem;
 
 $znu-shadow-box:0px 3px 5px -1px rgba(0,0,0,0.14);
 //0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);//3px 3px 5px 2px rgba(0, 0, 0, 0.1), 3px 3px 5px 1px transparent;
 $znu-shadow-box-inset: 0px 0px 16px -1px rgba(0,0,0,0.14);//0 -1px 0 #e5e5e5,0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);//0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
 
-$font-family-sans-serif: 'Roboto', sans-serif;
+$font-family-sans-serif: 'CharisRegular', sans-serif;
 
 @font-face {
     font-family: 'Glyphicons Halflings';
     src: url($resourse-root-url +  '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.eot');
     src: url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'), url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url($resourse-root-url + '/css/bootstrap-sass/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
-
+/* font-family: "CharisRegular"; */
+@font-face {
+    font-family: "CharisRegular";
+    src: url("/fonts/CharisBold/CharisRegular.eot?v=1465387239");
+    src: url("/fonts/CharisRegular/CharisRegular.eot?#iefix")format("embedded-opentype"),
+    url( "/fonts/CharisRegular/CharisRegular.woff") format("woff"),
+    url("/fonts/CharisRegular/CharisRegular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+/* font-family: "CharisBold"; */
+@font-face {
+    font-family: "CharisBold";
+    src: url("/fonts/CharisBold/CharisBold.eot");
+    src: url("../fonts/CharisBold/CharisBold.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/CharisBold/CharisBold.woff") format("woff"),
+    url("../fonts/CharisBold/CharisBold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+/* font-family: "CharisItalic"; */
+@font-face {
+    font-family: "CharisItalic";
+    src: url("../fonts/CharisItalic/CharisItalic.eot");
+    src: url("../fonts/CharisItalic/CharisItalic.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/CharisItalic/CharisItalic.woff") format("woff"),
+    url("../fonts/CharisItalic/CharisItalic.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+/* font-family: "CharisBoldItalic"; */
+@font-face {
+    font-family: "CharisBoldItalic";
+    src: url("../fonts/CharisBoldItalic/CharisBoldItalic.eot");
+    src: url("../fonts/CharisBoldItalic/CharisBoldItalic.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/CharisBoldItalic/CharisBoldItalic.woff") format("woff"),
+    url("../fonts/CharisBoldItalic/CharisBoldItalic.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
 // ====================================================
 
 // imports
 @import 'bootstrap-custom';
 
-
-
-
-@mixin link-style($color-default, $color-active, $color-visited : $znu-color-rose-dark) {
+@mixin link-style($color-default, $color-active, $color-visited : $znu-color-blue) {
 
     color:$color-default;
     &:link{
@@ -142,13 +179,17 @@ $font-family-sans-serif: 'Roboto', sans-serif;
        width:90%;
     }
     @media (min-width: $screen-sm-min){
-       width:$container-sm;
+       width:90%;
     }
     @media (min-width: $screen-md-min){
-       width:$container-md;
+       width:90%;
     }
     @media (min-width: $screen-lg-min){
-        width:$container-lg;
+        width:95%;
+        //width: 1340px;
+    }
+    @media (min-width: $screen-xl-min){
+        width: 1440px;
     }
 }
 html{
@@ -179,8 +220,8 @@ body{
 
 .znu-2016-overheader-bg{
     background-color:$znu-color-blue;
-    //position: relative;
-    box-shadow: 0 0 2px rgba(0,0,0,.14),0 2px 4px rgba(0,0,0,.28);
+    position: relative;
+    box-shadow: $znu-shadow-box;
     .znu-2016-main{
         background-color:$znu-color-blue;
     }
@@ -199,7 +240,7 @@ body{
         }
     }
     .glyph{
-        @include link-style($znu-color-white, $znu-color-white-light,$znu-color-white);
+        @include link-style($znu-color-white, $znu-color-blue-light-link,$znu-color-white);
         display:inline-block;
         // width:2rem;
         // height:1rem;
@@ -208,8 +249,8 @@ body{
         margin-top:0.1rem;
         vertical-align: middle;
         &:hover, &:active, &:focus, &:link{
-            border-bottom-width:0;
-        }
+             border-bottom-width:0;
+         }
     }
 
     .skin-selector-container{
@@ -246,22 +287,22 @@ body{
     
     .lang{
         display:inline-block;
-        //@include link-style($znu-color-white,$znu-color-white-light, $znu-color-blue-light1);
+        @include link-style($znu-color-white,$znu-color-blue-light-link, $znu-color-white);
         font-size:1rem;
         display:inline-block;
-	line-height:2rem;
-	color:$znu-color-white;
-	font-size:1.2rem;
+        line-height:2rem;
+        color:$znu-color-white;
+        font-size:1.2rem;
         vertical-align: middle;
-	&:hover{
-	    color:$znu-color-white-light;
-	}
-	&:visited{
-	    color:$znu-color-white;
-	}
+        //&:hover{
+        //    color:$znu-color-white-light;
+        //}
+        //&:visited{
+        //    color:$znu-color-white;
+        //}
         &.active{
-            color:$znu-color-white;
-	    font-size:1.4rem;
+            //color:$znu-color-white;
+            font-size:1.4rem;
         }
 
     }
@@ -309,6 +350,7 @@ body{
     @include make-sm-column(6);
     @include make-md-column(5);
     @include make-lg-column(5);
+    //@include make-xl-column(5);
 
     padding-top:0.5rem;
     padding-bottom:0.5rem;
@@ -326,6 +368,8 @@ body{
     @include make-sm-column(6);
     @include make-md-column(7);
     @include make-lg-column(7);
+    //@include make-xl-column(7);
+
 
     padding-bottom:0.5rem;
     padding-top:0.5rem;
@@ -341,17 +385,21 @@ body{
 .znu-2016-header {
     @extend .row;
 
-    background-color: $znu-color-white-light;
+    background-color: $znu-color-white;
     padding-bottom: 1rem;
     padding-top: 0.7rem;
     box-shadow: $znu-shadow-box;
+    border-radius: 0rem 0rem 0.1rem 0.1rem;
     //margin-top:1rem;
+    position:relative;
 
     .znu-2016-header-logo {
         @include make-xs-column(12);
         @include make-sm-column(12);
         @include make-md-column(12);
         @include make-lg-column(12);
+        //@include make-xl-column(12);
+
 
         @media (min-width: $screen-xs-min){
             padding-left: 1rem;
@@ -367,7 +415,8 @@ body{
             float:right;
             margin-right: 1rem;
             a{
-                font-size: 1.3rem;
+              font-size: 1.3rem;
+              @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
             }
         }
 
@@ -436,7 +485,7 @@ body{
             }
 
             @media (min-width: $screen-lg-min) {
-                margin-left: 10rem;
+                margin-left: 12rem;
                 margin-top: 2.5rem;
             }
             .znu-2016-title {
@@ -462,7 +511,7 @@ body{
                     line-height: 5rem;
                 }
                 @media (min-width: $screen-lg-min) {
-                    font-size: 3.5rem;
+                    font-size: 4rem;
                     line-height: 5rem;
                 }
 
@@ -498,8 +547,8 @@ body{
 
     padding-top: 1rem;
     padding-bottom: 1rem;
-    margin-left:-3.5rem;
-    margin-right:-3.5rem;
+    margin-left:-4rem;
+    margin-right:-4rem;
 
     .link {
         @include make-xs-column(6);
@@ -509,69 +558,83 @@ body{
         padding-left:0px;
         padding-right:0px;
 
-
         a {
+            overflow: hidden;
             text-align: center;
             text-decoration:none;
             display: block;
-            margin: 0.5rem 1.5rem 0.5rem 1.5rem;
-            height: 9rem;
+            margin: 1rem 2rem 1rem 2rem;
+            height: 10rem;
             padding-top:1.2rem;
-            line-height:1.2rem;
+            line-height:1.8rem;
             i {
                 font-size: 4.5rem;
             }
             .text {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
                 display: block;
-                margin-top: 0.5rem;
+                margin-top: 1.5rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
             }
         }
         .color1 {
             //background-color: $znu-color-rose;
             //color: $znu-color-blue;
-            background-color: $znu-color-white-light;
-            color: $znu-color-blue-nav-1;
-            box-shadow: $znu-shadow-box;
+            border-radius: $znu-border-radius;
+            //background-color: $znu-color-white;
+            //color: $znu-color-blue-nav-1;
+            color: #fff;
+            background-color: $znu-color-blue-news-3;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
             &:hover {
-                -webkit-transform: scale(1.01);
-                transform: scale(1.01);
+                box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+                background-color: rgba(155, 175, 242, 0.8);
+                //-webkit-transform: scale(1.01);
+                //transform: scale(1.01);
             }
         }
         .color2 {
             //background-color: $znu-color-green;
             //color: $znu-color-blue;
-            background-color: $znu-color-white-light;
-            color:$znu-color-blue-nav-2;
-            box-shadow: $znu-shadow-box;
+            border-radius: $znu-border-radius;
+            background-color: $znu-color-blue-news-2; //$znu-color-white;
+            color: #fff;//$znu-color-blue-nav-2;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
             &:hover {
-                -webkit-transform: scale(1.01);
-                transform: scale(1.01);
+                box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+                background-color: rgba(115,131,181,0.8);
+                //-webkit-transform: scale(1.01);
+                //transform: scale(1.01);
             }
         }
         .color3 {
             //background-color: $znu-color-yellow;
             //color: $znu-color-blue;
-            background-color: $znu-color-white-light;
-            color: $znu-color-blue-nav-3;
-            box-shadow: $znu-shadow-box;
+            border-radius: $znu-border-radius;
+            background-color: $znu-color-blue-news-1;//$znu-color-white;
+            color: #fff;//$znu-color-blue-nav-3;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
             &:hover {
-                -webkit-transform: scale(1.01);
-                transform: scale(1.01);
+                box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+                background-color: rgba(76,105,195,0.8);
+                //-webkit-transform: scale(1.01);
+                //transform: scale(1.01);
             }
         }
         .color4 {
-            background-color: $znu-color-white-light;
+            border-radius: $znu-border-radius;
+            background-color: $znu-color-white;
             color: $znu-color-blue;
-            box-shadow: $znu-shadow-box;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
             &:hover {
-                -webkit-transform: scale(1.01);
-                transform: scale(1.01);
+                box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+                //-webkit-transform: scale(1.01);
+                //transform: scale(1.01);
             }
         }
     }
 }
-
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // =============== front page slider = begin =================
@@ -590,6 +653,10 @@ body{
         box-shadow: $znu-shadow-box;
         padding-left:0rem;
         padding-right:0rem;
+
+        .carousel-control{
+            border-radius: $znu-border-radius;
+        }
 
         &.carousel{
             .container{
@@ -628,14 +695,16 @@ body{
             background-size:cover;
             background-position:center center;
             background-repeat:no-repeat;
+            border-radius: $znu-border-radius;
         }
         .carousel-caption{
-            right:auto;
-            left:auto;
+            right:0;
+            left:0;
             background-color:$znu-color-white-light1;
             color:$znu-color-blue;
             text-shadow:none;
             box-shadow: $znu-shadow-box;
+            border-radius: $znu-border-radius;
 
             bottom:3rem;
             width:100%;
@@ -658,18 +727,18 @@ body{
                 margin-top:0.2rem;
             }
             .btn{
-                background-color: $znu-color-blue;
                 font-size:100%;
                 border: 0rem;
-                border-radius: 0;
-                box-shadow: $znu-shadow-box;
+                border-radius: $znu-border-radius;
+                color: #fff;
+                background-color: $znu-color-blue-news-1;
+                box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
                 &:hover {
-                    box-shadow: $znu-shadow-box-inset;
+                    box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+                    background-color: rgba(76,105,195,0.8);
                 }
             }
-
             font-size:80%;
-
             padding-left:1rem;
             padding-right:1rem;
 
@@ -695,8 +764,8 @@ body{
 
             @media (min-width: $screen-lg-min) {
                 bottom:40px;
-                width:60%;
-                margin:0 20% 0 20%;
+                width:80%;
+                margin:0 10% 0 10%;
             }
         }
         .carousel-indicators{
@@ -802,6 +871,7 @@ body{
             box-shadow: $znu-shadow-box;
             background-position:center center;
             background-size:cover;
+            border-radius: $znu-border-radius;
 
             margin:1rem 0;
             padding:1rem;
@@ -852,7 +922,7 @@ body{
                 }
 
                 a{
-                    @include link-style($znu-color-black, $znu-color-blue-dark, $znu-color-black);
+                    @include link-style($znu-color-black,$znu-color-blue-light-link, $znu-color-black);
                 }
 
             }
@@ -861,7 +931,7 @@ body{
                 overflow:hidden;
                 height:9rem;
                 a{
-                    @include link-style($znu-color-white, $znu-color-white-light1, $znu-color-white);
+                    @include link-style($znu-color-white, $znu-color-blue-light-link, $znu-color-white);
                 }
 
                 //max-height:8.1rem;
@@ -916,17 +986,16 @@ body{
     
     a{
         display:inline-block;
-	text-decoration:none;
-        //@include link-style($znu-color-white,$znu-color-white-light, $znu-color-white);
-	line-height:2rem;
-	color:$znu-color-white;
-	font-size:1.2rem;
-	&:hover{
-	    color:$znu-color-white-light;
-	}
-	&:visited{
-	    color:$znu-color-white;
-	}
+        text-decoration:none;
+        @include link-style($znu-color-white,$znu-color-blue-light-link, $znu-color-white);
+        line-height:2rem;
+        font-size:1.2rem;
+	//&:hover{
+	//    color:$znu-color-white-light;
+	//}
+	//&:visited{
+	//    color:$znu-color-white;
+	//}
     }
 
     .social{
@@ -946,42 +1015,32 @@ body{
 
 .znu-2016-block-links{
     @extend .row;
-    background-color:$znu-color-white-light;
-    box-shadow: $znu-shadow-box;
 
     margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-left: -3rem;
+    margin-right: -3rem;
 
     .znu-2016-block-banner{
-        padding-bottom:1rem;
-        margin-bottom: 1rem;
+        //padding-bottom:1rem;
+        //margin-bottom: 1rem;
     }
     .znu-2016-one-banner{
-
         @include make-xs-column(12);
         @include make-sm-column(6);
         @include make-md-column(3);
         @include make-lg-column(3);
-
+        
         margin: 1rem 0 1rem 0;
         display: block;
 
         img {
             max-width:100%;
         }
-        /*		
-                        .mon{
-                                padding: 1rem 4rem 1rem 4rem;
-                        }
-                        .soc{
-                                padding: 1rem 4rem 1rem 3rem;
-                        }
-                        .os{
-                                padding: 1rem 4rem 1rem 4rem;
-                        }*/
-
         a{
-            border:none;
+            border-radius: $znu-border-radius;
             background-color: $znu-color-blue;
+            box-shadow: $znu-shadow-box;
             display: inline-block;
             width:96%;
             padding:0.5rem 2%;
@@ -996,84 +1055,94 @@ body{
     @include make-sm-column(6);
     @include make-md-column(3);
     @include make-lg-column(3);
-    margin-bottom:2rem;
+    //margin-bottom:2rem;
+    padding: 0rem 0rem 0rem 0rem;
+    margin: 0rem 0rem 1rem 0rem;
 
-    h3.color1{
-        color:$znu-color-blue-links-1;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid $znu-color-blue-links-light-1;
-        font-size: 1.7rem;
+    .znu-2016-block-links-one-column {
+        background-color: $znu-color-white;
+        box-shadow: $znu-shadow-box;
+        border-radius: $znu-border-radius;
+        padding: 1rem 1rem 1rem 1rem;
+        margin: 1rem 1rem 1rem 1rem;
+        min-height: 418px;
     }
+        h3.color1 {
+            color: $znu-color-blue-links-1;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid $znu-color-blue-links-light-1;
+            font-size: 1.7rem;
+        }
 
-    h3.color2{
-        color:$znu-color-blue-links-2;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid $znu-color-blue-links-light-2;
-        font-size: 1.7rem;
-    }
-    h3.color3{
-        color:$znu-color-blue-links-3;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid $znu-color-blue-links-light-3;
-        font-size: 1.7rem;
-    }
-    h3.color4{
-        color:$znu-color-blue-links-4;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid $znu-color-blue-links-light-4;
-        font-size: 1.7rem;
-    }
-    h3{
-        color:$znu-color-blue;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid rgba(56, 82, 166, 0.5);
-        font-size: 1.7rem;
-    }
-    ul{
-        padding-left:0;
-        list-style: none; //outside none circle !important;
-        color:rgb(255 255 225, 0.2);
-    }
-    .znu-2016-block-links-one{
-        margin-bottom:1rem;
-        a{
-            @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
-            text-decoration: none;
-            font-size: 1.2rem;
+        h3.color2 {
+            color: $znu-color-blue-links-2;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid $znu-color-blue-links-light-2;
+            font-size: 1.7rem;
         }
-    }
-    .znu-2016-block-links-one-color1{
-        margin-bottom:1rem;
-        a{
-            @include link-style($znu-color-blue-links-1, $znu-color-blue-light-link, $znu-color-blue-links-1);
-            text-decoration: none;
-            font-size: 1.2rem;
+        h3.color3 {
+            color: $znu-color-blue-links-3;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid $znu-color-blue-links-light-3;
+            font-size: 1.7rem;
         }
-    }
-    .znu-2016-block-links-one-color2{
-        margin-bottom:1rem;
-        a{
-            @include link-style($znu-color-blue-links-2, $znu-color-blue-light-link, $znu-color-blue-links-2);
-            text-decoration: none;
-            font-size: 1.2rem;
+        h3.color4 {
+            color: $znu-color-blue-links-4;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid $znu-color-blue-links-light-4;
+            font-size: 1.7rem;
         }
-    }
-    .znu-2016-block-links-one-color3{
-        margin-bottom:1rem;
-        a{
-            @include link-style($znu-color-blue-links-3, $znu-color-blue-light-link, $znu-color-blue-links-3);
-            text-decoration: none;
-            font-size: 1.2rem;
+        h3 {
+            color: $znu-color-blue;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(56, 82, 166, 0.5);
+            font-size: 1.7rem;
         }
-    }
-    .znu-2016-block-links-one-color4{
-        margin-bottom:1rem;
-        a{
-            @include link-style($znu-color-blue-links-4, $znu-color-blue-light-link, $znu-color-blue-links-4);
-            text-decoration: none;
-            font-size: 1.2rem;
+        ul {
+            padding-left: 0;
+            list-style: none; //outside none circle !important;
+            color: rgb(255 255 225, 0.2);
         }
-    }
+        .znu-2016-block-links-one {
+            margin-bottom: 1rem;
+            a {
+                @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
+                text-decoration: none;
+                font-size: 1.2rem;
+            }
+        }
+        .znu-2016-block-links-one-color1 {
+            margin-bottom: 1rem;
+            a {
+                @include link-style($znu-color-blue-links-1, $znu-color-blue-light-link, $znu-color-blue-links-1);
+                text-decoration: none;
+                font-size: 1.2rem;
+            }
+        }
+        .znu-2016-block-links-one-color2 {
+            margin-bottom: 1rem;
+            a {
+                @include link-style($znu-color-blue-links-2, $znu-color-blue-light-link, $znu-color-blue-links-2);
+                text-decoration: none;
+                font-size: 1.2rem;
+            }
+        }
+        .znu-2016-block-links-one-color3 {
+            margin-bottom: 1rem;
+            a {
+                @include link-style($znu-color-blue-links-3, $znu-color-blue-light-link, $znu-color-blue-links-3);
+                text-decoration: none;
+                font-size: 1.2rem;
+            }
+        }
+        .znu-2016-block-links-one-color4 {
+            margin-bottom: 1rem;
+            a {
+                @include link-style($znu-color-blue-links-4, $znu-color-blue-light-link, $znu-color-blue-links-4);
+                text-decoration: none;
+                font-size: 1.2rem;
+            }
+        }
 
 }
 // ====================== bottom links = end =================
@@ -1133,8 +1202,10 @@ body{
             background-color: rgba(255, 255, 255, 0.5);
             padding: 1rem 3rem 1rem 3rem;
             box-shadow: 0px 1px 5px -1px rgba(0, 0, 0, 0.14);
+            border-radius: $znu-border-radius;
             a {
-                @include link-style($znu-color-blue-2, $znu-color-blue-light-link);
+
+              @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
                 font-size: 1.2rem;
             }
             span{
@@ -1145,14 +1216,15 @@ body{
         }
     }
 
-
     // есть позразделы и содержание
     .znu-2016-block-page-content-ch-content{
         @include make-xs-column(12);
         @include make-sm-column(9);
         @include make-md-column(9);
         @include make-lg-column(9);
-        
+
+        border-radius: $znu-border-radius;
+
         &.offset{
             // @include make-xs-column-offset(12);
             @include make-sm-column-offset(3);
@@ -1178,13 +1250,13 @@ body{
 
     .znu-2016-block-page-content {
 
-        
+        border-radius: $znu-border-radius;
         font-size: 1.2rem;
         
         @media (min-width: $screen-xs-min) {
             padding-right: 2rem;
             padding-left: 2rem;
-	    padding-bottom: 1rem;
+	        padding-bottom: 1rem;
             h2{
                 font-size: 2.3rem;
             }
@@ -1202,8 +1274,6 @@ body{
         @media (min-width: $screen-lg-min) {
             padding-right: 3rem;
             padding-left: 3rem;
-            
-            // font-size: 1.2rem;
 
             h2{
                 font-size: 2.5rem;
@@ -1265,7 +1335,7 @@ body{
         input[type="search"]:-moz-placeholder           {color:$znu-color-blue-light; opacity: 0.5}/* Firefox 18- */
         input[type="search"]:-ms-input-placeholder      {color:$znu-color-blue-light; opacity: 0.5}
 
-        background-color: $znu-color-white-light;
+        background-color: $znu-color-white;
         margin-bottom: 1rem;
         box-shadow: $znu-shadow-box;
 
@@ -1651,13 +1721,14 @@ body{
             }
         }
         #sub {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: $znu-color-white-light;
             height: 100%;
             box-shadow: $znu-shadow-box;
             padding: 0 0 0 0;
+            border-radius: $znu-border-radius;
         }
         a {
-            @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-rose-dark);
+            @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
             text-decoration: none;
         }
         .child, a{
