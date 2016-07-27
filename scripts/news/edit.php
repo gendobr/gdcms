@@ -510,7 +510,7 @@ $input_vars['page_content'] = "
 // current news menu
 $input_vars['page_menu']['page'] = Array('title' => $text['News'], 'items' => Array());
 
-$input_vars['page_menu']['page']['items'] = menu_news($this_news_info);
+$input_vars['page_menu']['page']['items'] = menu_news($this_news_info,$this_site_info);
 
 // ---------------------- list of translations - begin -------------------------
 

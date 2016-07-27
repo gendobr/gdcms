@@ -10,6 +10,7 @@
 $debug=false;
 $GLOBALS['main_template_name']='';
 
+run('site/menu');
 //------------------- check news id - begin ------------------------------------
   $news_id   = checkInt($input_vars['news_id']);
   //$lang      = DbStr($input_vars['lang']);
@@ -41,7 +42,7 @@ $GLOBALS['main_template_name']='';
 
 //------------------- site info - begin ----------------------------------------
   $site_id = checkInt($input_vars['site_id']);
-  $this_site_info =\e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$this_news_info['site_id']}");
+  $this_site_info =  get_site_info($this_news_info['site_id']);
   if($debug) prn('$this_site_info=',$this_site_info);
 //------------------- site info - end ------------------------------------------
 
@@ -102,7 +103,7 @@ exit();
 //----------------------------- context menu - begin ---------------------------
   $input_vars['page_menu']['page']=Array('title'=>$text['Manage_news'],'items'=>Array());
   run('news/menu');
-  $input_vars['page_menu']['page']['items'] = menu_news($this_news_info);
+  $input_vars['page_menu']['page']['items'] = menu_news($this_news_info,$this_site_info);
 
   $input_vars['page_menu']['site']=Array('title'=>$text['Site_menu'],'items'=>Array());
   run('site/menu');

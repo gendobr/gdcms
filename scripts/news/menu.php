@@ -13,7 +13,7 @@ function news_info($news_id, $lang){
     return $this_news_info;
 }
 
-function menu_news($news_info) {
+function menu_news($news_info, $site_info) {
     global $text, $db;
     $tor = Array();
     $sid = session_name() . '=' . $GLOBALS['_COOKIE'][session_name()];
@@ -37,7 +37,8 @@ function menu_news($news_info) {
             'action'=>'news/view_details',
             'news_id'=>$news_info['id'],
             'lang'=>$news_info['lang'], 'until'=> $until, 
-            'code' => md5("{$until}-{$news_info['id']}-{$news_info['lang']}")])
+            'code' => md5("{$until}-{$news_info['id']}-{$news_info['lang']}")],
+            $site_info['extra_setting']['publicCmsUrl'])
         , 'innerHTML' => text('View_page')
         , 'attributes' => ' target=_blank '
     );

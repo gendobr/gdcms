@@ -197,7 +197,7 @@ if(count($news_ids)>0){
 
 for ($i = 0; $i < $cnt; $i++) {
     //--------------------------- context menu -- begin ------------------------
-    $response['rows'][$i]['context_menu'] = menu_news($response['rows'][$i]);
+    $response['rows'][$i]['context_menu'] = menu_news($response['rows'][$i],$this_site_info);
     if(isset($news_categories[$response['rows'][$i]['id']])){
         $response['rows'][$i]['category_id'] = $news_categories[$response['rows'][$i]['id']];
     }
