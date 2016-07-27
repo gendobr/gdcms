@@ -101,50 +101,6 @@ $font-family-sans-serif: 'Noto Serif', serif;
 
 @import url(https://fonts.googleapis.com/css?family=Noto+Serif&subset=latin,cyrillic-ext);
 
-
-
-
-/* font-family: "CharisRegular"; 
-@font-face {
-    font-family: "CharisRegular";
-    src: url("/fonts/CharisBold/CharisRegular.eot?v=1465387239");
-    src: url("/fonts/CharisRegular/CharisRegular.eot?#iefix")format("embedded-opentype"),
-    url( "/fonts/CharisRegular/CharisRegular.woff") format("woff"),
-    url("/fonts/CharisRegular/CharisRegular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}
-*/
-/* font-family: "CharisBold"; 
-@font-face {
-    font-family: "CharisBold";
-    src: url("/fonts/CharisBold/CharisBold.eot");
-    src: url("../fonts/CharisBold/CharisBold.eot?#iefix")format("embedded-opentype"),
-    url("../fonts/CharisBold/CharisBold.woff") format("woff"),
-    url("../fonts/CharisBold/CharisBold.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}*/
-/* font-family: "CharisItalic"; 
-@font-face {
-    font-family: "CharisItalic";
-    src: url("../fonts/CharisItalic/CharisItalic.eot");
-    src: url("../fonts/CharisItalic/CharisItalic.eot?#iefix")format("embedded-opentype"),
-    url("../fonts/CharisItalic/CharisItalic.woff") format("woff"),
-    url("../fonts/CharisItalic/CharisItalic.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}*/
-/* font-family: "CharisBoldItalic"; 
-@font-face {
-    font-family: "CharisBoldItalic";
-    src: url("../fonts/CharisBoldItalic/CharisBoldItalic.eot");
-    src: url("../fonts/CharisBoldItalic/CharisBoldItalic.eot?#iefix")format("embedded-opentype"),
-    url("../fonts/CharisBoldItalic/CharisBoldItalic.woff") format("woff"),
-    url("../fonts/CharisBoldItalic/CharisBoldItalic.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}*/
 // ====================================================
 
 // imports
@@ -1625,7 +1581,7 @@ body{
         	
 		width: 10rem;
         	@media (min-width: $screen-sm--min) {
-		    width: 15[5~rem;
+		    width: 15rem;
         	}
 	    }
             .button{
