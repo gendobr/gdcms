@@ -73,6 +73,10 @@ $menu_groups = get_menu_items($site_id, 0, $lang);
 $lang_list = list_of_languages();
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
+    if(!isset($this_site_info['extra_setting']['lang'][$lang_list[$i]['name']])){
+        unset($lang_list[$i]);
+        continue;
+    }
     $lang_list[$i]['lang'] = $lang_list[$i]['name'];
     $lang_list[$i]['url'] = $lang_list[$i]['href'];
 }
@@ -106,4 +110,3 @@ $file_content = process_template($this_site_info['template'], Array(
         ));
 echo $file_content;
 // ------------------ draw page - end ------------------------------------------
-?>
