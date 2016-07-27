@@ -576,7 +576,13 @@ body{
                 margin-top: 1.5rem;
                 text-transform: uppercase;
                 letter-spacing: 1px;
+		&.two-rows{
+                    font-size: 1.0rem;
+		    line-height:1rem;
+		    margin-top:1.3rem;
+		}
             }
+           
         }
         .color1 {
             //background-color: $znu-color-rose;

@@ -490,8 +490,8 @@ body{
         @include make-lg-column(12);
 
         @media (min-width: $screen-xs-min){
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
 
 	@media (min-width: $screen-sm-min){
@@ -820,9 +820,33 @@ body{
 // =============== front page slider = begin =================
 .znu-2016-slider{
 
-    margin-top: 1em;
 
     @extend .row;
+
+
+    margin-top: 1em;
+
+    margin-left:-1rem;
+    @media (min-width: $screen-xs-min) {
+	margin-left:-2rem;
+	margin-right:-2rem;
+    }
+    @media (min-width: $screen-sm--min) {
+	margin-left:-1.5rem;
+	margin-right:-1.5rem;
+    }
+    @media (min-width: $screen-sm-min) {
+	margin-left:-2.0rem;
+	margin-right:-2.0rem;
+    }
+
+
+    @media (min-width: $screen-lg-min) {
+	margin-left:-1.0rem;
+	margin-right:-1.0rem;
+    }
+
+
     .znu-2016-slider-col{
         @include make-xs-column(12);
         @include make-sm-column(12);
@@ -893,8 +917,13 @@ body{
             h1{
 		a{text-decoration:none;}
                 @media (min-width: $screen-xs-min) {
-                    font-size:140%;
+                    font-size:1.1rem;
                 }
+
+                @media (min-width: $screen-sm--min) {
+                    font-size:1.2rem;
+                }
+
                 @media (min-width: $screen-sm-min) {
                     font-size:140%;
                 }
@@ -907,6 +936,11 @@ body{
                 margin-top:0.2rem;
             }
             .btn{
+
+                @media (min-width: $screen-xs-min) {
+                    font-size:0.8rem;
+                }
+
                 font-size:100%;
                 border: 0rem;
                 border-radius: $znu-border-radius;
@@ -976,6 +1010,23 @@ body{
 .znu-2016-block-news{
     @extend .row;
 
+    @media (min-width: $screen-xs-min) {
+	margin-left:-2.0rem;
+	margin-right:-2.0rem;
+    }
+    @media (min-width: $screen-sm--min) {
+	margin-left:-1.5rem;
+	margin-right:-1.5rem;
+    }
+    @media (min-width: $screen-sm--min) {
+	margin-left:-2rem;
+	margin-right:-2rem;
+    }
+    @media (min-width: $screen-lg-min) {
+	margin-left:-1.0rem;
+	margin-right:-1.0rem;
+    }
+
 
 
     h3{
@@ -1038,20 +1089,19 @@ body{
                 clear:left;
             }
             .znu-2016-block-new-icon{
-                float:right;
-                width:4rem;
-                height:4rem;
-                display:block;
-		margin-left:1rem;
-		margin-top:0.3rem;
-                border: 4px solid $znu-color-white ;
-		position:absolute;
-		top:1rem;
-		right:1rem;
-
-                background-size:cover;
-                background-position:center center;
-
+		display:none;
+                //float:right;
+                //width:4rem;
+                //height:4rem;
+                //display:block;
+		//margin-left:1rem;
+		//margin-top:0.3rem;
+                //border: 4px solid $znu-color-white ;
+		//position:absolute;
+		//top:1rem;
+		//right:1rem;
+                //background-size:cover;
+                //background-position:center center;
                 //&:hover{
                    // border:none;
                 //}    
@@ -1076,14 +1126,14 @@ body{
                     @include link-style($znu-color-black,$znu-color-chocolate, $znu-color-black);
                 }
 
-		&:before{
-		    display:block;
-		    content:" ";
-		    float:right;
-		    width:4rem;
-		    height:4rem;
-		    margin-left:1rem;
-		}
+		//&:before{
+		//    display:block;
+		//    content:" ";
+		//    float:right;
+		//    width:4rem;
+		//    height:4rem;
+		//    margin-left:1rem;
+		//}
 
             }
             .znu-2016-block-new-title-odd{
@@ -1178,18 +1228,33 @@ body{
     background-color:$znu-color-blue;
     .znu-2016-main{
         background-color:$znu-color-blue;
-    }
-}
-.znu-2016-block-footer{
-    @extend .row;
-    border-top: 1px solid rgba(56, 82, 166, 0.5);
-    padding-top:1rem;
-    padding-bottom:1rem;
-    img{
-        width: 7rem;
-        float: right;
-    }
 
+	padding-left:0rem;
+	padding-right:0rem;
+	margin-left:0rem;
+	margin-right:0rem;
+
+        @media (min-width: $screen-sm--min) {
+	    padding-left:1rem;
+	    padding-right:1rem;
+	    margin-left:0rem;
+	    margin-right:0rem;
+        }
+
+
+	.znu-2016-block-footer{
+	    @extend .row;
+	    border-top: 1px solid rgba(56, 82, 166, 0.5);
+	    padding-top:1rem;
+	    padding-bottom:1rem;
+	    margin-right:0rem;
+	    img{
+	        width: 7rem;
+	        float: right;
+	    }
+	}
+
+    }
 }
 .znu-2016-block-footer-col{
     @include make-xs-column(12);
@@ -1231,6 +1296,11 @@ body{
     margin-left: -3rem;
     margin-right: -3rem;
 
+    @media (min-width: $screen-lg-min) {
+        margin-left: -2rem;
+	margin-right: -2rem;
+    }
+
     .znu-2016-block-banner{
         //padding-bottom:1rem;
         //margin-bottom: 1rem;
@@ -1238,7 +1308,7 @@ body{
     .znu-2016-one-banner{
         @include make-xs-column(12);
         @include make-sm-column(6);
-        @include make-md-column(3);
+        @include make-md-column(6);
         @include make-lg-column(3);
         
         margin: 1rem 0 1rem 0;
@@ -1275,7 +1345,13 @@ body{
         border-radius: $znu-border-radius;
         padding: 1rem 1rem 1rem 1rem;
         margin: 1rem 1rem 1rem 1rem;
-        min-height: 40rem;
+
+        @media (min-width: $screen-sm-min) {
+            min-height: 47rem;
+        }
+        @media (min-width: $screen-md-min) {
+            min-height: 40rem;
+        }
 	line-height:2rem;
     }
     h3.color1 {
