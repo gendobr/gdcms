@@ -1471,7 +1471,9 @@ body{
         a {
             @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
         }
-
+	p {
+	    margin: 0 0 2rem;
+	}
         .znu-2016-page-header {
 
             .znu-2016-block-page-header {
