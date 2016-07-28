@@ -125,7 +125,11 @@ function category_public_list($site_id, $lang) {
     //{site_id}&lang={lang}&category_id={category_id}&path={path}&category_code={category_code}
     $cnt = count($caterory_list);
     for ($i = 0; $i < $cnt; $i++) {
-        $caterory_list[$i]['category_title'] = get_langstring($caterory_list[$i]['category_title'], $lang);
+        $caterory_list[$i]['category_title'] = get_langstring($caterory_list[$i]['category_title'], $lang, $strict=true);
+        if(strlen($caterory_list[$i]['category_title'])==0){
+            unset($caterory_list[$i]);
+            continue;
+        }
         $caterory_list[$i]['category_description'] = get_langstring($caterory_list[$i]['category_description'], $lang);
         $caterory_list[$i]['URL'] = str_replace(
             Array('{site_id}'   , '{lang}','{category_id}','{path}','{category_code}'), 
@@ -138,6 +142,7 @@ function category_public_list($site_id, $lang) {
         $caterory_list[$i]['category_icon'] = json_decode($caterory_list[$i]['category_icon'], true);
     }
     // prn($caterory_list);
+    $caterory_list= array_values($caterory_list);
     // ------------------ adjust list of categories - end ----------------------
     // ------------------ get number of news - begin ---------------------------
     $category_ids = Array();
