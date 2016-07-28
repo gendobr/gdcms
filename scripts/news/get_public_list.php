@@ -541,7 +541,7 @@ if ($imax < $num) {
 }
 # --------------------------- list of pages - end ----------------------------
 // adjust list of news
-$list_of_news = news_get_view($list_of_news, $lang);
+$list_of_news = news_get_view($list_of_news, $lang, $this_site_info);
 
 
 if (!function_exists('db_get_template'))

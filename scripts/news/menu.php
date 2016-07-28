@@ -114,9 +114,10 @@ function menu_news($news_info, $site_info) {
     return $tor;
 }
 
-function news_get_view($news_list, $lang) {
-    if (count($news_list) == 0)
+function news_get_view($news_list, $lang, $site_info) {
+    if (count($news_list) == 0) {
         return Array();
+    }
     $news_list = array_values($news_list);
     $site_id = $news_list[0]['site_id'];
 
@@ -161,6 +162,7 @@ function news_get_view($news_list, $lang) {
     }
     //prn($categories);
 
+    $url_template_news_details=str_replace(\e::config('APPLICATION_PUBLIC_URL'),$site_info['extra_setting']['publicCmsUrl'],\e::config('url_template_news_details'));
     $cnt = count($news_list);
     for ($i = 0; $i < $cnt; $i++) {
         // $news_list[$i]['URL_view_details'] = url_prefix_news_details . "news_id={$news_list[$i]['id']}&lang={$lang}";
@@ -663,7 +665,7 @@ class CategoryNews {
         //prn('$this->_pages=',$this->_pages);
         # --------------------------- list of pages - end ----------------------------
 
-        $this->_list = news_get_view($this->_list, $this->lang);
+        $this->_list = news_get_view($this->_list, $this->lang, $this->this_site_info);
 
         return '';
     }

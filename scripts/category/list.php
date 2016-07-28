@@ -105,13 +105,13 @@ $this_category->get_children();
 #  ---------------------------- adjust nodes - begin ---------------------------
 $cnt = array_keys($this_category->parents);
 foreach ($cnt as $i)
-    $this_category->parents[$i] = adjust($this_category->parents[$i], $this_category->id);
+    $this_category->parents[$i] = adjust($this_category->parents[$i], $this_category->id, $this_site_info);
 
 $cnt = array_keys($this_category->children);
 foreach ($cnt as $i)
-    $this_category->children[$i] = adjust($this_category->children[$i], $this_category->id);
+    $this_category->children[$i] = adjust($this_category->children[$i], $this_category->id, $this_site_info);
 
-$this_category->info = adjust($this_category->info, $this_category->id);
+$this_category->info = adjust($this_category->info, $this_category->id, $this_site_info);
 #  ---------------------------- adjust nodes - end -----------------------------
 #  ---------------------------- draw - begin -----------------------------------
 $tor = "
@@ -202,7 +202,7 @@ $tor.="
 if ($category['is_visible'] == 0)
     $tor.=" style='color:silver;'";
 
-$tor.=">{$category['category_code']} {$category['title_short']}</span></b><br>
+$tor.="> {$category['title_short']} <span style='opacity:0.5;'>({$category['category_code']})</span></span></b><br>
     <div id=\"cm{$category['category_id']}\" class=menu_block style='display:none;'>";
 
 foreach ($category['context_menu'] as $cm) {
@@ -273,7 +273,7 @@ $input_vars['page_content'] = $tor;
 #  ---------------------------- draw - end -------------------------------------
 # category context menu
 $input_vars['page_menu']['category'] = Array('title' => text('Category'), 'items' => Array());
-$input_vars['page_menu']['category']['items'] = menu_category($this_category->info);
+$input_vars['page_menu']['category']['items'] = menu_category($this_category->info,$this_site_info);
 //prn($input_vars['page_menu']['category']);
 # site context menu
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';

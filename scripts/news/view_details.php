@@ -411,7 +411,7 @@ class NewsComments {
 //
 //
 # --------------------- draw news details - begin ------------------------------
-$news_view = news_get_view(Array($this_news_info), $input_vars['lang']);
+$news_view = news_get_view(Array($this_news_info), $input_vars['lang'], $this_site_info);
 $news_view = $news_view[0];
 # prn($news_view);
 # check if site news template name exists

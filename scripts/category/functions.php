@@ -1,6 +1,6 @@
 <?php
 
-function menu_category($_info = false) {
+function menu_category($_info, $site_info) {
     global $input_vars;
     $menu = Array();
 
@@ -17,7 +17,7 @@ function menu_category($_info = false) {
 
 
         $menu[] = Array(
-            'url' => 'index.php?action=category/browse&category_id=' . $_info['category_id'] . "&site_id={$_info['site_id']}&lang={$_SESSION['lang']}"
+            'url' => "{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=category/browse&category_id=" . $_info['category_id'] . "&site_id={$_info['site_id']}&lang={$_SESSION['lang']}"
             , 'html' => text("Preview")
             , 'attributes' => ' target=_blank '
         );
@@ -49,7 +49,7 @@ function menu_category($_info = false) {
             $menu[] = Array(
                 'url' => 'index.php?action=category/list&category_delete=yes&category[' . $_info['category_id'] . ']=' . $_info['category_id'] . "&site_id={$_info['site_id']}"
                 , 'html' => text('Delete')
-                , 'attributes' => ' style="color:red;margin-top:20px;" onclick="return confirm(\'�� ������������� ������ ������� ��������� ' . htmlspecialchars(" {$_info['category_title']} ") . '\')" '
+                , 'attributes' => ' style="color:red;margin-top:20px;" onclick="return confirm(\'Do you really want to delete ' . htmlspecialchars(" {$_info['category_title']} ") . '\')" '
             );
     }# ------------------------ selected menu - end -----------------------
 
@@ -62,9 +62,9 @@ function menu_category($_info = false) {
     return $menu;
 }
 
-function adjust($_info, $category_id) {
+function adjust($_info, $category_id, $site_info) {
     $tor = $_info;
-    $tor['context_menu'] = menu_category($tor);
+    $tor['context_menu'] = menu_category($tor,$site_info);
     unset($tor['context_menu']['start']);
 
     $tor['category_title'] = get_langstring($tor['category_title']);

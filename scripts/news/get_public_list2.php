@@ -102,6 +102,10 @@ class CmsNewsViewer {
         $this->text = load_msg($this->lang);
 
         $this->site_id = (int) ( $this->options['site_id'] );
+        $this->_this_site_info = get_site_info($this->site_id);
+        if (!$this->_this_site_info) {
+            die($this->text['Site_not_found']);
+        }
         $this->currentInputData['site_id'] = $this->site_id;
 
 
@@ -183,12 +187,6 @@ class CmsNewsViewer {
         switch ($attr) {
             case 'site':
             case 'this_site_info':
-                if ($this->_this_site_info === false) {
-                    $this->_this_site_info = get_site_info($this->site_id);
-                    if (!$this->_this_site_info) {
-                        die($this->text['Site_not_found']);
-                    }
-                }
                 return $this->_this_site_info;
 
             case 'tag_selector':
@@ -912,7 +910,7 @@ class CmsNewsViewer {
         # 
         # 
         # adjust list of news
-        $this->_list['rows'] = news_get_view($this->_list['rows'], $this->lang);
+        $this->_list['rows'] = news_get_view($this->_list['rows'], $this->lang, $this->_this_site_info);
         
         $cnt=count($this->_list['rows']);
         for($i=0; $i<$cnt; $i++){

@@ -33,7 +33,7 @@ if (get_level($site_id) == 0) {
 $input_vars['aed'] = (isset($input_vars['aed'])) ? ((int) $input_vars['aed']) : 0;
 
 // save preview URL
-$this_category_url_prefix = site_root_URL . "/index.php?action=category/browse&site_id={$site_id}&lang={$_SESSION['lang']}&category_id=";
+$this_category_url_prefix = "{$this_site_info['extra_setting']['publicCmsUrl']}/index.php?action=category/browse&site_id={$site_id}&lang={$_SESSION['lang']}&category_id=";
 
 #------------------------ get category info - begin ----------------------------
 if (isset($input_vars['category_id'])) {
@@ -51,7 +51,7 @@ if (isset($input_vars['category_id'])) {
 
     $this_category->load_node($category_id);
 
-    $this_category->info = adjust($this_category->info, $category_id);
+    $this_category->info = adjust($this_category->info, $category_id, $this_site_info);
     // prn('$this_category->info',$this_category->info);
     if (!$this_category->info) {
         unset($input_vars['category_id']);
@@ -352,7 +352,7 @@ if ($success) {
     # 
     #  reload category info
     $this_category->load_node($category_id);
-    $this_category->info = adjust($this_category->info, $category_id);
+    $this_category->info = adjust($this_category->info, $category_id, $this_site_info);
     
     // log
     ml('category/edit', \e::post());
@@ -363,7 +363,7 @@ if ($success) {
 $this_category->get_parents();
 $cnt = array_keys($this_category->parents);
 foreach ($cnt as $i) {
-    $this_category->parents[$i] = adjust($this_category->parents[$i], $this_category->id);
+    $this_category->parents[$i] = adjust($this_category->parents[$i], $this_category->id, $this_site_info);
 
     if (isset($inherited_concept[$this_category->parents[$i]['category_id']])) {
         $this_category->parents[$i]['concepts'] = $inherited_concept[$this_category->parents[$i]['category_id']];
@@ -580,10 +580,10 @@ $input_vars['page_content'].="
 #  ---------------------------- adjust nodes - begin ---------------------------
 $cnt = array_keys($this_category->parents);
 foreach ($cnt as $i) {
-    $this_category->parents[$i] = adjust($this_category->parents[$i], $this_category->id);
+    $this_category->parents[$i] = adjust($this_category->parents[$i], $this_category->id, $this_site_info);
     //prn($this_category->parents[$i]);
 }
-$this_category->info = adjust($this_category->info, $this_category->id);
+$this_category->info = adjust($this_category->info, $this_category->id, $this_site_info);
 #  ---------------------------- adjust nodes - end -----------------------------
 // enable TinyMCE or markitup
 if ($input_vars['aed'] == 1) {
@@ -685,17 +685,20 @@ foreach ($this_category->parents as $row) {
          <a href=# style='margin-left:-25px;' class=context_menu_link onclick=\"report_change_state('cm{$row['category_id']}'); return false;\"><img src=img/context_menu.gif border=0 width=20 height=15></a>
          <a href=\"{$row['URL']}\" title=\"{$row['category_title']}\" "
             . ( ($row['is_visible'] == '0') ? " style='color:silver;'" : '' ) . '>'
-            . ($row['category_code'] ? $row['category_code'] : $row['category_id']) . " &nbsp;&nbsp;&nbsp; {$row['category_title_short']}</a><br/>
-         <a href='{$parent_url}' style='color:silver;'>" . htmlspecialchars($parent_url) . "</a>
+            . "  {$row['category_title_short']} &nbsp;&nbsp;&nbsp;"
+            . " (".($row['category_code'] ? $row['category_code'] : $row['category_id']) .") "
+            ."</a>
+         <a href='{$parent_url}' style='color:silver;font-size:80%;' target=_blank>preview</a>
          <br>
           ";
 
     $tor.="<div id=\"cm{$row['category_id']}\" class=menu_block style='display:none;'>";
     foreach ($row['context_menu'] as $cm) {
-        if ($cm['url'] != '')
+        if ($cm['url'] != '') {
             $tor.="<nobr><a href=\"{$cm['url']}\" {$cm['attributes']}>{$cm['html']}</a></nobr><br>";
-        else
+        } else {
             $tor.="<nobr><b>{$cm['html']}</b></nobr><br>";
+        }
     }
     $tor.="</div>";
     $tor.="</div>";
@@ -708,8 +711,11 @@ $tor.="
 <div style=\"padding-left:{$category['padding']}px;\">
     <a href=\"#\" style='margin-left:-25px;' class=context_menu_link onclick=\"report_change_state('cm{$category['category_id']}'); return false;\"><img src=img/context_menu.gif border=0 width=20 height=15></a>
     <span title=\"{$category['category_title']}\" style='" . (($category['is_visible'] == 0) ? " color:silver;" : '') . ";font-size:150%;'>
-    " . ($category['category_code'] ? $category['category_code'] : $category['category_id']) . " &nbsp;&nbsp;&nbsp; {$category['category_title_short']}<br/>
-    <a style='font-size:80%;color:silver;' href='{$this_category_url}'>" . htmlspecialchars($this_category_url) . "</a>
+    " 
+      . " {$category['category_title_short']} &nbsp;&nbsp;&nbsp;  "
+      . " (" . ($category['category_code'] ? $category['category_code'] : $category['category_id']) .") "
+      . "
+    <a style='font-size:70%;color:silver;' href='{$this_category_url}' target=_blank>preview</a>
     </span>
     <br>
     <div id=\"cm{$category['category_id']}\" class=menu_block style='display:none;'>";
@@ -742,7 +748,7 @@ $input_vars['page_content'] .=
 #  ---------------------------- draw - end -------------------------------------
 # category context menu
 $input_vars['page_menu']['category'] = Array('title' => text('Category'), 'items' => Array());
-$input_vars['page_menu']['category']['items'] = menu_category($this_category->info);
+$input_vars['page_menu']['category']['items'] = menu_category($this_category->info, $this_site_info);
 //prn($input_vars['page_menu']['category']);
 # site context menu
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';

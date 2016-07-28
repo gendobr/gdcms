@@ -9,7 +9,7 @@ if(!is_librarian()) access_denied_page();
 $main_template_name='popup';
 run('lib/class_tree');
 run('category/functions');
-
+run('site/menu');
 
 
 $category_root_ids=(isset($input_vars['category_root_ids']))?$input_vars['category_root_ids']:'';
@@ -37,6 +37,9 @@ $this_category->load_node(isset($input_vars['category_id'])?( (int)$input_vars['
 $this_category->get_parents("<<tp>>category.is_visible=1");
 $this_category->get_children("<<tp>>category.is_visible=1");
 # prn($this_category);
+
+
+$this_site_info = get_site_info($this_category->info['site_id']);
 
 #  ---------------------------- adjust nodes - begin ---------------------------
    function adj($_info,$method,$category_roots=Array())
@@ -95,11 +98,10 @@ $this_category->get_children("<<tp>>category.is_visible=1");
 
 
 # context menu
-  $input_vars['page']['menu']['category']['items']=menu_category($this_category->info);
+  $input_vars['page']['menu']['category']['items']=menu_category($this_category->info,$this_site_info);
 
 
 // remove from history
    nohistory($input_vars['action']);
 
 
-?>

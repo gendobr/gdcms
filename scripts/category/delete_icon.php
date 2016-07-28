@@ -20,7 +20,19 @@ if (isset($input_vars['category_id'])) {
 
     $this_category->load_node($category_id);
 
-    $this_category->info = adjust($this_category->info, $category_id);
+    $site_id = (int) $this_category->info['site_id'];
+    $this_site_info = get_site_info($site_id);
+    //prn($this_site_info);
+    if (!$this_site_info['id']) {
+        $input_vars['page_title'] = $text['Site_not_found'];
+        $input_vars['page_header'] = $text['Site_not_found'];
+        $input_vars['page_content'] = $text['Site_not_found'];
+        return 0;
+    }
+    
+    
+    
+    $this_category->info = adjust($this_category->info, $category_id, $this_site_info);
     // prn('$this_category->info',$this_category->info);
     if (!$this_category->info) {
         unset($input_vars['category_id']);
@@ -36,15 +48,7 @@ if (!isset($input_vars['category_id'])) {
 
 //------------------- site info - begin ----------------------------------------
 
-$site_id = (int) $this_category->info['site_id'];
-$this_site_info = get_site_info($site_id);
-//prn($this_site_info);
-if (!$this_site_info['id']) {
-    $input_vars['page_title'] = $text['Site_not_found'];
-    $input_vars['page_header'] = $text['Site_not_found'];
-    $input_vars['page_content'] = $text['Site_not_found'];
-    return 0;
-}
+
 //------------------- site info - end ------------------------------------------
 //
 //
