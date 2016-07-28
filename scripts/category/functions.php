@@ -70,7 +70,7 @@ function adjust($_info, $category_id, $site_info) {
     $category_title=$tor['category_title'];
     $tor['category_title'] = get_langstring($category_title, $_SESSION['lang'], true);
     if(!$tor['category_title']) {
-        $tor['category_title']="???".get_langstring($category_title, $_SESSION['lang'], false);
+        $tor['category_title']="{$_SESSION['lang']}(".get_langstring($category_title, $_SESSION['lang'], false).")";
     }
 
     $tor['category_title_short'] = get_langstring($tor['category_title_short']);
