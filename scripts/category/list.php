@@ -104,12 +104,14 @@ $this_category->get_children();
 #  prn($this_category);die();
 #  ---------------------------- adjust nodes - begin ---------------------------
 $cnt = array_keys($this_category->parents);
-foreach ($cnt as $i)
+foreach ($cnt as $i) {
     $this_category->parents[$i] = adjust($this_category->parents[$i], $this_category->id, $this_site_info);
+}
 
 $cnt = array_keys($this_category->children);
-foreach ($cnt as $i)
+foreach ($cnt as $i) {
     $this_category->children[$i] = adjust($this_category->children[$i], $this_category->id, $this_site_info);
+}
 
 $this_category->info = adjust($this_category->info, $this_category->id, $this_site_info);
 #  ---------------------------- adjust nodes - end -----------------------------
