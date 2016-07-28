@@ -67,7 +67,10 @@ function adjust($_info, $category_id, $site_info) {
     $tor['context_menu'] = menu_category($tor,$site_info);
     unset($tor['context_menu']['start']);
 
-    $tor['category_title'] = get_langstring($tor['category_title']);
+    $tor['category_title'] = get_langstring($tor['category_title'], $_SESSION['lang'], true);
+    if(!$tor['category_title']) {
+        $tor['category_title']="???".get_langstring($tor['category_title'], $_SESSION['lang'], false);
+    }
 
     $tor['category_title_short'] = get_langstring($tor['category_title_short']);
     if (strlen($tor['category_title_short'])==0) {
