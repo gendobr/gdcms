@@ -21,8 +21,7 @@ $message = '';
 $news_id = checkInt((isset($input_vars['news_id']) ? $input_vars['news_id'] : 0));
 $lang = get_language('lang');
 
-// $query = "SELECT * FROM <<tp>>news WHERE id={$news_id} AND lang='$lang'";
-//\e::db_getonerow($query);
+
 $this_news_info = news_info($news_id, $lang);
 if ($debug) {
     prn(htmlspecialchars($query), $this_news_info);
@@ -33,7 +32,6 @@ if (checkInt($this_news_info['id']) <= 0) {
     if (!isset($input_vars['site_id'])) {
         $input_vars['site_id'] = 0;
     }
-    //prn("Location: index.php?action=news/list&site_id=".( (int)$input_vars['site_id'] ) );
     header("Location: index.php?action=news/list&site_id=" . ( (int) $input_vars['site_id'] ));
     die();
     return 0;
@@ -124,15 +122,29 @@ if (!isset($input_vars['aed'])) {
 }
 
 # ------------------------ draw rich text editor - begin -----------------------
+$page_content_textarea ='';
+
+# ------------------------ insert links into editor - begin --------------------
+$page_content_textarea .="
+    
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/select2/css/select2.min.css\" />
+    <script type=\"text/javascript\" charset=\"UTF-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/select2/js/select2.full.min.js\"></script>
+
+    <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/choose_links.js\"></script>
+
+    <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/fileupload/jquery.iframe-transport.js\"></script>
+    <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/fileupload/jquery.fileupload.js\"></script>
+";
+# ------------------------ insert links into editor - end ----------------------
+
+
 if ($input_vars['aed'] == 1) {
 
     // ================ draw rich text editor = begin ==========================
-    $page_content_textarea = "
+    $page_content_textarea .= "
            <!-- Load TinyMCE -->
-           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".site_root_URL."/scripts/lib/tiny_mce/jquery.tinymce.js\"></script>
-           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".site_root_URL."/scripts/lib/tiny_mce_start.js\"></script>
-
-           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".site_root_URL."/scripts/lib/choose_links.js\"></script>
+           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/tiny_mce/jquery.tinymce.js\"></script>
+           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/tiny_mce_start.js\"></script>
            <script type=\"text/javascript\">
               $(window).load(function(){
                   init_links();
@@ -148,16 +160,12 @@ if ($input_vars['aed'] == 1) {
     // ================ draw rich text editor = end ============================
 } else {
     // ================ draw simple editor = begin =============================
-    $page_content_textarea = "
-
-
-           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".site_root_URL."/scripts/lib/markitup/jquery.markitup.js\"></script>
-           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".site_root_URL."/scripts/lib/markitup/sets/html/set.js\"></script>
-           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".site_root_URL."/scripts/lib/markitup.js\"></script>
-           <link rel=\"stylesheet\" type=\"text/css\" href=\"".site_root_URL."/scripts/lib/markitup/skins/simple/style.css\" />
-           <link rel=\"stylesheet\" type=\"text/css\" href=\"".site_root_URL."/scripts/lib/markitup/sets/html/style.css\" />
-
-           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".site_root_URL."/scripts/lib/choose_links.js\"></script>
+    $page_content_textarea .= "
+           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/markitup/jquery.markitup.js\"></script>
+           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/markitup/sets/html/set.js\"></script>
+           <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/markitup.js\"></script>
+           <link rel=\"stylesheet\" type=\"text/css\" href=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/markitup/skins/simple/style.css\" />
+           <link rel=\"stylesheet\" type=\"text/css\" href=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/markitup/sets/html/style.css\" />
            <script type=\"text/javascript\">
               $(function(){
                   init_links();
@@ -168,6 +176,9 @@ if ($input_vars['aed'] == 1) {
     // ================ draw simple editor = end ===============================
 }
 # ------------------------ draw rich text editor - end -------------------------
+#
+# 
+# 
 # ------------------- draw form - begin ----------------------------------------
 $notify_managers_form = '';
 foreach ($this_site_info['managers'] as $mn) {
@@ -244,6 +255,7 @@ function draw_opt($val, $opts) {
 
 $date_selector = get_date_selector('date_posted', $this_news_info['last_change_date'], time());
 # ----------------------- date selector - end -------------------------------
+#
 # ----------------------- expiration_date selector - begin ------------------
 $expiration_date_selector = get_date_selector('expiration_date_posted', $this_news_info['expiration_date']);
 # ----------------------- expiration_date selector - end --------------------
@@ -422,10 +434,20 @@ $input_vars['page_content'] = "
   <div  style='border:1px solid #00334c;'>
       <div class=big>
       <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_news_info['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
+        <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_news_info['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
+        <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
+        <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
+        <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
+        <span class=\"btn-add-images\">
+            {$text['Upload_image']}
+            <input id=\"image_uploader_file_abstract\" 
+                class=\"image_uploader_file\" 
+                type=\"file\" name=\"imagefile\" 
+                data-url=\"".\e::url_admin([])."\" 
+                data-sequential-uploads=\"true\"
+                multiple>
+        </span>
+        <div id=\"progress_abstract\"><div class=\"bar\" style=\"width: 0%;\"></div></div>
       </div>
         <textarea name=page_abstract
                   id=page_abstract
@@ -452,6 +474,16 @@ $input_vars['page_content'] = "
           <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
           <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
+        <span class=\"btn-add-images\">
+            {$text['Upload_image']}
+            <input id=\"image_uploader_file_content\" 
+                class=\"image_uploader_file\" 
+                type=\"file\" name=\"imagefile\" 
+                data-url=\"".\e::url_admin([])."\" 
+                data-sequential-uploads=\"true\"
+                multiple>
+        </span>
+        <div id=\"progress_content\"><div class=\"bar\" style=\"width: 0%;\"></div></div>
       </div>
        <textarea name=page_content style='border:none;width:100%;'
             id=page_content_area
@@ -498,13 +530,81 @@ $input_vars['page_content'] = "
 
   </form>
 
- <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/select2/css/select2.min.css\" />
- <script type=\"text/javascript\" charset=\"UTF-8\" src=\"./scripts/lib/select2/js/select2.full.min.js\"></script>
- <script type=\"text/javascript\">
-      $(function(){
-          $('select').select2();
-      });
-  </script>";
+    <script type=\"text/javascript\">
+    $(function(){
+        $('select').select2();
+
+
+
+        var fileuploadOptions={
+            dataType: 'json',
+            formData:[
+                {name:'action',value:'news/edit_image_receiver'},
+                {name:'news_id',value:'{$news_id}'},
+                {name:'site_id',value:'{$site_id}'},
+                {name:'lang',value:'{$lang}'}
+            ],
+            // dropZone:$('image_uploader_file_abstract'),
+            done: function (e, data) {
+                if(data.result.status=='success'){
+                    // insert image(s) into active editor
+                    //\$('#page_abstract').focus();
+                    for(var i=0; i<data.result.data.length; i++){
+                        insert_link('<img src=\"'+data.result.data[i].small+'\">', data.result.data[i].big,{rel:'lightbox',target:'_blank'});
+                    }
+                }
+                $('#progress_abstract').hide();
+            },
+            //progressall: function (e, data) {
+            //    var progress = parseInt(data.loaded / data.total * 100, 10);
+            //    $('#progress_abstract .bar').css( 'width',  progress + '%'  );
+            //},
+            start:function (e) {
+                // console.log('Uploads started');
+                \$('#progress_abstract .bar').css( 'width','1%');
+                \$('#progress_abstract').show();
+            }
+        };
+
+        fileuploadOptions.dropZone=$('image_uploader_file_abstract');
+        $('#image_uploader_file_abstract').fileupload(fileuploadOptions).click(function(){\$('#page_abstract').focus();});
+
+        fileuploadOptions.dropZone=$('image_uploader_file_content');
+        $('#image_uploader_file_content').fileupload(fileuploadOptions).click(function(){\$('#page_content_area').focus();});
+
+    });
+    </script>
+  
+    <style type=\"text/css\">
+    .btn-add-images{
+        display:inline-block;
+        position:relative;
+        text-decoration:underline;
+        color:#00334c;
+        height:20px;
+    }
+    .btn-add-images input[type=\"file\"]{
+        opacity:0;
+        width:100%;
+        height:20px;
+        position:absolute;
+        top:0px;
+        left:0px;
+        cursor:pointer;
+    }
+    #progress_abstract{
+        position:absolute;
+        display:none;
+        width:200px;
+        background-color:silver;
+    }
+    #progress_abstract .bar{
+        display:inline-block;
+        background-color:green;
+    }
+    </style>
+
+";
 //------------------- draw form - end ------------------------------------------
 //----------------------------- context menu - begin ---------------------------
 // current news menu

@@ -25,6 +25,7 @@ if (is_logged()) {
     $cnt = count($sites);
     for ($i = 0; $i < $cnt; $i++) {
         $sites[$i]['title'] = get_langstring($sites[$i]['title']);
+        $sites[$i]['extra_setting']=site_decode_extra_setting($sites[$i]['extra_setting']);
     }
 
     function titlesort($a, $b) {
@@ -42,10 +43,10 @@ if (is_logged()) {
        a.smn{display:block;font-size:110%;}
        a.smn:hover{background-color:yellow;}
        .mbl{display:inline-block;vertical-align:top;margin-right:10px;}
-       .ste{margin-bottom:5px;margin-top:20px;text-align:left;}
+       .ste{margin-bottom:5px;margin-top:0px;text-align:left;}
        .newsb{float:right; width:220px;padding:10px;margin-left:20px;overflow:hidden;}
        .dd-menu{position:absolute; background-color:#e0e0e0; padding:3px;display:inline-block;}
-       a.dddot{padding:5px;display:inline-block;text-decoration:none;background-color:yellow; color:blue;}
+       a.dddot{padding:5px;display:inline-block;text-decoration:none;background-color:yellow; color:blue;float:left;}
        a.dddot:hover{background-color:lime;}
     </style>
     <div class="newsb">
@@ -72,7 +73,7 @@ if (is_logged()) {
         }
         $page_content.="</span>";
 
-        $page_content.="<span style='display:inline-block;'><h4 class='ste'>{$site_info['title']} ({$site_info['dir']})</h4></span>";
+        $page_content.="<div style='display:block;margin-left:40px;'><h4 class='ste'>{$site_info['title']} ({$site_info['dir']})</h4></div>";
         $page_content.="<div><a href=\"{$site_info['url']}\">{$site_info['url']}</a></div><br/><br/>";
 
         // prn($menu);
@@ -90,7 +91,7 @@ if (is_logged()) {
             }
         }
 
-        $page_content.="<br/><br/>";
+        $page_content.="<br/><br/><br/><br/>";
     }
     $input_vars['page_content'] = & $page_content;
 }

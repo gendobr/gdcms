@@ -77,8 +77,9 @@ if($user_level==0)
                    ,last_change_date
                    ,abstract
                    ,content
-                   ,tags,
-                   creation_date)
+                   ,tags
+                   ,creation_date
+                   ,news_icon)
                 values(
                     $news_id
                    ,'{$tmp['id']}'
@@ -90,7 +91,7 @@ if($user_level==0)
                    ,'".\e::db_escape($this_news_info['content'])."'
                    ,'".\e::db_escape($this_news_info['tags'])."'
                    ,NOW()
-                   )";
+                   ,'".\e::db_escape($this_news_info['news_icon'])."')";
       // prn($query);
       \e::db_execute($query);
 

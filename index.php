@@ -43,80 +43,6 @@ include('./config.php');
 $start_time = microtime(true);
 
 
-if (isset($_REQUEST['action']) && in_array($_REQUEST['action'], ['photo/'])) {
-
-    // ========================================
-    // $config = new config();
-    // include 'config2.php';
-    // \e::set('config', $config);
-    // load type caster and validator
-    //\e::set('type', new type());
-    // Загрузка и предварительная обработка данных пользователя
-    //\e::set('in', new in());
-    // составитель ссылок
-    // \e::set('urlfactory', new urlfactory());
-    // load logger
-    // \e::set('logger', new log(\e::config('LOGGER_CONFIG_FILE')));
-    // DEBUG < INFO < WARN < ERROR < FATAL
-    // \e::debug("root","Hello World!");
-    // \e::info("root",\e::instance());
-    // \e::warn("root",\e::instance());
-    // \e::error("root","Hello World!");
-    // \e::fatal("root","Hello World!");
-    // ленивое подключение к базе данных
-    //\e::set('db', new db(\e::config('db_host'), \e::config('db_user'), \e::config('db_pass'), \e::config('db_name'), \e::config('db_charset'), \e::config('db_table_prefix')));
-    // обработчик системных событий
-    \e::set('event', new registry(\e::config('CACHE_ROOT') . '/registry.txt', \e::config('SCRIPT_ROOT'), \e::config('CACHE_TIMEOUT')));
-
-    // составитель меню
-    \e::set('menufactory', new menufactory());
-
-    // фабрика представлений
-    \e::set('viewfactory', new viewfactory(\e::config('skin')));
-
-    // механизм сообщений от системы пользователю
-    \e::set('notifiermodel', new notifiermodel());
-
-    \e::set('gettext', new gettext(\e::config('CACHE_ROOT') . '/messages.txt', \e::config('SCRIPT_ROOT'), \e::config('CACHE_TIMEOUT')));
-
-    //// старт сессии
-    //\e::set('session', new session());
-    // шаблон графического дизайна
-    $tmp = \e::config('skin');
-    \e::set('view', new $tmp());
-
-    // \event_start::class;
-    // другие действия, которые можно выполнить на старте
-    \e::fire('event_start', null);
-
-
-
-
-
-    // каждое действие пользователя есть событие
-    // имя события=имя класса
-    // класс должен быть некой реализацией интерфейса "веб-страница"
-    $userEventHandler = \e::action();
-    //\e::debug($userEventHandler);
-
-    if ($userEventHandler != '' && count(\e::get_classes('core\\page', $userEventHandler)) > 0) {
-        $page = new $userEventHandler(Array());
-    } else {
-        \e::warn("running default page instead of $userEventHandler");
-        $userEventHandler = \e::config('DEFAULT_ACTION');
-        $page = new $userEventHandler(Array());
-    }
-    $page->show();
-
-    // завершение сессии
-    // закрытие соединения с БД
-    \e::fire('event_finish', null);
-    \e::db_close();
-    session_write_close();
-    exit();
-}
-
-
 
 include(\e::config('SCRIPT_ROOT') . "/lib/functions.php");
 
@@ -149,8 +75,9 @@ if (get_magic_quotes_gpc()) {
 $text = load_msg();
 
 //prn($input_vars);    die('ddd');
-if (!isset($input_vars['action']))
+if (!isset($input_vars['action'])) {
     $input_vars['action'] = '';
+}
 run($input_vars['action']);    //run script
 // run("session_finish");         //finish session
 run("menu");                   // menu
