@@ -459,18 +459,28 @@ foreach ($list_of_languages as $lng) {
       <label><input type=\"checkbox\" name=\"important_changes[{$lng['name']}]\" value=\"" . date('Y-m-d H:i:s') . "\">" . text('Important_changes') . "</label>
     </div>
     <div class=big>
-      <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$lng['name']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
-      </div>
-     <textarea name='{$form['elements']['category_description']->form_element_name}_{$lng['name']}'
+        <div>
+            <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$lng['name']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+            <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
+            <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
+            <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
+            <span class=\"btn-add-images\">
+                {$text['Upload_image']}
+                <input id=\"image_uploader_file_descr{$lng['name']}\" 
+                    class=\"image_uploader_file\" 
+                    type=\"file\" name=\"imagefile\" 
+                    data-url=\"".\e::url_admin([])."\" 
+                    data-textarea-id=\"{$form['elements']['category_description']->form_element_name}_{$lng['name']}\"
+                    data-sequential-uploads=\"true\"
+                    multiple>
+            </span>
+        </div>
+        <textarea name='{$form['elements']['category_description']->form_element_name}_{$lng['name']}'
                id='{$form['elements']['category_description']->form_element_name}_{$lng['name']}'
                style='width:100%;height:300px;' class=\"wysiswyg\">"
             . htmlspecialchars(get_langstring($form['elements']['category_description']->value, $lng['name']))
             . "</textarea>
-     <div align=right><input type=submit value='{$text['Save']}'></div>
+        <div align=right><input type=submit value='{$text['Save']}'></div>
     </div>
     ";
 }
@@ -515,13 +525,23 @@ foreach ($list_of_languages as $lng) {
       {$form['elements']['category_description_short']->label} ({$lng['name']})
     </div>
     <div class=big>
-      <div>
-          <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$lng['name']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
-          <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
-      </div>
-     <textarea name='{$form['elements']['category_description_short']->form_element_name}_{$lng['name']}'
+        <div>
+            <a href=\"javascript:void(0)\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$lng['name']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Gallery') . "</a>
+            <a href=\"javascript:void(0)\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Category') . "</a>
+            <a href=\"javascript:void(0)\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">" . text('Pages') . "</a>
+            <a href=\"javascript:void(0)\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
+            <span class=\"btn-add-images\">
+                {$text['Upload_image']}
+                <input id=\"image_uploader_file_shortdescr{$lng['name']}\" 
+                    class=\"image_uploader_file\" 
+                    type=\"file\" name=\"imagefile\" 
+                    data-url=\"".\e::url_admin([])."\" 
+                    data-textarea-id=\"{$form['elements']['category_description_short']->form_element_name}_{$lng['name']}\"
+                    data-sequential-uploads=\"true\"
+                    multiple>
+            </span>
+        </div>
+        <textarea name='{$form['elements']['category_description_short']->form_element_name}_{$lng['name']}'
                id='{$form['elements']['category_description_short']->form_element_name}_{$lng['name']}'
                style='width:100%;height:100px;' class=\"wysiswyg\">"
             . htmlspecialchars(get_langstring($form['elements']['category_description_short']->value, $lng['name']))
@@ -732,14 +752,87 @@ $tor.="
 $input_vars['page_content'] = "  <div>{$rep->messages}</div>" . $tor . '  ' . $input_vars['page_content'];
 
 
-$input_vars['page_content'] .= 
-" <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/select2/css/select2.min.css\" />
- <script type=\"text/javascript\" charset=\"UTF-8\" src=\"./scripts/lib/select2/js/select2.full.min.js\"></script>
- <script type=\"text/javascript\">
-      $(function(){
-          $('select').select2();
-      });
-  </script>";
+$input_vars['page_content'] .= "
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/select2/css/select2.min.css\" />
+    <script type=\"text/javascript\" charset=\"UTF-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/select2/js/select2.full.min.js\"></script>
+    <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/fileupload/jquery.iframe-transport.js\"></script>
+    <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/fileupload/jquery.fileupload.js\"></script>
+    
+    <script type=\"text/javascript\">
+        $(function(){
+            $('select').select2();
+
+            var fileuploadOptions={
+                dataType: 'json',
+                formData:[
+                    {name:'action',value:'category/edit_image_receiver'},
+                    {name:'category_id',value:'{$category_id}'},
+                    {name:'site_id',value:'{$site_id}'}
+                ],
+                // dropZone:$('image_uploader_file_abstract'),
+                done: function (e, data) {
+                    if(data.result.status=='success'){
+                        // insert image(s) into active editor
+                        //\$('#page_abstract').focus();
+                        for(var i=0; i<data.result.data.length; i++){
+                            insert_link('<img src=\"'+data.result.data[i].small+'\">', data.result.data[i].big,{rel:'lightbox',target:'_blank'});
+                        }
+                    }
+                    $('#progress_abstract').hide();
+                },
+                //progressall: function (e, data) {
+                //    var progress = parseInt(data.loaded / data.total * 100, 10);
+                //    $('#progress_abstract .bar').css( 'width',  progress + '%'  );
+                //},
+                //start:function (e) {
+                    // console.log('Uploads started');
+                    //\$('#progress_abstract .bar').css( 'width','1%');
+                    //\$('#progress_abstract').show();
+                //}
+            };
+            \$('.image_uploader_file').each(function(ind, elm){
+                //console.log(elm);
+                var el=$(elm);
+                var textareaId=el.attr('data-textarea-id');
+                fileuploadOptions.dropZone=el;
+                el.fileupload(fileuploadOptions).click(function(){\$('#'+textareaId).focus();});
+            });
+
+        });
+    </script>
+    
+
+  
+    <style type=\"text/css\">
+    .btn-add-images{
+        display:inline-block;
+        position:relative;
+        text-decoration:underline;
+        color:#00334c;
+        height:20px;
+    }
+    .btn-add-images input[type=\"file\"]{
+        opacity:0;
+        width:100%;
+        height:20px;
+        position:absolute;
+        top:0px;
+        left:0px;
+        cursor:pointer;
+    }
+    #progress_abstract{
+        position:absolute;
+        display:none;
+        width:200px;
+        background-color:silver;
+    }
+    #progress_abstract .bar{
+        display:inline-block;
+        background-color:green;
+    }
+    </style>
+
+";
 #   $input_vars['page']['content'] = process_template('category/edit',Array(
 #    'form'=>$form
 #   ,'parents'=>$this_category->parents

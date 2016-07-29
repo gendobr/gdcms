@@ -95,4 +95,3 @@ else
     header("Location: index.php?action=site/page/list&orderby=id+desc&site_id={$site_id}&".query_string('^page_id$|^site_id$|^action$|^'.session_name().'$'));
 }
 exit;
-?>

@@ -179,24 +179,34 @@ if(!isset($file_upload_form)) $file_upload_form='';
 
 
 
-  <div class=label>{$text['Abstract']} :</div>
-  <div class=big>
-  <div>
-          <a href=\"javascript:void('index.php?action=gallery/json&site_id={$site_id}')\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_page_info['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
-          <a href=\"javascript:void('index.php?action=category/json&site_id={$site_id}')\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
-          <a href=\"javascript:void('index.php?action=site/page/json&site_id={$site_id}')\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
-          <a href=\"javascript:void('index.php?action=site/filechooser/json&site_id={$site_id}')\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
-      </div>
-      <textarea name=page_abstract
+   <div class=label>{$text['Abstract']} :</div>
+   <div class=big>
+        <div>
+            <a href=\"javascript:void('index.php?action=gallery/json&site_id={$site_id}')\" onclick=\"display_gallery_links('index.php?action=photo/json&lang={$this_page_info['lang']}&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Gallery')."</a>
+            <a href=\"javascript:void('index.php?action=category/json&site_id={$site_id}')\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
+            <a href=\"javascript:void('index.php?action=site/page/json&site_id={$site_id}')\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
+            <a href=\"javascript:void('index.php?action=site/filechooser/json&site_id={$site_id}')\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
+            <span class=\"btn-add-images\">
+                {$text['Upload_image']}
+                <input id=\"image_uploader_file_abstract\" 
+                    class=\"image_uploader_file\" 
+                    type=\"file\" name=\"imagefile\" 
+                    data-url=\"".\e::url_admin([])."\" 
+                    data-sequential-uploads=\"true\"
+                    multiple>
+            </span>
+            <div id=\"progress_abstract\"><div class=\"bar\" style=\"width: 0%;\"></div></div>
+        </div>
+        <textarea name=page_abstract
             id=page_abstract
             wrap='virtual'
             tabindex='3'
             class='wysiswyg'
             style=\"width:500px; height:100px;\">".
-  htmlspecialchars($this_page_info['abstract'])
-  ."</textarea>
+        htmlspecialchars($this_page_info['abstract'])
+        ."</textarea>
 
-  </div>
+    </div>
 
 
   <div class=label>".text('Contents')." :</div>
@@ -207,6 +217,16 @@ if(!isset($file_upload_form)) $file_upload_form='';
           <a href=\"javascript:void('index.php?action=category/json&site_id={$site_id}')\" onclick=\"display_category_links('index.php?action=category/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Category')."</a>
           <a href=\"javascript:void('index.php?action=site/page/json&site_id={$site_id}')\" onclick=\"display_page_links('index.php?action=site/page/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">".text('Pages')."</a>
           <a href=\"javascript:void('index.php?action=site/filechooser/json&site_id={$site_id}'))\" onclick=\"display_file_links('index.php?action=site/filechooser/json&site_id={$site_id}',this)\" style=\"display:inline-block;\">{$text['Insert_link_to_file']}</a>
+        <span class=\"btn-add-images\">
+            {$text['Upload_image']}
+            <input id=\"image_uploader_file_content\" 
+                class=\"image_uploader_file\" 
+                type=\"file\" name=\"imagefile\" 
+                data-url=\"".\e::url_admin([])."\" 
+                data-sequential-uploads=\"true\"
+                multiple>
+        </span>
+        <div id=\"progress_content\"><div class=\"bar\" style=\"width: 0%;\"></div></div>
       </div>
       <textarea name=page_content
                     id=page_content_area
@@ -277,7 +297,91 @@ if(!isset($file_upload_form)) $file_upload_form='';
   </table>
   </form>
 
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"./scripts/lib/select2/css/select2.min.css\" />
+  
 
+    <script type=\"text/javascript\" charset=\"" . site_charset . "\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/select2/js/select2.full.min.js\"></script>
+    <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/fileupload/jquery.iframe-transport.js\"></script>
+    <script type=\"text/javascript\" charset=\"utf-8\" src=\"".\e::config('APPLICATION_ADMIN_URL')."/scripts/lib/fileupload/jquery.fileupload.js\"></script>
+    <script type=\"text/javascript\">
+        $(function(){
+            $('select').select2();
+
+
+
+            var fileuploadOptions={
+                dataType: 'json',
+                formData:[
+                    {name:'action',value:'site/page/edit_image_receiver'},
+                    {name:'page_id',value:'{$page_id}'},
+                    {name:'site_id',value:'{$site_id}'},
+                    {name:'lang',value:'{$lang}'}
+                ],
+                // dropZone:$('image_uploader_file_abstract'),
+                done: function (e, data) {
+                    if(data.result.status=='success'){
+                        // insert image(s) into active editor
+                        //\$('#page_abstract').focus();
+                        for(var i=0; i<data.result.data.length; i++){
+                            insert_link('<img src=\"'+data.result.data[i].small+'\">', data.result.data[i].big,{rel:'lightbox',target:'_blank'});
+                        }
+                    }
+                    $('#progress_abstract').hide();
+                },
+                //progressall: function (e, data) {
+                //    var progress = parseInt(data.loaded / data.total * 100, 10);
+                //    $('#progress_abstract .bar').css( 'width',  progress + '%'  );
+                //},
+                start:function (e) {
+                    // console.log('Uploads started');
+                    \$('#progress_abstract .bar').css( 'width','1%');
+                    \$('#progress_abstract').show();
+                }
+            };
+
+            fileuploadOptions.dropZone=$('image_uploader_file_abstract');
+            $('#image_uploader_file_abstract').fileupload(fileuploadOptions).click(function(){\$('#page_abstract').focus();});
+
+            fileuploadOptions.dropZone=$('image_uploader_file_content');
+            $('#image_uploader_file_content').fileupload(fileuploadOptions).click(function(){\$('#page_content').focus();});
+
+
+
+
+
+
+        });
+    </script>
+  
+  
+    <style type=\"text/css\">
+    .btn-add-images{
+        display:inline-block;
+        position:relative;
+        text-decoration:underline;
+        color:#00334c;
+        height:20px;
+    }
+    .btn-add-images input[type=\"file\"]{
+        opacity:0;
+        width:100%;
+        height:20px;
+        position:absolute;
+        top:0px;
+        left:0px;
+        cursor:pointer;
+    }
+    #progress_abstract{
+        position:absolute;
+        display:none;
+        width:200px;
+        background-color:silver;
+    }
+    #progress_abstract .bar{
+        display:inline-block;
+        background-color:green;
+    }
+    </style>
   ";
 //------------------- draw form - end ------------------------------------------
 
@@ -292,4 +396,3 @@ if(!isset($file_upload_form)) $file_upload_form='';
 
 //----------------------------- context menu - end -----------------------------
 
-?>

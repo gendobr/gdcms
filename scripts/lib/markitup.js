@@ -5,7 +5,7 @@ function insert_link(text,url, attributes){
             attrHtml+=" "+aN+"=\""+attributes[aN]+"\" ";
         }
     }
-    var ret = $.markItUp({ replaceWith:'<a href="'+url+'">'+text+'</a>' } ); 
+    var ret = $.markItUp({ replaceWith:'<a href="'+url+'" '+attrHtml+'>'+text+'</a>' } ); 
 }
 
 function insert_image(url){
