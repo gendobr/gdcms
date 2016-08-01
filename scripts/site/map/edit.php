@@ -191,7 +191,7 @@ if(get_level($site_id)==0)
      <td align=center valign=top bgcolor=#e0e0e0>\n";
 
      //--------------------------- context menu - begin ------------------------
-       $context_menu=menu_page($page_info);
+       $context_menu=menu_page($page_info,$this_site_info);
        $input_vars['page_content'].="<img src=\"img/context_menu.gif\" border=0px alt=\"\" onclick=\"map_change_state('cm{$row_id}')\">
        <div class=menu_block style='display:none;' id='cm{$row_id}'>";
        foreach($context_menu as $menu_item)

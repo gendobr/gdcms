@@ -363,7 +363,7 @@ $input_vars['page_header'] = $this_site_info['title'] .' - '. $text['Edit_naviga
   {
     $input_vars['page_menu']['page']=Array('title'=>$text['Page_menu'],'items'=>Array());
     run('site/page/menu');
-    $input_vars['page_menu']['page']['items'] = menu_page($this_page_info);
+    $input_vars['page_menu']['page']['items'] = menu_page($this_page_info,$this_site_info);
   }
   $sti=$text['Site'].' "'. $this_site_info['title'].'"';
   $Site_menu="<span title=\"".htmlspecialchars($sti)."\">".shorten($sti,30)."</span>";

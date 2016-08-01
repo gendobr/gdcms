@@ -200,7 +200,7 @@ $input_vars['page_header'] = $text['Editing_menu_item'];
 if($this_page_info['id']>0) {
     $input_vars['page_menu']['page']=Array('title'=>$text['Page_menu'],'items'=>Array());
     run('site/page/menu');
-    $input_vars['page_menu']['page']['items'] = menu_page($this_page_info);
+    $input_vars['page_menu']['page']['items'] = menu_page($this_page_info, $this_site_info);
 }
 
 $input_vars['page_menu']['site']=Array('title'=>$text['Site_menu'],'items'=>Array());

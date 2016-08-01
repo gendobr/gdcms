@@ -645,7 +645,7 @@ $input_vars['page_content'].="
 //------------------- draw form - end ------------------------------------------
 //----------------------------- context menu - begin ---------------------------
 $input_vars['page_menu']['page'] = Array('title' => $text['Page_menu'], 'items' => Array());
-$input_vars['page_menu']['page']['items'] = menu_page($this_page_info);
+$input_vars['page_menu']['page']['items'] = menu_page($this_page_info,$this_site_info);
 
 $sti = $text['Site'] . ' "' . $this_site_info['title'] . '"';
 $input_vars['page_menu']['site'] = Array('title' => "<span title=\"" . htmlspecialchars($sti) . "\">" . shorten($sti, 30) . "</span>", 'items' => Array());

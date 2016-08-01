@@ -5,7 +5,7 @@
   (c) Gennadiy Dobrovolsky gen_dobr@hotmail.com
  */
 
-function menu_page($page_info) {
+function menu_page($page_info,$site_info) {
     global $text, $db;
     $tor = Array();
     $sid = session_name() . '=' . $GLOBALS['_COOKIE'][session_name()];
@@ -24,7 +24,7 @@ function menu_page($page_info) {
     );
 
     $tor['site/page/view'] = Array(
-        'URL' => "index.php?action=site/page/view&page_id={$page_info['id']}&lang={$page_info['lang']}" . '&' . $sid . '&v=' . time()
+        'URL' => "{$site_info['extra_setting']['publicCmsUrl']}/index.php?action=site/page/view&page_id={$page_info['id']}&lang={$page_info['lang']}" . '&' . $sid . '&v=' . time()
         , 'innerHTML' => $text['View_page']
         , 'attributes' => ' target=_blank '
     );

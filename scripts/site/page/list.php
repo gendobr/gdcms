@@ -152,7 +152,7 @@ $input_vars['page_header'] = $this_site_info['title'] . ' - ' . $text['List_of_p
 $cnt = count($response['rows']);
 for ($i = 0; $i < $cnt; $i++) {
     //--------------------------- context menu -- begin ------------------------
-    $response['rows'][$i]['context_menu'] = menu_page($response['rows'][$i]);
+    $response['rows'][$i]['context_menu'] = menu_page($response['rows'][$i],$this_site_info);
     //--------------------------- context menu -- end --------------------------
 }
 //--------------------------- context menu -- end ------------------------------
