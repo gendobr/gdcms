@@ -191,7 +191,7 @@ $vyvid = process_template($search_template
     , 'form_site_id' => join(',', $siteIds)
     , 'form_lang' => htmlspecialchars($input_vars['lang'])
         ));
-$vyvid .= "<div style='opacity:0.4;font-size:10px;'>" . (microtime(true) - $timestart) . 's</div>';
+$vyvid .= "<div style='opacity:0.4;font-size:10px;clear:both;'>" . (microtime(true) - $timestart) . 's</div>';
 // -------------------------- draw - end ---------------------------------------
 //
 //
