@@ -27,7 +27,7 @@
         {/literal}
 
     </head>
-    <body>
+    <body><!--noindex-->
         <div class="znu-2016-overheader-bg">
                 <div class="znu-2016-main">
                         <div class="znu-2016-overheader-row">
@@ -92,7 +92,9 @@
             </div>
             
             <div class="znu-2016-block-page"><a name='pagetop' style='opacity:0; float:right;'></a>
+                <!--/noindex-->
                 {$page.content}
+                <!--noindex-->
             </div>
             
             
@@ -133,6 +135,6 @@
         <script type="application/javascript" src="{$site_root_url}/templates/znu12files/js/jquery.min.js"></script>
         <script type="application/javascript" src="{$site_root_url}/templates/znu12files/css/bootstrap-sass/javascripts/bootstrap.min.js"></script>
         <script type="application/javascript" src="{$site_root_url}/templates/znu12files/js/custom.js"></script>
-<!-- 1 -->
+   <!--/noindex-->
     </body>
 </html>
