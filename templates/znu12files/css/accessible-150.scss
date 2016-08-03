@@ -1468,6 +1468,13 @@ body{
 	    margin-top: 2rem;
         }
 
+	.tree-node{
+	    padding-left:1rem;
+	    margin-bottom:0.5rem;
+	    border-left:1px dotted #3852a6;
+	}
+
+
         a {
             @include link-style($znu-color-blue, $znu-color-blue-light-link, $znu-color-blue);
         }
@@ -1798,7 +1805,7 @@ body{
                 @include make-lg-column(3);
 
 
-                margin-bottom:2rem;
+                margin-bottom:4rem;
                 .znu-2016-block-new-icon{
 
                     height:15rem;

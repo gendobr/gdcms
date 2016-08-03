@@ -1305,6 +1305,13 @@ body{
 	    margin: 0 0 2rem;
 	}
 
+	.tree-node{
+	    padding-left:1rem;
+	    margin-bottom:0.5rem;
+	    border-left:1px dotted #3852a6;
+	}
+
+
         .znu-2016-page-header {
 
             .znu-2016-block-page-header {
@@ -1624,7 +1631,7 @@ body{
                 @include make-lg-column(3);
 
 
-                margin-bottom:2rem;
+                margin-bottom:4rem;
                 .znu-2016-block-new-icon{
 
                     height:15rem;

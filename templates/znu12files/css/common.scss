@@ -576,13 +576,27 @@ body{
                 margin-top: 1.5rem;
                 text-transform: uppercase;
                 letter-spacing: 1px;
-		&.two-rows{
-                    font-size: 1.0rem;
-		    line-height:1rem;
-		    margin-top:1.3rem;
-		}
+                //&.two-rows-rus{
+                //    font-size: 1.1rem;
+                //    line-height:1.2rem;
+                //    margin-top:1.3rem;
+                //}
+                //&.two-rows-ukr{
+                //    font-size: 1.3rem;
+                //    line-height:1.3rem;
+                //    margin-top:1.3rem;
+                //}
+                &.two-rows{
+                    font-size: 1.3rem;
+                    line-height:1.3rem;
+                    margin-top:1.3rem;
+                    &.rus{
+                        font-size: 1.1rem;
+                        line-height:1.2rem;
+                        margin-top:1.3rem;
+                    }
+                }
             }
-           
         }
         .color1 {
             //background-color: $znu-color-rose;
