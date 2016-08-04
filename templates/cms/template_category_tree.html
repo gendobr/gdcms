@@ -1,9 +1,11 @@
+{literal}
 <style type="text/css">
 .tree-node{
   border-left:1px dotted #e0e0e0;
   padding-left:1rem;
 }
 </style>
+{/literal}
 {foreach from=$caterory_list item="cat"}
 <div style="margin-left:{math equation="deep * 20" deep=$cat.deep}pt;" class="tree-node">
   <a href="{$cat.URL}">{$cat.category_title}</a>
