@@ -338,7 +338,12 @@ if ($success) {
             
             // ---------------- upload new icons - begin -----------------------
             $smallFileName="category-{$category_id}-small-".\core\fileutils::encode_file_name($_FILES['category_icon']['name']);
-            img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), $type = "circumscribe");
+
+            img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", 
+                    $this_site_info['extra_setting']['gallery_small_image_width'], 
+                    $this_site_info['extra_setting']['gallery_small_image_height'],
+                    $type = "resample");
+
             $category_icon=['small'=>"{$relative_dir}/{$smallFileName}", "full"=>"{$relative_dir}/{$newFileName}"];
             $query = "UPDATE <<tp>>category
                       SET category_icon='" . \e::db_escape(json_encode($category_icon)) . "'

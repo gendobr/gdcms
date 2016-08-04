@@ -60,7 +60,10 @@ foreach ($_FILES as $imagefile) {
     if (move_uploaded_file($imagefile['tmp_name'], "{$dir}/{$bigFileName}")) {
 
         $smallFileName = "category-{$category_id}-{$now}-small-" . \core\fileutils::encode_file_name($imagefile['name']);
-        $img->resize("{$dir}/{$bigFileName}", "{$dir}/{$smallFileName}", \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), $rgb = 0xFFFFFF, $quality = 100, \core\img::$MODE_MAX_RATIO);
+        $img->resize("{$dir}/{$bigFileName}", "{$dir}/{$smallFileName}", 
+                $this_site_info['extra_setting']['gallery_small_image_width'],
+                $this_site_info['extra_setting']['gallery_small_image_height'],
+                $rgb = 0xFFFFFF, $quality = 100, \core\img::$MODE_RESIZE);
 
         $photo_imgfile = [];
         $photo_imgfile['small'] = "{$this_site_info['site_root_url']}/{$relative_dir}/{$smallFileName}";

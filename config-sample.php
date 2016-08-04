@@ -118,25 +118,6 @@ define('ec_cart_check_product_amount', false);
 $config->emails_at_once=10;
 
 
-$config->site_extra_setting=[
-    'lang'=>[
-        'type'=>'checkbox',
-        'getoptions'=>function(){
-            $langs=list_of_languages();
-            $toe=[];
-            foreach($langs as $lang){
-                $toe[$lang['name']]=$lang['name'];
-            }
-            return $toe;
-        },
-        'value'=>[$config->default_language=>$config->default_language]
-    ],
-    'publicCmsUrl'=>[
-        'type'=>'text',
-        'value' =>  $config->APPLICATION_PUBLIC_URL 
-    ]
-];
-
 
 $config->defaultToVisualEditor=1;
 
@@ -149,6 +130,11 @@ $config->gallery_small_image_height=240;
 
 $config->gallery_big_image_width= 800;
 $config->gallery_big_image_height= 800;
+
+
+
+
+
 
 
 # ----------------------------- urls without mod_rewrite - begin ---------------------------
@@ -198,3 +184,37 @@ $config->url_pattern_photo = $config->APPLICATION_PUBLIC_URL . "/index.php?actio
 
 
 $config->search_spider_key='jfdklsjkj98127987iuhfskjahfkjj656hhhh';
+
+
+
+
+
+
+
+
+$config->site_extra_setting=[
+    'lang'=>[
+        'type'=>'checkbox',
+        'getoptions'=>function(){
+            $langs=list_of_languages();
+            $toe=[];
+            foreach($langs as $lang){
+                $toe[$lang['name']]=$lang['name'];
+            }
+            return $toe;
+        },
+        'value'=>[$config->default_language=>$config->default_language]
+    ],
+    'publicCmsUrl'=>[
+        'type'=>'text',
+        'value' =>  $config->APPLICATION_PUBLIC_URL 
+    ],
+    'gallery_small_image_width'=>[
+        'type'=>'int',
+        'value' =>  $config->gallery_small_image_width 
+    ],
+    'gallery_small_image_height'=>[
+        'type'=>'int',
+        'value' =>  $config->gallery_small_image_height 
+    ]
+];

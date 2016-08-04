@@ -106,7 +106,10 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
 
             if(move_uploaded_file($_FILES['news_icon']['tmp_name'], "{$dir}/{$newFileName}") ){
                 $smallFileName="news-{$this_news_info['id']}-{$this_news_info['lang']}-small-".\core\fileutils::encode_file_name($_FILES['news_icon']['name']);
-                img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), $type = "circumscribe");
+                img_resize("{$dir}/{$newFileName}", "{$dir}/{$smallFileName}", 
+                        $this_site_info['extra_setting']['gallery_small_image_width'], 
+                        $this_site_info['extra_setting']['gallery_small_image_height'], 
+                        $type = "resample");
                 $this_news_info['news_icon']=['small'=>"{$relative_dir}/{$smallFileName}", "full"=>"{$relative_dir}/{$newFileName}"];
             }
 
@@ -323,4 +326,3 @@ if (isset($input_vars['save_changes']) && strlen($input_vars['save_changes']) > 
     //----------------- save - end -----------------------------------------------
 }
 //------------------- save news - end ------------------------------------------
-?>
