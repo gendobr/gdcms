@@ -36,7 +36,13 @@ if(!$this_category_info){
 }
 $category_id = $this_category_info['category_id'];
 // -------------------- do redirect if needed - begin --------------------------
-if (is_valid_url($url = trim($this_category_info['category_description']))) {
+$url = trim(strip_tags($this_category_info['category_description']));
+if (is_valid_url($url)) {
+    header("Location: {$url}");
+    return;
+}
+if (preg_match("/^(url|link|goto|redirect):/i",$url)) {
+    $url=preg_replace("/^(url|link|goto|redirect):/i","",$url);
     header("Location: {$url}");
     return;
 }

@@ -8,7 +8,11 @@
 {/literal}
 {foreach from=$caterory_list item="cat"}
 <div style="margin-left:{math equation="deep * 20" deep=$cat.deep}pt;" class="tree-node">
-  <a href="{$cat.URL}">{$cat.category_title}</a>
+    {if $cat.URL}
+        <a href="{$cat.URL}">{$cat.category_title}</a>
+    {else}
+        <span>{$cat.category_title}</span>
+    {/if}
 </div>
 {/foreach}
 

@@ -135,11 +135,22 @@ function category_public_list($site_id, $lang) {
             continue;
         }
         $caterory_list[$i]['category_description'] = get_langstring($caterory_list[$i]['category_description'], $lang);
-        $caterory_list[$i]['URL'] = str_replace(
-            Array('{site_id}'   , '{lang}','{category_id}','{path}','{category_code}'), 
-            Array((int) $site_id, $lang  , $caterory_list[$i]['category_id'], $caterory_list[$i]['path'],$caterory_list[$i]['category_code']),
-            \e::config('url_pattern_category'));
-        // str_replace('{category_id}', $caterory_list[$i]['category_id'], $category_url_pattern);
+        
+        
+        $url = trim(strip_tags($caterory_list[$i]['category_description']));
+        if(strlen(trim($caterory_list[$i]['category_description']))==0){
+            $caterory_list[$i]['URL']='';
+        }elseif (is_valid_url($url)) {
+            $caterory_list[$i]['URL']=$url;
+        }elseif (preg_match("/^(url|link|goto|redirect):/i",$url)) {
+            $caterory_list[$i]['URL']=preg_replace("/^(url|link|goto|redirect):/i","",$url);
+        }else{
+            $caterory_list[$i]['URL'] = str_replace(
+                Array('{site_id}'   , '{lang}','{category_id}','{path}','{category_code}'), 
+                Array((int) $site_id, $lang  , $caterory_list[$i]['category_id'], $caterory_list[$i]['path'],$caterory_list[$i]['category_code']),
+                \e::config('url_pattern_category'));
+        }
+        
 
         $caterory_list[$i]['number_of_news'] = 0;
 
@@ -316,9 +327,15 @@ class CategoryViewModel {
         $tor['category_description'] = get_langstring($tor['category_description'], $this->lang);
         $tor['category_description_short'] = get_langstring($tor['category_description_short'], $this->lang);
         $tor['category_description_exists'] = strlen($tor['category_description']) > 0;
-        if(is_valid_url($tor['category_description'])){
-            $tor['URL'] = $tor['category_description'];
-            $tor['redirectURL'] = $tor['category_description'];
+        
+        $url = trim(strip_tags($tor['category_description']));
+        if(is_valid_url($url)){
+            $tor['URL'] = $url;
+            $tor['redirectURL'] = $url;
+        }elseif(preg_match("/^(url|link|goto|redirect):/i",$url)){
+            $url=preg_replace("/^(url|link|goto|redirect):/i","",$url);
+            $tor['URL'] = $url;
+            $tor['redirectURL'] = $url;
         }else{
             $tor['URL'] = str_replace(
                     Array('{path}', '{lang}', '{site_id}', '{category_id}', '{category_code}'), 
