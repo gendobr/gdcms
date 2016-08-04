@@ -138,7 +138,7 @@ function category_public_list($site_id, $lang) {
         
         
         $url = trim(strip_tags($caterory_list[$i]['category_description']));
-        if(strlen(trim($caterory_list[$i]['category_description']))==0){
+        if(strlen(trim($caterory_list[$i]['category_description']))==0 && ( $caterory_list[$i]['finish'] - $caterory_list[$i]['start'] <=1 )){
             $caterory_list[$i]['URL']='';
         }elseif (is_valid_url($url)) {
             $caterory_list[$i]['URL']=$url;
