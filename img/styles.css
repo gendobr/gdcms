@@ -211,6 +211,8 @@ input[type="submit"],input[type="reset"]{font-size:150%;width:auto;}
     padding:5px 15px;
     display:inline-block;
     width:200px;
+    z-index:1000;
+    overflow:hidden;
 }
 
 .label h5{
