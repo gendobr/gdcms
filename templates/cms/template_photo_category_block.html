@@ -1,92 +1,198 @@
-{* <script type="text/javascript" src="{$site_root_url}/scripts/lib/jquery.min.js"></script> *}
-<script type="text/javascript" id="jqueryLightBoxJs"></script>
-<link rel="stylesheet" type="text/css" href="{$site_root_url}/img/jquery_lightbox/css/jquery.lightbox-0.5.css" media="screen" />
-<script type="text/javascript">
-    var cms_root_url='{$site_root_url}';
-</script>
+<script type="text/javascript" src="{$site.extra_setting.publicCmsUrl}/scripts/lib/jquery.lightbox.js"></script>
+<link rel="stylesheet" type="text/css" href="{$site.extra_setting.publicCmsUrl}/img/jquery_lightbox/css/jquery.lightbox-0.5.css" media="screen" />
+<script type="text/javascript" src="{$site.extra_setting.publicCmsUrl}/scripts/photo/view.js"></script>
 {literal}
-<script type="text/javascript">
-    window.addEventListener("load",function() {
-        $('#jqueryLightBoxJs')
-        .attr('src',cms_root_url+"/scripts/lib/jquery.lightbox.js")
-        .load(function(){
-            $('a[rel=lightbox]').lightBox({
-                overlayBgColor: '#FFF',
-                overlayOpacity: 0.6,
-                imageLoading: cms_root_url+'/img/jquery_lightbox/images/lightbox-ico-loading.gif',
-                imageBtnClose: cms_root_url+'/img/jquery_lightbox/images/lightbox-btn-close.gif',
-                imageBtnPrev:  cms_root_url+'/img/jquery_lightbox/images/lightbox-btn-prev.gif',
-                imageBtnNext:  cms_root_url+'/img/jquery_lightbox/images/lightbox-btn-next.gif',
-                imageBlank:cms_root_url+'/img/jquery_lightbox/images/lightbox-blank.gif'
-            });
-        });
-    });
-</script>
 <style type="text/css">
-    .oneitem,
-    .imgicon{
-        display:inline-block;
-        text-align:center;
-        vertical-align:top;
-        background-color:#e0e0e0;
+    .sma_icon {
+        background-size: cover;
+        display: inline-block;
+        height: 200px;
+        width: 280px;
+        margin: 0rem 1rem 0rem 1rem;
     }
-    .oneitem{
-        width:160px;
-        margin:10px;
-        background-color:white;
-        padding:10px;
+    .paging{
+        left: 0;
+        margin-left: 3rem;
+        margin-top: -1rem;
+        padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+        display: block;
+        width: 93%;
+        position: absolute;
+        text-align: center;
+        font-size: 1.2rem;
     }
-    .imgicon{
-        overflow:hidden;
-        width:150px;
-        height:150px;
+    .pagenav{
+        padding-right: 1px;
+        padding-left: 1px;
+        background-color: rgba(255, 255, 255, 0.92);
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: 60%;
+        background-size: contain;
+        margin: 0.5rem 0rem 0.5rem 0rem;
+        display: inline-block;
+        text-decoration: none;
     }
-    .imgicon img{
-        max-width:150px;
-        max-height:150px;
+    a{
+        line-height: 2.5rem;
+        text-decoration: none;
     }
+    .active{
+        font-size: 1.5rem;
+        color: #fff;
+        background-color: #3852A6;
+        text-decoration: none;
+    }
+    a.pagenav{
+        text-decoration: none;
+    }
+    a.pagenav.active:hover{
+        color:#fff;
+        text-decoration: none;
+    }
+    .prev{
+        left: 1rem;
+        position: absolute;
+        margin: 0.2rem 2rem 0.2rem 0.2rem;
+    }
+    .next{
+        right: 1rem;
+        position: absolute;
+        margin: 0.2rem 0.2rem 0.2rem 2rem;
+    }
+
+    @media (max-width: 320px) {
+        .paging{
+            width: 100%;
+        }
+        .pagenav{display: none;}
+        .pagenav.prev{
+            left: 1rem;
+            position: absolute;
+            margin-left: 2rem;
+        }
+        .pagenav.next{
+            right: 1rem;
+            position: absolute;
+            margin-right: 2rem;
+        }
+        .pagenav.first{
+            display: inline-block;
+        }
+        .pagenav.last{
+            display: inline-block;
+        }
+        .pagenav.active{
+            display: inline-block;
+        }
+    }
+    @media (max-width: 760px) {
+        .pagenav{
+            display: none;
+	}
+        .pagenav.prev{
+            display: inline-block;
+            left: 1rem;
+            position: relative;
+        }
+        .pagenav.next{
+            display: inline-block;
+            right: 1rem;
+            position: relative;
+        }
+        .pagenav.first{
+            display: inline-block;
+        }
+        .pagenav.last{
+            display: inline-block;
+        }
+        .pagenav.active{
+            display: inline-block;
+        }
+    }
+    @media (max-width: 970px) {
+        .pagenav{
+            display: none;
+	}
+        .pagenav.prev{
+            display: inline-block;
+            left: 1rem;
+            position: relative;
+        }
+        .pagenav.next{
+            display: inline-block;
+            right: 1rem;
+            position: relative;
+        }
+        .pagenav.first{
+            display: inline-block;
+        }
+        .pagenav.last{
+            display: inline-block;
+        }
+        .pagenav.active{
+            display: inline-block;
+        }
+    }
+
     .allimgs{
-        display:inline-block;
-        width:100%;
+        display: block;
+        margin-bottom: 3rem;
+    }
+    .allimgs_d{
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 99%;
+    }
+    .allimgs_list{
+        -webkit-transition: margin-left 0.6s ease-in-out;
+        -moz-transition: margin-left 0.6s ease-in-out;
+        -o-transition: margin-left 0.6s ease-in-out;
+        transition: margin-left 0.6s ease-in-out;
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
 </style>
 {/literal}
-<span class="breadcrumbs">
-{foreach from=$category->parents item="cat"}
-     / {if $cat.url}
-        <a href="{$cat.url}">{$cat.photo_category_title}</a>
-       {else}
-         {$cat.photo_category_title}
-       {/if}
-{/foreach}
-</span>
 
-
-<h1>{$category->info.photo_category_title}</h1>
-
-<div><!-- 
-    {foreach from=$category->children item="cat"}
-        --><span class="oneitem"><!-- 
-               --><a class="imgicon" href="{$cat.url}">{if $cat.photo_category_icon}<img src="{$site.site_root_url}/{$cat.photo_category_icon.small}" alt="" border="0px" />{/if}</a><!--
-            --><br />
-               <a href="{$cat.url}">{$cat.photo_category_title} ({$cat.n_images})</a>
-           </span><!--
-    {/foreach}
---></div>
-
-<div>
-    
-    {$category->info.photo_category_description}
-</div>
-<br>
 <span class=allimgs>
-{foreach from=$category->images item="image" key="imgId"}
-    <span class="oneitem">
-        <span class="imgicon">
-            {* <a href="{$image.url}" target="_blank" title="{$image.photo_title|escape} {$imgId} {$category->info.photo_category_title|escape}"><img alt="{$image.photo_title|escape} {$imgId} {$category->info.photo_category_title|escape}" src="{$site.site_root_url}/{$image.url_thumbnail}" border="0px" /></a> *}
-            <a href="{$site.site_root_url}/{$image.photo_imgfile.full}" rel="lightbox" target="_blank" title="{$image.photo_title|escape} {$image.photo_id} {$category->info.photo_category_title|escape}"><img src="{$site.site_root_url}/{$image.photo_imgfile.small}"  alt="{$image.photo_title|escape} {$image.photo_id} {$category->info.photo_category_title|escape}" border="0px" /></a>
-        </span><br />
-        {$image.photo_title}
-    </span>
+    <span class="allimgs_d"><span class="allimgs_list" id="allimgs_cat"><!--
+    {foreach from=$category->images item="image" name="subcategory_loor"}
+        --><a href="{$site.site_root_url}/{$image.photo_imgfile.full}"
+           title="{$image.photo_title|escape} {$imgId} {$category->info.photo_category_title|escape}"
+           class="sma sma{$smarty.foreach.subcategory_loor.iteration} bez"
+           rel=lightbox><!-- 
+           --><span class="sma"><!-- 
+	       --><span class="sma_icon" style="background-image:url({$site.site_root_url}/{$image.photo_imgfile.small})"></span><!-- 
+	   --></span><!-- 
+        --></a><!--
     {/foreach}
+ --></span></span>
+   <div class="paging"> <div id="gallery_image_paging"> </div> </div>
 </span>
+
+<script type="text/javascript">
+    var cms_root_url='/cms';
+</script>
+{literal}
+<script type="text/javascript">
+    $('a[rel=lightbox]').lightBox({
+        overlayBgColor: '#FFF',
+        overlayOpacity: 0.6,
+        imageLoading: cms_root_url+'/img/jquery_lightbox/images/lightbox-ico-loading.gif',
+        imageBtnClose: cms_root_url+'/img/jquery_lightbox/images/lightbox-btn-close.gif',
+        imageBtnPrev:  cms_root_url+'/img/jquery_lightbox/images/lightbox-btn-prev.gif',
+        imageBtnNext:  cms_root_url+'/img/jquery_lightbox/images/lightbox-btn-next.gif',
+        imageBlank:cms_root_url+'/img/jquery_lightbox/images/lightbox-blank.gif'
+    });
+</script>
+
+<script type="text/javascript">
+    $(window).load(function() {
+        var sc=new scroller('allimgs_cat');
+        sc.drawPageNav('#gallery_image_paging');
+    });
+</script>
+{/literal}
