@@ -1,29 +1,68 @@
 if(!ajax_loadblock){
 
+
     var stripAndExecuteScript=function  (text) {
-        var scripts = '';
-        var cleaned = text.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
+
+        var scripts = [];
+        var cleaned = text.replace(/<script([^>]*)>([\s\S]*?)<\/script>/gi, function(){
             // console.log(arguments);
-            scripts += arguments[1] + "\n";
+            scripts.push({url:arguments[1], src:arguments[2]});
             return '';
         });
 
-
-        var head = document.getElementsByTagName("head")[0] ||
-        document.documentElement,
-        script = document.createElement("script");
-        script.type = "text/javascript";
-        try {
-            // doesn't work on ie...
-            script.appendChild(document.createTextNode(scripts));
-        } catch(e) {
-            // IE has funky script nodes
-            script.text = scripts;
+        if( scripts.length==0){
+	    return {html:cleaned,script:null};
         }
-        head.appendChild(script);
-        head.removeChild(script);
 
-        return cleaned;
+        var head = document.getElementsByTagName("head")[0] || document.documentElement;
+	var script;
+	var regexp = /src="([^"]*)"|src='([^']*)'|src=([^ >]*)[ >]/i;
+
+	var next=null;
+	var url=null;
+	for(var i = scripts.length - 1; i>=0; i--){
+	    if(scripts[i].src){
+		var runnableScript = {
+		    code:scripts[i].src,
+		    next:next,
+		    run:function(){
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+		        try {
+			    // doesn't work on ie...
+			    script.appendChild(document.createTextNode(this.code));
+			} catch(e) {
+			    // IE has funky script nodes
+			    script.text = this.code;
+			}
+			head.appendChild(script);
+			if(this.next){
+			    this.next.run();
+			}
+		    }
+		};
+		next = runnableScript;
+	    }else if ( url = regexp.exec(scripts[i].url) ){
+		var runnableScript = {
+		    url:url[1],
+		    next:next,
+		    run:function(){
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			script.src = this.url;
+			var self=this;
+			script.onload=function(){
+			    if(self.next){
+				self.next.run();
+			    }
+			};
+			head.appendChild(script);
+		    }
+		};
+		next = runnableScript;
+	    }
+	}
+        return {html:cleaned,script:next};
     };
 
 
@@ -58,7 +97,11 @@ if(!ajax_loadblock){
         request.onreadystatechange = function(){
             if (request.readyState == 4){
                 try{
-                    element.innerHTML=stripAndExecuteScript(request.responseText);
+		    var filtered=stripAndExecuteScript(request.responseText);
+                    element.innerHTML=filtered.html;
+		    if(filtered.script){
+			filtered.script.run();
+		    }
                 }catch(err){
                 }
             }
