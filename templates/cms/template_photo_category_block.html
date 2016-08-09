@@ -174,7 +174,7 @@
 </span>
 
 <script type="text/javascript">
-    var cms_root_url='/cms';
+    var cms_root_url='{$site.extra_setting.publicCmsUrl}';
 </script>
 {literal}
 <script type="text/javascript">
@@ -190,9 +190,9 @@
 </script>
 
 <script type="text/javascript">
-    $(window).load(function() {
+    // $(window).load(function() {
         var sc=new scroller('allimgs_cat');
         sc.drawPageNav('#gallery_image_paging');
-    });
+    //});
 </script>
 {/literal}
