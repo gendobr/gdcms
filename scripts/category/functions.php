@@ -258,6 +258,7 @@ class CategoryViewModel {
     private $deep = 1;
     private $cache_path;
     private $useCache=false;
+    private $strictLangMode=false;
 
     public function __construct($site_info, $category_info, $lang) {
         $this->lang = $lang;
@@ -289,6 +290,15 @@ class CategoryViewModel {
         return '';
     }
 
+    public function setStrictLangMode($val){
+        if($val){
+            $this->strictLangMode=true;
+        }else{
+            $this->strictLangMode=false;
+        }
+    }
+    
+    
     public function __get($attr) {
 
         switch ($attr) {
@@ -316,16 +326,16 @@ class CategoryViewModel {
         $tor = $_info;
 
         $tor['category_title_orig'] = $tor['category_title'];
-        $tor['category_title'] = get_langstring($tor['category_title'], $this->lang);
-        $tor['category_title_short'] = get_langstring($tor['category_title_short'], $this->lang);
+        $tor['category_title'] = get_langstring($tor['category_title'], $this->lang, $this->strictLangMode);
+        $tor['category_title_short'] = get_langstring($tor['category_title_short'], $this->lang, $this->strictLangMode);
         if (strlen($tor['category_title_short'])==0) {
             $tor['category_title_short'] = shorten($tor['category_title']);
         }
         if (!is_array($tor['category_icon'])) {
             $tor['category_icon'] = json_decode($tor['category_icon'], true);
         }
-        $tor['category_description'] = get_langstring($tor['category_description'], $this->lang);
-        $tor['category_description_short'] = get_langstring($tor['category_description_short'], $this->lang);
+        $tor['category_description'] = get_langstring($tor['category_description'], $this->lang, $this->strictLangMode);
+        $tor['category_description_short'] = get_langstring($tor['category_description_short'], $this->lang, $this->strictLangMode);
         $tor['category_description_exists'] = strlen($tor['category_description']) > 0;
         
         $url = trim(strip_tags($tor['category_description']));
