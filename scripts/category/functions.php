@@ -363,12 +363,12 @@ class CategoryViewModel {
                       pa.see_also, pa.is_visible, pa.path, pa.category_icon,
                       pa.category_title_short, pa.category_description, pa.category_description_short
                from <<tp>>category pa, <<tp>>category ch
-               WHERE ch.category_id={$this->category_info['category_id']} 
-                 and ch.site_id={$this->site_info['id']} 
-                 and pa.site_id={$this->site_info['id']}
+               WHERE ch.category_id=<<integer category_id>> 
+                 and ch.site_id=<<integer site_id>>
+                 and pa.site_id=<<integer site_id>>
                  and pa.start<ch.start and ch.finish<pa.finish
                order by pa.start asc";
-        $this->category_parents = \e::db_getrows($query);
+        $this->category_parents = \e::db_getrows($query,['category_id'=>$this->category_info['category_id'], 'site_id'=>$this->site_info['id']]);
 
         // all parents should be visible
         $parents_are_visible = true;
