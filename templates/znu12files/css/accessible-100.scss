@@ -351,6 +351,9 @@ body{
         display:inline-block;
         width:auto;
     }
+    .glyphicon{
+	margin-left:1.5rem;
+    }
 }
 
 
@@ -1610,7 +1613,15 @@ body{
         .data-container{
             text-align:right;
         }
-
+	.znu12-pagination{
+	    a{
+		display:inline-block;
+		margin-left:0.3rem;
+		margin-right:0.3rem;
+		//padding-left:0.5rem;
+		//padding-right:0.5rem;
+	    }
+	}
         .news-block{
             @extend .row;
 
@@ -1668,8 +1679,8 @@ body{
             .znu-2016-new-img{
                 @include make-xs-column(12);
                 @include make-sm-column(6);
-                @include make-md-column(3);
-                @include make-lg-column(2);
+                @include make-md-column(4);
+                @include make-lg-column(3);
                 padding-right:0px;
                 img{
                     @media (min-width: $screen-xs-min) {
@@ -1692,8 +1703,8 @@ body{
             .znu-2016-new-img-list-info{
                 @include make-xs-column(12);
                 @include make-sm-column(6);
-                @include make-md-column(9);
-                @include make-lg-column(10);
+                @include make-md-column(8);
+                @include make-lg-column(9);
 	        }
             
             .text{
