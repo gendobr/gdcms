@@ -125,6 +125,7 @@ foreach ($menu_groups as $kmg => $mg) {
                            'news'=>$news
                           ,'rss_url'=>$rss_url
                           ,'txt'=>$txt
+                          ,'text'=>$txt
                           ,'site'=>$this_site_info
                           ,'site_root_url'=>site_root_URL
                      )
