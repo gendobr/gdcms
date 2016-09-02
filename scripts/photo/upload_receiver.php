@@ -95,7 +95,7 @@ foreach ($_FILES as $imagefile) {
         $img->resize("{$dir}/{$bigFileName}", "{$dir}/{$smallFileName}", 
                 $this_site_info['extra_setting']['gallery_small_image_width'], 
                 $this_site_info['extra_setting']['gallery_small_image_height'], 
-                $rgb = 0xFFFFFF, $quality = 100, \core\img::$MODE_RESIZE);
+                $rgb = 0xFFFFFF, $quality = 100, \core\img::$MODE_DECREASE);
         $photo_imgfile = ['small' => "{$relative_dir}/{$smallFileName}", "full" => "{$relative_dir}/{$bigFileName}"];
         \e::db_execute(
                 "UPDATE <<tp>>photo
