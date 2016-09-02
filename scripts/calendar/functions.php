@@ -679,23 +679,23 @@ class CategoryEvents2{
         $this->startname = 'event_start';
 
 
-        if (isset($input_vars['year'])) {
+        if (isset($input_vars['year']) && $input_vars['year']>0) {
             $this->year = (int) $input_vars['year'];
         }
 
-        if (isset($input_vars['month'])) {
+        if (isset($input_vars['month']) && $input_vars['month']>0) {
             $this->month = (int) $input_vars['month'];
-            if (!isset($this->year)) {
+            if (!isset($this->year)  || $this->year<=0 ) {
                 $this->year = (int) date('Y');
             }
         }
 
-        if (isset($input_vars['day'])) {
+        if (isset($input_vars['day']) && $input_vars['day'] > 0) {
             $this->day = (int) $input_vars['day'];
-            if (!isset($this->month)) {
+            if (!isset($this->month) || $this->month <=0 ) {
                 $this->month = (int) date('m');
             }
-            if (!isset($this->year)) {
+            if (!isset($this->year) || $this->year<=0 ) {
                 $this->year = (int) date('Y');
             }
         }
