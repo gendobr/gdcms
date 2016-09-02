@@ -1,7 +1,7 @@
 {* assign var="znu_root_url" value="http://www.znu.edu.ua" *}
 {* assign var="znu_root_url" value="http://gen.znu.edu.ua/_sites/znu_main" *}
-{assign var="znu_root_url" value="//tweb.znu.edu.ua"}
-{assign var="site_root_url" value="//tweb.znu.edu.ua/cms"}
+{assign var="znu_root_url" value="//www.znu.edu.ua"}
+{assign var="site_root_url" value="//www.znu.edu.ua/cms"}
 <!DOCTYPE html>
 <html lang="uk">
     <head>
@@ -73,7 +73,7 @@
         <div class="znu-2016-main">
             <div class="znu-2016-header">
                 <div class="znu-2016-header-logo">
-                    <span class="w1"><a href="http://www.whois.com/whois/znu.edu.ua" class="znu-2016-remark">{txt lang=$text.language_name variants="eng=Official site::rus=Официальный сайт::ukr=Офіційний сайт"}</a></span>
+                    <span class="w1"><a href="http://www.whois.com/whois/znu.edu.ua" class="znu-2016-remark" target="_blank">{txt lang=$text.language_name variants="eng=Official site::rus=Официальный сайт::ukr=Офіційний сайт"}</a></span>
                     <a class="znu-2016-logo" href="{$znu_root_url}"></a>
                     <div class="znu-2016-title-block">
                         <a class="znu-2016-title" href="{$znu_root_url}">
@@ -83,7 +83,7 @@
                         </a>
                     </div>
                 </div>
-		<a style="position:absolute; right:5pt; bottom:0;" href="http://www.znu.edu.ua">{txt lang=$text.language_name variants="eng=Old version::rus=Старая версия::ukr=Стара версія"}</a>
+		<a style="position:absolute; right:5pt; bottom:5pt;" href="http://old.znu.edu.ua">{txt lang=$text.language_name variants="eng=Old version::rus=Старая версия::ukr=Стара версія"}</a>
             </div>
         </div>
         <div class="znu-2016-main">
@@ -121,12 +121,12 @@
                     <div class="znu-2016-block-footer-col">
                         
                         <img src="{$site_root_url}/templates/znu12files/img/qr.gif">
-                        <a href="#">{txt lang=$text.language_name variants="eng=Message to IT Lab::rus=Обращение к лаборатории ИС и КТ ЗНУ::ukr=Звернення до лабораторії IС та КТ ЗНУ"}</a><br>
-                            {txt lang=$text.language_name variants="eng=Webmaster's email::rus=Электронная почта вебмастера::ukr=Електронна пошта веб-майстра"}
+                        <a href="http://help.znu.edu.ua:58214/contactit/" target="_blank">{txt lang=$text.language_name variants="eng=Message to IT Lab::rus=Обращение к лаборатории ИС и КТ::ukr=Звернення до лабораторії IС та КТ"}</a><br>
+                            {txt lang=$text.language_name variants="eng=Email::rus=Электронная почта::ukr=Електронна пошта"}
                          <a href="mailto:webmaster@znu.edu.ua">webmaster@znu.edu.ua</a>
                         <br>
-                        <a class="social" href="https://vk.com/znu_official/" ><i class="fa fa-vk"></i></a>
-                        <a class="social" href="https://www.facebook.com/univerzp" ><i class="fa fa-facebook "></i></a>
+                        <a class="social" href="https://vk.com/znu_official" target="_blank"><i class="fa fa-vk"></i></a>
+                        <a class="social" href="https://www.facebook.com/univerzp" target="_blank"><i class="fa fa-facebook "></i></a>
                         <!-- a class="social" href="#" ><i class="fa fa-twitter "></i></a -->
                     </div>
 
