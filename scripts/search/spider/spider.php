@@ -45,12 +45,17 @@ sort($real_site_ids);
 $to_add = array_diff($site_ids, $real_site_ids);
 //prn($to_add);
 if (count($to_add) > 0) {
-    $query = "INSERT INTO <<tp>>search_index(site_id, url, date_indexed)
-              SELECT DISTINCT s.id, s.url, now() AS date_indexed
+    
+    $sites=\e::db_getrows("SELECT DISTINCT s.id, s.url, now() AS date_indexed
               FROM  <<tp>>site AS s
-              WHERE s.id IN (" . join(',', $to_add) . ")";
-    // prn($query);
-    \e::db_execute($query);
+              WHERE s.id IN (" . join(',', $to_add) . ")");
+    foreach($sites as $site){
+        $site['url'] = \e::url_to_absolute(sites_root_URL, $site['url']);
+        $query = "INSERT INTO <<tp>>search_index(site_id, url, date_indexed)
+                  VALUES (<<integer site_id>>, <<string url>>, <<datetime date_indexed>>)";
+        // prn($query);
+        \e::db_execute($query, $site);
+    }
 }
 # ----------- check if all sites are taken into account - end ------------------
 # 
