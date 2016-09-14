@@ -52,7 +52,7 @@ if (count($to_add) > 0) {
     foreach($sites as $site){
         $site['url'] = \e::url_to_absolute(sites_root_URL, $site['url']);
         $query = "INSERT INTO <<tp>>search_index(site_id, url, date_indexed)
-                  VALUES (<<integer site_id>>, <<string url>>, <<datetime date_indexed>>)";
+                  VALUES (<<integer id>>, <<string url>>, <<datetime date_indexed>>)";
         // prn($query);
         \e::db_execute($query, $site);
     }
