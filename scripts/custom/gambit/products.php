@@ -472,6 +472,10 @@ $file_content = process_template($this_site_info['template'], Array(
     'page' => Array(
           'title' => $page_title
         , 'content' => $html
+        , 'page_meta_tags' => '
+        <meta name="description" content="'.htmlspecialchars($page_title).', '.page_meta_description.'">
+        <meta name="keywords" content="'.htmlspecialchars($page_title).'", '.page_meta_keywords.'>
+        '
         , 'abstract' => ''
         , 'site_id' => $site_id
         , 'lang' => $lang

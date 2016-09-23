@@ -422,8 +422,8 @@ $file_content = process_template($this_site_info['template'], Array(
           'title' => $product['name']
         , 'header' => ''
         , 'page_meta_tags' => '
-	    <meta name="description" content="'.htmlspecialchars($product['shortDescription']).'">
-	    <meta name="keywords" content="'.htmlspecialchars($product['shortDescription']).'">
+	    <meta name="description" content="'.htmlspecialchars($product['shortDescription']).', '.page_meta_description.'">
+	    <meta name="keywords" content="'.htmlspecialchars($product['shortDescription']).', '.page_meta_keywords.'">
 	    '
         , 'content' => $vyvid
         , 'abstract' => ''
