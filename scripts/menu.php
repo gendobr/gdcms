@@ -43,8 +43,7 @@ if (is_logged()) {
     }
 
     
-    if(\e::config('EXTRA_MENU_ITEMS')!==null){
-        $EXTRA_MENU_ITEMS = \e::config('EXTRA_MENU_ITEMS');
+    if(  ($EXTRA_MENU_ITEMS = \e::config('EXTRA_MENU_ITEMS')) !==null){
         if(isset($EXTRA_MENU_ITEMS['global'])){
             foreach($EXTRA_MENU_ITEMS['global'] as $key=>$val){
                 $input_vars['page_menu']['main']['items'][$key]=$val;
