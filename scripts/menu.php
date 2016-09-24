@@ -42,6 +42,18 @@ if (is_logged()) {
         }
     }
 
+    
+    if(isset(\e::config('EXTRA_MENU_ITEMS'))){
+        $EXTRA_MENU_ITEMS = \e::config('EXTRA_MENU_ITEMS');
+        if(isset($EXTRA_MENU_ITEMS['global'])){
+            foreach($EXTRA_MENU_ITEMS['global'] as $key=>$val){
+                $input_vars['page_menu']['main']['items'][$key]=$val;
+            }
+        }
+    }
+
+    
+    
     $input_vars['page_menu']['main']['items']['notifier/list'] = Array(
         'URL' => "index.php?action=notifier/list"
         , 'innerHTML' => text('List_of_notifiers')
@@ -65,6 +77,9 @@ if (is_logged()) {
         , 'innerHTML' => text('Logout') . "<script type=\"text/javascript\" src=\"scripts/logout.js\"></script>"
         , 'attributes' => ""
     );
+    
+    
+    
 }
 
 
