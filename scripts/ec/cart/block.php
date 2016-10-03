@@ -65,7 +65,7 @@ else {
 
 $vyvid = process_template( $_template
         ,Array('cart'    => $_SESSION['ec_cart'],
-        'total'   => $_SESSION['ec_cart']['total'],
+        'total'   => ( isset($_SESSION['ec_cart']['total'])?$_SESSION['ec_cart']['total']:0 ),
         'n_cart_items' => $n_cart_items,
         'text'    => $txt,
         'site'    => $this_site_info,
