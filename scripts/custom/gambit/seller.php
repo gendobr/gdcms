@@ -508,6 +508,10 @@ $file_content = process_template($this_site_info['template'], Array(
     'page' => Array(
           'title' => $seller['name']
         , 'header' => ''
+        , 'page_meta_tags' => '
+        <meta name="description" content="'.htmlspecialchars($seller['name']).', '.page_meta_description.'">
+        <meta name="keywords" content="'.htmlspecialchars($seller['name']).'", '.page_meta_keywords.'>
+        '
         , 'content' => $html
         , 'abstract' => ''
         , 'site_id' => $site_id

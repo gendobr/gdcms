@@ -188,7 +188,20 @@ $config->search_spider_key='jfdklsjkj98127987iuhfskjahfkjj656hhhh';
 
 
 
-
+$config->EXTRA_MENU_ITEMS=[
+    'global'=>[
+        'gambit/control'=>[
+             'URL' => "/app/control.html"
+           , 'innerHTML' => "Управление магазином"
+           , 'attributes' => ''
+        ],
+        'gambit/index'=>[
+             'URL' => "/app/index.html"
+           , 'innerHTML' => "Вход для покупателей"
+           , 'attributes' => ''
+        ]
+    ]
+];
 
 
 
