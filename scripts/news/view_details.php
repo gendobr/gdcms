@@ -34,9 +34,8 @@ if(!$this_news_info && strlen($news_code)>0){
 
 if (!$this_news_info) {
     header("HTTP/1.0 404 Not Found");
-    header("Status: 404 Not Found");
     header("Location: /".md5(rand(1, 100000).'.html'));
-    die('News not found');
+    exit();
 }
 
 
