@@ -10,7 +10,8 @@ if (!$this_site_info['id']) {
     $input_vars['page_title'] = 
     $input_vars['page_header'] = 
     $input_vars['page_content'] = text('Site_not_found');
-    header("HTTP/1.0 404 Not Found");
+    // header("HTTP/1.0 404 Not Found");
+    http_response_code(404);
     exit();
     return 0;
 }
@@ -33,8 +34,8 @@ $main_template_name = '';
 
 $this_category_info=category_info($input_vars);
 if(!$this_category_info){
-    header("HTTP/1.0 404 Not Found");
-    exit();
+    // header("HTTP/1.0 404 Not Found");
+    http_response_code(404);
     exit('Page not found');
 }
 $category_id = $this_category_info['category_id'];
