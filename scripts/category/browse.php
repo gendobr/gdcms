@@ -10,6 +10,7 @@ if (!$this_site_info['id']) {
     $input_vars['page_title'] = 
     $input_vars['page_header'] = 
     $input_vars['page_content'] = text('Site_not_found');
+    header("HTTP/1.0 404 Not Found");
     return 0;
 }
 $input_vars['site_id'] = $this_site_info['id'];
