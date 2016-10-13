@@ -11,6 +11,7 @@ if (!$this_site_info['id']) {
     $input_vars['page_header'] = 
     $input_vars['page_content'] = text('Site_not_found');
     header("HTTP/1.0 404 Not Found");
+    exit();
     return 0;
 }
 $input_vars['site_id'] = $this_site_info['id'];
@@ -33,6 +34,7 @@ $main_template_name = '';
 $this_category_info=category_info($input_vars);
 if(!$this_category_info){
     header("HTTP/1.0 404 Not Found");
+    exit();
     exit('Page not found');
 }
 $category_id = $this_category_info['category_id'];
