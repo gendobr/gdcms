@@ -17,6 +17,8 @@ include(\e::config('SCRIPT_ROOT').'/news/get_public_list2.php');
 $site_id = checkInt($input_vars['site_id']);
 $this_site_info = get_site_info($site_id);
 if (!$this_site_info) {
+    header("HTTP/1.0 404 Not Found");
+    header("Location: /".md5(rand(1, 100000).'.html'));
     die($txt['Site_not_found']);
 }
 //prn($this_site_info);
