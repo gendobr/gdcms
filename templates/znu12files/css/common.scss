@@ -612,7 +612,7 @@ body{
                 //    margin-top:1.3rem;
                 //}
                 &.two-rows{
-                    font-size: 1.3rem;
+                    font-size: 1.2rem;
                     line-height:1.3rem;
                     margin-top:1.3rem;
                     &.rus{
@@ -975,7 +975,7 @@ body{
                 overflow:hidden;
                 height:9rem;
                 a{
-                    @include link-style($znu-color-white, $znu-color-blue-light-link, $znu-color-white);
+                    @include link-style($znu-color-white, $znu-color-black, $znu-color-white);
                 }
 
                 //max-height:8.1rem;
@@ -1102,7 +1102,10 @@ body{
         border-radius: $znu-border-radius;
         padding: 1rem 1rem 1rem 1rem;
         margin: 1rem 1rem 1rem 1rem;
-        min-height: 418px;
+        min-height: 432px;
+        &.rus{
+            min-height: 462px;
+        }
     }
         h3.color1 {
             color: $znu-color-blue-links-1;
@@ -1118,7 +1121,7 @@ body{
             font-size: 1.7rem;
         }
         h3.color3 {
-            color: $znu-color-blue-links-3;
+            color: #99b1ff;
             padding-bottom: 1.5rem;
             border-bottom: 1px solid $znu-color-blue-links-light-3;
             font-size: 1.7rem;
@@ -1167,7 +1170,7 @@ body{
         .znu-2016-block-links-one-color3 {
             margin-bottom: 1rem;
             a {
-                @include link-style($znu-color-blue-links-3, $znu-color-blue-light-link, $znu-color-blue-links-3);
+                @include link-style(#99b1ff, $znu-color-blue-light-link, $znu-color-blue-links-3);
                 text-decoration: none;
                 font-size: 1.2rem;
             }
@@ -1679,7 +1682,7 @@ body{
                 padding-right:0px;
                 img{
                     @media (min-width: $screen-xs-min) {
-                        width:auto;
+                        max-width:15rem;
                     }
                     @media (min-width: $screen-sm-min) {
                     }

@@ -16,7 +16,7 @@
            <link rel='stylesheet' id='znu-css-screen' 
 		href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/{literal}{css || common}{/literal}.scss' 
 		type='text/css' media='screen' />
-        <link rel='stylesheet' id='znu-css-print'  data-href="{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/print.scss" href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/print.scss' type='text/css' media='print' />
+        <link rel='stylesheet' id='znu-css-print'  data-href="{$site.publicCmsUrl}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/print.scss" href='{$site_root_url}/index.php?action=scss%2Fget&site_id={$site.id}&f=znu12files/css/print.scss' type='text/css' media='print' />
 
         {literal}
         <script type="application/javascript">
@@ -77,6 +77,7 @@
                     <a class="znu-2016-logo" href="{$znu_root_url}"></a>
                     <div class="znu-2016-title-block">
                         <a class="znu-2016-title" href="{$znu_root_url}">
+			    {*$site.title*}
                             <span class="w">{txt lang=$text.language_name variants="eng=Zaporizhzhya::rus=Запорожский::ukr=Запорізький"}</span>
                             <span class="w">{txt lang=$text.language_name variants="eng=National::rus=национальный::ukr=національний"}</span>
                             <span class="w">{txt lang=$text.language_name variants="eng=University::rus=университет::ukr=університет"}</span>
@@ -92,8 +93,8 @@
                 <span class="link"><a class="color2" href="{$znu_root_url}/{$text.language_name}/pk"><i class="fa fa-book "></i><span class="text"><span class="lnk-text">{txt lang=$text.language_name variants="eng=Submission::rus=Абитуриенту::ukr=Абітурієнту"}</span></span></a></span>
                 <span class="link"><a class="color3" href="{$znu_root_url}/{$text.language_name}/edu"><i class="fa fa-pencil "></i><span class="text"><span class="lnk-text">{txt lang=$text.language_name variants="eng=Studying::rus=Учеба::ukr=Навчання"}</span></span></a></span>
                 <span class="link"><a class="color2" href="{$znu_root_url}/{$text.language_name}/sci"><i class="fa fa-graduation-cap "></i><span class="text"><span class="lnk-text">{txt lang=$text.language_name variants="eng=Science::rus=Наука::ukr=Наука"}</span></span></a></span>
-                <span class="link"><a class="color1" href="{$znu_root_url}/{$text.language_name}/international"><i class="fa fa-flag "></i><span class="text two-rows"><span class="lnk-text">{txt lang=$text.language_name variants="eng=International <br> relations::rus=Международная <br> деятельность::ukr=Міжнародна <br> діяльність"}</span></span></a></span>
-                <span class="link"><a class="color3" href="{$znu_root_url}/{$text.language_name}/podiji"><i class="fa fa-newspaper-o "></i><span class="text"><span class="lnk-text">{txt lang=$text.language_name variants="eng=Events::rus=События::ukr=Події"}</span></span></a></span>
+                <span class="link"><a class="color1" href="{$znu_root_url}/{$text.language_name}/international"><i class="fa fa-flag "></i><span class="text two-rows"><span class="lnk-text">{txt lang=$text.language_name variants="eng=International<br>relations::rus=Международная<br>деятельность::ukr=Міжнародна<br>діяльність"}</span></span></a></span>
+                <span class="link"><a class="color3" href="{$znu_root_url}/{$text.language_name}/11566"><i class="fa fa-newspaper-o "></i><span class="text two-rows"><span class="lnk-text">{txt lang=$text.language_name variants="eng=Student ?::rus=Студенческое<br>самоуправление::ukr=Студентське<br>самоврядування"}</span></span></a></span>
             </div>
             
             <div class="znu-2016-block-page"><a name='pagetop' style='opacity:0; float:right;'></a>
@@ -122,8 +123,12 @@
                         
                         <img src="{$site_root_url}/templates/znu12files/img/qr.gif">
                         <a href="http://help.znu.edu.ua:58214/contactit/" target="_blank">{txt lang=$text.language_name variants="eng=Message to IT Lab::rus=Обращение к лаборатории ИС и КТ::ukr=Звернення до лабораторії IС та КТ"}</a><br>
-                            {txt lang=$text.language_name variants="eng=Email::rus=Электронная почта::ukr=Електронна пошта"}
-                         <a href="mailto:webmaster@znu.edu.ua">webmaster@znu.edu.ua</a>
+                            {txt lang=$text.language_name variants="eng=Email::rus=Электронная почта ЗНУ::ukr=Електронна пошта ЗНУ"}
+                         <a href="mailto:zv@znu.edu.ua">zv@znu.edu.ua</a><br/>
+
+                            {txt lang=$text.language_name variants="eng=Technical support::rus=Техническая поддержка::ukr=Технічна підтримка"}
+                         <a href="mailto:webmaster@znu.edu.ua">webmaster@znu.edu.ua</a><br/>
+
                         <br>
                         <a class="social" href="https://vk.com/znu_official" target="_blank"><i class="fa fa-vk"></i></a>
                         <a class="social" href="https://www.facebook.com/univerzp" target="_blank"><i class="fa fa-facebook "></i></a>
