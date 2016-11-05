@@ -795,6 +795,13 @@ function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resamp
             }
             $width = $new_width;
             $height = $new_height;
+	    if($width > $size[0]){
+		$width = $size[0];
+            }
+	    if($height > $size[1]){
+		$height = $size[1];
+	    }
+	    //echo "{$size[0]}=> $width {$size[1]}=>$height";exit();
             break;
     }
     $new_left = floor(($width - $new_width) / 2);
