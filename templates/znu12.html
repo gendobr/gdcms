@@ -58,7 +58,7 @@
 						<input type="hidden" value="94" name="site_id">
                                                 <input type="hidden" value="{$text.language_name}" name="lang">
 						<input type="hidden" name="action" value="search/query/naivequery">
-                                                <input type="search" id="search" placeholder="{txt lang=$text.language_name variants="eng=Search::rus=Поиск::ukr=Пошук"}..." />
+                                                <input type="search" name="keywords" id="search" placeholder="{txt lang=$text.language_name variants="eng=Search::rus=Поиск::ukr=Пошук"}..." />
                                                 <button class="button"> <i class="fa fa-search"></i> </button>
 						</form>
                                         </div>
@@ -112,23 +112,23 @@
                     <div class="znu-2016-block-footer-col">
                         <a class="znu-2016-logo" href="{$znu_root_url}">{txt lang=$text.language_name variants="eng==© 2016 Zaporizhzhya national university::rus=© 2016 ЗНУ Запорожский национальный университет, 69600, ::ukr=© 2016 ЗНУ Запорізький національний університет, 69600, "}</a>
                         <br>
-
                         {txt lang=$text.language_name variants="eng=Zaporizhzhya, Zhykovsky street 66::rus=г. Запорожье, ул. Жуковского, 66, ::ukr=м. Запоріжжя, вул. Жуковського, 66, "}
                         <br>
-
                         {txt lang=$text.language_name variants="eng=tel/fax::rus=тел./факс::ukr=тел./факс"}
                          +38 (061)228-75-08
+                        <br>
+                        {txt lang=$text.language_name variants="eng=Email::rus=Официальная почта ::ukr=Офіційна пошта "}
+                        <a href="mailto:zv@znu.edu.ua">zv@znu.edu.ua</a><br/>
                     </div>
                     <div class="znu-2016-block-footer-col">
-                        
                         <img src="{$site_root_url}/templates/znu12files/img/qr.gif">
-                        <a href="http://help.znu.edu.ua:58214/contactit/" target="_blank">{txt lang=$text.language_name variants="eng=Message to IT Lab::rus=Обращение к лаборатории ИС и КТ::ukr=Звернення до лабораторії IС та КТ"}</a><br>
-                            {txt lang=$text.language_name variants="eng=Email::rus=Электронная почта ЗНУ::ukr=Електронна пошта ЗНУ"}
-                         <a href="mailto:zv@znu.edu.ua">zv@znu.edu.ua</a><br/>
+                        {txt lang=$text.language_name variants="eng=Docflow::rus=Документооборот::ukr=Документообіг"}
+                        <a href="http://docflow.znu.edu.ua/" target="_blank">{txt lang=$text.language_name variants="eng=docflow.znu.edu.ua::rus=docflow.znu.edu.ua::ukr=docflow.znu.edu.ua"}</a><br>
+                        {txt lang=$text.language_name variants="eng=Message to IT Lab::rus=Техническая поддержка (обращение)::ukr=Технічна підтримка (звернення)"}
+                        <a href="http://help.znu.edu.ua/" target="_blank">{txt lang=$text.language_name variants="eng=help.znu.edu.ua::rus=help.znu.edu.ua::ukr=help.znu.edu.ua"}</a><br>
 
                             {txt lang=$text.language_name variants="eng=Technical support::rus=Техническая поддержка::ukr=Технічна підтримка"}
-                         <a href="mailto:webmaster@znu.edu.ua">webmaster@znu.edu.ua</a><br/>
-
+                         <a href="mailto:webmaster@znu.edu.ua">webmaster@znu.edu.ua</a>
                         <br>
                         <a class="social" href="https://vk.com/znu_official" target="_blank"><i class="fa fa-vk"></i></a>
                         <a class="social" href="https://www.facebook.com/univerzp" target="_blank"><i class="fa fa-facebook "></i></a>
