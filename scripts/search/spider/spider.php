@@ -75,7 +75,7 @@ $query = "SELECT @date1:=MIN(date_indexed) AS md FROM <<tp>>search_index;";
 $query = "SELECT * FROM <<tp>>search_index WHERE date_indexed=@date1 LIMIT 0,100;";
 
 //tmp
-$query = "SELECT * FROM <<tp>>search_index WHERE site_id=94 LIMIT 0,100;";
+//$query = "SELECT * FROM <<tp>>search_index WHERE site_id=94 LIMIT 0,100;";
 //$query = "SELECT * FROM <<tp>>search_index WHERE id=37343 LIMIT 0,100;";
 
 
