@@ -270,9 +270,9 @@ if (true || $this_url_info['is_valid'] || rand(0, 1000) > 900) { //tmp
     $len1=0;
     $len0=1;
     while($len0!=$len1){
-        $len0=mb_strlen($abstract, site_charset);
+        $len0=mb_strlen($plaintext, site_charset);
         $plaintext = html_entity_decode($plaintext);
-        $len1=mb_strlen($abstract, site_charset);
+        $len1=mb_strlen($plaintext, site_charset);
     }
 
     
