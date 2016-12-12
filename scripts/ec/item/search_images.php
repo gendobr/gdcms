@@ -103,34 +103,67 @@ if(isset($input_vars['imh']) && is_array($input_vars['imh'])) {
     $prefix="$site_root_dir/gallery/$relative_dir/";
 
 
-    foreach($input_vars['imh'] as $imid=>$im_src) {
-        if(!is_valid_url($im_src)) continue;
-        $response=http($im_src,Array(),Array());
-        if($response['is_successful']) {
-            $fname     = time()."-{$imid}.".  \core\fileutils::file_extention($im_src);
-            $file_path = "{$prefix}/{$fname}";
-            file_put_contents($file_path, $response['body']);
+    function grab_image($url,$saveto){
+        $ch = curl_init ($url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+        $raw=curl_exec($ch);
+        curl_close ($ch);
+        if(file_exists($saveto)){
+            unlink($saveto);
+        }
+        $fp = fopen($saveto,'x');
+        fwrite($fp, $raw);
+        fclose($fp);
+    }
 
-            //$newfname  = time()."-{$imid}.jpg";
-            //if(ec_img_resize($file_path, "{$prefix}/{$newfname}", $input_vars['w'], $input_vars['h'])) {
-            //    $report.="\ngallery/$relative_dir/{$newfname}";
-            //}
-            
+    $data=date('Y-m-d--H-i-s');
+    $report=[];
+    foreach($input_vars['imh'] as $imid=>$im_src) {
+        // var_dump($im_src);
+        if(!is_valid_url($im_src)) continue;
+        // prn('VALID');
+        $fname = time()."-{$imid}.". \core\fileutils::file_extention($im_src);
+        $file_path = "{$prefix}/{$fname}";
+        grab_image($im_src,$file_path);
+        if(file_exists($file_path)){
+
             $newfname  = time()."-{$imid}.jpg";
             
             $big_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-big-" . $newfname;
             $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
-            ec_img_resize($file_path, $big_file_path, \e::config('gallery_big_image_width'), \e::config('gallery_big_image_height'), "resample");
+            ec_img_resize($file_path, $big_file_path, \e::config('gallery_big_image_width'), \e::config('gallery_big_image_height'), "resample-if-big");
 
             $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . $newfname;
             $small_file_path="$site_root_dir/gallery/$relative_dir/$small_image_file_name";
-            ec_img_resize($file_path, $small_file_path, \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), "circumscribe");
+            ec_img_resize($file_path, $small_file_path, \e::config('gallery_small_image_width'), \e::config('gallery_small_image_height'), "resample-if-big");
 
             unlink($file_path);
+
+            $report[]=[
+                'small'=>"gallery/$relative_dir/$small_image_file_name",
+                'big'=>"gallery/$relative_dir/$big_image_file_name"
+            ];
         }
+
     }
-    if(strlen($report)>0) {
-        $query="UPDATE <<tp>>ec_item SET cache_datetime=null,cached_info=null,ec_item_img='".\e::db_escape(trim(join("\n",$this_ec_item_info['ec_item_img']).$report))."' WHERE ec_item_id=$ec_item_id AND ec_item_lang='$ec_item_lang' AND site_id=$site_id";
+    if(count($report)>0) {
+
+        foreach($report as $rp){
+           $this_ec_item_info['ec_item_img'][]=$rp;
+        }
+        $ec_item_img=[];
+        foreach($this_ec_item_info['ec_item_img'] as $f){
+              $ec_item_img[]="{$f['small']}\t{$f['big']}\t";
+        }
+        $ec_item_img=join("\n",$ec_item_img);
+
+        $query="UPDATE <<tp>>ec_item 
+                SET cache_datetime=null,cached_info=null,
+                    ec_item_img='".\e::db_escape($ec_item_img)."' 
+                    WHERE ec_item_id=$ec_item_id AND ec_item_lang='$ec_item_lang' 
+                          AND site_id=$site_id";
         // prn($query);
         \e::db_execute($query);
         $this_ec_item_info=get_ec_item_info($ec_item_id,$ec_item_lang);
@@ -175,8 +208,12 @@ span.imgs{
 
 <span class=imgs>
 ";
+
+//\e::info($this_site_info['url']);
+//var_dump($this_ec_item_info['ec_item_img']);
 foreach($this_ec_item_info['ec_item_img'] as $f) {
-    $input_vars['page_content'].= "<img width=250px style='margin-bottom:10px;' src={$this_site_info['url']}/{$f}><br/>";
+
+    $input_vars['page_content'].= "<img style='max-width:250px;margin-bottom:10px;' src={$this_site_info['url']}/{$f['small']}><br/>";
 }
 
 $input_vars['page_content'].= "
@@ -203,6 +240,7 @@ $input_vars['page_content'].= "
 <div style='clear:both;'></div>
 </div>";
 
+
 $start=isset($input_vars['start'])?( (int)$input_vars['start'] ):0;
 $query=isset($input_vars['query'])?$input_vars['query']:"{$this_ec_item_info['ec_item_uid']} + {$this_ec_item_info['ec_producer_title']} + {$this_ec_item_info['ec_item_title']}";
 
@@ -217,7 +255,7 @@ $input_vars['page_content'].= "<br/>
 <input type=hidden name=ec_item_lang value='$ec_item_lang'>
 <select name=imgsz>".draw_options($input_vars['imgsz'], Array('icon'=>'icon','small'=>'small','medium'=>'medium','large'=>'large','xlarge'=>'xlarge','xxlarge'=>'xxlarge','huge'=>'huge'))."</select>
 <input style='width:300px;' type=text name=query value='".htmlspecialchars($query)."'>
-<input type=submit value=\"".text('Search')."\"><br/><br/>
+<input type=submit value=\"".text('Search')."\" name=\"dosearch\"><br/><br/>
 <br/>
 width:<input type=text name=w value={$input_vars['w']}>
 height:<input type=text name=h value={$input_vars['h']}>
@@ -225,47 +263,50 @@ height:<input type=text name=h value={$input_vars['h']}>
 ";
 
 
+if(isset($input_vars['dosearch'])){
+    echo "002<br>";
 
-$google_answer=http('http://ajax.googleapis.com/ajax/services/search/images',
-        Array('v'=>'1.0','q'=>$query,'imgsz'=>'large','hl'=>'en','start'=>$start),Array());
-//,'as_filetype'=>'jpg'
-//prn('$google_answer',$google_answer);
-
-$json = json_decode($google_answer['body']);
-//prn($json);
-if($json->responseData->results) {
-    foreach ($json->responseData->results as $result) {
-        $input_vars['page_content'].= "
-        <span class=blk><label>
-        <input type=checkbox name=imh[] value=\"{$result->url}\">
-        <img align=top src=\"{$result->tbUrl}\" title=\"{$result->contentNoFormatting}\"/></label>
-        <br/>
-                {$result->titleNoFormatting}<br/>
-                {$result->width}px &times; {$result->height}px<br>
-            <a href=\"{$result->url}\" target=_blank>���������</a>
-        </span>
-                ";
-    }
-
-    $input_vars['page_content'].= "<br><br>";
-    $url_prefix=site_root_URL.'/index.php?'.query_string('^start$|^imh$').'&start=';
-    foreach($json->responseData->cursor->pages as $pg) {
-        if($start!=$pg->start) {
-            $input_vars['page_content'].= " <a href=\"{$url_prefix}{$pg->start}\">{$pg->label}</a> ";
-        }else {
-            $input_vars['page_content'].= " <b>{$pg->label}</b> ";
+    $google_answer=http('http://ajax.googleapis.com/ajax/services/search/images',
+            Array('v'=>'1.0','q'=>$query,'imgsz'=>'large','hl'=>'en','start'=>$start),Array());
+    //,'as_filetype'=>'jpg'
+    //prn('$google_answer',$google_answer);
+    echo "002-01<br>";
+    $json = json_decode($google_answer['body']);
+    //prn($json);
+    if($json && $json->responseData && $json->responseData->results) {
+        foreach ($json->responseData->results as $result) {
+            $input_vars['page_content'].= "
+            <span class=blk><label>
+            <input type=checkbox name=imh[] value=\"{$result->url}\">
+            <img align=top src=\"{$result->tbUrl}\" title=\"{$result->contentNoFormatting}\"/></label>
+            <br/>
+                    {$result->titleNoFormatting}<br/>
+                    {$result->width}px &times; {$result->height}px<br>
+                <a href=\"{$result->url}\" target=_blank>���������</a>
+            </span>
+                    ";
         }
+
+        $input_vars['page_content'].= "<br><br>";
+        $url_prefix=site_root_URL.'/index.php?'.query_string('^start$|^imh$').'&start=';
+        foreach($json->responseData->cursor->pages as $pg) {
+            if($start!=$pg->start) {
+                $input_vars['page_content'].= " <a href=\"{$url_prefix}{$pg->start}\">{$pg->label}</a> ";
+            }else {
+                $input_vars['page_content'].= " <b>{$pg->label}</b> ";
+            }
+        }
+
+
     }
-
-
 }
+    
 
 $input_vars['page_content'].= "<br/>URL:<input type=text name=imh[] style='width:99%;' value=\"\">";
 $input_vars['page_content'].= "<br><br><input type=submit value=\"".text('Upload')."\">";
 $input_vars['page_content'].= "</form>";
 
 # ------------------- draw page - end ------------------------------------------
-
 
 
 
@@ -280,4 +321,3 @@ $input_vars['page_menu']['site']['items'] = menu_site($this_site_info);
 
 //----------------------------- context menu - end -----------------------------
 
-?>

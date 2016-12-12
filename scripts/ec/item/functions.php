@@ -755,17 +755,44 @@ function ec_img_resize($inputfile, $outputfile, $width, $height, $type = "resamp
     }
 
     switch ($type) {
-        case "inscribe":
-            $ratio = $width / $size[0];
-            $new_width = floor($size[0] * $ratio);
-            $new_height = floor($size[1] * $ratio);
-            if ($new_height > $height) {
-                $ratio = $height / $size[1];
-                if ($ratio > 1) {
-                    $ratio = 1;
-                }
+
+        case "resample-if-big":
+            if( $size[0] < $width && $size[1] < $height){
+                $width  = $new_width  = $size[0];
+                $height = $new_height = $size[1];
+            }else{
+                $ratio = $width / $size[0];
                 $new_width = floor($size[0] * $ratio);
                 $new_height = floor($size[1] * $ratio);
+                if ($new_height > $height) {
+                    $ratio = $height / $size[1];
+                    if ($ratio > 1) {
+                        $ratio = 1;
+                    }
+                    $new_width = floor($size[0] * $ratio);
+                    $new_height = floor($size[1] * $ratio);
+                }
+                $width  = $new_width;
+                $height = $new_height;
+            }
+            break;
+
+        case "inscribe":
+            if( $size[0] < $width && $size[1] < $height){
+                $new_width = $size[0];
+                $new_height = $size[1];
+            }else{
+                $ratio = $width / $size[0];
+                $new_width = floor($size[0] * $ratio);
+                $new_height = floor($size[1] * $ratio);
+                if ($new_height > $height) {
+                    $ratio = $height / $size[1];
+                    if ($ratio > 1) {
+                        $ratio = 1;
+                    }
+                    $new_width = floor($size[0] * $ratio);
+                    $new_height = floor($size[1] * $ratio);
+                }
             }
             break;
         case "circumscribe":
