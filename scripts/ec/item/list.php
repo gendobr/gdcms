@@ -74,7 +74,12 @@ if($user_cense_level==0)
 
   $category_id=isset($input_vars['filter_ec_category_id'])?((int)$input_vars['filter_ec_category_id']):0;
   if($category_id>0){
-     $re->add_where(" ec_item.ec_item_id IN(select distinct ec_item_id from <<tp>>ec_item_category where ec_category_id={$category_id}) ");
+     $re->add_where("
+             ( 
+                ec_item.ec_item_id IN(select distinct ec_item_id from <<tp>>ec_item_category where ec_category_id={$category_id}) 
+                OR ec_item.ec_category_id={$category_id}
+             ) 
+             ");
   }
   /*
    $re->add_field( $field="ec_item.ec_category_id"
