@@ -882,7 +882,7 @@ class CmsNewsViewer {
             $pages[] = Array('URL' => '', 'innerHTML' => '...');
         }
 
-        for ($i = $imin; $i < $imax; $i = $i + \e::config('rows_per_page')) {
+        for ($i = $imin; $i < $imax; $i = $i + $this->rows_per_page) {
             $to = (1 + $i / $this->rows_per_page);
             $pages[] = Array(
                 'URL' => $this->url(Array('start'=>$i)),
@@ -892,7 +892,7 @@ class CmsNewsViewer {
         }
 
         if ($imax < $num) {
-            $last_page = floor(($num - 1) / \e::config('rows_per_page'));
+            $last_page = floor(($num - 1) / $this->rows_per_page);
             if ($last_page > 0) {
                 $pages[] = Array('URL' => '', 'innerHTML' => "...");
                 $pages[] = Array(

@@ -693,7 +693,9 @@ class CategoryNews {
         if(strpos($url_prefix, '?')===false){
             $url_prefix.="?";
         }
-        
+        if($tags = \e::request('tags')){
+           $url_prefix.="&tags=".rawurlencode($tags);
+        }
         $pages = Array();
         $imin = max(0, $start - 10 * $rows_per_page);
         $imax = min($records_found, $start + 10 * $rows_per_page);

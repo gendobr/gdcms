@@ -132,7 +132,11 @@ if ($success) {
             // resize image file
             $big_image_file_name = "{$site_id}-{$data}-{$data}-big-" . \core\fileutils::encode_file_name($photos['name']);
             $big_file_path="$site_root_dir/gallery/$relative_dir/$big_image_file_name";
-            ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", $big_file_path, \e::config('gallery_big_image_width'), \e::config('gallery_big_image_height'), "resample");
+            ec_img_resize("$site_root_dir/gallery/$relative_dir/$orig_image_file_name", 
+			    $big_file_path, 
+			    \e::config('gallery_big_image_width'), 
+			    \e::config('gallery_big_image_height'), 
+			    "resample");
             // echo ($big_file_path); exit();
 
             //    $small_image_file_name = "{$this_ec_item_info['site_id']}-{$data}-small-" . encode_file_name($photos['name']);

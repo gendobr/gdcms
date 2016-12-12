@@ -73,6 +73,12 @@ $query = "SELECT @date1:=MIN(date_indexed) AS md FROM <<tp>>search_index;";
 //prn(\e::db_getrows("SELECT @date1"));
 
 $query = "SELECT * FROM <<tp>>search_index WHERE date_indexed=@date1 LIMIT 0,100;";
+
+//tmp
+//$query = "SELECT * FROM <<tp>>search_index WHERE site_id=94 LIMIT 0,100;";
+//$query = "SELECT * FROM <<tp>>search_index WHERE id=37343 LIMIT 0,100;";
+
+
 $this_url_info = \e::db_getrows($query);
 
 $max = count($this_url_info);
@@ -80,9 +86,10 @@ prn($max.' URLs');
 if ($max > 0) {
     $this_url_info = $this_url_info[rand(0, $max - 1)];
 }
-prn($this_url_info);
+prn('1) this_url_info',$this_url_info);
 
-if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
+if (true || $this_url_info['is_valid'] || rand(0, 1000) > 900) { //tmp
+//if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
 
     $query = "UPDATE <<tp>>search_index SET date_indexed=now(), is_valid=5 WHERE id={$this_url_info['id']}";
     \e::db_execute($query);
@@ -118,18 +125,25 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $this_url_info['url']); // set url to post to 
     curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-    //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects 
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects 
     curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // return into a variable 
     curl_setopt($ch, CURLOPT_TIMEOUT, 20); // times out after 20s 
     curl_setopt($ch, CURLOPT_USERAGENT, "User-Agent:Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36");
 
-    curl_setopt($ch, CURLOPT_HEADER, true);
-    curl_setopt($ch, CURLOPT_VERBOSE, false);
+    curl_setopt($ch, CURLOPT_ENCODING , "");
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_VERBOSE, true);
 
     // curl_setopt($ch, CURLOPT_POST, 1); // set POST method 
     //curl_setopt($ch, CURLOPT_POSTFIELDS, "url=index%3Dbooks&field-keywords=PHP+MYSQL"); // add POST fields 
     $body = curl_exec($ch); // run the whole process 
+    // prn('4) body=',htmlspecialchars($body));
+
+    $headers = curl_getinfo($ch);
+
     // echo curl_error ($ch ).'<br>';
     curl_close($ch);
     //echo $body; exit();
@@ -140,24 +154,18 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
     # 
     # 
     # --------- check http headers - begin -------------------------------------
-    $headers = preg_split("/\\r\\n\\r\\n|\\n\\n/", $body);
-    $headers = $headers[0];
-    if (!preg_match("/Content-Type: *text/i", $headers)) {
+
+    prn('3) headers=',$headers);
+
+
+    if (!preg_match("/text/i", $headers['content_type'])) {
         $query = "UPDATE <<tp>>search_index SET date_indexed=now(), is_valid=0 WHERE id={$this_url_info['id']}";
         \e::db_execute($query);
         exit('Wrong Content-Type (' . (microtime(true) - $time_start) . 's )');
     }
     # --------- check http headers - end ---------------------------------------
 
-
-
-    #  remove headers from reply
-    $body = str_replace($headers, '', $body);
-    
-    
-
-    
-    
+    //exit('3');
     
     # get reply size
     $this_url_info['size'] = strlen($body);
@@ -172,7 +180,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
     $body = removeTag($body, '<noindex','</noindex>');
     
     $body = removeTag($body, '<!--noindex-->','<!--/noindex-->');
-    // prn(htmlspecialchars($body));
+    // prn('6) body ',htmlspecialchars($body));
 
 
     
@@ -262,9 +270,9 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
     $len1=0;
     $len0=1;
     while($len0!=$len1){
-        $len0=mb_strlen($abstract, site_charset);
+        $len0=mb_strlen($plaintext, site_charset);
         $plaintext = html_entity_decode($plaintext);
-        $len1=mb_strlen($abstract, site_charset);
+        $len1=mb_strlen($plaintext, site_charset);
     }
 
     
@@ -373,7 +381,7 @@ if ($this_url_info['is_valid'] || rand(0, 1000) > 900) {
 } else {
     $query = "UPDATE <<tp>>search_index SET date_indexed=now() WHERE id=" . ( (int) $this_url_info['id'] );
     \e::db_execute($query);
-    exit('Invalid URL (' . (microtime(true) - $time_start) . 's )');
+    exit('2) Invalid URL (' . (microtime(true) - $time_start) . 's )');
 }
 # ------------------------- get url to index - end -----------------------------
 // REPAIR TABLE `cms8_search_index` QUICK EXTENDED; 
