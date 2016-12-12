@@ -105,7 +105,7 @@ $rep->field['ec_category_code'] = new db_record_editor_field_string(
 $rep->field['ec_category_title'] = new db_record_editor_field_string(
         'ec_category_title'
         , 'ec_category_title'
-        , 'string:maxlength=255&required=yes&html_denied=no'
+        , 'string:maxlength=1024&required=yes&html_denied=no'
         , text('ec_category_title'));
 
 
@@ -186,7 +186,7 @@ $rep->set_primary_key('ec_category_id', $ec_category_id);
 # process form data (update category properties)
 $success = $rep->process();
 
-
+// echo ("Success=$success");
 # --------------------- post-process - begin -----------------------------------
 if ($success) {
     #  ----------------------- move branch - begin ------------------------------
@@ -246,6 +246,7 @@ if ($success) {
     #  ----------------------- save additional fields - end ---------------------
     #  reload category info
     $this_category->load_node($ec_category_id);
+    
 }
 # --------------------- post-process - end -------------------------------------
 #  ---------------------------- draw - begin -----------------------------------
@@ -380,7 +381,7 @@ $input_vars['page_content'] = "
   }
   </style>
   <script type=\"text/javascript\" src=\"scripts/lib/langstring.js\"></script>
-
+  {$rep->messages}
   <form action='index.php' method='post' name='db_record_editor_' id='db_record_editor_'>
   <input type=hidden name='action' value='ec/category/edit'>
   <input type=hidden name='site_id' value='{$this_site_info['id']}'>
