@@ -42,7 +42,7 @@ run('site/page/menu');
 //------------------- site info - begin ----------------------------------------
   $site_id = $this_page_info['site_id'];
   $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$this_page_info['site_id']}");
-  $this_site_info['url']=ereg_replace('/+$','',$this_site_info['url']);
+  $this_site_info['url']=preg_replace("/\\/+\$/",'',$this_site_info['url']);
 # prn('$this_site_info=',$this_site_info);
   
   $this_site_info['absolute_path']=\e::config('SITES_ROOT').$this_site_info['dir'];
@@ -61,14 +61,11 @@ run('site/page/menu');
     //prn($levels);
     unset($tmp,$_tm);
   //----------------- get possible levels - end --------------------------------
-  
-
-
   // site root dir
-     $root=\e::config('SITES_ROOT').'/'.ereg_replace('^/+|/+$','',$this_site_info['dir']);
+     $root=\e::config('SITES_ROOT').'/'.preg_replace("/^\\/+|\\/+\$/",'',$this_site_info['dir']);
 
   // exported page path
-     $dir=$root.'/'.ereg_replace('^/+|/+$','',$this_page_info['path']).'/'.$this_page_info['id'].'.'.$this_page_info['lang'].'.html';
+     $dir=$root.'/'.preg_replace("^\\/+|\\/+\$",'',$this_page_info['path']).'/'.$this_page_info['id'].'.'.$this_page_info['lang'].'.html';
      if(isset($input_vars['verbose'])) prn('$dir='.$dir);
 
   switch($input_vars['transition'])
@@ -78,7 +75,7 @@ run('site/page/menu');
       $input_vars['page_title']   = $this_page_info['title'].' - '.$text['Approve'];
       $input_vars['page_header']  = $this_page_info['title'].' - '.$text['Approve'];
 
-    # path_delete($this_site_info['absolute_path'],$this_site_info['absolute_path'].'/'.ereg_replace('^/+|/+$','',$this_page_info['file']) );
+    # path_delete($this_site_info['absolute_path'],$this_site_info['absolute_path'].'/'.preg_replace("^\\/+|\\/+\$",'',$this_page_info['file']) );
 
     break;
     case 'seize':
@@ -89,7 +86,7 @@ run('site/page/menu');
       // delete page file if page permission
       \core\fileutils::path_delete($root,$dir,isset($input_vars['verbose']));
       if(isset($input_vars['verbose'])) prn("path_delete($root,$dir);");
-    # path_delete($this_site_info['absolute_path'],$this_site_info['absolute_path'].'/'.ereg_replace('^/+|/+$','',$this_page_info['file']) );
+    # path_delete($this_site_info['absolute_path'],$this_site_info['absolute_path'].'/'.preg_replace("/^\\/+|\\/+\$/",'',$this_page_info['file']) );
     break;
     case 'return':
       $new_cense_level=(int)$levels[2];

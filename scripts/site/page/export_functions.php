@@ -148,7 +148,6 @@ function export_page($_page_id, $_lang) {
 
 
     if (strlen($this_page_info['path']) > 0){
-        //$page_path.='/' . ereg_replace('^/+|/+$', '', $this_page_info['path']);
         $page_path.='/' . preg_replace("/^\\/+|\\/+\$/", '', $this_page_info['path']);
     }
 

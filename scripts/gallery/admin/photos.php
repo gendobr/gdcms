@@ -97,8 +97,8 @@ while ($qq < 5) {
             # copy uploaded file
             copy($photos['tmp_name'], "$site_root_dir/gallery/$relative_dir/$big_image_file_name");
 
-            if ($photom['size'] > 0 && eregi("(jpg|gif|png|jpeg)$", $photom['name'], $regs)) {
-                $small_image_file_name = eregi_replace($file_extension . '/', '.jpg', "{$site}-{$data}-m-" . \core\fileutils::encode_file_name($photom['name']));
+            if ($photom['size'] > 0 && preg_match("/(jpg|gif|png|jpeg)$/i", $photom['name'], $regs)) {
+                $small_image_file_name = preg_replace("/$file_extension\\//", '.jpg', "{$site}-{$data}-m-" . \core\fileutils::encode_file_name($photom['name']));
                 copy($photom['tmp_name'], "$site_root_dir/gallery/$relative_dir/$small_image_file_name");
             } else {
                 # -------------- create small image - begin -------------------------

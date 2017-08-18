@@ -111,7 +111,7 @@ $form_name_prefix='svr_';
     $form[$nm]=get_element($nm,$form_name_prefix);
 
     if(strlen($form['birthdate']['value'])==0) $form['birthdate']['value']='0000-00-00';
-    if(!ereg('^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$',$form['birthdate']['value'])) $form['birthdate']['value']='0000-00-00';
+    if(!preg_match("/^[0-9]{4}\\.[0-9]{2}\\.[0-9]{2}$/",$form['birthdate']['value'])) $form['birthdate']['value']='0000-00-00';
     
     $form['birthdate']['form_element_options'] = Array();
 

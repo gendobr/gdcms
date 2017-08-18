@@ -58,8 +58,6 @@ function is_valid_email($email) {
 }
 function is_valid_url($URL) {
     return !(filter_var($URL, FILTER_VALIDATE_URL) === false);
-    //return preg_match("/^(https?|ftp|http|mms):\\/\\/([а-я%a-z0-9_-]+)(\\.[a-zа-я%0-9_-]+)+(:[0-9]+)?(\\/[-а-я%.a-z0-9_~]+)*\\/?(\\?[^\\?]*)?(#[^#]*)?$/i",$URL);
-    //    return eregi('^(https?|mms|ftp)://([a-z0-9_-]+\.)+([a-z0-9_-]+)(:[0-9]+)?(/[-.a-z0-9_~]+)*/?(\?.*)?$',$URL);
 }
 function getAsciiUrl($ditryUrl){
     $url= parse_url($ditryUrl);

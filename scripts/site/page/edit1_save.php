@@ -69,11 +69,11 @@
       if(isset($_FILES['page_upload']) && $_FILES['page_upload']['size']>0)
       {
           $this_page_info['content'] = join('',file($_FILES['page_upload']['tmp_name']));
-          if(eregi('<body',$this_page_info['content'])) {
+          if(preg_match('/<body/i',$this_page_info['content'])) {
             $this_page_info['content']=stristr($this_page_info['content'], '<body');
           }
-          if(eregi('</body',$this_page_info['content'])) {
-              $this_page_info['content']=eregi_replace('</body(.|\n|\r)*','</body>',$this_page_info['content']);
+          if(preg_match("/<\\/body/i",$this_page_info['content'])) {
+              $this_page_info['content']=preg_replace("/<\\/body(.|\n|\r)*/i",'</body>',$this_page_info['content']);
           }
 
           unset($_FILES['page_upload']);
@@ -234,7 +234,7 @@
                        " {$_SESSION['user_info']['full_name']}<br/>\n".
                        " {$_SESSION['user_info']['email']}<br/>\n".
                        " ";
-                if(IsHTML!='1') $mng_body=wordwrap(strip_tags(ereg_replace('<br/?>',"\n",$mng_body)), 80, "\n");
+                if(IsHTML!='1') $mng_body=wordwrap(strip_tags(preg_replace("/<br\\/?>/","\n",$mng_body)), 80, "\n");
                 my_mail($mng['email'], site_root_URL.' : Page was changed', $mng_body);
              }
            }

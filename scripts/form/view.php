@@ -119,7 +119,6 @@ function get_attributes($html) {
     foreach ($matches[0] as $mt) {
         $mt = explode('=', $mt);
         $nm = strtolower(trim($mt[0]));
-        //if(isset($mt[1])) $vl=ereg_replace("^[\"']|[\"']$",'',$mt[1]);
         if (isset($mt[1])) {
             $vl = preg_replace("/^[\"']|[\"']$/", '', $mt[1]);
         } else {
@@ -432,7 +431,7 @@ if ($form_data_posted) {
             $this_site_info['managers'] = Array();
             foreach ($tmp as $tm) {
                 $tmp = trim($tm['email']);
-                if (eregi('@127\.0\.0\.1$', $tmp)) {
+		if (preg_math("/@127\\.0\\.0\\.1$/", $tmp)) {
                     continue;
                 }
                 if (is_valid_email($tmp)) {
@@ -460,9 +459,8 @@ if ($form_data_posted) {
             //
             foreach ($emails as $mng) {
                 if (IsHTML != '1') {
-                    $vyvid = wordwrap(strip_tags(eregi_replace('<br/?>', "\n", $vyvid)), 80, "\n");
+		    $vyvid = wordwrap(strip_tags(preg_replace("/<br\\/?>/", "\n", $vyvid)), 80, "\n");
                 }
-
                 // ---------------- do mailing - begin -------------------------
                 $mail = new phpmailer();
                 $mail->Timeout=120;

@@ -80,7 +80,7 @@ function notification_transliterate($str) {
             ,Array('yo','ts','ch','sh','sch','yu','ya','y','a','b','v','g','d','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','kh','e','yi','i','I','`',
             'yo','ts','ch','sh','sch','yu','ya','y','a','b','v','g','d','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','kh','e','yi')
             ,$str);
-    $tor=eregi_replace('[^a-z0-9_#:;.@<>"/&=%-]+',' ',$tor);
+    $tor=preg_replace("/[^a-z0-9_#:;.@<>\"\\/&=%-]+/",' ',$tor);
     return $tor;
 }
 

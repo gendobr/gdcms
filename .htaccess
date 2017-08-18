@@ -1,5 +1,5 @@
 DirectoryIndex index.php
-#ErrorDocument 404 /404.php 
+ErrorDocument 404 /static/index.html
 
 RewriteEngine on
 
@@ -13,4 +13,6 @@ RewriteRule   forum\.php    /cms/index.php?action=forum/forum&%{QUERY_STRING}
 RewriteRule   thread\.php    /cms/index.php?action=forum/thread&%{QUERY_STRING}
 RewriteRule   msglist\.php    /cms/index.php?action=forum/msglist&%{QUERY_STRING}
 
-
+<Files ~ "(index|guestbook|search|news|news_details|gallery|image|forum|thread|msglist|SQLyogTunnel)\.php$">
+allow from all
+</Files>

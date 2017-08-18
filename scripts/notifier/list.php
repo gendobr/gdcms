@@ -66,7 +66,7 @@ $message='';
      $new_listener_event=$input_vars['new_notifier_event'];
      $new_site_id=$input_vars['new_notifier_site'];
      $new_user_id=$_SESSION['user_info']['id'];
-     $new_listener_sendto=sprintf($input_vars['new_notifier_operator'],substr(ereg_replace('[^0-9]','',$input_vars['new_notifier_telephone']), -7));
+     $new_listener_sendto=sprintf($input_vars['new_notifier_operator'],substr(preg_replace('/[^0-9]/','',$input_vars['new_notifier_telephone']), -7));
      $new_listener_action='sms';
      $new_listener_template='template_sms_'.$input_vars['new_notifier_event'].'.html';
      if(strlen($new_listener_event)==0) $message.='<div style="color:red;">'.text('ERROR_new_listener_event_is_empty').'</div>';

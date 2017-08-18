@@ -219,7 +219,7 @@ switch($input_vars['view'])
           $cnt=count($list_of_pages);
           for($i=0;$i<$cnt;$i++)
           {
-              $pref=ereg_replace('/+$','',"{$this_site_info['url']}/{$list_of_pages[$i]['path']}/");
+              $pref=preg_replace("/\\/+\$/",'',"{$this_site_info['url']}/{$list_of_pages[$i]['path']}/");
               $list_of_pages[$i]['URL_view_details']="$pref/{$list_of_pages[$i]['id']}.{$list_of_pages[$i]['lang']}.html";
           }
         # -------------------- adjust list - end -----------------------------------

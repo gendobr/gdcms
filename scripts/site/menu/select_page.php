@@ -28,7 +28,7 @@ $cnt=count($page_list);
 for($i=0; $i<$cnt; $i++)
 {
   $page_list[$i]['url'] = $this_site_info['url'];
-  if(strlen($page_list[$i]['path'])>0) $page_list[$i]['url'].='/'.ereg_replace('^/+|/+$','',$page_list[$i]['path']);
+  if(strlen($page_list[$i]['path'])>0) $page_list[$i]['url'].='/'.preg_replace("/^\\/+|\\/+$/",'',$page_list[$i]['path']);
   $page_list[$i]['url'].="/{$page_list[$i]['id']}.{$page_list[$i]['lang']}.html";
 }
 // prn($page_list);

@@ -55,22 +55,20 @@ function html_get_title($file_content)
 
       if(strlen($current_dir)<strlen($sites_root)) $current_dir='/';
       else $current_dir=str_replace($sites_root,'',$current_dir);
-      $current_dir=str_replace('\\','/',$current_dir);
+      $current_dir=str_replace("\\",'/',$current_dir);
 
-      if(!ereg('^/',$current_dir)) $current_dir='/'.$current_dir;
+      if(!preg_match("/^\\//",$current_dir)) $current_dir='/'.$current_dir;
 
-      // prn('3.3 $current_dir='.$current_dir);
 
-      $current_dir=ereg_replace('/+','/',$current_dir);
+      $current_dir=preg_replace("/\\/+/",'/',$current_dir);
       $current_dir=str_replace(\e::config('SITES_ROOT').'/','',$current_dir);
-      // prn('3.4 $current_dir='.$current_dir);
 
    // check base dirs
       //if(is_admin()) prn($_SESSION['user_info']['sites']);
       $available_dirs=array_chunk(array_keys($_SESSION['user_info']['sites']), count($_SESSION['user_info']['sites'])/2);
       $available_dirs=$available_dirs[1];
       $base_dir_allowed=false;
-      foreach($available_dirs as $dr) $base_dir_allowed=($base_dir_allowed||ereg("^/$dr",$current_dir));
+      foreach($available_dirs as $dr) $base_dir_allowed=($base_dir_allowed||preg_match("/^\\/$dr/",$current_dir));
       if(!$base_dir_allowed) $current_dir='/';
       //prn('current dir='.$current_dir);
       //prn('4 $current_dir='.$current_dir);
@@ -91,7 +89,7 @@ function html_get_title($file_content)
           ,Array('yo','ts','ch','sh','sch','yu','ya','y','a','b','v','g','d','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','kh','e','yi',
                  'yo','ts','ch','sh','sch','yu','ya','y','a','b','v','g','d','e','zh','z','i','j','k','l','m','n','o','p','r','s','t','u','f','kh','e','yi')
           ,$create_dir_name);
-       $create_dir_name=ereg_replace('[^a-z0-9_-]','_',strtolower($create_dir_name));
+       $create_dir_name=preg_replace('/[^a-z0-9_-]/','_',strtolower($create_dir_name));
        //prn($create_dir_name);
        if(strlen($create_dir_name)>0) mkdir(\e::config('SITES_ROOT').$current_dir.'/'.$create_dir_name);
    }
@@ -116,7 +114,7 @@ function html_get_title($file_content)
           if(is_dir(\e::config('SITES_ROOT').$current_dir.'/'.$fl))
           {
              $base_dir_allowed=false;
-             foreach($available_dirs as $dr) $base_dir_allowed=($base_dir_allowed||ereg("^/$dr",'/'.$fl));
+             foreach($available_dirs as $dr) $base_dir_allowed=($base_dir_allowed||preg_match("\^\\/$dr/",'/'.$fl));
              if($base_dir_allowed) $dirs.=" <img src=\"".site_root_URL."/img/icon_dir.png\" width=18 wheight=18> <a href=\"index.php?action=site/page/edit1_get_images&current_dir=/$fl\">$fl</a><br>";
           }
        }
@@ -132,7 +130,7 @@ function html_get_title($file_content)
           }
           else
           {
-              if(!ereg('^\.',$fl))
+              if(!preg_match("/^\\./",$fl))
               {
                   if(in_array(\core\fileutils::file_extention($fl),$image_file_extensions))
                   {
@@ -167,8 +165,8 @@ function html_get_title($file_content)
 // http://127.0.0.1/cms/index.php?action=site/swfupload_form&site_id=1&dirname=
    if($current_dir!='/')
    {
-      $this_site_dir=ereg_replace('^/+','',$current_dir);
-      $this_site_dir=ereg_replace('/.*','',$this_site_dir);
+      $this_site_dir=preg_replace("/^\\/+/",'',$current_dir);
+      $this_site_dir=preg_replace("/\\/.*/",'',$this_site_dir);
       //prn($current_dir,$this_site_id);
       $this_site_id=\e::db_getonerow("SELECT id FROM <<tp>>site WHERE dir like '".\e::db_escape($this_site_dir)."%' ORDER BY dir ASC");
       $this_site_id=$this_site_id['id'];

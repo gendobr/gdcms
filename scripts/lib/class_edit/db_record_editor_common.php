@@ -27,8 +27,8 @@ class db_record_editor_common
      $cnt=array_keys($request);
      foreach($cnt as $key)
      {
-       if(strlen($exclude_pattern)>0) if(@eregi($exclude_pattern,$key)) unset($request[$key]);
-       if(strlen($this->exclude)>0) if(@eregi($this->exclude,$key)) unset($request[$key]);
+       if(strlen($exclude_pattern)>0) if(preg_match($exclude_pattern,$key)) unset($request[$key]);
+       if(strlen($this->exclude)>0) if(preg_match($this->exclude,$key)) unset($request[$key]);
      }
      # ---------------- remove elements matching exclude pattern - end ---------
      # ---------------- create array - begin -----------------------------------
@@ -82,22 +82,12 @@ class db_record_editor_common
 // --------------------- create hidden form elements -- end --------------------
 
 
-  function check_int($ffff)  {if(isset($ffff)) return round($ffff*1);                     else return 0; }
-  function check_float($val){return (float)(str_replace(',','.',$val));}
-  function htmlencode($tostr) {if(isset($tostr)) return trim(htmlspecialchars ($tostr,ENT_QUOTES,'cp1251'));else return '';}
-  function check_datetime($tostr) {if (!(($timestamp = strtotime($tostr)) === -1) ) return $tostr; else return false;}
-  function is_valid_email($email){ $to_return=ereg('^([a-zA-Z_0-9\.-]+)@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$', $email); return $to_return;}
-  function is_valid_url($URL)
-  {
-    $regexp='^(https?|mms|ftp)://([a-z0-9_-]+\.)+([a-z0-9_-]+)(:[0-9]+)?(/[-.a-z0-9_~&]+)*/?(\?.*)?$';
-    $rg=eregi($regexp,html_entity_decode($URL),$regs);
-  # prn($URL,$regs);
-    return $rg;
-  }
-
-
-
-
+    function check_int($ffff)  {if(isset($ffff)) return round($ffff*1); else return 0; }
+    function check_float($val){return (float)(str_replace(',','.',$val));}
+    function htmlencode($tostr) {if(isset($tostr)) return trim(htmlspecialchars ($tostr,ENT_QUOTES,'cp1251'));else return '';}
+    function check_datetime($tostr) {if (!(($timestamp = strtotime($tostr)) === -1) ) return $tostr; else return false;}
+    function is_valid_email($email){ return filter_var($email, FILTER_VALIDATE_EMAIL)?true:false;  }
+    function is_valid_url($URL) { return filter_var($email, FILTER_VALIDATE_URL); }
 
 // ------------------ draw options for <select> -- begin -----------------------
 function draw_options($value,$options)

@@ -70,7 +70,7 @@ $error_msg='';
                                   'recovery_url'=>$recovery_url ) );
               $email_subject=get_langstring($this_site_info['title'],$lang).':'.$txt['Restore_password'];
 
-              if(IsHTML!='1') $email_body=wordwrap(strip_tags(eregi_replace('<br/?>',"\n",$email_body)), 80, "\n");
+              if(IsHTML!='1') $email_body=wordwrap(strip_tags(preg_replace("/<br\\/?>/","\n",$email_body)), 80, "\n");
               //prn($this_site_info);
               my_mail($tmp_site_visitor_info['site_visitor_email'], $email_subject, $email_body);
               ###prn("my_mail({$tmp_site_visitor_info['site_visitor_email']}, {$email_subject}, {$email_body});");

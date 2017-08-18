@@ -182,7 +182,6 @@ for ($i = 0; $i < $num; $i = $i + 10) {
 $rows = \e::db_execute("SELECT SQL_CALC_FOUND_ROWS * FROM <<tp>>photogalery   WHERE site = '$site' $show_category_condition ORDER BY `id` DESC LIMIT $start, 10");
 $num = \e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
 $a = $num['n_records'];
-//$url_prefix=eregi_replace('/+$','',$this_site_info['url']).'/gallery';
 $url_prefix = preg_replace("/\\/+$/", '', $this_site_info['url']) . '/gallery';
 
 foreach ($rows as $row) {

@@ -43,7 +43,7 @@ $obj_name = 'page_content';
      $site_dir=\e::config('SITES_ROOT')."/".$this_site_info['dir'];
 
   // get site root url     
-     $this_site_info['url'] = ereg_replace('/$','',$this_site_info['url']);
+     $this_site_info['url'] = preg_replace("/\\/\$/",'',$this_site_info['url']);
 
   // get list of files
      $filelist=\core\fileutils::ls_r($site_dir);

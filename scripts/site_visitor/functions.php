@@ -32,7 +32,7 @@
      ,Array('e','E','T','i','o','O','p','P','a','A','H','K','x','X','c','C','B','M') # ��������� �������
      ,$str
     );
-    $tor=ereg_replace(' +',' ',$tor);
+    $tor=preg_replace('/ +/',' ',$tor);
     return $tor;
   }
 

@@ -375,13 +375,14 @@ function get_links($url,$html) {
               $link=$url_prefix.$link;
             }
 
-            //while(ereg('/[^/]+/\.\./',$link)) {
             while(preg_match("/\\/[^\\/]+\\/\\.\\.\\//",$link)) {
-              $link = ereg_replace('/[^/]+/\.\./','/',$link);
+                // $link = e r e g _ r e p l a c e('/[^/]+/\.\./','/',$link);
+		$link = preg_replace("/\\/[^\\/]+\\/\\.\\.\\//",'/',$link);
             }
             while(preg_match("/\\/\\.\\//",$link)){
-              $link = ereg_replace('/\./','/',$link);
-            } 
+                // $link = e r e g _ r e p l a c e('/\./','/',$link);
+		$link = preg_replace("/\\/\\.\\//",'/',$link);
+            }
          }
          # ------------------- relative link - end -----------------------------
          #prn('before $link='.$link);

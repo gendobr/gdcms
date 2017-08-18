@@ -13,8 +13,7 @@
 
 class db_record_editor_field_url extends db_record_editor_field_string{
 
-  function db_record_editor_field_url($_field,$_alias,$_ttype,$_label,$form_name_prefix='db_record_editor_')
-  {
+  function db_record_editor_field_url($_field,$_alias,$_ttype,$_label,$form_name_prefix='db_record_editor_'){
     parent::db_record_editor_field_string($_field,$_alias,$_ttype,$_label,$form_name_prefix='db_record_editor_');
   }
 
@@ -25,12 +24,8 @@ class db_record_editor_field_url extends db_record_editor_field_string{
     $this->all_is_ok=false;
     return sprintf('<b><font color=red>'.self::$text['ERROR_invalid_format_of'].'</font></b> ',$this->label);
   }
-  function is_valid_url($URL)
-  {
-    $regexp='^(https?|mms|ftp)://([a-z0-9_-]+\.)+([a-z0-9_-]+)(:[0-9]+)?(/[-.a-z0-9_~&]+)*/?(\?.*)?$';
-    $rg=eregi($regexp,html_entity_decode($URL),$regs);
-  # prn($URL,$regs);
-    return $rg;
+  function is_valid_url($url){
+    return filter_var($url, FILTER_VALIDATE_URL);
   }
 }
 ?>

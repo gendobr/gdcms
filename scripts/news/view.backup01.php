@@ -70,7 +70,7 @@ foreach ($tmp as $tm) {
 }
 # prn($existing_languages);
 $lang_list = list_of_languages();
-//prn($lang_list);
+#prn($lang_list);
 $cnt = count($lang_list);
 for ($i = 0; $i < $cnt; $i++) {
     //prn($lang_list[$i]['name']);

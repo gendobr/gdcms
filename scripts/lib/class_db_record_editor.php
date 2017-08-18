@@ -45,7 +45,7 @@ class db_record_editor {
     var $record_is_found = false;
     var $debug = false;
     var $datetime_format = 'Y-m-d H:i:s';
-    var $exclude = '^$';
+    var $exclude = '/^$/';
     var $messages = '';
     var $all_is_ok = true;
 
@@ -276,7 +276,7 @@ class db_record_editor {
         $PARAM = array_merge($_GET, $_POST);
         $newquery = Array();
         foreach ($PARAM as $k0 => $v0)
-            if (!eregi($to_exclude, $k0))
+	    if (!preg_match($to_exclude, $k0))
                 $newquery[] = "{$k0}=" . rawurlencode($v0);
         $newquery = join('&', $newquery);
         return $newquery;
@@ -332,13 +332,13 @@ class db_record_editor {
 
 // --------------------- set primary key -- end --------------------------------
 // --------------------- hidden fields in form -- begin ------------------------
-    function hidden_fields($rge = '^$') {
+    function hidden_fields($rge = '/^$/') {
         global $_GET, $_POST;
         $input_vars = array_merge($_GET, $_POST);
         $hidden_fields = "\n<input type=hidden name=\"{$this->form_name_prefix}is_submitted\" value=\"yes\">\n";
         if (is_array($input_vars))
             foreach ($input_vars as $key => $val)
-                if ((!preg_match('/^' . $this->form_name_prefix . '/', $key)) && (!@eregi($this->exclude, $key)) && (!@eregi($rge, $key)))
+                if ((!preg_match('/^' . $this->form_name_prefix . '/', $key)) && (!@preg_match($this->exclude, $key)) && (!@preg_match($rge, $key)))
                     $hidden_fields.="<input type=\"hidden\" name=\"{$key}\" value=\"{$val}\">\n";
 
         foreach ($this->field as $fld) {
