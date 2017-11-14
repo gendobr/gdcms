@@ -84,7 +84,7 @@ $rep = new db_record_editor_2;
 
 $rep->debug = false;
 #$rep->text=$text;
-$rep->exclude = '^ec_category_id$';
+$rep->exclude = '/^ec_category_id$/';
 $rep->set_table("<<tp>>ec_category");
 
 # category_id           bigint(20)
