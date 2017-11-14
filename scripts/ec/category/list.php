@@ -73,8 +73,6 @@ if(isset($_REQUEST['debug'])) prn($this_category);
   {
     $_ids=Array();
     foreach($input_vars['category'] as $_id) $this_category->delete_branch((int)$_id);
-
-    // ��������� �� �������� ��������� ���������� � ������������ ���������?
   }
 # ------------------------- delete - end ---------------------------------------
 

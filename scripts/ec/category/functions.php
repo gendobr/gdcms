@@ -38,7 +38,7 @@ function menu_ec_category($_info=false)
         $menu[]=Array(
                   'url'=>site_root_URL.'/index.php?action=ec/category/list&category_delete=yes&category['.$_info['ec_category_id'].']='.$_info['ec_category_id']."&site_id={$_info['site_id']}"
                  ,'html'=>"<br>".text('ec_category_delete')
-                 ,'attributes'=>' style="color:red;" onclick="return confirm(\''.str_replace('{ec_category_title}',$_info['ec_category_title'],text('ec_category_delete_confirmation')).'\')" '
+                 ,'attributes'=>' style="color:red;" onclick="return confirm(\''.str_replace('{ec_category_title}',htmlspecialchars($_info['ec_category_title']),text('ec_category_delete_confirmation')).'\')" '
         );
      //}
   }# ------------------------ selected menu - end -----------------------
