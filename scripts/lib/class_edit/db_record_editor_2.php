@@ -224,7 +224,7 @@ class db_record_editor_2 extends db_record_editor_common {
         $tor['name'] = $this->form_name_prefix;
 
 # ----------------- draw hidden elements - begin -------------------------------
-        $tor['hidden_elements'] = $this->hidden_fields('^' . $this->form_name_prefix)
+        $tor['hidden_elements'] = $this->hidden_fields('/^' . $this->form_name_prefix.'/')
                 . "<input type=hidden name=\"{$this->form_name_prefix}is_submitted\" value=\"yes\">";
         foreach ($this->field as $fld) {
             if (isset($fld->options['hidden']) && $fld->options['hidden'] == 'yes') {
