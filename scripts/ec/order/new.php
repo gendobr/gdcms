@@ -602,6 +602,7 @@ $ec_order_total=$_SESSION['ec_cart']['total']+$_SESSION['ec_cart']['delivery_cos
 //prn($ec_item_template);
 
 $user_data_fields=isset($_SESSION['user_data_fields'])?$_SESSION['user_data_fields']:[];
+if(!is_array($user_data_fields)) $user_data_fields=[];
 if(!isset($user_data_fields['ec_user_name'])) $user_data_fields['ec_user_name']='';
 if(!isset($user_data_fields['ec_user_email'])) $user_data_fields['ec_user_email']='';
 if(!isset($user_data_fields['ec_user_telephone'])) $user_data_fields['ec_user_telephone']='';
