@@ -53,7 +53,7 @@ if($user_cense_level==0)
          $query="UPDATE <<tp>>ec_order SET ".join(',',$tmp)." WHERE ec_order_id=$ec_order_id LIMIT 1";
          // prn($query);
          \e::db_execute($query);
-         $affected_rows=mysql_affected_rows();
+         $affected_rows=mysqli_affected_rows();
          //prn($query,$affected_rows);
 
          if($affected_rows==0) continue;
