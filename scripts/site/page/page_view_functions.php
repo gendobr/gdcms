@@ -59,7 +59,7 @@ function process_template($template_name, $data_array, $functions=Array()) {
     $smr->security_settings['MODIFIER_FUNCS'] = Array();
     $smr->security_settings['IF_FUNCS'] = Array('count', 'in_array');
     $smr->security_settings['PHP_HANDLING'] = false;
-    $smr->security_settings['ALLOW_CONSTANTS'] = false;
+    $smr->security_settings['ALLOW_CONSTANTS'] = true;
 
     $smr->security = true;
 
