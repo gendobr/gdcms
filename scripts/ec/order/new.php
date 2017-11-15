@@ -600,6 +600,18 @@ $ec_neworder_template=site_get_template($this_site_info,'template_ec_order_new')
 $ec_order_total=$_SESSION['ec_cart']['total']+$_SESSION['ec_cart']['delivery_cost'];
 //prn('$ec_order_total='.$ec_order_total);
 //prn($ec_item_template);
+
+$user_data_fields=isset($_SESSION['user_data_fields'])?$_SESSION['user_data_fields']:[];
+if(!isset($user_data_fields['ec_user_name'])) $user_data_fields['ec_user_name']='';
+if(!isset($user_data_fields['ec_user_email'])) $user_data_fields['ec_user_email']='';
+if(!isset($user_data_fields['ec_user_telephone'])) $user_data_fields['ec_user_telephone']='';
+if(!isset($user_data_fields['ec_user_icq'])) $user_data_fields['ec_user_icq']='';
+if(!isset($user_data_fields['ec_user_delivery_street_address'])) $user_data_fields['ec_user_delivery_street_address']='';
+if(!isset($user_data_fields['ec_user_delivery_city'])) $user_data_fields['ec_user_delivery_city']='';
+if(!isset($user_data_fields['ec_user_delivery_suburb'])) $user_data_fields['ec_user_delivery_suburb']='';
+if(!isset($user_data_fields['ec_user_delivery_region'])) $user_data_fields['ec_user_delivery_region']='';
+
+
 $vyvid=
         process_template( $ec_neworder_template
         ,array_merge(Array(
@@ -615,7 +627,7 @@ $vyvid=
         'site_visitor_info'=>( isset($_SESSION['site_visitor_info'])?$_SESSION['site_visitor_info']:''),
         'delivery_form'=>delivery_form($_SESSION['ec_cart']['total'],$this_site_info,$_SESSION['ec_cart']['delivery']),
 	'ec_order_total'=>$ec_order_total,
-        'custom'=>$_SESSION['user_data_fields']
+        'custom'=>$user_data_fields
         ),$user_data_fields)
 );
 
