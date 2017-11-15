@@ -124,9 +124,9 @@
            <p>{$it.info.ec_item_last_change_date|date_format:"%d.%m.%Y %H:%M:%S"}</p>
            {foreach name=top from=$it.info.ec_item_img item=curr_img_src}
 		   	  {if $smarty.foreach.top.first}
-                <br/><img src="{$site.url}{$curr_img_src}"><br>
+                <br/><img src="{$site.url}{$curr_img_src.small}"><br>
 			  {else}
-                <br/><img src="{$site.url}{$curr_img_src}" width="100%"><br>
+                <br/><img src="{$site.url}{$curr_img_src.small}" width="100%"><br>
 	          {/if}
            {/foreach}
            </div>
