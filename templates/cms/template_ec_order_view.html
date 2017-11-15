@@ -82,10 +82,10 @@
 <tr><td colspan="7" style="border:none;"></td></tr>
 {foreach from=$order.ec_cart.items item=it key=ke}
     <tr id="tr0_{$ke}">
-        <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;white-space:nowrap;width:100px;height:100px;overflow:hidden;"><img src="{$site.url}{$it.info.ec_main_image}" width="100px"></td>
+        <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;white-space:nowrap;width:100px;height:100px;overflow:hidden;"><img src="{$site.url}{$it.info.ec_main_image.small}" width="100px"></td>
         <td valign="top" onclick="javascript:void(chast('tr_{$ke}'))" class="em" onmouseover="mover('tr0_{$ke}')" onmouseout="mout('tr0_{$ke}')" style="border:none;">
             {$it.info.ec_item_title}
-            {if $it.info.ec_item_variant[0]}
+            {if count($it.info.ec_item_variant)>0}
             <div style="color:gray;font-size:80%;">
               {foreach from=$it.info.ec_item_variant item=variant key=k_variant}
                 {$variant.ec_item_variant_description}<br/>
