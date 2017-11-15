@@ -51,7 +51,7 @@
     <tr id="tr0_{$ke}">
         <td>
             {$it.info.ec_item_title}
-            {if $it.info.ec_item_variant[0]}
+            {if count($it.info.ec_item_variant)>0}
             <div style="color:gray;font-size:80%;">
               {foreach from=$it.info.ec_item_variant item=variant key=k_variant}
                 {$variant.ec_item_variant_description|strip_tags}<br/>
