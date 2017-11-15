@@ -640,8 +640,3 @@ $file_content=process_template($custom_page_template//$this_site_info['template'
 ));
 //------------------------ draw using SMARTY template - end ------------------
 echo $file_content;
-
-
-
-
-?>
