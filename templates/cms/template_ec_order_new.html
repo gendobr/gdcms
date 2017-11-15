@@ -22,7 +22,7 @@
 
 {foreach from=$ec_cart.items item=it key=ke}
 <tr>
-    <td><div style="width:100px;height:100px;overflow:hidden;"><img src="{$site.url}{$it.info.ec_main_image[0]}" width="150px;"/></div></td>
+    <td><div style="width:100px;height:100px;overflow:hidden;"><img src="{$site.url}{$it.info.ec_main_image.small}" width="150px;"/></div></td>
     <td valign="top">
         {$it.info.ec_item_title}
         {if count($it.info.ec_item_variant)>0}
