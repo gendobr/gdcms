@@ -36,6 +36,7 @@ if ($site_id <= 0) {
 }
 $this_site_info = get_site_info($site_id);
 // prn($this_site_info);
+// prn(array_keys($this_site_info['extra_setting']['lang']));
 if (checkInt($this_site_info['id']) <= 0) {
     $input_vars['page_title'] =
             $input_vars['page_header'] =
@@ -71,8 +72,12 @@ $rep->add_field('fragment_id'
 
 // fragment_lang
 // enum
-$langs=\e::db_getrows("SELECT id, name FROM <<tp>>languages WHERE is_visible=1 ORDER BY name;");
+// $langs=\e::db_getrows("SELECT id, name FROM <<tp>>languages WHERE is_visible=1 ORDER BY name;");
 // prn($langs);
+$langs=[];
+foreach($this_site_info['extra_setting']['lang'] as $k=>$v){
+   $langs[]=['id'=>$k, 'name'=>$k];
+}
 for($i=0,$cnt=count($langs);$i<$cnt; ++$i){
     $langs[$i]=$langs[$i]['id'].'='.rawurlencode($langs[$i]['name']);
 }
