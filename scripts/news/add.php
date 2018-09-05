@@ -10,10 +10,14 @@
    nohistory($input_vars['action']);
 
 
+
+run('site/menu');
+
+
 $debug=false;
-//------------------- get site info - begin ------------------------------------
-  $site_id = checkInt($input_vars['site_id']);
-  $this_site_info = \e::db_getonerow("SELECT * FROM <<tp>>site WHERE id={$site_id}");
+//------------------- site info - begin ----------------------------------------
+  $site_id = (int) $input_vars['site_id'];
+  $this_site_info = get_site_info($site_id);
   if($debug) prn($this_site_info);
   if(checkInt($this_site_info['id'])<=0)
   {
@@ -61,12 +65,19 @@ if($user_level==0)
     //-------------------- get existing page languages - end -------------------
 
     //-------------------- get available languages - begin ---------------------
-      $query="SELECT id FROM <<tp>>languages WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."') LIMIT 0,1";
+      // $query="SELECT id FROM <<tp>>languages WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."') LIMIT 0,1";
       // prn($query);
-      $tmp=\e::db_getonerow($query);
+      // $tmp=\e::db_getonerow($query);
+      $langs = site_get_languages($this_site_info);
+	unset($tmp);
+      foreach($langs as $ln){
+	    if(!in_array($ln['id'],$existins_langs)){
+    		$tmp=$ln;
+	    }
+	}
       // prn($tmp);
     //-------------------- get available languages - end -----------------------
-    if(strlen($tmp['id'])>0)
+    if(isset($tmp) && strlen($tmp['id'])>0)
     {
       $query = "INSERT INTO <<tp>>news(
                     id
