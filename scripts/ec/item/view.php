@@ -140,7 +140,7 @@ class ec_item_comments {
 
 
         $this->form = Array(
-            'hidden_form_elements' => hidden_form_elements('^comment'),
+            'hidden_form_elements' => preg_hidden_form_elements('/^comment/'),
             'comment_sender_name' => 'comment_sender',
             'comment_sender_value' => (isset($_REQUEST['comment_sender']) ? trim(strip_tags($_REQUEST['comment_sender'])) : ''),
             'comment_body_name' => 'comment_body',
