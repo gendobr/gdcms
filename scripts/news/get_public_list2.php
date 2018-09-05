@@ -59,12 +59,17 @@ class CmsNewsViewer {
             $this->rows_per_page = (int) $this->options['rows'];
         }
         if ($this->rows_per_page <= 0 or $this->rows_per_page > 10000) {
-            $this->rows_per_page = \e::config('rows_per_page');
+            $this->rows_per_page = (int)\e::config('rows_per_page');
         }
+
+        if ($this->rows_per_page <= 0 or $this->rows_per_page > 10000) {
+            $this->rows_per_page = 10;
+        }
+
 
         // update url parameters
         if ($this->rows_per_page != \e::config('rows_per_page')) {
-            $this->currentInputData['rows'] = $this->rows_per_page;
+            $this->currentInputData['rows'] = (int)$this->rows_per_page;
         }
         # -------------------- number of news in the block - end ---------------
         # 
