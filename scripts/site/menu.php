@@ -645,4 +645,14 @@ function site_get_template($this_site_info,$template_name_, $verbose=false) {
     if($verbose) prn("$template_name_ - error");
     return false;
 }
+
+
+function site_get_languages($_info){
+    $langs=[];
+    foreach($_info['extra_setting']['lang'] as $k=>$v){
+       $langs[]=['id'=>$k, 'name'=>$k];
+    }
+    return $langs;
+}
+
 ?>
