@@ -358,7 +358,7 @@ if ($imax < $rows_found) {
 }
 # --------------------------- list of pages - end ------------------------------
 # --------------------------- list of ordering links - begin -------------------
-$url_prefix = site_root_URL . '/index.php?' . query_string('^orderby') . '&orderby=';
+$url_prefix = site_root_URL . '/index.php?' . preg_query_string('/^orderby/') . '&orderby=';
 $orderby = Array();
 foreach ($ordering_variants as $val) {
     $orderby[$val . '_asc'] = $url_prefix . $val . '+asc';
