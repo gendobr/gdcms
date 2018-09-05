@@ -389,7 +389,7 @@ $input_vars['page_content'] = "
     <div class=label>{$text['Language']} : </div>
     <div class=big>
       <select name=news_lang>" .
-          draw_options($this_news_info['lang'], \e::db_getrows("SELECT id, name FROM <<tp>>languages WHERE is_visible=1 ORDER BY name ASC;"))
+          draw_options($this_news_info['lang'], site_get_languages($this_site_info))
           . "</select>
     </div>
     </span><!-- 
