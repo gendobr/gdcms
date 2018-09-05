@@ -595,7 +595,7 @@ $tor.="
 
      $tor.="
      <form action=index.php method=post>
-     ".hidden_form_elements('^ec_item|^submit')."
+     ".preg_hidden_form_elements('/^ec_item|^submit/')."
      <table cellspacing=0px>";
 
 
