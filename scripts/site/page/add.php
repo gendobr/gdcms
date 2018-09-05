@@ -59,9 +59,18 @@ if($user_level==0)
     //-------------------- get existing page languages - end -------------------
 
     //-------------------- get available languages - begin ---------------------
-      $query="SELECT id FROM <<tp>>languages WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."') LIMIT 0,1";
+      // $query="SELECT id FROM <<tp>>languages WHERE is_visible=1 AND id NOT IN('".join("','",$existins_langs)."') LIMIT 0,1";
       // prn($query);
-      $tmp=\e::db_getonerow($query);
+      // $tmp=\e::db_getonerow($query);
+      $langs = site_get_languages($this_site_info);
+	unset($tmp);
+      foreach($langs as $ln){
+	    if(!in_array($ln['id'],$existins_langs)){
+    		$tmp=$ln;
+	    }
+	}
+      // prn($tmp);
+
       // prn($tmp);
     //-------------------- get available languages - end -----------------------
     if(strlen($tmp['id'])>0)
