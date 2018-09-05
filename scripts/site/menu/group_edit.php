@@ -74,14 +74,18 @@
     {
        //prn('Language changed !');
        // get all languages
-          $lang_list     =\e::db_get_associated_array("SELECT id,id FROM <<tp>>languages WHERE is_visible=1");
-          //prn($lang_list);
+          $langs = site_get_languages($this_site_info);
+          $lang_list = [];
+	  foreach($langs as $ln){
+		$lang_list[$ln['id']]=$ln['id'];
+	  }
+          // prn($lang_list);
 
-       // get existing group languages
+          // get existing group languages
           $existing_langs=\e::db_get_associated_array("SELECT lang,lang FROM <<tp>>menu_group WHERE id={$menu_group_info['id']}");
           //prn($existing_langs);
 
-       // get allowed langs
+          // get allowed langs
           $allowed_langs=array_diff($lang_list,$existing_langs);
           //prn($allowed_langs);
 
@@ -172,7 +176,7 @@
     <input type=hidden name=\"lang\" value=\"{$menu_group_info['lang']}\">
     <tr><td><b>{$text['Site']} : </b></td> <td>{$this_site_info['title']}</td></tr>
     <tr><td><b>{$text['Is_main_menu']} : </b></td> <td><select name=menu_group_is_main>".draw_options($menu_group_info['is_main'],Array('-1'=>$text['negative_answer'],'0'=>$text['positive_answer']))."</select></td></tr>
-    <tr><td><b>{$text['Language']}<font color=red>*</font> : </b></td> <td><select name=menu_group_lang>".draw_options($menu_group_info['lang'],\e::db_getrows("SELECT id, name FROM <<tp>>languages WHERE is_visible=1 ORDER BY name;"))."</select></td></tr>
+    <tr><td><b>{$text['Language']}<font color=red>*</font> : </b></td> <td><select name=menu_group_lang>".draw_options($menu_group_info['lang'],site_get_languages($this_site_info))."</select></td></tr>
     <tr><td><b>{$text['Title']}<font color=red>*</font></b> : </td> <td><input type=text name=menu_group_html value=\"".htmlspecialchars($menu_group_info['html'])."\"></td></tr>
     <tr><td><b>{$text['Icon']} : </b></td>   <td><input type=text name=menu_group_icon value=\"".htmlspecialchars($menu_group_info['icon'])."\"></td></tr>
     <tr><td><b>{$text['URL']} : </b></td>   <td><input type=text name=menu_group_url value=\"".htmlspecialchars($menu_group_info['url'])."\"></td></tr>
