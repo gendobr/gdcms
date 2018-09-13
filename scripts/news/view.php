@@ -132,7 +132,7 @@ foreach ($menu_groups as $kmg => $mg) {
                           ,'site_root_url'=>site_root_URL
                      )
          );
-  $vyvid.= '<div style="opacity:0.2; font-size:80%;">'.(microtime(true) - $startTime)."</div>";
+  $vyvid.= '<!-- <div style="opacity:0.2; font-size:80%;">'.(microtime(true) - $startTime)."</div> -->";
   $this_site_info['title']=get_langstring($this_site_info['title'],$news->getLang());
   $file_content=process_template($this_site_info['template']
                                 ,Array(
