@@ -18,11 +18,16 @@ foreach($list as $f){
 }
 
 // get applied updates
-$appliedUpdates=\e::db_getrows("SELECT * FROM <<tp>>updates ORDER BY update_file");
-if($appliedUpdates){
-    for($cnt=count($appliedUpdates), $i=0; $i<$cnt; $i++){
-        unset($files[$appliedUpdates[$i]['update_file']]);
+try{
+    $appliedUpdates=\e::db_getrows("SELECT * FROM <<tp>>updates ORDER BY update_file");
+    if($appliedUpdates){
+        for($cnt=count($appliedUpdates), $i=0; $i<$cnt; $i++){
+            unset($files[$appliedUpdates[$i]['update_file']]);
+        }
     }
+
+} catch(Exception $e){
+    
 }
 
 // apply new updates
