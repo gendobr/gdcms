@@ -81,7 +81,7 @@ function menu_page($page_info,$site_info) {
         "&site_id=" . $page_info['site_id'] .
         "&delete_page_id=" . $page_info['id'] .
         "&delete_page_lang=" . $page_info['lang'] .
-        "&" . preg_query_string('/^action$|^site_id$|^delete_page_|^/' . session_name() . '$')
+        "&" . preg_query_string('/^action$|^site_id$|^delete_page_|^' . session_name() . '$/')
         , 'innerHTML' => $text['Delete_page']
         , 'attributes' => " onclick='return confirm(\"{$text['Are_You_sure']}?\")'  style='margin-top:5pt; color:red;' "
     );
