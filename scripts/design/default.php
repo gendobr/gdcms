@@ -46,7 +46,7 @@ $(window).load(function () {
 </span>
 <span style="display:inline-block;vertical-align:top;">
 <?=$input_vars['current_user_name']?>  @ <?=($_SERVER['HTTP_HOST'] .'('.$_SERVER['SERVER_ADDR'].')')?>
-<h1 style="margin-top:5pt;"><?=$input_vars['page_header']?></h1>
+<h1 style="margin-top:5pt;"><?=isset($input_vars['page_header'])?$input_vars['page_header']:''?></h1>
 </span>
 <!--  -->
 </div>
@@ -83,7 +83,7 @@ $(window).load(function () {
 
 <div style="margin-left:210pt;background-color:white;margin-top:5pt;border:2px solid #284351; padding:8pt;text-align:left;">
 <span class="textblok" id="page_content" style="display:inline-block;width:99%;">
- <?=$input_vars['page_content']?>
+ <?=isset($input_vars['page_content'])?$input_vars['page_content']:''?>
 </span>
 </div>
 <div style="clear:both;"></div>
