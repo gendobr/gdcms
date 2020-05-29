@@ -124,7 +124,7 @@ $rep = new db_record_editor_2;
 
 $rep->debug = false;
 #$rep->text=$text;
-$rep->exclude = '^category_id$';
+$rep->exclude = '/^category_id$/';
 $rep->set_table("<<tp>>category");
 
 # category_id           bigint(20)
