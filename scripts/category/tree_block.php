@@ -36,7 +36,16 @@ $lang = get_language('lang');
 
 // get list of categories
 run('category/functions');
-$caterory_list=category_public_list($site_id, $lang);
+
+$cache_path=\e::config('CACHE_ROOT')."/{$this_site_info['dir']}/category_public_list_{$lang}.cache";
+\core\fileutils::path_create(\e::config('CACHE_ROOT'), $cache_path);    
+$caterory_list = \core\fileutils::get_cached_info($cache_path, 600);
+if (! $caterory_list) {
+  $caterory_list=category_public_list($site_id, $lang);
+  \core\fileutils::set_cached_info($cache_path, $caterory_list);
+}
+
+
 
 
 run('site/page/page_view_functions');
