@@ -200,6 +200,7 @@ function show_news_categories($params) {
     // echo '<!-- '; prn($params); echo ' -->';
     extract($params);
     # required parameters are news_id, site_id
+    $lang=get_language('interface_lang,lang');
 
     $query = "SELECT DISTINCT pa.category_id, pa.category_title, pa.deep
               FROM <<tp>>category as c
@@ -218,9 +219,9 @@ function show_news_categories($params) {
     foreach ($this_news_info['categories'] as $cat) {
         $category_url = str_replace(
             ['{site_id}','{lang}','{other_parameters}'],
-            [$site_id,$_REQUEST['lang'],"category_id={$cat['category_id']}"],
+            [$site_id,$lang,"category_id={$cat['category_id']}"],
             \e::config('url_template_news_list'));
-        $tmp.="<span class=\"level{$cat['deep']}\"><a href=\"{$category_url}\">" . get_langstring($cat['category_title'], $_REQUEST['lang']) . "</a></span>\n";
+        $tmp.="<span class=\"level{$cat['deep']}\"><a href=\"{$category_url}\">" . get_langstring($cat['category_title'], $lang) . "</a></span>\n";
     }
     return $tmp;
 }
