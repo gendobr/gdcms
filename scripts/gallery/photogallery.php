@@ -1,6 +1,5 @@
 <?php
 
-$link = $db;
 $data = date("Y-m-d H:i");
 
 
