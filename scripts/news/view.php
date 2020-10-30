@@ -57,11 +57,19 @@ $cachePath=\e::config('CACHE_ROOT') . '/' . $this_site_info['dir'] . "/news_lang
 
 $tmp = \core\fileutils::get_cached_info($cachePath, cachetime);
 if (!$tmp) {
-    $tmp = \e::db_getrows("SELECT DISTINCT lang
-                     FROM <<tp>>news  AS ne
-                     WHERE ne.site_id={$site_id}
-                       AND ne.cense_level>={$this_site_info['cense_level']}");
-    \core\fileutils::set_cached_info($cachePath, $tmp);
+  $sql = [];
+  foreach($this_site_info['extra_setting']['lang'] as $langName =>$langInfo){
+     $sql[]="( SELECT lang
+             FROM <<tp>>news  AS ne
+             WHERE ne.site_id={$site_id}
+                   AND ne.cense_level>={$this_site_info['cense_level']}
+                   AND ne.lang='{$langName}'
+             LIMIT 0, 1 )
+             ";
+  }
+  $sql = join(' UNION ', $sql);
+  $tmp = \e::db_getrows($sql);
+  \core\fileutils::set_cached_info($cachePath, $tmp);
 }
 
 $existing_languages = Array();

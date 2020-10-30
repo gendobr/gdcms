@@ -541,14 +541,25 @@ class CmsNewsViewer {
                 , 'innerHTML' => $month_names[$this->month]
             );
 
-            $tmp = \e::db_getrows("SELECT DISTINCT DAYOFMONTH(last_change_date) AS day
-                               FROM <<tp>>news as news
-                               WHERE news.site_id={$this->site_id}
-                                 AND news.cense_level>={$this->this_site_info['cense_level']}
-                                 AND news.lang='{$this->lang}'
-                                 AND year(last_change_date)={$this->year}
-                                 AND month(last_change_date)={$this->month}
-                               ORDER BY day ASC");
+
+
+            $cachePath=\e::config('CACHE_ROOT') . '/' . $this->_this_site_info['dir'] . "/news_days_{$this->year}_{$this->month}_{$this->lang}.cache";
+            \core\fileutils::path_create(\e::config('CACHE_ROOT'), \e::config('CACHE_ROOT') . '/' . $this->_this_site_info['dir'] . "/");
+            $tmp = \core\fileutils::get_cached_info($cachePath, cachetime);
+            if (!$tmp) {
+                $tmp = \e::db_getrows("SELECT DISTINCT DAYOFMONTH(last_change_date) AS day
+                                           FROM <<tp>>news as news
+                                           WHERE news.site_id={$this->site_id}
+                                             AND news.cense_level>={$this->this_site_info['cense_level']}
+                                             AND news.lang='{$this->lang}'
+                                             AND year(last_change_date)={$this->year}
+                                             AND month(last_change_date)={$this->month}
+                                           ORDER BY day ASC");
+                \core\fileutils::set_cached_info($cachePath, $tmp);
+            }
+
+
+
             foreach ($tmp as $tm) {
                 $this->_dateselector->children[] = Array(
                     'URL' => $this->url(Array('day' => $tm['day'], 'month' => $this->month, 'year' => $this->year, 'start' => ''))
