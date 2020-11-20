@@ -425,42 +425,51 @@ class CmsNewsViewer {
             ));
         }
 
-        // get children
-        $children = \e::db_getrows(
-                "SELECT * FROM <<tp>>category 
-                 WHERE site_id=" . ( (int) $this->_categoryselector['site_id']) . "  
-                     AND is_visible
-                     AND " . ( (int) $this->_categoryselector['start']) . " < `start` AND `finish` < " . ( (int) $this->_categoryselector['finish']) . "
-                     AND deep=" . ( 1 + (int) $this->_categoryselector['deep']) . "
-                 ORDER BY `start` ASC
-                 "
-        );
-        for ($i = 0, $cnt = count($children); $i < $cnt; $i++) {
-            $children[$i]['category_title'] = get_langstring($children[$i]['category_title'], $this->lang);
-            $children[$i]['category_description'] = get_langstring($children[$i]['category_description'], $this->lang);
-            $children[$i]['date_lang_update'] = get_langstring($children[$i]['date_lang_update'], $this->lang);
-            $children[$i]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => $children[$i]['category_id']));
-        }
-        $this->_categoryselector['children'] = $children;
+        $cache_file_name = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_site{$this->this_site_info['id']}_category{$this->_categoryselector['category_id']}.cache";
+        $tmp = \core\fileutils::get_cached_info($cache_file_name, cachetime * 24 * 12);
+        if ($tmp) {
+            $this->_categoryselector = $tmp;
+        } else {
+            // get children
+            $children = \e::db_getrows(
+                    "SELECT * FROM <<tp>>category 
+                     WHERE site_id=" . ( (int) $this->_categoryselector['site_id']) . "  
+                         AND is_visible
+                         AND " . ( (int) $this->_categoryselector['start']) . " < `start` AND `finish` < " . ( (int) $this->_categoryselector['finish']) . "
+                         AND deep=" . ( 1 + (int) $this->_categoryselector['deep']) . "
+                     ORDER BY `start` ASC
+                     "
+            );
+            for ($i = 0, $cnt = count($children); $i < $cnt; $i++) {
+                $children[$i]['category_title'] = get_langstring($children[$i]['category_title'], $this->lang);
+                $children[$i]['category_description'] = get_langstring($children[$i]['category_description'], $this->lang);
+                $children[$i]['date_lang_update'] = get_langstring($children[$i]['date_lang_update'], $this->lang);
+                $children[$i]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => $children[$i]['category_id']));
+            }
+            $this->_categoryselector['children'] = $children;
 
-        // get parents
-        $parents = \e::db_getrows(
-                "SELECT * FROM <<tp>>category 
-                 WHERE site_id=" . ( (int) $this->_categoryselector['site_id']) . "  
-                     AND is_visible
-                     AND `start` < " . ( (int) $this->_categoryselector['start']) . " AND " . ( (int) $this->_categoryselector['finish']) . " < `finish`
-                 ORDER BY `start` ASC
-                 "
-        );
-        for ($i = 0, $cnt = count($parents); $i < $cnt; $i++) {
-            $parents[$i]['category_title'] = get_langstring($parents[$i]['category_title'], $this->lang);
-            $parents[$i]['category_description'] = get_langstring($parents[$i]['category_description'], $this->lang);
-            $parents[$i]['date_lang_update'] = get_langstring($parents[$i]['date_lang_update'], $this->lang);
-            $parents[$i]['URL'] = $this->url(Array('category_id' => $parents[$i]['category_id']));
-        }
-        $parents[0]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => ''));
+            // get parents
+            $parents = \e::db_getrows(
+                    "SELECT * FROM <<tp>>category 
+                     WHERE site_id=" . ( (int) $this->_categoryselector['site_id']) . "  
+                         AND is_visible
+                         AND `start` < " . ( (int) $this->_categoryselector['start']) . " AND " . ( (int) $this->_categoryselector['finish']) . " < `finish`
+                     ORDER BY `start` ASC
+                     "
+            );
+            for ($i = 0, $cnt = count($parents); $i < $cnt; $i++) {
+                $parents[$i]['category_title'] = get_langstring($parents[$i]['category_title'], $this->lang);
+                $parents[$i]['category_description'] = get_langstring($parents[$i]['category_description'], $this->lang);
+                $parents[$i]['date_lang_update'] = get_langstring($parents[$i]['date_lang_update'], $this->lang);
+                $parents[$i]['URL'] = $this->url(Array('category_id' => $parents[$i]['category_id']));
+            }
+            $parents[0]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => ''));
 
-        $this->_categoryselector['parents'] = $parents;
+            $this->_categoryselector['parents'] = $parents;
+
+            \core\fileutils::set_cached_info($cache_file_name, $this->_categoryselector);
+        }
+
         //prn($this->_categoryselector);
     }
 
