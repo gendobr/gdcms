@@ -425,7 +425,7 @@ class CmsNewsViewer {
             ));
         }
 
-        $cache_file_name = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_site{$this->this_site_info['id']}_category{$this->_categoryselector['category_id']}.cache";
+        $cache_file_name = \e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_site{$this->this_site_info['id']}_category{$this->_categoryselector['category_id']}_lang{$this->lang}.cache";
         $tmp = \core\fileutils::get_cached_info($cache_file_name, cachetime * 24 * 12);
         if ($tmp) {
             $this->_categoryselector = $tmp;
