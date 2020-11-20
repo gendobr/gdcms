@@ -538,15 +538,39 @@ class CmsNewsViewer {
                 11 => text('month_November'),
                 12 => text('month_December'));
             $this->_dateselector->parents[] = Array(
-                'URL' => $this->url(Array('day' => '', 'month' => '', 'year' => '', 'start' => ''))
+                'URL' => $this->url(Array(
+                    'day' => '', 
+                    'month' => '', 
+                    'year' => '', 
+                    'start'=>'',
+                    'keywords'=>'',
+                    'tags'=>'',
+                    'category_id' => '',
+                ))
                 , 'innerHTML' => text('All_dates')
             );
             $this->_dateselector->parents[] = Array(
-                'URL' => $this->url(Array('day' => '', 'month' => '', 'year' => $this->year, 'start' => ''))
+                'URL' => $this->url(Array(
+                    'day' => '', 
+                    'month' => '', 
+                    'year' => $this->year, 
+                    'start' => '',
+                    'keywords'=>'',
+                    'tags'=>'',
+                    'category_id' => '',
+                ))
                 , 'innerHTML' => $this->year
             );
             $this->_dateselector->parents[] = Array(
-                'URL' => $this->url(Array('day' => '', 'month' => $this->month, 'year' => $this->year, 'start' => ''))
+                'URL' => $this->url(Array(
+                    'day' => '', 
+                    'month' => $this->month, 
+                    'year' => $this->year, 
+                    'start' => '',
+                    'keywords'=>'',
+                    'tags'=>'',
+                    'category_id' => '',
+                ))
                 , 'innerHTML' => $month_names[$this->month]
             );
             $this->_dateselector->current = Array(
@@ -570,11 +594,27 @@ class CmsNewsViewer {
                 12 => text('month_December'));
 
             $this->_dateselector->parents[] = Array(
-                'URL' => $this->url(Array('day' => '', 'month' => '', 'year' => '', 'start' => ''))
+                'URL' => $this->url(Array(
+                    'day' => '', 
+                    'month' => '', 
+                    'year' => '', 
+                    'start' => '',
+                    'keywords'=>'',
+                    'tags'=>'',
+                    'category_id' => '',
+                ))
                 , 'innerHTML' => text('All_dates')
             );
             $this->_dateselector->parents[] = Array(
-                'URL' => $this->url(Array('day' => '', 'month' => '', 'year' => $this->year, 'start' => ''))
+                'URL' => $this->url(Array(
+                    'day' => '', 
+                    'month' => '', 
+                    'year' => $this->year, 
+                    'start' => '',
+                    'keywords'=>'',
+                    'tags'=>'',
+                    'category_id' => '',
+                ))
                 , 'innerHTML' => $this->year
             );
             $this->_dateselector->current = Array(
@@ -603,7 +643,15 @@ class CmsNewsViewer {
 
             foreach ($tmp as $tm) {
                 $this->_dateselector->children[] = Array(
-                    'URL' => $this->url(Array('day' => $tm['day'], 'month' => $this->month, 'year' => $this->year, 'start' => ''))
+                    'URL' => $this->url(Array(
+                        'day' => $tm['day'], 
+                        'month' => $this->month, 
+                        'year' => $this->year, 
+                        'start' => '',
+                        'keywords'=>'',
+                        'tags'=>'',
+                        'category_id' => '',
+                    ))
                     , 'innerHTML' => $tm['day']
                 );
             }
@@ -622,7 +670,15 @@ class CmsNewsViewer {
                 11 => text('month_November'),
                 12 => text('month_December'));
             $this->_dateselector->parents[] = Array(
-                'URL' => $this->url(Array('day' => '', 'month' => '', 'year' => '', 'start' => ''))
+                'URL' => $this->url(Array(
+                    'day' => '', 
+                    'month' => '', 
+                    'year' => '', 
+                    'start' => '',
+                    'keywords'=>'',
+                    'tags'=>'',
+                    'category_id' => '',
+                ))
                 , 'innerHTML' => text('All_dates')
             );
             $this->_dateselector->current = Array(
@@ -645,7 +701,15 @@ class CmsNewsViewer {
             }
             foreach ($tmp as $tm) {
                 $this->_dateselector->children[] = Array(
-                    'URL' => $this->url(Array('day' => '', 'month' => $tm['month'], 'year' => $this->year, 'start' => ''))
+                    'URL' => $this->url(Array(
+                        'day' => '', 
+                        'month' => $tm['month'], 
+                        'year' => $this->year, 
+                        'start' => '',
+                        'keywords'=>'',
+                        'tags'=>'',
+                        'category_id' => '',
+                    ))
                     , 'innerHTML' => $month_names[$tm['month']]
                 );
             }
@@ -664,7 +728,15 @@ class CmsNewsViewer {
             }
             foreach ($tmp as $tm) {
                 $this->_dateselector->children[] = Array(
-                    'URL' => $this->url(Array('day' => '', 'month' => '', 'year' => $tm['year'], 'start' => ''))
+                    'URL' => $this->url(Array(
+                        'day' => '', 
+                        'month' => '', 
+                        'year' => $tm['year'], 
+                        'start' => '',
+                        'keywords'=>'',
+                        'tags'=>'',
+                        'category_id' => '',
+                    ))
                     , 'innerHTML' => $tm['year']
                 );
             }
