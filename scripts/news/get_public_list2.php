@@ -636,7 +636,7 @@ class CmsNewsViewer {
 
         // get list of tags
         // cache info as file in the site dir
-        $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime);
+        $tmp = \core\fileutils::get_cached_info(\e::config('CACHE_ROOT') . '/' . $this->this_site_info['dir'] . "/news_tags_site{$this->this_site_info['id']}_lang{$this->lang}.cache", cachetime * 24 * 12);
         if ($tmp) {
             $this->_tagSelector = $tmp;
         } else {
