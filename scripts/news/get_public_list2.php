@@ -444,7 +444,7 @@ class CmsNewsViewer {
                 $children[$i]['category_title'] = get_langstring($children[$i]['category_title'], $this->lang);
                 $children[$i]['category_description'] = get_langstring($children[$i]['category_description'], $this->lang);
                 $children[$i]['date_lang_update'] = get_langstring($children[$i]['date_lang_update'], $this->lang);
-                $children[$i]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => $children[$i]['category_id']));
+                // $children[$i]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => $children[$i]['category_id']));
             }
             $this->_categoryselector['children'] = $children;
 
@@ -461,15 +461,47 @@ class CmsNewsViewer {
                 $parents[$i]['category_title'] = get_langstring($parents[$i]['category_title'], $this->lang);
                 $parents[$i]['category_description'] = get_langstring($parents[$i]['category_description'], $this->lang);
                 $parents[$i]['date_lang_update'] = get_langstring($parents[$i]['date_lang_update'], $this->lang);
-                $parents[$i]['URL'] = $this->url(Array('category_id' => $parents[$i]['category_id']));
+                //$parents[$i]['URL'] = $this->url(Array('category_id' => $parents[$i]['category_id']));
             }
-            $parents[0]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => ''));
+            //$parents[0]['URL'] = $this->url(Array('start'=>'','keywords'=>'','category_id' => ''));
 
             $this->_categoryselector['parents'] = $parents;
 
             \core\fileutils::set_cached_info($cache_file_name, $this->_categoryselector);
         }
 
+        for ($i = 0, $cnt = count($this->_categoryselector['children']); $i < $cnt; $i++) {
+            $this->_categoryselector['children'][$i]['URL'] = $this->url(Array(
+                'start'=>'',
+                'keywords'=>'',
+                'tags'=>'',
+                'year'=>'',
+                'day' => '',
+                'month' => '',
+                'category_id' => $this->_categoryselector['children'][$i]['category_id']
+            ));
+        }
+
+        for ($i = 0, $cnt = count($this->_categoryselector['parents']); $i < $cnt; $i++) {
+            $this->_categoryselector['parents'][$i]['URL'] = $this->url(Array(
+                'start'=>'',
+                'keywords'=>'',
+                'tags'=>'',
+                'year'=>'',
+                'day' => '',
+                'month' => '',
+                'category_id' => $this->_categoryselector['parents'][$i]['category_id']
+            ));
+        }
+        $this->_categoryselector['parents'][0]['URL'] = $this->url(Array(
+                'start'=>'',
+                'keywords'=>'',
+                'tags'=>'',
+                'year'=>'',
+                'day' => '',
+                'month' => '',
+            'category_id' => ''
+        ));
         //prn($this->_categoryselector);
     }
 
