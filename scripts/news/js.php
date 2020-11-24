@@ -9,7 +9,8 @@
   $abstracts =yes|no
 
  */
-include(\e::config('SCRIPT_ROOT') . '/news/get_public_list2.php');
+// include(\e::config('SCRIPT_ROOT') . '/news/get_public_list2.php');
+  include(\e::config('SCRIPT_ROOT') . '/news/get_public_list3.php');
 
 $site_id = checkInt($input_vars['site_id']);
 $this_site_info = get_site_info($site_id);
