@@ -1006,8 +1006,7 @@ class CmsNewsViewer {
               AND news.last_change_date < '$now' AND ( news.expiration_date is null OR  '$now'< news.expiration_date)
               {$news_date_restriction}
               {$news_keywords_restriction}
-            {$orderby}
-            LIMIT {$this->start},{$this->rows_per_page}";
+            ";
 
         //$num = \e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
         $num = \e::db_getonerow($countRowsQuery);
