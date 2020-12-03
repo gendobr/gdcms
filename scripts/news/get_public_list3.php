@@ -629,7 +629,7 @@ class CmsNewsViewer {
             $tmp = \core\fileutils::get_cached_info($cachePath, cachetime);
             if (!$tmp) {
                 $this->site_id  *= 1;
-                $this->this_site_info['cense_level'] *= 1;
+                //$this->this_site_info['cense_level'] *= 1;
                 $this->year *=1;
                 $this->month *=1;
                 $tmp = \e::db_getrows("SELECT DISTINCT DAYOFMONTH(last_change_date) AS day
@@ -695,7 +695,7 @@ class CmsNewsViewer {
             $tmp = \core\fileutils::get_cached_info($cachefilepath, cachetime);
             if (!$tmp) {
                 $this->site_id  *= 1;
-                $this->this_site_info['cense_level'] *= 1;
+                //$this->this_site_info['cense_level'] *= 1;
                 $this->year *=1;
                 $tmp = \e::db_getrows("SELECT DISTINCT month(last_change_date) AS month
                                           FROM <<tp>>news as news
@@ -760,7 +760,7 @@ class CmsNewsViewer {
         if ($tmp) {
             $this->_tagSelector = $tmp;
         } else {
-            $this->this_site_info['cense_level'] *=1;
+            //$this->this_site_info['cense_level'] *=1;
             $this->this_site_info['id'] *= 1;
             $query = "SELECT DISTINCT news_tags.tag, news_tags.lang, count(news.id) as N
                        FROM <<tp>>news_tags AS news_tags
