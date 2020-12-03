@@ -1019,7 +1019,7 @@ class CmsNewsViewer {
         
         
         # --------------------------- list of pages - begin --------------------
-        $this->this_site_info['cense_level'] *= 1;
+        // $this->this_site_info['cense_level'] *= 1;
         $this->site_id *= 1;
         $countRowsQuery = "SELECT count(DISTINCT news.id) as n_records
             FROM <<tp>>news AS news
