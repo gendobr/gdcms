@@ -1020,6 +1020,7 @@ class CmsNewsViewer {
         
         # --------------------------- list of pages - begin --------------------
         // $this->this_site_info['cense_level'] *= 1;
+        $nowH = date('Y-m-d H:00:00', time());
         $this->site_id *= 1;
         $countRowsQuery = "SELECT count(DISTINCT news.id) as n_records
             FROM <<tp>>news AS news
@@ -1028,13 +1029,31 @@ class CmsNewsViewer {
             WHERE news.site_id={$this->site_id}
               AND news.cense_level>={$this->this_site_info['cense_level']}
               AND news.lang='{$this->lang}'
-              AND news.last_change_date < '$now' AND ( news.expiration_date is null OR  '$now'< news.expiration_date)
+              AND news.last_change_date < '$nowH' AND ( news.expiration_date is null OR  '$nowH'< news.expiration_date)
               {$news_date_restriction}
               {$news_keywords_restriction}
             ";
-
-        //$num = \e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
-        $num = \e::db_getonerow($countRowsQuery);
+        $num = false;
+        $cacheKey = md5($countRowsQuery);
+        $cacheValue = \e::db_getonerow("SELECT * FROM <<tp>>cache WHERE uid=<<string uid>>",['uid'=>$cacheKey]);
+        if($cacheValue) {
+            if(time() - $cacheValue['cachetime'] < 3600 ){
+                $num = json_decode($cacheValue['cached_value']);
+            }
+        }
+        if (!$num) {
+            //$num = \e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
+            $num = \e::db_getonerow($countRowsQuery);
+            \e::db_execute(
+                "REPLACE <<tp>>cache(uid, cachetime, cached_value)
+                 VALUES(<<string uid>>, <<integer cachetime>>, <<string cached_value>>)",
+                 [
+                    'uid' => $cacheKey,
+                    'cachetime' => time(),
+                    'cached_value' => json_encode($num)
+                 ]
+            );
+        }
         // prn($query,$num);
         $num = (int) $num['n_records'];
         $pages = Array();
