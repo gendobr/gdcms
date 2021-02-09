@@ -1038,7 +1038,7 @@ class CmsNewsViewer {
         $cacheValue = \e::db_getonerow("SELECT * FROM <<tp>>cache WHERE uid=<<string uid>>",['uid'=>$cacheKey]);
         if($cacheValue) {
             if(time() - $cacheValue['cachetime'] < 3600 ){
-                $num = json_decode($cacheValue['cached_value']);
+                $num = json_decode($cacheValue['cached_value'], true);
             }
         }
         if (!$num) {
