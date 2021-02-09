@@ -148,36 +148,66 @@ function show_related_news($params) {
     $site_id*=1;
     $lang= \e::db_escape($lang);
     # required parameters are news_id, lang, site_id, count
-    if (!isset($count) || ($count <= 0)){
-        $count = 5;
+    // get cached data
+    $cach_timestamp = time() - 3600 * 24;
+    $query = "select n.cached_info from <<tp>>news as n where n.lang='{$lang}' and n.news_id={$news_id} and cach_timestamp>{$cach_timestamp}";
+    $cached_info = \e::db_getonerow($query);
+    if($cached_info) {
+        $tmp = json_decode($cached_info);
     }
 
+    if($tmp){
+        $tmp = isset($tmp['related']) ? $tmp['related'] : false;
+    }
 
-    # ---------------- get all tags of the current news - begin ------------
-    $query = "select nt.tag from <<tp>>news_tags as nt where nt.lang='{$lang}' and nt.news_id={$news_id} ";
-    $tags = \e::db_getrows($query);
-    $cnt = count($tags);
-    if ($cnt == 0)
-        return '';
-    for ($i = 0; $i < $cnt; $i++)
-        $tags[$i] = "'" . \e::db_escape($tags[$i]['tag']) . "'";
-    # prn($tags);
-    # ---------------- get all tags of the current news - end --------------
-    # ---------------- get news using tags - begin -------------------------
-    $query = "select distinct nws.id,nws.lang,nws.site_id,nws.title,nws.news_code
-              from  <<tp>>news as nws,
-                      <<tp>>news_tags as nt
-              where nws.id=nt.news_id
-                  and nws.id<>{$news_id}
-                  and nws.lang=nt.lang
-                  and nt.tag IN (" . join(',', $tags) . ")
-                  and nt.lang='{$lang}'
-                  and nws.site_id={$site_id}
-              order by nws.last_change_date DESC
-              LIMIT 0,$count
-         ";
-    // prn($query);
-    $tmp = \e::db_getrows($query);
+    if(!$tmp){
+
+        if (!isset($count) || ($count <= 0)){
+            $count = 5;
+        }
+
+
+
+        # ---------------- get all tags of the current news - begin ------------
+        $query = "select nt.tag from <<tp>>news_tags as nt where nt.lang='{$lang}' and nt.news_id={$news_id} ";
+        $tags = \e::db_getrows($query);
+        $cnt = count($tags);
+        if ($cnt == 0)
+            return '';
+        for ($i = 0; $i < $cnt; $i++)
+            $tags[$i] = "'" . \e::db_escape($tags[$i]['tag']) . "'";
+        # prn($tags);
+        # ---------------- get all tags of the current news - end --------------
+        # ---------------- get news using tags - begin -------------------------
+        $query = "select distinct nws.id,nws.lang,nws.site_id,nws.title,nws.news_code
+                  from  <<tp>>news as nws,
+                          <<tp>>news_tags as nt
+                  where nws.id=nt.news_id
+                      and nws.id<>{$news_id}
+                      and nws.lang=nt.lang
+                      and nt.tag IN (" . join(',', $tags) . ")
+                      and nt.lang='{$lang}'
+                      and nws.site_id={$site_id}
+                  order by nws.last_change_date DESC
+                  LIMIT 0,$count
+             ";
+        // prn($query);
+        $tmp = \e::db_getrows($query);
+
+        \e::db_execute("UPDATE <<tp>>news 
+                        SET cached_info=<<string cached_info>>,
+                            cach_timestamp=<<integer cach_timestamp>>
+                        WHERE id = <<integer news_id>>
+                              AND lang = <<string lang>> ", 
+                        [
+                            'cached_info'=>json_encode(['related'=>$tmp]),
+                            'cach_timestamp' => time(),
+                            'news_id' => $news_id,
+                            'lang'=>$lang
+                        ]
+                    );
+    }
+
     $tor = '';
     foreach ($tmp as $row) {
         $url_news=str_replace(
