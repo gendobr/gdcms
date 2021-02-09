@@ -1053,7 +1053,7 @@ class CmsNewsViewer {
                  ]
             );
         }
-        prn($query,$num);
+        // prn($query,$num);
         $num = (int) $num['n_records'];
         $pages = Array();
         $imin = max(0, $this->start - 10 * $this->rows_per_page);
