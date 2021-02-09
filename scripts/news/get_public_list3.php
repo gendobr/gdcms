@@ -1042,7 +1042,6 @@ class CmsNewsViewer {
             }
         }
         if (!$num) {
-            //$num = \e::db_getonerow("SELECT FOUND_ROWS() AS n_records;");
             $num = \e::db_getonerow($countRowsQuery);
             \e::db_execute(
                 "REPLACE <<tp>>cache(uid, cachetime, cached_value)
@@ -1054,7 +1053,7 @@ class CmsNewsViewer {
                  ]
             );
         }
-        // prn($query,$num);
+        prn($query,$num);
         $num = (int) $num['n_records'];
         $pages = Array();
         $imin = max(0, $this->start - 10 * $this->rows_per_page);
