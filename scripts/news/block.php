@@ -20,7 +20,8 @@ header('Access-Control-Allow-Origin: *');
 
 $GLOBALS['main_template_name'] = '';
 // include(\e::config('SCRIPT_ROOT') . '/news/get_public_list2.php');
-include(\e::config('SCRIPT_ROOT') . '/news/get_public_list3.php');
+// include(\e::config('SCRIPT_ROOT') . '/news/get_public_list3.php');
+include(\e::config('SCRIPT_ROOT') . '/news/get_public_list4.php');
 
 
 $site_id = checkInt($input_vars['site_id']);
