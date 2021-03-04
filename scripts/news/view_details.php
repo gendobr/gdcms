@@ -153,7 +153,7 @@ function show_related_news($params) {
     $query = "select n.cached_info from <<tp>>news as n where n.lang='{$lang}' and n.id={$news_id} and cach_timestamp>{$cach_timestamp}";
     $cached_info = \e::db_getonerow($query);
     if($cached_info && $cached_info['cached_info']) {
-        $tmp = json_decode($cached_info['cached_info']);
+        $tmp = json_decode($cached_info['cached_info'], true);
     }
 
     if($tmp){
