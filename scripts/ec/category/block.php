@@ -112,8 +112,12 @@ run('site/page/page_view_functions');
 // ------------------ draw tree - begin ----------------------------------------
 $_template = false;
 if (isset($input_vars['template']) && strlen(trim($input_vars['template'])) > 0) {
-    $_template = site_get_template($this_site_info, 'template_ec_category_block');
+    $_template_file = preg_replace('/[^a-zA-Z0-9_-]/','_',$input_vars['template']);
+    $_template = site_get_template($this_site_info, $_template_file);
 }
+if (!$_template)
+  $_template = site_get_template($this_site_info, 'template_ec_category_block');
+
 if (!$_template)
     $_template = 'cms/template_ec_category_block';
 
