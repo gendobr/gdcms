@@ -1,0 +1,34 @@
+{
+    "status": "success",
+    "data": {
+        "id": 47,
+        "idCategory": 4,
+        "idSeller": 2,
+        "name": "product name 3",
+        "idUnit": 1,
+        "costOneUnit"
+                : 0.3,
+        "amount": 1.0254,
+        "visible": 1,
+        "shortDescription": "short product description",
+        "fullDescription": "full  product description",
+        "image": [
+            {
+                "small": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-01.jpg",
+                "big": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-01.jpg"
+            },
+            {
+                "small": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-02.jpg",
+                "big": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-02.jpg"
+            },
+            {
+                "small": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-03.jpg",
+                "big": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-03.jpg"
+            },
+            {
+                "small": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-04.jpg",
+                "big": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-04.jpg"
+            }
+        ]
+    }
+}

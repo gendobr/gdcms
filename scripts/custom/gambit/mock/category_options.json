@@ -1,0 +1,10 @@
+{"status":"success","data":[
+        {"id":1,"name":"category name 1","attribute":"attr 1"},
+        {"id":2,"name":"category name 2","attribute":"attr 2"},
+        {"id":3,"name":"category name 3","attribute":"attr 3"},
+        {"id":4,"name":"category name 4","attribute":"attr 4"},
+        {"id":5,"name":"category name 5","attribute":"attr 5"},
+        {"id":6,"name":"category name 6","attribute":"attr 6"},
+        {"id":7,"name":"category name 7","attribute":"attr 7"},
+        {"id":8,"name":"category name 8","attribute":"attr 8"},
+        {"id":9,"name":"category name 9","attribute":"attr 9"}]}

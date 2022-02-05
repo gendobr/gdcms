@@ -1,0 +1,30 @@
+{
+    "status": "success",
+    "data": {
+        "id": 82,
+        "name": "firstName 9",
+        "telephone": "telephone 9",
+        "email": "email 9"
+        ,
+        "comment": "comment 9",
+        "active": 1,
+        "image": [
+            {
+                "small": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-01.jpg",
+                "big": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-01.jpg"
+            },
+            {
+                "small": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-02.jpg",
+                "big": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-02.jpg"
+            },
+            {
+                "small": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-03.jpg",
+                "big": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-03.jpg"
+            },
+            {
+                "small": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-04.jpg",
+                "big": "http://finance.gd.zp.ua/cms/scripts/custom/gambit/mock/icon-04.jpg"
+            }
+        ]
+    }
+}
