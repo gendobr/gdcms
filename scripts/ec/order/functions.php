@@ -70,7 +70,7 @@ function menu_ec_order($_info) {
             ,'attributes'=>''
     );
     $tor['ec/order/delete']=Array(
-            'URL'=>"index.php?action=ec/order/list&site_id={$_info['site_id']}&".query_string('ec_order_delete|action')."&ec_order_delete={$_info['ec_order_id']}"
+            'URL'=>"index.php?action=ec/order/list&site_id={$_info['site_id']}&".preg_query_string('/ec_order_delete|action/')."&ec_order_delete={$_info['ec_order_id']}"
             ,'innerHTML'=>text('Delete') //.'<iframe src="about:blank" width=10px height=1px style="border:none;" name="frm_delete"></iframe>'
             ,'attributes'=>" onclick='return confirm(\"".text('Are_You_sure')."?\")' " // target=frm_delete
     );

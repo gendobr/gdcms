@@ -228,7 +228,7 @@ $input_vars['page_header'] = $this_site_info['title'] .' - '. text('EC_producers
 
      $tor.="
      <form action=index.php method=post>
-     ".hidden_form_elements('^ec_item|^submit')."
+     ".preg_hidden_form_elements('/^ec_item|^submit/')."
      <table cellspacing=0px>";
 
 
