@@ -372,7 +372,8 @@ if(strlen($order_form_msg)==0) {
     // acceps only ONE currency per payment
     $ec_order_total=$_SESSION['ec_cart']['total']+$_SESSION['ec_cart']['delivery_cost'];
     //prn($ec_order_total);
-    $ec_order_status_default=array_shift(explode(',',ec_order_status));
+    $ec_order_statuses = explode(',',ec_order_status);
+    $ec_order_status_default=array_shift($ec_order_statuses);
 
     $query="insert into <<tp>>ec_order(
                    ec_date_created, site_id, ec_order_status,
@@ -400,6 +401,7 @@ if(strlen($order_form_msg)==0) {
 
     // --------------------- save order items - begin --------------------------
     $query=Array();
+    if (isset($_SESSION['ec_cart']['items']))
     foreach($_SESSION['ec_cart']['items'] as $it) {
         $query[]="(
             '".\e::db_escape($it['info']['ec_item_uid'])."',
@@ -433,6 +435,7 @@ if(strlen($order_form_msg)==0) {
 
 
     // ----------------------- update ec_item state - begin --------------------
+    if (isset($_SESSION['ec_cart']['items']))
     foreach($_SESSION['ec_cart']['items'] as $it) {
         $query="UPDATE <<tp>>ec_item
                  SET ec_item_amount=ec_item_amount-1,

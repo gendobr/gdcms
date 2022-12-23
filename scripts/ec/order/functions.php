@@ -203,8 +203,9 @@ function apply_test_rule($rule,$input_vars) {
     // ------------- apply postfix expression - begin -----------------
     $stack=Array();
     foreach($postfix as $it) {
+        $itVal = isset($input_vars[$it]) ? trim($input_vars[$it]) : "";
         if(preg_match("/[ a-z0-9_]+/i",$it)) {
-            array_push($stack,  strlen(trim($input_vars[$it]))>0 );
+            array_push($stack,  strlen($itVal)>0 );
         }
         elseif(in_array($it,$operators)) {
             $operand1 = array_pop($stack);

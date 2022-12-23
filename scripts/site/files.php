@@ -44,6 +44,15 @@ $site_root_url = $this_site_info['site_root_url'];
 //------------------- site info - end ------------------------------------------
 
 //------------------- check permission - begin ---------------------------------
+if (strlen($site_root_dir) <= strlen(\e::config('SITES_ROOT'))) {
+    $input_vars['page_title'] =
+    $input_vars['page_header'] =
+    $input_vars['page_content'] = text('Files not found');
+    return 0;
+}
+//------------------- check permission - end -----------------------------------
+
+//------------------- check permission - begin ---------------------------------
 if (get_level($site_id) == 0) {
     $input_vars['page_title'] =
     $input_vars['page_header'] =
