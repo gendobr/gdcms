@@ -421,7 +421,7 @@ if($user_cense_level==0)
 
      $tor.="
      <form action=index.php method=post>
-     ".hidden_form_elements('^ec_order|^submit')."
+     ".preg_hidden_form_elements('/^ec_order|^submit/')."
      <table cellspacing=0px width=98%>
      $paging";
 

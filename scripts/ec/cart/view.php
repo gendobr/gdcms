@@ -173,7 +173,7 @@ $vyvid= process_template( $ec_item_template
         'text'=>$txt,
         'remove_item_url_prefix'=>"index.php?action=ec/cart/add&site_id=$site_id&ec_category_id=",
         'site'=>$this_site_info,
-        'hidden_form_elements'=>hidden_form_elements('^cart$|delivery'),
+        'hidden_form_elements'=>preg_hidden_form_elements('/^cart$|delivery/'),
         'url_prefix_delete'=>"index.php?action=ec/cart/view&site_id=$site_id&lang=$lang&cart_delete_key=",
        //'hidden_order_form_elements'=>hidden_form_elements('^action|delivery').'<input type="hidden" name="action" value="ec/order/new">',
         'delivery_form'=>delivery_form($_SESSION['ec_cart']['total'],$this_site_info,$_SESSION['ec_cart']['delivery']),

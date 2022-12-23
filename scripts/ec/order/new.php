@@ -195,7 +195,7 @@ if(isset($input_vars['confirmed'])) {
     # ------------------- check ICQ format - begin -----------------------------
     $ec_user_icq=isset($input_vars['ec_user_icq'])?trim($input_vars['ec_user_icq']):'';
     if(strlen($ec_user_icq)>0) {
-        if(!ereg('^[0-9]+$',$ec_user_icq)) {
+        if(!preg_match('/^[0-9]+$/',$ec_user_icq)) {
             $order_form_msg.="<div style='color:red;'>".text('ec_user_ICQ_is_invalid')."</div>";
         }
     }
@@ -627,7 +627,7 @@ $vyvid=
         'remove_item_url_prefix'=>"index.php?action=ec/cart/add&site_id=$site_id&ec_category_id=",
         'site'=>$this_site_info,
         'url_prefix_delete'=>"index.php?action=ec/cart/view&site_id=$site_id&lang=$lang&cart_delete_key=",
-        'hidden_order_form_elements'=>hidden_form_elements('^ec_user_|^confirmed$|^ec_test_rule$|^ec_delivery').'<input type=hidden name=confirmed value=yes>',
+        'hidden_order_form_elements'=>preg_hidden_form_elements('^ec_user_|^confirmed$|^ec_test_rule$|^ec_delivery').'<input type=hidden name=confirmed value=yes>',
         'site_visitor_info'=>( isset($_SESSION['site_visitor_info'])?$_SESSION['site_visitor_info']:''),
         'delivery_form'=>delivery_form($_SESSION['ec_cart']['total'],$this_site_info,$_SESSION['ec_cart']['delivery']),
 	'ec_order_total'=>$ec_order_total,
