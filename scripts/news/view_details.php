@@ -232,7 +232,7 @@ function show_news_categories($params) {
     # required parameters are news_id, site_id
     $lang=get_language('interface_lang,lang');
 
-    $query = "SELECT DISTINCT pa.category_id, pa.category_title, pa.deep
+    $query = "SELECT DISTINCT pa.category_id, pa.category_title, pa.deep, pa.start
               FROM <<tp>>category as c
                   ,<<tp>>category as pa
                   ,<<tp>>news_category as nc
