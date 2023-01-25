@@ -82,11 +82,11 @@ if($this_site_info['admin_level']<$max_site_level && !is_admin())
            $tmp = preg_replace("/\\/+$/",'',$tmp);
            //$tmp = str_replace('.','',$tmp);
            $tmp = preg_replace("/[^0-9a-z\\/_.-]/i",'',$tmp);
-           if($site_dir_path!=$tmp || strlen($tmp)==0)
-           {
-              $this->messages.= " <b><font color=red> {$text['ERROR']} : Type in correct directory name [a-z0-9/_-]+</font></b><br>\n";
-              $all_is_ok = false;
-           }
+           // if($site_dir_path!=$tmp || strlen($tmp)==0)
+           // {
+           //    $this->messages.= " <b><font color=red> {$text['ERROR']} : Type in correct directory name [a-z0-9/_-]+</font></b><br>\n";
+           //    $all_is_ok = false;
+           // }
         // -------------------- protect all sites dir - end --------------------
 
         //-------------------- form URL - begin ------------------------------
