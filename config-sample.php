@@ -98,7 +98,7 @@ $config->PHPSESSID='PHPSESSID';
 define('SMARTY_DIR', $config->SCRIPT_ROOT . '/smarty/libs/');
 
 // regexp
-$config->allowed_file_extension= 'doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt|xlsx|xlsm|xltx|xltm|xlam|docx|docm|dotx|dotm|pptx|pptm|potx|potm|ppam|ppsx|ppsm|svg|eot|woff|ttf|less|scss';
+$config->allowed_file_extension= 'p7s|doc|jpg|png|gif|zip|rar|html|htm|rtf|pdf|css|js|txt|djvu|djv|xml|xsl|ppt|xls|swf|pml|cml|jpeg|ico|docx|otf|bz2|gz|7z|odt|xlsx|xlsm|xltx|xltm|xlam|docx|docm|dotx|dotm|pptx|pptm|potx|potm|ppam|ppsx|ppsm|svg|eot|woff|ttf|less|scss';
 
 define('apw', md5('qzwxdcft'));
 
