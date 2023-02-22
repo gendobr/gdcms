@@ -126,7 +126,7 @@ if ($is_logged) {
 </head>
 <body>
 <form action=index.php method=post>
-          " . hidden_form_elements('^ul$|^up$') . "
+          " . preg_hidden_form_elements('/^ul$|^up$/') . "
             {$text['Login_name']} : <input type=text   name=ul value='" . htmlspecialchars(isset($input_vars['ul']) ? $input_vars['ul'] : '') . "'><br>
             {$text['Password']} : <input type=password name=up value=''><br>
            <input type=submit value='{$text['Enter']}'>
