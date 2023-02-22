@@ -25,9 +25,9 @@ if (isset($input_vars['recheck'])) {
     if (rand(0, 100) < 5) {
         \e::db_execute("DELETE FROM <<tp>>oid WHERE expires >UNIX_TIMESTAMP() ");
     }
-    $info = \e::db_getonerow("SELECT * FROM <<tp>>oid WHERE cs='" . \e::db_escape($input_vars['recheck']) . "' AND expires>UNIX_TIMESTAMP()");
+    $info = \e::db_getonerow("SELECT * FROM <<tp>>oid WHERE cs='" . \e::db_escape($input_vars['recheck']) . "' ");
     if(isset($_REQUEST['debug'])){
-        prn("SELECT * FROM <<tp>>oid WHERE cs='" . \e::db_escape($input_vars['recheck']) . "' AND expires>UNIX_TIMESTAMP()",'=>',$info);
+        prn("SELECT * FROM <<tp>>oid WHERE cs='" . \e::db_escape($input_vars['recheck']) . "' ",'=>',$info);
     }
     if ($info) {
         exit('OK');
