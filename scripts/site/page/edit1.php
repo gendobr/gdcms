@@ -148,7 +148,7 @@ if(!isset($file_upload_form)) $file_upload_form='';
   <div class=label>{$text['Page_Language']}:</div>
   <div class=big>
     <select name=page_lang>".
-    draw_options($this_page_info['lang'],\e::db_getrows("SELECT id, name FROM <<tp>>languages WHERE is_visible=1 ORDER BY name ASC;"))
+        draw_options($this_page_info['lang'], site_get_languages($this_site_info))
     ."</select>
   </div>
   </span>
